@@ -1,0 +1,20 @@
+{
+  "name": "VirtualBookshelf",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.7",
+    "ejs": "*",
+    "stylus": "*",
+    "pg": "~2.10.0",
+    "passport-google": "~0.3.0",
+    "passport": "~0.1.18",
+    "i18n": "~0.4.1"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
