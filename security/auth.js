@@ -1,12 +1,11 @@
 var userDao = require('../dao/userDao');
 
-exports.authGoogle = function() {
+exports.authGoogle = function(host) {
 	var GoogleStrategy = require('passport-google').Strategy;
-
+	var host = host || 'http://127.0.0.1:3000';
 	var result = new GoogleStrategy({
-		// TODO:
-	    returnURL: 'http://127.0.0.1:3000/auth/google/return',
-	    realm: 'http://127.0.0.1:3000/'}, authCallback  		
+	    returnURL: host + '/auth/google/return',
+	    realm: host + '/'}, authCallback  		
 	);
 
 	return result;

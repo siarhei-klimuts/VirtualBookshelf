@@ -13,16 +13,6 @@ var userDao = require('./dao/userDao');
 
 var auth = require('./security/auth');
 var passport = require('passport');
-passport.use(auth.authGoogle());
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    userDao.getById(id, function(err, user) {
-        done(err, user);
-    });
-});
 
 var app = express();
 
@@ -35,8 +25,21 @@ i18n.configure({
 
 // all environments
 app.set('port', process.env.PORT || 3000);
+app.set('host', (process.env.NODE_HOST || 'http://127.0.0.1') + ':' + app.get('port'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+passport.use(auth.authGoogle(app.get('host')));
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    userDao.getById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -51,7 +54,7 @@ app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 // development only
-    console.log(app.get('env'));
+console.log();
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
