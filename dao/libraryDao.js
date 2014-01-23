@@ -1,5 +1,5 @@
 var pg = require('pg'); 
-var connectionString = "postgres://atdmajapxbpbpz:yQy6mVgEJUrl105JJzWYOu1O2R@ec2-54-228-227-68.eu-west-1.compute.amazonaws.com:5432/da3tfangtunmh6?ssl=true";
+var connectionString = process.env.DATABASE_URL;
 
 exports.getLibraryByUser = function(userId, done) {
     pg.connect(connectionString, function(err, client, pgDone) {

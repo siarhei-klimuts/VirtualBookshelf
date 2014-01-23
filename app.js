@@ -1,4 +1,3 @@
-// identifier https://www.google.com/accounts/o8/id?id=AItOawnWRkObDBq6gyjagOp_UdxIJUV4F9vcwCg
 /**
  * Module dependencies.
  */
