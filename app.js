@@ -25,8 +25,6 @@ i18n.configure({
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('host', process.env.NODE_HOST || ('http://127.0.0.1' + ':' + app.get('port')));
-console.log('host', process.env.NODE_HOST);
-console.log('app.get(host)', app.get('host'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
