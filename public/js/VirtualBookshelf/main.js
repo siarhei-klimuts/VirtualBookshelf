@@ -8,17 +8,20 @@ VirtualBookshelf.selectable = {};
 // Objects
 
 VirtualBookshelf.Library = function(params) {
-	THREE.Mesh.call(this);
+	THREE.Object3D.call(this);
+	var scope = this;
 
 	this.id = params.id;
-	this.size = params.size || new THREE.Vector3(0, 0, 0);
-	this.geometry = new THREE.CubeGeometry(this.size.x, this.size.y, this.size.z);
-	this.material = new THREE.MeshLambertMaterial({color: 0x961818, shading: THREE.SmoothShading});
-	this.material.side = THREE.BackSide;
+	this.libraryObject = params.libraryObject || {};
+	this.modelPath = '/obj/libraries/{model}/'.replace('{model}', this.libraryObject.model);
+
+	VirtualBookshelf.loader.load(this.modelPath + 'model.obj', this.modelPath + 'model.mtl', function (object) {
+		scope.add(object);
+	});
 
 	this.loadSections();
 }
-VirtualBookshelf.Library.prototype = new THREE.Mesh();
+VirtualBookshelf.Library.prototype = new THREE.Object3D();
 VirtualBookshelf.Library.prototype.constructor = VirtualBookshelf.Library;
 
 VirtualBookshelf.Library.prototype.loadSections = function() {
@@ -150,16 +153,13 @@ VirtualBookshelf.init = function() {
 	camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
 	camera.position = new THREE.Vector3(0,3,2);
 
-
 	VirtualBookshelf.controls = VirtualBookshelf.initControl(camera);
 
 	projector = new THREE.Projector();
-
-
 	
 	var ambient = new THREE.AmbientLight(0x111111);
 	var directionalLight = new THREE.PointLight( 0x999999, 1, 100);
-	directionalLight.position.set( 5, 3, 5 );
+	directionalLight.position.set(0, 1, 0);
 
 	VirtualBookshelf.scene = new THREE.Scene();
 	VirtualBookshelf.scene.add(ambient);

@@ -2,7 +2,12 @@ var models = require('../models');
 var Sequelize = require('sequelize');
 
 exports.library = function(req, res){
-	models.Library.find({where: {userId: req.user.id}}, {raw: true})
+	models.Library.find({
+		where: {userId: req.user.id}, 
+		include: [{
+			model: models.LibraryObject
+		}]
+	}, {raw: true})
 	.success(function(result) {
   		res.json(result);
 		console.log('ROUTE: library: ', result);

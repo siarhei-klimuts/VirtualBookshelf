@@ -90,7 +90,7 @@ function isAuthorized(req, res, next) {
     if(req.user) {
         next();
     } else {
-        req.user = {id: 1}; //galiaf by default
+        req.user = {id: 1};//galiaf by default
         next();
     }
 }
