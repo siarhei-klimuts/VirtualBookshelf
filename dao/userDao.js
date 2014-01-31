@@ -1,6 +1,8 @@
 var pg = require('pg'); 
 var connectionString = process.env.DATABASE_URL;
 
+var dao = require('./');
+
 exports.findOrCreate = function(profile, done) {
     var email = profile && profile.emails[0] && profile.emails[0].value;
 

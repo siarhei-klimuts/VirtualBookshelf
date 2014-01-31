@@ -1,14 +1,10 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var i18n = require('i18n');
-var userDao = require('./dao/userDao');
+var models = require('./models');
 
 var auth = require('./security/auth');
 var passport = require('passport');
@@ -16,9 +12,9 @@ var passport = require('passport');
 var app = express();
 
 i18n.configure({
-  locales: ['en', 'ru'],
-  cookie: 'locale',
-  directory: __dirname + '/locales'
+    locales: ['en', 'ru'],
+    cookie: 'locale',
+    directory: __dirname + '/locales'
 });
 
 
@@ -34,13 +30,14 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-    userDao.getById(id, function(err, user) {
-        done(err, user);
-    });
+    console.log('PAS:',id);
+    done(null, {id: id});
 });
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
+app.use(express.bodyParser()); // стандартный модуль, для парсинга JSON в запросах
+app.use(express.methodOverride()); // поддержка put и delete
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
@@ -55,7 +52,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // development only
 console.log();
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
@@ -65,21 +62,29 @@ app.get('/auth/google/return', passport.authenticate('google', {
   	successRedirect: '/',
     failureRedirect: '/'
 }));
-app.get('/library', isAuthorized, routes.library);
-app.get('/sections/:libraryId', isAuthorized, routes.sections);
-app.get('/shelves/:sectionId', isAuthorized, routes.shelves);
-app.get('/books/:shelfId', isAuthorized, routes.books);
+app.get('/library', isAuthorized, routes.library.library);
+app.get('/sections/:libraryId', isAuthorized, routes.library.sectionsGet);
+app.post('/sections', isAuthorized, routes.library.sectionsPost);
+app.get('/shelves/:sectionObjectId', isAuthorized, routes.library.shelves);
+app.get('/books/:sectionId/:shelfId', isAuthorized, routes.library.books);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+models.init(function(err) {
+    if(!err) {
+        http.createServer(app).listen(app.get('port'), function(){
+            console.log('Express server listening on port ' + app.get('port'));
+        });
+    } else {
+        console.log('DAO init error: ', err);        
+    }
 });
 
 function requireRole(role) {
     return function(req, res, next) {
-        if(req.session.user && req.session.user.role === role)
+        if(req.session.user && req.session.user.role === role) {
             next();
-        else
+        } else {
             res.send(403);
+        }
     }
 }
 
@@ -87,6 +92,7 @@ function isAuthorized(req, res, next) {
     if(req.user) {
         next();
     } else {
-        res.send(403);
+        req.user = {id: 1}; //galiaf by default
+        next();
     }
 }

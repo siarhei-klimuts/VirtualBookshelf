@@ -1,7 +1,9 @@
 var VirtualBookshelf = VirtualBookshelf || {};
 
+VirtualBookshelf.loader = new THREE.OBJMTLLoader();
 VirtualBookshelf.library = null;
 VirtualBookshelf.scene = null;
+VirtualBookshelf.selectable = {};
 
 // Objects
 
@@ -29,57 +31,65 @@ VirtualBookshelf.Library.prototype.loadSections = function() {
 			}
 		}
 	}});
-
 }
 //***
 
 VirtualBookshelf.Section = function(params) {
-	THREE.Mesh.call(this);
+	THREE.Object3D.call(this);
+	console.log('params',params);
+	var section = this;
 
 	this.id = params.id;
-	this.size = params.size || new THREE.Vector3(20,40,5);
 	this.position = new THREE.Vector3(params.pos_x, params.pos_y, params.pos_z);
+	this.sectionObject = params.sectionObject || {};
+	this.modelPath = '/obj/sections/{model}/'.replace('{model}', this.sectionObject.model);
 
-	this.geometry = new THREE.CubeGeometry(this.size.x, this.size.y, this.size.z);
-	this.material = new THREE.MeshLambertMaterial({color: 0x961818, shading: THREE.SmoothShading});
-	this.material.side = THREE.BackSide;
-	this.loadShelfs(this.id);
+	VirtualBookshelf.loader.load(this.modelPath + 'model.obj', this.modelPath + 'model.mtl', function ( object ) {
+		section.add(object);
+	});
+	
+	this.loadShelfs();
 }
-VirtualBookshelf.Section.prototype = new THREE.Mesh();
+VirtualBookshelf.Section.prototype = new THREE.Object3D();
 VirtualBookshelf.Section.prototype.constructor = VirtualBookshelf.Section;
 
 VirtualBookshelf.Section.prototype.loadShelfs = function() {	
 	var section = this;
 
-	$.ajax({url: '/shelves/' + section.id, type: 'GET', success: function(data) {
+	$.ajax({url: '/shelves/' + section.sectionObject.id, type: 'GET', success: function(data) {
 		if(data) {
 			for(key in data) {
-				section.add(new VirtualBookshelf.Shelf(data[key]));
+				section.add(new VirtualBookshelf.Shelf(data[key], section.id));
 			}
 		}
 	}});
 }
 //***
 
-VirtualBookshelf.Shelf = function(params) {
-	THREE.Mesh.call(this);
+VirtualBookshelf.Shelf = function(params, sectionId) {
+	THREE.Object3D.call(this);
 
 	this.id = params.id;
-	this.size = params.size || new THREE.Vector3(20, 10, 5);
+	this.size = new THREE.Vector3(params.size_x, params.size_y, params.size_z);
+	this.position = new THREE.Vector3(params.pos_x, params.pos_y, params.pos_z);
+	this.sectionId = sectionId; 
 
-	this.geometry = new THREE.CubeGeometry(this.size.x, this.size.y, this.size.z);
-	this.material = new THREE.MeshLambertMaterial({color: 0x961818, shading: THREE.SmoothShading});
-	this.material.side = THREE.BackSide;
+	var shapeGeometry = new THREE.CubeGeometry(this.size.x, this.size.y, this.size.z);
+	var shapeMaterial = new THREE.MeshLambertMaterial({color: 0x961818, shading: THREE.SmoothShading});
+	shapeMaterial.side = THREE.BackSide;
+	var shape = new THREE.Mesh(shapeGeometry, shapeMaterial);
+	shape.position.y = this.size.y * 0.5;
+	this.add(shape);
 
 	this.loadBooks();
 }
-VirtualBookshelf.Shelf.prototype = new THREE.Mesh();
+VirtualBookshelf.Shelf.prototype = new THREE.Object3D();
 VirtualBookshelf.Shelf.prototype.constructor = VirtualBookshelf.Shelf;
 
 VirtualBookshelf.Shelf.prototype.loadBooks = function() {
 	var shelf = this;
 
-	$.ajax({url: '/books/' + shelf.id, type: 'GET', success: function(data) {
+	$.ajax({url: '/books/' + shelf.sectionId + '/' + shelf.id, type: 'GET', success: function(data) {
 		if(data) {
 			for(key in data) {
 				shelf.add(new VirtualBookshelf.Book(data[key]));
@@ -91,13 +101,20 @@ VirtualBookshelf.Shelf.prototype.loadBooks = function() {
 
 VirtualBookshelf.Book = function(params) {
 	THREE.Mesh.call(this);
+	var scope = this;
 
 	this.shelf = params.shelf;
+	this.size = params.size || new THREE.Vector3(10,10,10);
 	this.color = params.color || 0xdddddd || 0x101030 || 0xffeedd;
-	this.position = params.pos || new THREE.Vector3(0,0,0);
+	this.position = new THREE.Vector3(params.pos_x, params.pos_y, params.pos_z);
 
+	VirtualBookshelf.loader.load('/obj/books/book_0001/model.obj', '/obj/books/book_0001/model.mtl', function (object) {
+		//object.scale = scope.size;
+		scope.add(object);
+	});	
 	this.geometry = new THREE.CubeGeometry(2,8,7);
 	this.material = new THREE.MeshLambertMaterial({color: this.color, shading: THREE.SmoothShading});
+	this.visible = false;
 }
 VirtualBookshelf.Book.prototype = new THREE.Mesh();
 VirtualBookshelf.Book.prototype.constructor = VirtualBookshelf.Book;
@@ -116,51 +133,59 @@ VirtualBookshelf.start = function() {
 	var projector;
 
 	VirtualBookshelf.init();
+
 	VirtualBookshelf.startRenderLoop();
 }
 
 VirtualBookshelf.init = function() {
-	VirtualBookshelf.scene = new THREE.Scene();
+	var width = window.innerWidth;
+	var height = window.innerHeight;
+	var container = document.getElementById('library');
+
+	renderer = new THREE.WebGLRenderer();
+	renderer.setSize(width, height);
+	container.appendChild(renderer.domElement);
 	
-	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-	camera.position.z = 15;
+
+	camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+	camera.position = new THREE.Vector3(0,3,2);
+
+
+	VirtualBookshelf.controls = VirtualBookshelf.initControl(camera);
 
 	projector = new THREE.Projector();
 
-	renderer = new THREE.WebGLRenderer();
-	renderer.setSize(window.innerWidth, window.innerHeight);
-	document.getElementById('library').appendChild(renderer.domElement);	
 
-	var ambient = new THREE.AmbientLight(0x111111);
-	VirtualBookshelf.scene.add(ambient);
 	
+	var ambient = new THREE.AmbientLight(0x111111);
 	var directionalLight = new THREE.PointLight( 0x999999, 1, 100);
 	directionalLight.position.set( 5, 3, 5 );
+
+	VirtualBookshelf.scene = new THREE.Scene();
+	VirtualBookshelf.scene.add(ambient);
 	VirtualBookshelf.scene.add(directionalLight);
 
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+	VirtualBookshelf.initControls(document);
+}
+
+VirtualBookshelf.initControl = function(camera) {
+	var controls = new THREE.OrbitControls(camera);
+	controls.addEventListener('change', VirtualBookshelf.render);
+
+	return controls;	
 }
 
 VirtualBookshelf.startRenderLoop = function() {
 	requestAnimationFrame(VirtualBookshelf.startRenderLoop);
+	VirtualBookshelf.controls.update();
+	VirtualBookshelf.render();
+}
+
+VirtualBookshelf.render = function() {
 	renderer.render(VirtualBookshelf.scene, camera);
 }
 
 // events 
-
-function onDocumentMouseDown( event ) {
-	event.preventDefault();
-
-	var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
-	projector.unprojectVector( vector, camera );
-
-	var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
-	var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children[0].children[0].children);
-
-	if(intersects.length > 0) {
-		console.log(intersects[0].object instanceof VirtualBookshelf.Book);
-	}
-}
 
 $(document).ready(function() {
 	VirtualBookshelf.start();
