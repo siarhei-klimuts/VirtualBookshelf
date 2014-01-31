@@ -1,4 +1,5 @@
-var userDao = require('../dao/userDao');
+//var userDao = require('../dao/userDao');
+var models = require('../models');
 
 exports.authGoogle = function(host) {
 	var GoogleStrategy = require('passport-google').Strategy;
@@ -12,7 +13,16 @@ exports.authGoogle = function(host) {
 }
 
 function authCallback(identifier, profile, done) {
-    userDao.findOrCreate(profile, function(err, user) {
-		done(err, user);
-    });
+    var email = profile && profile.emails[0] && profile.emails[0].value;
+
+	models.User.findOrCreate({email: email}, {}, {raw: true})
+	.success(function(result) {
+		done(null, result);
+		console.log('AUTH user:', result);
+	})
+	.failure(function(err) {
+		done(error, null);
+		console.log('AUTH error:', err);
+	});
+
 }
