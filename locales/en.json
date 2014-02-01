@@ -1,5 +1,9 @@
 {
 	"menu.login.google": "Sign in with Google",
 	"ui.login.text": "You are not logged in. Please login.",
-	"ui.library.create.text": "You have no libraries. Do you want to create one?"
+	"ui.library.create.text": "You have no libraries. Do you want to create one?",
+	"ui.library.create.link": "Create new library.",
+	"ui.library.create.select.label": "Select enviroment model for your library.",
+	"ui.library.select.text": "Select library which you want to go.",
+	"ui.library.select.link": "Go to selected library."
 }

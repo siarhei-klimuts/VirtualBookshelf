@@ -23,7 +23,7 @@ VirtualBookshelf.onDblClick = function(event) {
 }
 
 VirtualBookshelf.onMouseDown = function(event) {
-	event.preventDefault();
+	//event.preventDefault();
 	switch(event.which) {
 		//case 1: VirtualBookshelf.selectObject(event); break;
 	}   	

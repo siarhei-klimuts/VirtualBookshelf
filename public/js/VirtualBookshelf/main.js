@@ -160,14 +160,8 @@ VirtualBookshelf.init = function() {
 	VirtualBookshelf.controls = VirtualBookshelf.initControl(camera);
 
 	projector = new THREE.Projector();
-	
-	var ambient = new THREE.AmbientLight(0x111111);
-	var directionalLight = new THREE.PointLight( 0x999999, 1, 100);
-	directionalLight.position.set(0, 1, 0);
 
 	VirtualBookshelf.scene = new THREE.Scene();
-	VirtualBookshelf.scene.add(ambient);
-	VirtualBookshelf.scene.add(directionalLight);
 
 	VirtualBookshelf.initControls(document);
 }
@@ -193,28 +187,39 @@ VirtualBookshelf.saveUser = function(user) {
 	VirtualBookshelf.user = user;
 }
 
-// events 
+VirtualBookshelf.clearScene = function() {
+	while(VirtualBookshelf.scene.children.length > 0) {
+		VirtualBookshelf.scene.remove(VirtualBookshelf.scene.children[0]);
+	}
+
+	var ambient = new THREE.AmbientLight(0x111111);
+	var directionalLight = new THREE.PointLight( 0x999999, 1, 100);
+	directionalLight.position.set(0, 1, 0);
+	VirtualBookshelf.scene.add(ambient);
+	VirtualBookshelf.scene.add(directionalLight);
+}
+
+VirtualBookshelf.loadLibrary = function(libraryId) {
+	VirtualBookshelf.clearScene();
+	VirtualBookshelf.Data.getLibrary(libraryId, function(err, result) {
+		VirtualBookshelf.scene.add(new VirtualBookshelf.Library(result));
+	});
+}
 
 $(document).ready(function() {
 	VirtualBookshelf.start();
 
-	$.ajax({
-    	url: "/library", 
-		type: 'GET',
-    	success: function(data) {
-    		console.log('data',data);
-    		if(!data) return;
+	VirtualBookshelf.Data.getLibraries(function(err, result) {
+		if(err) return;
 
-    	}
-    });
-
-	// $.ajax({
- //    	url: "/library", 
-	// 	type: 'GET',
- //    	success: function(data) {
- //    		if(!data) return;
-
-	// 		VirtualBookshelf.scene.add(new VirtualBookshelf.Library(data));
- //    	}
- //    });
+		if(result && result.length > 0) {
+			if(result.length == 1) {
+				VirtualBookshelf.loadLibrary(result[0].id);
+			} else {
+				VirtualBookshelf.UI.showLibrarySelect(result);
+			}
+		} else {
+			VirtualBookshelf.UI.showLibraryCreate();
+		}
+	});
 });

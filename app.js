@@ -16,7 +16,6 @@ i18n.configure({
     directory: __dirname + '/locales'
 });
 
-
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('host', process.env.NODE_HOST || ('http://127.0.0.1' + ':' + app.get('port')));
@@ -56,11 +55,13 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/auth/google', passport.authenticate('google'));
-app.get('/auth/google/return', passport.authenticate('google', { 
-  	successRedirect: '/',
-    failureRedirect: '/'
-}));
-app.get('/library', isAuthorized, routes.library.library);
+app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/', successRedirect: '/'}));
+
+app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);
+app.get('/libraries', isAuthorized, routes.library.getLibraries);
+app.get('/libraryObjects', isAuthorized, routes.library.getLibraryObjects);
+app.put('/library/:libraryObjectId', isAuthorized, routes.library.putLibrary);
+
 app.get('/sections/:libraryId', isAuthorized, routes.library.sectionsGet);
 app.post('/sections', isAuthorized, routes.library.sectionsPost);
 app.get('/shelves/:sectionObjectId', isAuthorized, routes.library.shelves);

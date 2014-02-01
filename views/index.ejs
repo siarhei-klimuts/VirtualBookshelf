@@ -12,6 +12,7 @@
 		<script src="/js/VirtualBookshelf/main.js"></script>
 		<script src="/js/VirtualBookshelf/controls.js"></script>
 		<script src="/js/VirtualBookshelf/ui.js"></script>
+		<script src="/js/VirtualBookshelf/data.js"></script>
 		<style>
 			body {
 				padding: 0;
@@ -32,11 +33,18 @@
 			a {
 				color: #9582FF;
 				text-decoration: none;
+				cursor: pointer;
+				margin: 
 			}
 			div.ui {
-				border: 1px;
-				border-style: dashed;
 				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			div.ui div.uiPanel {
+				border: 1px;
+				border-color: #8F2222;
+				border-style: dashed;
 				margin: 10px;
 				padding: 15px;
 				display: none;
@@ -47,15 +55,29 @@
 		<script type="text/javascript">
 			VirtualBookshelf.saveUser(<%- JSON.stringify(user) %>);
 		</script>
-    	<div id="LIBRARY"/>
 
-    	<div id="UI_LOGIN" class="ui">
-    		<p><%= __('ui.login.text') %></p>
-    		<a href="/auth/google"><img src="/img/google.png"/></a>
-    	</div>
+    	<div id="LIBRARY"></div>
 
-    	<div id="UI_LIBRARY_CREATE" class="ui">
-    		<p><%= __('ui.library.create.text') %></p>
+    	<div class="ui">
+	    	<div id="UI_LOGIN" class="uiPanel">
+	    		<p><%= __('ui.login.text') %></p>
+	    		<a href="/auth/google"><img src="/img/google.png"/></a>
+	    	</div>
+
+	    	<div id="UI_LIBRARY_CREATE" class="uiPanel">
+	    		<p><%= __('ui.library.create.text') %></p>
+	    		<p><%= __('ui.library.create.select.label') %></p>
+	    		<br>
+	    		<select id="UI_LIBRARY_CREATE_SELECT"></select>
+	    		<a onclick="VirtualBookshelf.UI.createLibrary();"><%= __('ui.library.create.link') %></a>
+	    	</div>
+
+	    	<div id="UI_LIBRARY_SELECT" class="uiPanel">
+	    		<p><%= __('ui.library.select.text') %></p>
+	    		<br>
+	    		<select id="UI_LIBRARY_SELECT_DROPDOWN"></select>
+	    		<a onclick="VirtualBookshelf.UI.selectLibrary();"><%= __('ui.library.select.link') %></a>
+	    	</div>
     	</div>
 	</body>
 </html>
