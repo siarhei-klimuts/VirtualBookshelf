@@ -1,3 +1,5 @@
 {
-	"menu.login.google": "Sign in with Google"
+	"menu.login.google": "Sign in with Google",
+	"ui.login.text": "You are not logged in. Please login.",
+	"ui.library.create.text": "You have no libraries. Do you want to create one?"
 }

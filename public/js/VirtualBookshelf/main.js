@@ -1,9 +1,10 @@
 var VirtualBookshelf = VirtualBookshelf || {};
 
 VirtualBookshelf.loader = new THREE.OBJMTLLoader();
-VirtualBookshelf.library = null;
-VirtualBookshelf.scene = null;
-VirtualBookshelf.selectable = {};
+VirtualBookshelf.user;
+VirtualBookshelf.scene;
+VirtualBookshelf.width;
+VirtualBookshelf.height;
 
 // Objects
 
@@ -39,7 +40,6 @@ VirtualBookshelf.Library.prototype.loadSections = function() {
 
 VirtualBookshelf.Section = function(params) {
 	THREE.Object3D.call(this);
-	console.log('params',params);
 	var section = this;
 
 	this.id = params.id;
@@ -136,19 +136,23 @@ VirtualBookshelf.start = function() {
 	var projector;
 
 	VirtualBookshelf.init();
-
 	VirtualBookshelf.startRenderLoop();
+	VirtualBookshelf.UI.init();
+
+
 }
 
 VirtualBookshelf.init = function() {
 	var width = window.innerWidth;
 	var height = window.innerHeight;
-	var container = document.getElementById('library');
+	VirtualBookshelf.width = width;
+	VirtualBookshelf.height = height;
 
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(width, height);
-	container.appendChild(renderer.domElement);
-	
+
+	VirtualBookshelf.container = document.getElementById('LIBRARY');
+	VirtualBookshelf.container.appendChild(renderer.domElement);
 
 	camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
 	camera.position = new THREE.Vector3(0,3,2);
@@ -185,6 +189,10 @@ VirtualBookshelf.render = function() {
 	renderer.render(VirtualBookshelf.scene, camera);
 }
 
+VirtualBookshelf.saveUser = function(user) {
+	VirtualBookshelf.user = user;
+}
+
 // events 
 
 $(document).ready(function() {
@@ -194,10 +202,19 @@ $(document).ready(function() {
     	url: "/library", 
 		type: 'GET',
     	success: function(data) {
+    		console.log('data',data);
     		if(!data) return;
 
-			VirtualBookshelf.library = new VirtualBookshelf.Library(data);
-			VirtualBookshelf.scene.add(VirtualBookshelf.library);
     	}
     });
+
+	// $.ajax({
+ //    	url: "/library", 
+	// 	type: 'GET',
+ //    	success: function(data) {
+ //    		if(!data) return;
+
+	// 		VirtualBookshelf.scene.add(new VirtualBookshelf.Library(data));
+ //    	}
+ //    });
 });
