@@ -22,9 +22,11 @@ module.exports.Shelf.hasMany(module.exports.Book);
 
 module.exports.Book.belongsTo(module.exports.Section);
 module.exports.Book.belongsTo(module.exports.Shelf);
+module.exports.Book.belongsTo(module.exports.User);
 module.exports.Shelf.belongsTo(module.exports.SectionObject);
 module.exports.Section.belongsTo(module.exports.SectionObject);
 module.exports.Section.belongsTo(module.exports.Library);
+module.exports.Section.belongsTo(module.exports.User);
 module.exports.Library.belongsTo(module.exports.LibraryObject);
 module.exports.Library.belongsTo(module.exports.User);
 

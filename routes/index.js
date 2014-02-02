@@ -1,6 +1,7 @@
 exports.index = function(req, res){
-	var user = req.user || {email: 'Guest'};
+	var user = req.user;
   	res.render('index', {user: user});
 };
 
-exports.library = library = require('./library');
+exports.library = require('./library');
+exports.section = require('./section');

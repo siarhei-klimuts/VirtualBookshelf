@@ -1,6 +1,7 @@
 var VirtualBookshelf = VirtualBookshelf || {};
 
 VirtualBookshelf.loader = new THREE.OBJMTLLoader();
+VirtualBookshelf.library;
 VirtualBookshelf.user;
 VirtualBookshelf.scene;
 VirtualBookshelf.width;
@@ -188,6 +189,8 @@ VirtualBookshelf.saveUser = function(user) {
 }
 
 VirtualBookshelf.clearScene = function() {
+	VirtualBookshelf.library = null;
+
 	while(VirtualBookshelf.scene.children.length > 0) {
 		VirtualBookshelf.scene.remove(VirtualBookshelf.scene.children[0]);
 	}
@@ -202,7 +205,9 @@ VirtualBookshelf.clearScene = function() {
 VirtualBookshelf.loadLibrary = function(libraryId) {
 	VirtualBookshelf.clearScene();
 	VirtualBookshelf.Data.getLibrary(libraryId, function(err, result) {
-		VirtualBookshelf.scene.add(new VirtualBookshelf.Library(result));
+		VirtualBookshelf.library = new VirtualBookshelf.Library(result);
+		VirtualBookshelf.scene.add(VirtualBookshelf.library);
+		VirtualBookshelf.UI.refresh();
 	});
 }
 

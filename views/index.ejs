@@ -49,6 +49,11 @@
 				padding: 15px;
 				display: none;
 			}
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style-type: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -77,6 +82,16 @@
 	    		<br>
 	    		<select id="UI_LIBRARY_SELECT_DROPDOWN"></select>
 	    		<a onclick="VirtualBookshelf.UI.selectLibrary();"><%= __('ui.library.select.link') %></a>
+	    	</div>
+
+	    	<div id="UI_LIBRARY_MENU" class="uiPanel">
+	    		<select id="UI_SECTION_CREATE_DROPDOWN"></select>
+    			<a onclick="VirtualBookshelf.UI.createSection();"><%= __('ui.library.menu.add.section') %></a>
+    			<br>
+	    		<select id="UI_BOOK_CREATE_DROPDOWN"></select>
+    			<a onclick="alert('Not implemented!');"><%= __('ui.library.menu.add.book') %></a>
+    			<br>
+    			<a onclick="alert('Not implemented!');"><%= __('ui.library.menu.exit') %></a>
 	    	</div>
     	</div>
 	</body>

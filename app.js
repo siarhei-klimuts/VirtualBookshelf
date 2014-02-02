@@ -62,8 +62,11 @@ app.get('/libraries', isAuthorized, routes.library.getLibraries);
 app.get('/libraryObjects', isAuthorized, routes.library.getLibraryObjects);
 app.put('/library/:libraryObjectId', isAuthorized, routes.library.putLibrary);
 
-app.get('/sections/:libraryId', isAuthorized, routes.library.sectionsGet);
-app.post('/sections', isAuthorized, routes.library.sectionsPost);
+app.get('/sectionObjects', isAuthorized, routes.section.getSectionObjects);
+app.put('/section/:sectionObjectId/:libraryId', isAuthorized, routes.section.putSection);
+app.get('/sections/:libraryId', isAuthorized, routes.section.sectionsGet);
+app.post('/sections', isAuthorized, routes.section.sectionsPost);
+
 app.get('/shelves/:sectionObjectId', isAuthorized, routes.library.shelves);
 app.get('/books/:sectionId/:shelfId', isAuthorized, routes.library.books);
 

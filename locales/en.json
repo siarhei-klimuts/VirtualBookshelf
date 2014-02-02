@@ -5,5 +5,8 @@
 	"ui.library.create.link": "Create new library.",
 	"ui.library.create.select.label": "Select enviroment model for your library.",
 	"ui.library.select.text": "Select library which you want to go.",
-	"ui.library.select.link": "Go to selected library."
+	"ui.library.select.link": "Go to selected library.",
+	"ui.library.menu.add.section": "Add new section.",
+	"ui.library.menu.add.book": "Add new book.",
+	"ui.library.menu.exit": "Exit."
 }
