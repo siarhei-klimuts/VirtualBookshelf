@@ -48,7 +48,6 @@ app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 // development only
-console.log();
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
@@ -60,15 +59,18 @@ app.get('/auth/google/return', passport.authenticate('google', {failureRedirect:
 app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);
 app.get('/libraries', isAuthorized, routes.library.getLibraries);
 app.get('/libraryObjects', isAuthorized, routes.library.getLibraryObjects);
-app.put('/library/:libraryObjectId', isAuthorized, routes.library.putLibrary);
+app.post('/library/:libraryObjectId', isAuthorized, routes.library.postLibrary);
 
 app.get('/sectionObjects', isAuthorized, routes.section.getSectionObjects);
-app.put('/section/:sectionObjectId/:libraryId', isAuthorized, routes.section.putSection);
-app.get('/sections/:libraryId', isAuthorized, routes.section.sectionsGet);
-app.post('/sections', isAuthorized, routes.section.sectionsPost);
+app.post('/section/:sectionObjectId/:libraryId', isAuthorized, routes.section.postSection);
+app.get('/sections/:libraryId', isAuthorized, routes.section.getSections);
+app.put('/sections', isAuthorized, routes.section.putSections);
 
-app.get('/shelves/:sectionObjectId', isAuthorized, routes.library.shelves);
-app.get('/books/:sectionId/:shelfId', isAuthorized, routes.library.books);
+app.get('/shelves/:sectionObjectId', isAuthorized, routes.library.getShelves);
+
+app.get('/bookObjects', isAuthorized, routes.book.getBookObjects);
+app.post('/book', isAuthorized, routes.book.postBook);
+app.get('/books/:sectionId/:shelfId', isAuthorized, routes.book.getBooks);
 
 models.init(function(err) {
     if(!err) {

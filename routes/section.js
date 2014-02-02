@@ -13,7 +13,7 @@ exports.getSectionObjects = function(req, res) {
 	});
 }
 
-exports.putSection = function(req, res) {	
+exports.postSection = function(req, res) {	
 	models.Section.create({
 		userId: req.user.id, 
 		sectionObjectId: req.params.sectionObjectId, 
@@ -21,15 +21,15 @@ exports.putSection = function(req, res) {
 	}, {raw: true})
 	.success(function(result) {
 		res.json(result);
-		console.log('ROUTE putSection: ', result);
+		console.log('ROUTE postSection: ', result);
 	})
 	.failure(function(error) {
 		res.send(500);
-		console.log('ROUTE putSection error: ', error);
+		console.log('ROUTE postSection error: ', error);
 	});
 }
 
-exports.sectionsGet = function(req, res){
+exports.getSections = function(req, res){
 	models.Section.findAll({
 		where: {libraryId: req.params.libraryId}, 
 		include: [{
@@ -46,7 +46,7 @@ exports.sectionsGet = function(req, res){
 	});
 };
 
-exports.sectionsPost = function(req, res){
+exports.putSections = function(req, res){
 	var sections = req.body;
 	var map = {};
 
@@ -71,23 +71,23 @@ exports.sectionsPost = function(req, res){
 			    chainer.run()
 			    .success(function(result){
 			        res.send(200);
-					console.log('ROUTE: sections POST: OK.');
+					console.log('ROUTE putSections: OK.');
 			    })    
 			    .failure(function(err){
 			        res.send(500);
-					console.log('ROUTE: sections POST save error: ', err);
+					console.log('ROUTE putSections save error: ', err);
 			    });
 			} else {
 				res.send(500);
-				console.log('ROUTE: sections POST search result: ', result);
+				console.log('ROUTE putSections search result: ', result);
 			}
 		})
 		.failure(function(err){
 			res.send(500);
-			console.log('ROUTE: sections POST search eror: ', err);
+			console.log('ROUTE putSections search eror: ', err);
 		});
 	} else {
  		res.send(500);
-		console.log('ROUTE: sections POST req.body: ', sections);
+		console.log('ROUTE putSections req.body: ', sections);
  	}
 };

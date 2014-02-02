@@ -17,7 +17,10 @@ VirtualBookshelf.UI.searchForUIs = function() {
 	scope.librarySelectPanelDropdown = document.getElementById('UI_LIBRARY_SELECT_DROPDOWN');
 	scope.libraryMenuPanel = document.getElementById('UI_LIBRARY_MENU');
 	scope.sectionCreateDropdown = document.getElementById('UI_SECTION_CREATE_DROPDOWN');
-	scope.bookCreateDropdown = document.getElementById('UI_BOOK_CREATE_DROPDOWN');
+	scope.createBookPanel = document.getElementById('UI_CREATE_BOOK');
+	scope.createBookObject = document.getElementById('UI_CREATE_BOOK_OBJECT');
+	scope.createBookAuthor = document.getElementById('UI_CREATE_BOOK_AUTHOR');
+	scope.createBookTitle = document.getElementById('UI_CREATE_BOOK_TITLE');
 }
 
 // library create
@@ -37,7 +40,7 @@ VirtualBookshelf.UI.createLibrary = function() {
 	var libraryObjectId = VirtualBookshelf.UI.getSelectedOption(VirtualBookshelf.UI.libraryCreatePanelSelect);
 
 	if(libraryObjectId) {
-		VirtualBookshelf.Data.putLibrary(libraryObjectId, function(err, result) {
+		VirtualBookshelf.Data.postLibrary(libraryObjectId, function(err, result) {
 			if(err) return;
 
 			if(result) {
@@ -68,6 +71,7 @@ VirtualBookshelf.UI.selectLibrary = function() {
 // library menu
 VirtualBookshelf.UI.showLibraryMenu = function() {
 	VirtualBookshelf.UI.show(VirtualBookshelf.UI.libraryMenuPanel);
+	
 	if(!VirtualBookshelf.UI.sectionCreateDropdown.options.length) {
 		VirtualBookshelf.Data.getSectionObjects(function(err, result) {
 			if(!err) {
@@ -80,9 +84,44 @@ VirtualBookshelf.UI.showLibraryMenu = function() {
 VirtualBookshelf.UI.createSection = function() {
 	var sectionObjectId = VirtualBookshelf.UI.getSelectedOption(VirtualBookshelf.UI.sectionCreateDropdown);
 	if(sectionObjectId && VirtualBookshelf.library && VirtualBookshelf.library.id) {
-		VirtualBookshelf.Data.putSection(sectionObjectId, VirtualBookshelf.library.id, function(err, result) {
+		VirtualBookshelf.Data.postSection(sectionObjectId, VirtualBookshelf.library.id, function(err, result) {
 			if(!err && result) {
 				VirtualBookshelf.loadLibrary(VirtualBookshelf.library.id);
+			}
+		});
+	}
+}
+
+// create book
+
+VirtualBookshelf.UI.showCreateBook = function() {
+	VirtualBookshelf.UI.show(VirtualBookshelf.UI.createBookPanel);
+
+	if(!VirtualBookshelf.UI.createBookObject.options.length) {
+		VirtualBookshelf.Data.getBookObjects(function(err, result) {
+			if(!err) {
+				VirtualBookshelf.UI.fillElement(VirtualBookshelf.UI.createBookObject, result, {value: 'id', text: 'model'});
+			}
+		});
+	}
+}
+
+VirtualBookshelf.UI.hideCreateBook = function() {
+	VirtualBookshelf.UI.hide(VirtualBookshelf.UI.createBookPanel);
+}
+
+VirtualBookshelf.UI.cerateBook = function() {
+	var book = {
+		bookObjectId: VirtualBookshelf.UI.getSelectedOption(VirtualBookshelf.UI.createBookObject),
+		author: VirtualBookshelf.UI.createBookAuthor.value,
+		title: VirtualBookshelf.UI.createBookTitle.value,
+	};
+
+	if(book.bookObjectId) {
+		VirtualBookshelf.Data.postBook(book, function(err, result) {
+			if(!err && result) {
+				//TODO: show created book
+				//VirtualBookshelf.loadLibrary(VirtualBookshelf.library.id);
 			}
 		});
 	}

@@ -24,15 +24,15 @@ exports.getLibraryObjects = function(req, res) {
 	});
 }
 
-exports.putLibrary = function(req, res) {
+exports.postLibrary = function(req, res) {
 	models.Library.create({userId: req.user.id, libraryObjectId: req.params.libraryObjectId}, {raw: true})
 	.success(function(result) {
 		res.json(result);
-		console.log('ROUTE putLibrary: ', result);
+		console.log('ROUTE postLibrary: ', result);
 	})
 	.failure(function(error) {
 		res.send(500);
-		console.log('ROUTE putLibrary error: ', error);
+		console.log('ROUTE postLibrary error: ', error);
 	});
 }
 
@@ -53,22 +53,8 @@ exports.getLibrary = function(req, res) {
 	});
 }
 
-exports.shelves = function(req, res){
+exports.getShelves = function(req, res){
 	models.Shelf.findAll({where: {sectionObjectId: req.params.sectionObjectId}}, {raw: true})
-	.success(function(result) {
-  		res.json(result);
-		console.log('ROUTE: shelves GET: ', result);
-	})
-	.failure(function(err){
-		res.send(500);
-		console.log('ROUTE: shelves: ', err);
-	});
-};
-
-exports.books = function(req, res){
-	models.Book.findAll({
-		where: {sectionId: req.params.sectionId, shelfId: req.params.shelfId}
-	}, {raw: true})
 	.success(function(result) {
   		res.json(result);
 		console.log('ROUTE: shelves GET: ', result);

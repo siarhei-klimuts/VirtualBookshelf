@@ -23,9 +23,8 @@
 				width: 100%;
 				height: 100%;
 			}
-			p {
+			p, label{
 				color: #C5DEBF;
-				text-decoration: blink;
 				font-size: 14pt;
 				margin: 0;
 				margin-bottom: 5px;
@@ -49,10 +48,14 @@
 				padding: 15px;
 				display: none;
 			}
-			ul {
-				margin: 0;
-				padding: 0;
-				list-style-type: none;
+			select, input, option {
+				background: #200707;
+				border-color: #000000;
+				border-style: solid;
+				border-width: 1px;
+				box-sizing: inherit;
+				width: 100%;
+				color: #C5DEBF;
 			}
 		</style>
 	</head>
@@ -88,10 +91,34 @@
 	    		<select id="UI_SECTION_CREATE_DROPDOWN"></select>
     			<a onclick="VirtualBookshelf.UI.createSection();"><%= __('ui.library.menu.add.section') %></a>
     			<br>
-	    		<select id="UI_BOOK_CREATE_DROPDOWN"></select>
-    			<a onclick="alert('Not implemented!');"><%= __('ui.library.menu.add.book') %></a>
+    			<a onclick="VirtualBookshelf.UI.showCreateBook();"><%= __('ui.library.menu.add.book') %></a>
     			<br>
     			<a onclick="alert('Not implemented!');"><%= __('ui.library.menu.exit') %></a>
+	    	</div>
+
+	    	<div id="UI_CREATE_BOOK" class="uiPanel">
+	    		<table>
+	    			<tbody>
+	    				<tr>
+	    					<td><label><%= __('ui.create_book.object') %></label></td>
+	    					<td><select id="UI_CREATE_BOOK_OBJECT"></select></td>
+	    				</tr>
+	    				<tr>
+	    					<td><label><%= __('ui.create_book.author') %></label></td>
+	    					<td><input id="UI_CREATE_BOOK_AUTHOR" type="text"></input></td>
+	    				</tr>
+	    				<tr>
+	    					<td><label><%= __('ui.create_book.title') %></label></td>
+	    					<td><input id="UI_CREATE_BOOK_TITLE" type="text"></input></td>
+	    				</tr>
+	    			</tbody>
+	    			<tfoot>
+	    				<tr>
+	    					<td><a onclick="VirtualBookshelf.UI.hideCreateBook();"><%= __('ui.create_book.cancel') %></a></td>
+	    					<td><a onclick="VirtualBookshelf.UI.cerateBook();"><%= __('ui.create_book.ok') %></a></td>
+	    				</tr>
+	    			</tfoot>
+	    		</table>
 	    	</div>
     	</div>
 	</body>

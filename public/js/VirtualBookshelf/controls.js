@@ -140,7 +140,7 @@ VirtualBookshelf.saveChanged = function() {
 		$.ajax({
 	    	url: "/sections", 
 	    	contentType: "application/json",
-			type: 'POST',
+			type: 'PUT',
 			data: JSON.stringify(sections),
 	    	success: function(data) {
 	    		if(!data) return;

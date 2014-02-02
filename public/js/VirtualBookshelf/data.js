@@ -1,8 +1,8 @@
 VirtualBookshelf.Data = VirtualBookshelf.Data || {};
 
-VirtualBookshelf.Data.ajax = function(urlArray, type, done) {
+VirtualBookshelf.Data.ajax = function(urlArray, type, done, data) {
 	var url = urlArray.join('/');
-	$.ajax({url: url, type: type,
+	$.ajax({url: url, type: type, data: data,
     	success: function(data) {
 			console.log('Data result: ', type, url, data);
     		done(null, data);
@@ -22,14 +22,22 @@ VirtualBookshelf.Data.getLibraryObjects = function(done) {
 	return VirtualBookshelf.Data.ajax(['/libraryObjects'], 'GET', done);
 }
 
-VirtualBookshelf.Data.putLibrary = function(libraryObjectId, done) {
-	return VirtualBookshelf.Data.ajax(['/library', libraryObjectId], 'PUT', done);
+VirtualBookshelf.Data.postLibrary = function(libraryObjectId, done) {
+	return VirtualBookshelf.Data.ajax(['/library', libraryObjectId], 'POST', done);
 }
 
 VirtualBookshelf.Data.getSectionObjects = function(done) {
 	return VirtualBookshelf.Data.ajax(['/sectionObjects'], 'GET', done);
 }
 
-VirtualBookshelf.Data.putSection = function(sectionObjectId, libraryId, done) {
-	return VirtualBookshelf.Data.ajax(['/section', sectionObjectId, libraryId] , 'PUT', done);
+VirtualBookshelf.Data.postSection = function(sectionObjectId, libraryId, done) {
+	return VirtualBookshelf.Data.ajax(['/section', sectionObjectId, libraryId] , 'POST', done);
+}
+
+VirtualBookshelf.Data.getBookObjects = function(done) {
+	return VirtualBookshelf.Data.ajax(['/bookObjects'], 'GET', done);
+}
+
+VirtualBookshelf.Data.postBook = function(book, done) {
+	return VirtualBookshelf.Data.ajax(['/book'], 'POST', done, book);
 }
