@@ -3,14 +3,14 @@ var sequelize = new Sequelize(process.env.DATABASE_URL);
 
 module.exports.sequelize = sequelize;
 
-module.exports.User = sequelize.import(__dirname + '/user');
-module.exports.Library = sequelize.import(__dirname + '/library');
-module.exports.LibraryObject = sequelize.import(__dirname + '/libraryObject');
-module.exports.Section = sequelize.import(__dirname + '/section');
-module.exports.SectionObject = sequelize.import(__dirname + '/sectionObject');
-module.exports.Shelf = sequelize.import(__dirname + '/shelf');
-module.exports.Book = sequelize.import(__dirname + '/book');
-module.exports.BookObject = sequelize.import(__dirname + '/bookObject');
+module.exports.User = sequelize.import(__dirname + '/User');
+module.exports.Library = sequelize.import(__dirname + '/Library');
+module.exports.LibraryObject = sequelize.import(__dirname + '/LibraryObject');
+module.exports.Section = sequelize.import(__dirname + '/Section');
+module.exports.SectionObject = sequelize.import(__dirname + '/SectionObject');
+module.exports.Shelf = sequelize.import(__dirname + '/Shelf');
+module.exports.Book = sequelize.import(__dirname + '/Book');
+module.exports.BookObject = sequelize.import(__dirname + '/BookObject');
 
 // describe relationships
 module.exports.User.hasMany(module.exports.Library);

@@ -7,4 +7,4 @@ module.exports = function(sequelize, DataTypes) {
 		dir_y: DataTypes.FLOAT,
 		dir_z: DataTypes.FLOAT
 	}, {timestamps: false});
-}
+} 

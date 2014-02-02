@@ -6,4 +6,4 @@ module.exports = function(sequelize, DataTypes) {
 		author: DataTypes.STRING,
 		title: DataTypes.STRING
 	}, {timestamps: false});
-}
+} 
