@@ -15,37 +15,48 @@ VirtualBookshelf.initControls = function(domElement) {
 	domElement.addEventListener('keyup', VirtualBookshelf.onKeyUp, false);	
 }
 
+VirtualBookshelf.isCanvasEvent = function(event) {
+	if(event && event.target instanceof HTMLCanvasElement) {
+		event.preventDefault();
+		return true;
+	}
+
+	return false;
+}
+
 VirtualBookshelf.onDblClick = function(event) {
-	event.preventDefault();
+	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+
 	switch(event.which) {
 		case 1: VirtualBookshelf.selectObject(event); break;
 	}   	
 }
 
 VirtualBookshelf.onMouseDown = function(event) {
-	//event.preventDefault();
+	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+
 	switch(event.which) {
 		//case 1: VirtualBookshelf.selectObject(event); break;
 	}   	
 }
 
 VirtualBookshelf.onMouseUp = function(event) {
-	event.preventDefault();
+	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+
 	switch(event.which) {
 		//case 1: VirtualBookshelf.releaseObject(); break;
 	}   	
 }
 
 VirtualBookshelf.onMouseMove = function(event) {
-	event.preventDefault();
+	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+
 	switch(event.which) {
 		//case 1: VirtualBookshelf.moveObject(); break;
 	}   	
 }
 
 VirtualBookshelf.onKeyUp = function(event) {
-	console.log('onKeyUp', event.keyCode);
-	event.preventDefault();
 	switch(event.keyCode) {
 		case 13: VirtualBookshelf.authGoogle(); break;//enter
 		case 37: VirtualBookshelf.moveObject(VirtualBookshelf.MOVE_LEFT); break;//left
@@ -60,6 +71,7 @@ VirtualBookshelf.onKeyUp = function(event) {
 //****
 
 VirtualBookshelf.selectObject = function(event) {
+	if(!VirtualBookshelf.isCanvasEvent(event)) return;
 	var width = event.target.offsetWidth;
 	var height = event.target.offsetHeight;
 	var vector = new THREE.Vector3((event.offsetX / width) * 2 - 1, - (event.offsetY / height) * 2 + 1, 0.5);
@@ -67,25 +79,14 @@ VirtualBookshelf.selectObject = function(event) {
 	var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 	var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children, true);
 
-	if(intersects.length > 0) {
-		var found = null;
-
-		for(var i = intersects.length - 1; i >= 0; i--) {
+	if(intersects.length) {
+		for(var i = 0; i < intersects.length; i++) {
 			var intersected = intersects[i].object;
-
-			while(intersected && !found) {
-				if(intersected instanceof VirtualBookshelf.Section || intersected instanceof VirtualBookshelf.Book) {
-					found = intersected;
-					break;
-				} else {
-					intersected = intersected.parent;
-				}
+			if(intersected instanceof VirtualBookshelf.Section || intersected instanceof VirtualBookshelf.Book) {
+				VirtualBookshelf.selectedObject = intersected;
+				break;
 			}
-
-			if(found) break;
 		}
-
-		VirtualBookshelf.selectedObject = found;
 	}
 }
 

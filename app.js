@@ -70,7 +70,7 @@ app.get('/shelves/:sectionObjectId', isAuthorized, routes.library.getShelves);
 
 app.get('/bookObjects', isAuthorized, routes.book.getBookObjects);
 app.post('/book', isAuthorized, routes.book.postBook);
-app.get('/books/:sectionId/:shelfId', isAuthorized, routes.book.getBooks);
+app.get('/books/:sectionId', isAuthorized, routes.book.getBooks);
 
 models.init(function(err) {
     if(!err) {

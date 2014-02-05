@@ -30,7 +30,10 @@ exports.postBook = function(req, res) {
 
 exports.getBooks = function(req, res){
 	models.Book.findAll({
-		where: {sectionId: req.params.sectionId, shelfId: req.params.shelfId}
+		where: {sectionId: req.params.sectionId}, 
+		include: [{
+			model: models.BookObject
+		}]
 	}, {raw: true})
 	.success(function(result) {
   		res.json(result);
