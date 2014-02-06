@@ -93,9 +93,11 @@
 	    		<select id="UI_SECTION_CREATE_DROPDOWN"></select>
     			<a onclick="VirtualBookshelf.UI.createSection();"><%= __('ui.library.menu.add.section') %></a>
     			<br>
-    			<a onclick="VirtualBookshelf.UI.showCreateBook();"><%= __('ui.library.menu.add.book') %></a>
-    			<br>
     			<a onclick="alert('Not implemented!');"><%= __('ui.library.menu.exit') %></a>
+	    	</div>
+
+	    	<div id="UI_SECTION_MENU" class="uiPanel">
+    			<a onclick="VirtualBookshelf.UI.showCreateBook();"><%= __('ui.library.menu.add.book') %></a>
 	    	</div>
 
 	    	<div id="UI_CREATE_BOOK" class="uiPanel">

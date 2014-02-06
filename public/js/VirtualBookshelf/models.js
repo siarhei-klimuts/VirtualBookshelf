@@ -35,17 +35,23 @@ VirtualBookshelf.Section = function(params, geometry, material) {
 	var scope = this;
 
 	this.id = params.id;
+	this.shelves = params.data.shelves;
 	this.position = new THREE.Vector3(params.pos_x, params.pos_y, params.pos_z);
 	
-	params.data.shelves.forEach(function (shelf) {
-		var shapeGeometry = new THREE.CubeGeometry(shelf.size[0], shelf.size[1], shelf.size[2]);
-		var shapeMaterial = new THREE.MeshLambertMaterial({color: 0x961818, shading: THREE.SmoothShading});
-		shapeMaterial.side = THREE.BackSide;
-		var shape = new THREE.Mesh(shapeGeometry, shapeMaterial);
-		shape.position = new THREE.Vector3(shelf.position[0], shelf.position[1], shelf.position[2]);
-		shape.visible = false;
-		scope.add(shape);
-	});	
+	for(key in this.shelves) {
+		var shelf = this.shelves[key];
+		// var shapeGeometry = new THREE.CubeGeometry(shelf.size[0], shelf.size[1], shelf.size[2]);
+		// var shapeMaterial = new THREE.MeshLambertMaterial({color: 0x961818, shading: THREE.SmoothShading});
+		// shapeMaterial.side = THREE.BackSide;
+		// var shape = new THREE.Mesh(shapeGeometry, shapeMaterial);
+		// shape.position = new THREE.Vector3(shelf.position[0], shelf.position[1], shelf.position[2]);
+		//shape.visible = false;
+
+		var obj = new THREE.Object3D();
+		obj.position = new THREE.Vector3(shelf.position[0], shelf.position[1], shelf.position[2]);
+		shelf.obj = obj; 
+		scope.add(obj);
+	}
 	
 	this.loadBooks();
 }
@@ -53,13 +59,16 @@ VirtualBookshelf.Section.prototype = new THREE.Mesh();
 VirtualBookshelf.Section.prototype.constructor = VirtualBookshelf.Section;
 
 VirtualBookshelf.Section.prototype.loadBooks = function() {	
-	var scope = this;
+	var section = this;
 
-	VirtualBookshelf.Data.getBooks(scope.id, function (err, data) {
+	VirtualBookshelf.Data.getBooks(section.id, function (err, data) {
 		if(!err && data && data.length) {
 			data.forEach(function (book) {
 				VirtualBookshelf.Data.loadBookData(book, function (params, geometry, material) {
-					scope.add(new VirtualBookshelf.Book(params, geometry, material));
+					var shelf = section.shelves[params.shelfId];
+					if(shelf && shelf.obj) {
+						shelf.obj.add(new VirtualBookshelf.Book(params, geometry, material));
+					}
 				});
 			});
 		}

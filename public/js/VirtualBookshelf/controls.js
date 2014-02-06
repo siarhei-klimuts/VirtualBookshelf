@@ -72,12 +72,14 @@ VirtualBookshelf.onKeyUp = function(event) {
 
 VirtualBookshelf.selectObject = function(event) {
 	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+	
 	var width = event.target.offsetWidth;
 	var height = event.target.offsetHeight;
 	var vector = new THREE.Vector3((event.offsetX / width) * 2 - 1, - (event.offsetY / height) * 2 + 1, 0.5);
 	projector.unprojectVector(vector, camera);
 	var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 	var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children, true);
+	VirtualBookshelf.selectedObject = null;
 
 	if(intersects.length) {
 		for(var i = 0; i < intersects.length; i++) {
@@ -88,6 +90,8 @@ VirtualBookshelf.selectObject = function(event) {
 			}
 		}
 	}
+	
+	VirtualBookshelf.UI.refresh();
 }
 
 VirtualBookshelf.releaseObject = function() {
