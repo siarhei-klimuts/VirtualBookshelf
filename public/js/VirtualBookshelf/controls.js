@@ -1,4 +1,4 @@
-VirtualBookshelf.selectedObject = null;
+VirtualBookshelf.selected = {};
 VirtualBookshelf.changedObjects = [];
 
 VirtualBookshelf.MOVE_LEFT = 'left';
@@ -8,11 +8,18 @@ VirtualBookshelf.MOVE_NEAR = 'near';
 
 
 VirtualBookshelf.initControls = function(domElement) {
+	VirtualBookshelf.clearControls();
+
 	domElement.addEventListener('dblclick', VirtualBookshelf.onDblClick, false);
 	domElement.addEventListener('mousedown', VirtualBookshelf.onMouseDown, false);
 	domElement.addEventListener('mouseup', VirtualBookshelf.onMouseUp, false);
 	domElement.addEventListener('mousemove', VirtualBookshelf.onMouseMove, false);	
 	domElement.addEventListener('keyup', VirtualBookshelf.onKeyUp, false);	
+}
+
+VirtualBookshelf.clearControls = function() {
+	VirtualBookshelf.selected = {};
+	VirtualBookshelf.changedObjects = [];	
 }
 
 VirtualBookshelf.isCanvasEvent = function(event) {
@@ -79,13 +86,17 @@ VirtualBookshelf.selectObject = function(event) {
 	projector.unprojectVector(vector, camera);
 	var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 	var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children, true);
-	VirtualBookshelf.selectedObject = null;
+	VirtualBookshelf.releaseObject();
 
 	if(intersects.length) {
 		for(var i = 0; i < intersects.length; i++) {
-			var intersected = intersects[i].object;
-			if(intersected instanceof VirtualBookshelf.Section || intersected instanceof VirtualBookshelf.Book) {
-				VirtualBookshelf.selectedObject = intersected;
+			var intersected = intersects[i];
+			if(intersected.object instanceof VirtualBookshelf.Section || intersected.object instanceof VirtualBookshelf.Book) {
+				VirtualBookshelf.selected = intersected;
+
+	// var shelf = VirtualBookshelf.selected.object.getShelfByPoint(VirtualBookshelf.selected.point);
+	// var freePosition = VirtualBookshelf.selected.object.getGetFreeShelfPosition(shelf, 0.1); 
+	// console.log(freePosition);
 				break;
 			}
 		}
@@ -95,7 +106,7 @@ VirtualBookshelf.selectObject = function(event) {
 }
 
 VirtualBookshelf.releaseObject = function() {
-	VirtualBookshelf.selectedObject = null;
+	VirtualBookshelf.selected = {};
 }
 
 VirtualBookshelf.authGoogle = function() {
@@ -103,7 +114,7 @@ VirtualBookshelf.authGoogle = function() {
 }
 
 VirtualBookshelf.moveObject = function(direction) {
-	var object = VirtualBookshelf.selectedObject;
+	var object = VirtualBookshelf.selected.object;
 	if(object) {
 		switch(direction) {
 			case VirtualBookshelf.MOVE_RIGHT: object.position.x += 1; break;

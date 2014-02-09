@@ -74,6 +74,75 @@ VirtualBookshelf.Section.prototype.loadBooks = function() {
 		}
 	});
 }
+
+VirtualBookshelf.Section.prototype.getShelfByPoint = function(point) {
+	if(!point || !this.shelves) return null;
+	this.worldToLocal(point);
+	
+	var minDistance;
+	var closest;
+	for(key in this.shelves) {
+		var shelf = this.shelves[key];
+		var distance = point.distanceTo(new THREE.Vector3(shelf.position[0], shelf.position[1], shelf.position[2]));
+		if(!minDistance || distance < minDistance) {
+			minDistance = distance;
+			closest = shelf;
+		}
+	}
+
+	return closest;
+}
+
+VirtualBookshelf.Section.prototype.getGetFreeShelfPosition = function(shelf, bookSize) {
+	if(!shelf) return null;
+	var sortedBooks = [];
+	var result;
+
+	sortedBooks.push({
+		left: -shelf.size[0],
+		right: -shelf.size[0] * 0.5
+	});
+	sortedBooks.push({
+		left: shelf.size[0] * 0.5,
+		right: shelf.size[0]
+	});
+
+	shelf.obj.children.forEach(function (book) {
+		if(book instanceof VirtualBookshelf.Book) {
+			var inserted = false;
+			var space = {
+				left: book.position.x + book.geometry.boundingBox.min.x,
+				right: book.position.x + book.geometry.boundingBox.max.x
+			};
+
+			for (var i = 0; i < sortedBooks.length; i++) {
+				var sortedBook = sortedBooks[i];
+				if(book.position.x < sortedBook.left) {
+					sortedBooks.splice(i, 0, space);
+					inserted = true;
+					break;
+				}
+			}
+
+			if(!inserted) {
+				sortedBooks.push(space);
+			}
+		}
+	});
+
+	for (var i = 0; i < (sortedBooks.length - 1); i++) {
+		var left = sortedBooks[i].right;
+		var right = sortedBooks[i + 1].left;
+		var distance = right - left;
+		
+		if(distance > bookSize) {
+			result = new THREE.Vector3(left + bookSize * 0.5, 0, 0);		
+			break;
+		}
+	};
+
+	return result;
+}
 //***
 
 VirtualBookshelf.Book = function(params, geometry, material) {

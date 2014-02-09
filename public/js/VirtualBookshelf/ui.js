@@ -117,27 +117,32 @@ VirtualBookshelf.UI.hideCreateBook = function() {
 }
 
 VirtualBookshelf.UI.cerateBook = function() {
-	if(!(VirtualBookshelf.selectedObject instanceof VirtualBookshelf.Section)) return;
-	var shelfId = 5 //TODO: find free space
-	var shelf = VirtualBookshelf.selectedObject.shelves[shelfId];
-	var book = {
-		sectionId: VirtualBookshelf.selectedObject.id,
-		shelfId: shelfId,
-		pos_x: 0,
-		pos_y: 0,
-		pos_z: 0,
-		bookObjectId: VirtualBookshelf.UI.getSelectedOption(VirtualBookshelf.UI.createBookObject),
-		author: VirtualBookshelf.UI.createBookAuthor.value,
-		title: VirtualBookshelf.UI.createBookTitle.value
-	};
+	if(!(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Section)) return;
+	var shelf = VirtualBookshelf.selected.object.getShelfByPoint(VirtualBookshelf.selected.point);
+	if(!shelf) return;
+	var freePosition = VirtualBookshelf.selected.object.getGetFreeShelfPosition(shelf, 0.1); 
+	if(freePosition) {
+		var book = {
+			sectionId: VirtualBookshelf.selected.object.id,
+			shelfId: shelf.id,
+			pos_x: freePosition.x,
+			pos_y: freePosition.y,
+			pos_z: freePosition.z,
+			bookObjectId: VirtualBookshelf.UI.getSelectedOption(VirtualBookshelf.UI.createBookObject),
+			author: VirtualBookshelf.UI.createBookAuthor.value,
+			title: VirtualBookshelf.UI.createBookTitle.value
+		};
 
-	if(book.bookObjectId && book.sectionId) {
-		VirtualBookshelf.Data.postBook(book, function(err, result) {
-			if(!err && result) {
-				//TODO: show created book without refresh
-				VirtualBookshelf.loadLibrary(VirtualBookshelf.library.id);
-			}
-		});
+		if(book.bookObjectId && book.sectionId) {
+			VirtualBookshelf.Data.postBook(book, function(err, result) {
+				if(!err && result) {
+					//TODO: show created book without refresh
+					VirtualBookshelf.loadLibrary(VirtualBookshelf.library.id);
+				}
+			});
+		}
+	} else {
+		alert('There are no free space, select another shelf.');
 	}
 }
 
@@ -213,7 +218,7 @@ VirtualBookshelf.UI.refresh = function() {
 		if(VirtualBookshelf.library) {
 			VirtualBookshelf.UI.showLibraryMenu();
 		}
-		if(VirtualBookshelf.selectedObject instanceof VirtualBookshelf.Section) {
+		if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Section) {
 			scope.showSectionMenu();
 		}
 	} else {

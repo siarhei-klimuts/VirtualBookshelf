@@ -17,8 +17,10 @@ VirtualBookshelf.start = function() {
 	var projector;
 
 	VirtualBookshelf.init();
-	VirtualBookshelf.startRenderLoop();
+	VirtualBookshelf.initControls(document);
 	VirtualBookshelf.UI.init();
+
+	VirtualBookshelf.startRenderLoop();
 }
 
 VirtualBookshelf.init = function() {
@@ -42,7 +44,6 @@ VirtualBookshelf.init = function() {
 
 	VirtualBookshelf.scene = new THREE.Scene();
 
-	VirtualBookshelf.initControls(document);
 }
 
 VirtualBookshelf.initControl = function(camera) {
@@ -67,6 +68,7 @@ VirtualBookshelf.saveUser = function(user) {
 }
 
 VirtualBookshelf.clearScene = function() {
+	VirtualBookshelf.clearControls();
 	VirtualBookshelf.library = null;
 
 	while(VirtualBookshelf.scene.children.length > 0) {

@@ -58,6 +58,8 @@ VirtualBookshelf.Data.loadBookData = function(params, done) {
 	    imgLoader.load(path + 'map.jpg', function (image) {
 			var map = VirtualBookshelf.Editor.getUpdatedTexture(params, image);
 		    var material = new THREE.MeshPhongMaterial({map: map});
+    		geometry.computeBoundingBox();
+    		
 			done(params, geometry, material);
 	    });
 	});
