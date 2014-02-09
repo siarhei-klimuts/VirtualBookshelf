@@ -4,63 +4,38 @@ VirtualBookshelf.loader = new THREE.OBJMTLLoader();
 VirtualBookshelf.library;
 VirtualBookshelf.user;
 VirtualBookshelf.scene;
-VirtualBookshelf.width;
-VirtualBookshelf.height;
 
 VirtualBookshelf.start = function() {
 	if(!Detector.webgl) {
 		Detector.addGetWebGLMessage();
 	}
 
-	var camera;
-	var renderer;
-	var projector;
+	var width = window.innerWidth;
+	var height = window.innerHeight;
 
-	VirtualBookshelf.init();
-	VirtualBookshelf.initControls(document);
+	VirtualBookshelf.init(width, height);
+	VirtualBookshelf.Camera.init(width, height);
+	VirtualBookshelf.Controls.init(VirtualBookshelf.container);
 	VirtualBookshelf.UI.init();
 
 	VirtualBookshelf.startRenderLoop();
 }
 
-VirtualBookshelf.init = function() {
-	var width = window.innerWidth;
-	var height = window.innerHeight;
-	VirtualBookshelf.width = width;
-	VirtualBookshelf.height = height;
-
-	renderer = new THREE.WebGLRenderer();
-	renderer.setSize(width, height);
+VirtualBookshelf.init = function(width, height) {
+	VirtualBookshelf.renderer = new THREE.WebGLRenderer();
+	VirtualBookshelf.renderer.setSize(width, height);
 
 	VirtualBookshelf.container = document.getElementById('LIBRARY');
-	VirtualBookshelf.container.appendChild(renderer.domElement);
-
-	camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-	camera.position = new THREE.Vector3(0,3,2);
-
-	VirtualBookshelf.controls = VirtualBookshelf.initControl(camera);
-
-	projector = new THREE.Projector();
+	VirtualBookshelf.container.appendChild(VirtualBookshelf.renderer.domElement);
 
 	VirtualBookshelf.scene = new THREE.Scene();
-
-}
-
-VirtualBookshelf.initControl = function(camera) {
-	var controls = new THREE.OrbitControls(camera);
-	controls.addEventListener('change', VirtualBookshelf.render);
-
-	return controls;	
+	VirtualBookshelf.scene.fog = new THREE.Fog(0x000000, 4, 7);
 }
 
 VirtualBookshelf.startRenderLoop = function() {
 	requestAnimationFrame(VirtualBookshelf.startRenderLoop);
-	VirtualBookshelf.controls.update();
-	VirtualBookshelf.render();
-}
-
-VirtualBookshelf.render = function() {
-	renderer.render(VirtualBookshelf.scene, camera);
+	VirtualBookshelf.Controls.update();
+	VirtualBookshelf.renderer.render(VirtualBookshelf.scene, VirtualBookshelf.camera);
 }
 
 VirtualBookshelf.saveUser = function(user) {
@@ -68,19 +43,19 @@ VirtualBookshelf.saveUser = function(user) {
 }
 
 VirtualBookshelf.clearScene = function() {
-	VirtualBookshelf.clearControls();
+	VirtualBookshelf.Controls.clear();
 	VirtualBookshelf.library = null;
 
 	while(VirtualBookshelf.scene.children.length > 0) {
+		if(VirtualBookshelf.scene.children[0].dispose) {
+			console.log('dis');
+			VirtualBookshelf.scene.children[0].dispose();
+		}
 		VirtualBookshelf.scene.remove(VirtualBookshelf.scene.children[0]);
+
 	}
 
-	var directionalLight1 = new THREE.PointLight( 0x999999, 1, 15);
-	var directionalLight2 = new THREE.PointLight( 0x999999, 1, 15);
-	directionalLight1.position.set(4, 4, 4);
-	directionalLight2.position.set(-4, 4, -4);
-	VirtualBookshelf.scene.add(directionalLight1);
-	VirtualBookshelf.scene.add(directionalLight2);
+	VirtualBookshelf.scene.add(VirtualBookshelf.camera);
 }
 
 VirtualBookshelf.loadLibrary = function(libraryId) {

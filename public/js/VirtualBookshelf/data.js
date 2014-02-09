@@ -73,7 +73,7 @@ VirtualBookshelf.Data.loadSection = function(params, done) {
 	    imgLoader.load(path + 'texture.jpg', function (image) {
 			var texture = new THREE.Texture(image);
 			texture.needsUpdate = true;
-		    var material = new THREE.MeshLambertMaterial({map: texture});
+		    var material = new THREE.MeshPhongMaterial({map: texture});
 			VirtualBookshelf.Data.getData(path + 'data.json', function (err, data) {
 				params.data = data;
 				done(params, geometry, material);

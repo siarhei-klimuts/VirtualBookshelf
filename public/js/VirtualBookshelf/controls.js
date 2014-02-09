@@ -1,3 +1,5 @@
+VirtualBookshelf.Controls = VirtualBookshelf.Controls || {};
+VirtualBookshelf.Controls.mouse = {};
 VirtualBookshelf.selected = {};
 VirtualBookshelf.changedObjects = [];
 
@@ -7,63 +9,99 @@ VirtualBookshelf.MOVE_FAR = 'far';
 VirtualBookshelf.MOVE_NEAR = 'near';
 
 
-VirtualBookshelf.initControls = function(domElement) {
-	VirtualBookshelf.clearControls();
-
-	domElement.addEventListener('dblclick', VirtualBookshelf.onDblClick, false);
-	domElement.addEventListener('mousedown', VirtualBookshelf.onMouseDown, false);
-	domElement.addEventListener('mouseup', VirtualBookshelf.onMouseUp, false);
-	domElement.addEventListener('mousemove', VirtualBookshelf.onMouseMove, false);	
-	domElement.addEventListener('keyup', VirtualBookshelf.onKeyUp, false);	
+VirtualBookshelf.Controls.init = function(domElement) {
+	VirtualBookshelf.Controls.clear();
+	VirtualBookshelf.Controls.initMouse();
+	VirtualBookshelf.Controls.initListeners(domElement);
 }
 
-VirtualBookshelf.clearControls = function() {
+VirtualBookshelf.Controls.initMouse = function() {
+	VirtualBookshelf.Controls.mouse = {};
+}
+
+VirtualBookshelf.Controls.initListeners = function(domElement) {
+	domElement.addEventListener('click', VirtualBookshelf.Controls.onClick, false);
+	domElement.addEventListener('dblclick', VirtualBookshelf.Controls.onDblClick, false);
+	domElement.addEventListener('mousedown', VirtualBookshelf.Controls.onMouseDown, false);
+	domElement.addEventListener('mouseup', VirtualBookshelf.Controls.onMouseUp, false);
+	domElement.addEventListener('mousemove', VirtualBookshelf.Controls.onMouseMove, false);	
+	domElement.addEventListener('keyup', VirtualBookshelf.Controls.onKeyUp, false);
+	domElement.oncontextmenu = function() {return false;}
+}
+
+VirtualBookshelf.Controls.clear = function() {
 	VirtualBookshelf.selected = {};
 	VirtualBookshelf.changedObjects = [];	
 }
 
-VirtualBookshelf.isCanvasEvent = function(event) {
+VirtualBookshelf.Controls.isCanvasEvent = function(event) {
 	if(event && event.target instanceof HTMLCanvasElement) {
 		event.preventDefault();
 		return true;
+	} else {
+		return false;
 	}
-
-	return false;
 }
 
-VirtualBookshelf.onDblClick = function(event) {
-	if(!VirtualBookshelf.isCanvasEvent(event)) return;
-
-	switch(event.which) {
-		case 1: VirtualBookshelf.selectObject(event); break;
-	}   	
+VirtualBookshelf.Controls.update = function() {
+	var mouse = VirtualBookshelf.Controls.mouse; 
+	if(mouse[3]) {
+		VirtualBookshelf.Camera.rotate(mouse.dX, mouse.dY);
+		
+		if(mouse[1]) {
+			VirtualBookshelf.Camera.goForward();
+		}
+	}
 }
 
-VirtualBookshelf.onMouseDown = function(event) {
-	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+// Events
+
+VirtualBookshelf.Controls.onClick = function(event) {
+	if(!VirtualBookshelf.Controls.isCanvasEvent(event)) return;
 
 	switch(event.which) {
 		//case 1: VirtualBookshelf.selectObject(event); break;
 	}   	
 }
 
-VirtualBookshelf.onMouseUp = function(event) {
-	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+VirtualBookshelf.Controls.onDblClick = function(event) {
+	if(!VirtualBookshelf.Controls.isCanvasEvent(event)) return;
 
 	switch(event.which) {
-		//case 1: VirtualBookshelf.releaseObject(); break;
+		case 1: VirtualBookshelf.selectObject(event); break;
 	}   	
 }
 
-VirtualBookshelf.onMouseMove = function(event) {
-	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+VirtualBookshelf.Controls.onMouseDown = function(event) {
+	if(VirtualBookshelf.Controls.isCanvasEvent(event)) {
+		var mouse = VirtualBookshelf.Controls.mouse; 
 
-	switch(event.which) {
-		//case 1: VirtualBookshelf.moveObject(); break;
-	}   	
+		mouse[event.which] = true;
+		mouse.x = event.offsetX;
+		mouse.y = event.offsetY;
+		mouse.dX = event.target.offsetWidth * 0.5 - event.offsetX;
+		mouse.dY = event.target.offsetHeight * 0.5 - event.offsetY;
+	}
 }
 
-VirtualBookshelf.onKeyUp = function(event) {
+VirtualBookshelf.Controls.onMouseUp = function(event) {
+	if(VirtualBookshelf.Controls.isCanvasEvent(event)) {
+		VirtualBookshelf.Controls.mouse[event.which] = false;
+	}
+}
+
+VirtualBookshelf.Controls.onMouseMove = function(event) {
+	if(VirtualBookshelf.Controls.isCanvasEvent(event)) {
+		var mouse = VirtualBookshelf.Controls.mouse; 
+		 if(mouse[3]) {
+
+			mouse.dX = event.target.offsetWidth * 0.5 - event.offsetX;
+			mouse.dY = event.target.offsetHeight * 0.5 - event.offsetY;
+		 }
+	}
+}
+
+VirtualBookshelf.Controls.onKeyUp = function(event) {
 	switch(event.keyCode) {
 		case 13: VirtualBookshelf.authGoogle(); break;//enter
 		case 37: VirtualBookshelf.moveObject(VirtualBookshelf.MOVE_LEFT); break;//left
@@ -78,13 +116,15 @@ VirtualBookshelf.onKeyUp = function(event) {
 //****
 
 VirtualBookshelf.selectObject = function(event) {
-	if(!VirtualBookshelf.isCanvasEvent(event)) return;
+	if(!VirtualBookshelf.Controls.isCanvasEvent(event)) return;
 	
 	var width = event.target.offsetWidth;
 	var height = event.target.offsetHeight;
 	var vector = new THREE.Vector3((event.offsetX / width) * 2 - 1, - (event.offsetY / height) * 2 + 1, 0.5);
-	projector.unprojectVector(vector, camera);
-	var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+	var projector = new THREE.Projector();
+	projector.unprojectVector(vector, VirtualBookshelf.camera);
+
+	var raycaster = new THREE.Raycaster(VirtualBookshelf.camera.position, vector.sub(VirtualBookshelf.camera.position).normalize());
 	var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children, true);
 	VirtualBookshelf.releaseObject();
 
