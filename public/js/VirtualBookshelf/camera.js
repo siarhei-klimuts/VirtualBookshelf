@@ -3,11 +3,11 @@ VirtualBookshelf.Camera.HEIGTH = 1.5;
 
 VirtualBookshelf.Camera.init = function(width, height) {
 	VirtualBookshelf.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-	VirtualBookshelf.camera.position = new THREE.Vector3(0, VirtualBookshelf.Camera.HEIGTH, 2);
+	VirtualBookshelf.camera.position = new THREE.Vector3(0, VirtualBookshelf.Camera.HEIGTH, 0);
 	VirtualBookshelf.camera.rotation.order = 'YXZ';
 
 	var candle = new THREE.PointLight(0x665555, 1, 5);
-	candle.position.set(0.2, 0, -0.2);
+	candle.position.set(0.1, 0, -0.1);
 	VirtualBookshelf.camera.add(candle);
 }
 

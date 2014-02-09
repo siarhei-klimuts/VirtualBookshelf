@@ -13,5 +13,7 @@
 	"ui.create_book.author": "Author",
 	"ui.create_book.title": "Title",
 	"ui.create_book.cancel": "Cancel",
-	"ui.create_book.ok": "Ok"
+	"ui.create_book.ok": "Ok",
+	"ui.save_dialog.cancel": "Cancel",
+	"ui.save_dialog.save": "Save"
 }

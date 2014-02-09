@@ -2,13 +2,13 @@ VirtualBookshelf.Data = VirtualBookshelf.Data || {};
 
 VirtualBookshelf.Data.ajax = function(urlArray, type, done, data) {
 	var url = urlArray.join('/');
-	$.ajax({url: url, type: type, data: data,
+	$.ajax({url: url, type: type, data: data, contentType: "application/json",
     	success: function(data) {
 			console.log('Data result: ', type, url, data);
     		done(null, data);
     	},
     	error: function(error) {
-			console.warn('Data error: ', type, url, error);
+			console.error('Data error: ', type, url, error);
     		done(error, null);
     	}
     });
@@ -84,4 +84,8 @@ VirtualBookshelf.Data.loadSection = function(params, done) {
 
 VirtualBookshelf.Data.getData = function(url, done) {
 	VirtualBookshelf.Data.ajax([url], 'GET', done);
+}
+
+VirtualBookshelf.Data.putBooks = function(books, done) {
+	VirtualBookshelf.Data.ajax(['/books'] , 'PUT', done, books);
 }

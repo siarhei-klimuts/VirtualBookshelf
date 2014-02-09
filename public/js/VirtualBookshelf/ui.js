@@ -22,6 +22,7 @@ VirtualBookshelf.UI.searchForUIs = function() {
 	scope.createBookAuthor = document.getElementById('UI_CREATE_BOOK_AUTHOR');
 	scope.createBookTitle = document.getElementById('UI_CREATE_BOOK_TITLE');
 	scope.sectionMenu = document.getElementById('UI_SECTION_MENU');
+	scope.saveDialog = document.getElementById('UI_SAVE_DIALOG');
 }
 
 // library create
@@ -146,6 +147,12 @@ VirtualBookshelf.UI.cerateBook = function() {
 	}
 }
 
+// save dialog
+
+VirtualBookshelf.UI.showSaveDialog = function() {
+	VirtualBookshelf.UI.show(VirtualBookshelf.UI.saveDialog);
+}
+
 // utils
 
 VirtualBookshelf.UI.getSelectedOption = function(element) {
@@ -207,6 +214,7 @@ VirtualBookshelf.UI.hideAll = function() {
 	scope.hide(scope.createBookAuthor);
 	scope.hide(scope.createBookTitle);
 	scope.hide(scope.sectionMenu);
+	scope.hide(scope.saveDialog);
 }
 
 VirtualBookshelf.UI.refresh = function() {
@@ -220,6 +228,9 @@ VirtualBookshelf.UI.refresh = function() {
 		}
 		if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Section) {
 			scope.showSectionMenu();
+		}
+		if(Object.getOwnPropertyNames(VirtualBookshelf.Controls.changedObjects).length) {
+			scope.showSaveDialog();
 		}
 	} else {
 		scope.show(scope.loginPanel);

@@ -71,6 +71,7 @@ app.get('/shelves/:sectionObjectId', isAuthorized, routes.library.getShelves);
 app.get('/bookObjects', isAuthorized, routes.book.getBookObjects);
 app.post('/book', isAuthorized, routes.book.postBook);
 app.get('/books/:sectionId', isAuthorized, routes.book.getBooks);
+app.put('/books', isAuthorized, routes.book.putBooks);
 
 models.init(function(err) {
     if(!err) {

@@ -147,9 +147,38 @@ VirtualBookshelf.Section.prototype.getGetFreeShelfPosition = function(shelf, boo
 
 VirtualBookshelf.Book = function(params, geometry, material) {
 	THREE.Mesh.call(this, geometry, material);
-	var scope = this;
-
+	this.id = params.id;
 	this.position = new THREE.Vector3(params.pos_x, params.pos_y, params.pos_z);
 }
 VirtualBookshelf.Book.prototype = new THREE.Mesh();
 VirtualBookshelf.Book.prototype.constructor = VirtualBookshelf.Book;
+
+VirtualBookshelf.Book.prototype.move = function(x, y) {
+	var collision = false;
+	var newPosition = this.position.x + (x * -0.002);
+	var shelf = this.parent.parent.getShelfByPoint(this.parent.parent.localToWorld(this.position));//TODO: nedded Shelf object
+	var	thisSize = this.geometry.boundingBox;
+
+	if(newPosition + thisSize.min.x <= shelf.size[0] * -0.5
+		|| newPosition + thisSize.max.x >= shelf.size[0] * 0.5
+	) {
+		collision = true
+	} else {
+		for(var i = 0; i < this.parent.children.length; i++) {
+			var book = this.parent.children[i];
+			var bookSize = book.geometry.boundingBox;
+			if(book === this) continue;
+			if((newPosition <= book.position.x && thisSize.max.x + newPosition >= bookSize.min.x + book.position.x)
+				|| (newPosition >= book.position.x && thisSize.min.x + newPosition <= bookSize.max.x + book.position.x)
+			) {
+				collision = true;
+				break;
+			}
+		};
+	}
+	
+	if(!collision) {
+		this.position.x += (x * -0.002);
+		this.changed = true;
+	}
+}
