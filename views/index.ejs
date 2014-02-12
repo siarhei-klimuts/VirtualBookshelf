@@ -2,8 +2,7 @@
 <html>
 	<head>
 		<title>Virtual Bookshelf</title>
-
-		<script src="/js/jquery-1.11.0.min.js"></script>		
+	
 		<script src="/js/three.js/three.min.js"></script>
 		<script src="/js/three.js/Detector.js"></script>
 		<script src="/js/three.js/MTLLoader.js"></script>
@@ -126,8 +125,14 @@
 	    	</div>
 
 	    	<div id="UI_SAVE_DIALOG" class="uiPanel">
-    			<a onclick="alert('Not implemented!');"><%= __('ui.save_dialog.cancel') %></a>
-    			<a onclick="VirtualBookshelf.Controls.saveChanged();"><%= __('ui.save_dialog.save') %></a>
+	    		<table>
+	    			<tbody>
+	    				<tr>
+	    					<td><a onclick="alert('Not implemented!');"><%= __('ui.save_dialog.cancel') %></a></td>
+	    					<td><a onclick="VirtualBookshelf.Controls.saveChanged();"><%= __('ui.save_dialog.save') %></a></td>
+	    				</tr>
+	    			</tbody>
+	    		</table>
 	    	</div>
     	</div>
 	</body>

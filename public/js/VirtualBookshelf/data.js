@@ -2,16 +2,22 @@ VirtualBookshelf.Data = VirtualBookshelf.Data || {};
 
 VirtualBookshelf.Data.ajax = function(urlArray, type, done, data) {
 	var url = urlArray.join('/');
-	$.ajax({url: url, type: type, data: data, contentType: "application/json",
-    	success: function(data) {
+	var request = new XMLHttpRequest;
+	request.open(type, url, true);
+	request.setRequestHeader('Content-Type', 'application/json');
+
+	request.onload = function() {
+	  	if(this.status >= 200 && this.status < 400) {
+	    	data = JSON.parse(request.responseText);
 			console.log('Data result: ', type, url, data);
-    		done(null, data);
-    	},
-    	error: function(error) {
-			console.error('Data error: ', type, url, error);
-    		done(error, null);
-    	}
-    });
+			done(null, data);
+		} else {
+			console.error('Data error: ', type, url, data);
+			done(data, null);
+		}
+	};
+
+	request.send(JSON.stringify(data));
 }
 
 VirtualBookshelf.Data.getLibrary = function(libraryId, done) {
@@ -32,6 +38,10 @@ VirtualBookshelf.Data.postLibrary = function(libraryObjectId, done) {
 
 VirtualBookshelf.Data.getSectionObjects = function(done) {
 	VirtualBookshelf.Data.ajax(['/sectionObjects'], 'GET', done);
+}
+
+VirtualBookshelf.Data.getSections = function(libraryId, done) {
+	VirtualBookshelf.Data.ajax(['/sections', libraryId], 'GET', done);
 }
 
 VirtualBookshelf.Data.postSection = function(sectionObjectId, libraryId, done) {

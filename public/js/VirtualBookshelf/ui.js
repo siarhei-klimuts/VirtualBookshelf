@@ -135,7 +135,7 @@ VirtualBookshelf.UI.cerateBook = function() {
 		};
 
 		if(book.bookObjectId && book.sectionId) {
-			VirtualBookshelf.Data.postBook(JSON.stringify(book), function(err, result) {
+			VirtualBookshelf.Data.postBook(book, function(err, result) {
 				if(!err && result) {
 					//TODO: show created book without refresh
 					VirtualBookshelf.loadLibrary(VirtualBookshelf.library.id);

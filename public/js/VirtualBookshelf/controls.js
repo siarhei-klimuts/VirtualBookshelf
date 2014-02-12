@@ -107,9 +107,7 @@ VirtualBookshelf.Controls.onMouseMove = function(event) {
 			mouse.dY = mouse.y - event.offsetY;
 			mouse.x = event.offsetX;
 			mouse.y = event.offsetY;
-
-			VirtualBookshelf.Controls.moveObject(mouse.dX);
-		VirtualBookshelf.Camera.rotate(mouse.dX, mouse.dY);
+			VirtualBookshelf.Controls.moveObject(mouse.x, mouse.y);
 		 }
 	}
 }
@@ -117,12 +115,12 @@ VirtualBookshelf.Controls.onMouseMove = function(event) {
 VirtualBookshelf.Controls.onKeyUp = function(event) {
 	switch(event.keyCode) {
 		//case 13: VirtualBookshelf.Controls.authGoogle(); break;//enter
-		case 37: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_LEFT); break;//left
-		case 38: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_FAR); break;//up
-		case 39: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_RIGHT); break;//right
-		case 40: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_NEAR); break;//down
-		case 109: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_NEAR); break;//-
-		case 107: VirtualBookshelf.saveChanged(); break;//+
+		// case 37: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_LEFT); break;//left
+		// case 38: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_FAR); break;//up
+		// case 39: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_RIGHT); break;//right
+		// case 40: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_NEAR); break;//down
+		// case 109: VirtualBookshelf.Controls.moveObject(VirtualBookshelf.MOVE_NEAR); break;//-
+		// case 107: VirtualBookshelf.saveChanged(); break;//+
 	}   		
 }
 
@@ -130,14 +128,10 @@ VirtualBookshelf.Controls.onKeyUp = function(event) {
 
 VirtualBookshelf.Controls.selectObject = function(event) {
 	if(!VirtualBookshelf.Controls.isCanvasEvent(event)) return;
-	var width = event.target.offsetWidth;
-	var height = event.target.offsetHeight;
-	var vector = new THREE.Vector3((event.offsetX / width) * 2 - 1, - (event.offsetY / height) * 2 + 1, 0.5);
-	var projector = new THREE.Projector();
-	projector.unprojectVector(vector, VirtualBookshelf.camera);
-
-	var raycaster = new THREE.Raycaster(VirtualBookshelf.camera.position, vector.sub(VirtualBookshelf.camera.position).normalize());
+	var vector = VirtualBookshelf.Controls.getMouseVector(event.offsetX, event.offsetY);
+	var raycaster = new THREE.Raycaster(VirtualBookshelf.camera.position, vector);
 	var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children, true);
+
 	VirtualBookshelf.Controls.releaseObject();
 
 	if(intersects.length) {
@@ -158,21 +152,29 @@ VirtualBookshelf.Controls.releaseObject = function() {
 	VirtualBookshelf.UI.refresh();
 }
 
-VirtualBookshelf.authGoogle = function() {
-	window.location.href = '/auth/google/';
+VirtualBookshelf.Controls.getMouseVector = function(x, y) {
+	var width = event.target.offsetWidth;
+	var height = event.target.offsetHeight;
+	var projector = new THREE.Projector();
+	var vector = new THREE.Vector3((x / width) * 2 - 1, - (y / height) * 2 + 1, 0.5);
+	projector.unprojectVector(vector, VirtualBookshelf.camera);
+	return vector.sub(VirtualBookshelf.camera.position).normalize();
 }
 
-VirtualBookshelf.Controls.moveObject = function(direction) {
+VirtualBookshelf.Controls.moveObject = function(x, y) {
 	var object = VirtualBookshelf.selected.object;
-	if(object instanceof VirtualBookshelf.Section) {
-		switch(direction) {
-			case VirtualBookshelf.MOVE_RIGHT: object.position.x += 1; break;
-			case VirtualBookshelf.MOVE_LEFT: object.position.x += -1; break;
-			case VirtualBookshelf.MOVE_FAR: object.position.z += -1; break;
-			case VirtualBookshelf.MOVE_NEAR: object.position.z += 1; break;
-		}
-	} else if(object instanceof VirtualBookshelf.Book) {
-		object.move(direction);
+	if(object instanceof VirtualBookshelf.Section || object instanceof VirtualBookshelf.Book) {
+		var mouseVector = VirtualBookshelf.Controls.getMouseVector(x, y);
+		var cameraPosition = VirtualBookshelf.camera.position;
+		var planePoint = VirtualBookshelf.selected.point;
+		var planeNormal = new THREE.Vector3(0, 1, 0);
+		var d = -(planeNormal.x * planePoint.x + planeNormal.y * planePoint.y + planeNormal.z * planePoint.z);
+		var a = -(planeNormal.dot(cameraPosition) + d);
+		var b = (planeNormal.dot(mouseVector));
+		var c = a / b;
+		var intersectionPoint = new THREE.Vector3(cameraPosition.x + mouseVector.x * c, cameraPosition.y + mouseVector.y * c, cameraPosition.z + mouseVector.z * c);
+		object.parent.worldToLocal(intersectionPoint);
+		object.move(intersectionPoint);
 	}
 }
 
@@ -198,7 +200,7 @@ VirtualBookshelf.Controls.saveChanged = function() {
 	}
 
 	if(books && books.length) {
-		VirtualBookshelf.Data.putBooks(JSON.stringify(books), function (err, data) {
+		VirtualBookshelf.Data.putBooks(books, function (err, data) {
 			if(!err && data) {
 				data.forEach(function (book) {
 					delete VirtualBookshelf.Controls.changedObjects[book.id];
@@ -212,17 +214,17 @@ VirtualBookshelf.Controls.saveChanged = function() {
 
 	if(sections && sections.length) {
 		console.log('Save sections', sections);
-		$.ajax({
-	    	url: "/sections", 
-	    	contentType: "application/json",
-			type: 'PUT',
-			data: JSON.stringify(sections),
-	    	success: function(data) {
-	    		if(!data) return;
-				console.log('Sections saved', data);
-	    		VirtualBookshelf.Controls.changedObjects = {};
-	    	}
-	    });	
+		// $.ajax({
+	 //    	url: "/sections", 
+	 //    	contentType: "application/json",
+		// 	type: 'PUT',
+		// 	data: JSON.stringify(sections),
+	 //    	success: function(data) {
+	 //    		if(!data) return;
+		// 		console.log('Sections saved', data);
+	 //    		VirtualBookshelf.Controls.changedObjects = {};
+	 //    	}
+	 //    });	
 	}
 }
 

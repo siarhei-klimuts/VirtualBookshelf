@@ -6,9 +6,9 @@ VirtualBookshelf.user;
 VirtualBookshelf.scene;
 
 VirtualBookshelf.start = function() {
-	if(!Detector.webgl) {
-		Detector.addGetWebGLMessage();
-	}
+	// if(!Detector.webgl) {
+	// 	// Detector.addGetWebGLMessage();
+	// }
 
 	var width = window.innerWidth;
 	var height = window.innerHeight;
@@ -67,7 +67,7 @@ VirtualBookshelf.loadLibrary = function(libraryId) {
 	});
 }
 
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function () {
 	VirtualBookshelf.start();
 
 	VirtualBookshelf.Data.getLibraries(function(err, result) {
