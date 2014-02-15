@@ -1,14 +1,14 @@
 var VirtualBookshelf = VirtualBookshelf || {};
 
-VirtualBookshelf.loader = new THREE.OBJMTLLoader();
+VirtualBookshelf.renderer;
 VirtualBookshelf.library;
 VirtualBookshelf.user;
 VirtualBookshelf.scene;
 
 VirtualBookshelf.start = function() {
-	// if(!Detector.webgl) {
-	// 	// Detector.addGetWebGLMessage();
-	// }
+	if(!Detector.webgl) {
+		Detector.addGetWebGLMessage();
+	}
 
 	var width = window.innerWidth;
 	var height = window.innerHeight;
@@ -60,10 +60,12 @@ VirtualBookshelf.clearScene = function() {
 
 VirtualBookshelf.loadLibrary = function(libraryId) {
 	VirtualBookshelf.clearScene();
-	VirtualBookshelf.Data.getLibrary(libraryId, function(err, result) {
-		VirtualBookshelf.library = new VirtualBookshelf.Library(result);
-		VirtualBookshelf.scene.add(VirtualBookshelf.library);
-		VirtualBookshelf.UI.refresh();
+	VirtualBookshelf.Data.getLibrary(libraryId, function(err, library) {
+		VirtualBookshelf.Data.loadLibrary(library, function (params, geometry, material) {
+			VirtualBookshelf.library = new VirtualBookshelf.Library(params, geometry, material);
+			VirtualBookshelf.scene.add(VirtualBookshelf.library);
+			VirtualBookshelf.UI.refresh();
+		});				
 	});
 }
 

@@ -213,18 +213,16 @@ VirtualBookshelf.Controls.saveChanged = function() {
 	}
 
 	if(sections && sections.length) {
-		console.log('Save sections', sections);
-		// $.ajax({
-	 //    	url: "/sections", 
-	 //    	contentType: "application/json",
-		// 	type: 'PUT',
-		// 	data: JSON.stringify(sections),
-	 //    	success: function(data) {
-	 //    		if(!data) return;
-		// 		console.log('Sections saved', data);
-	 //    		VirtualBookshelf.Controls.changedObjects = {};
-	 //    	}
-	 //    });	
+		VirtualBookshelf.Data.putSections(sections, function (err, data) {
+			if(!err && data) {
+				data.forEach(function (section) {
+					delete VirtualBookshelf.Controls.changedObjects[section.id];
+				});
+				VirtualBookshelf.UI.refresh();
+			} else {
+				alert('Can\'t save sections. Please try again.');
+			}
+		});
 	}
 }
 

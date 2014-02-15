@@ -1,18 +1,13 @@
-VirtualBookshelf.Library = function(params) {
-	THREE.Object3D.call(this);
+VirtualBookshelf.Library = function(params, geometry, material) {
+	THREE.Mesh.call(this, geometry, material);
 	var scope = this;
 
 	this.id = params.id;
 	this.libraryObject = params.libraryObject || {};
-	this.modelPath = '/obj/libraries/{model}/'.replace('{model}', this.libraryObject.model);
-
-	VirtualBookshelf.loader.load(this.modelPath + 'model.obj', this.modelPath + 'model.mtl', function (object) {
-		scope.add(object);
-	});
 
 	this.loadSections();
 }
-VirtualBookshelf.Library.prototype = new THREE.Object3D();
+VirtualBookshelf.Library.prototype = new THREE.Mesh();
 VirtualBookshelf.Library.prototype.constructor = VirtualBookshelf.Library;
 
 VirtualBookshelf.Library.prototype.loadSections = function() {

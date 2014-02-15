@@ -70,7 +70,7 @@ exports.putSections = function(req, res){
 
 			    chainer.run()
 			    .success(function(result){
-			        res.send(200);
+			        res.json(result);
 					console.log('ROUTE putSections: OK.');
 			    })    
 			    .failure(function(err){

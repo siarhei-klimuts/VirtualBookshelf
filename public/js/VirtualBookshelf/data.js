@@ -92,10 +92,27 @@ VirtualBookshelf.Data.loadSection = function(params, done) {
 	});
 }
 
+VirtualBookshelf.Data.loadLibrary = function(params, done) {
+	var path = '/obj/libraries/{model}/'.replace('{model}', params.libraryObject.model);
+	var jsonLoader = new THREE.JSONLoader();
+	jsonLoader.load(path + 'model.js', function (geometry) {
+		var imgLoader = new THREE.ImageLoader();
+	    imgLoader.load(path + 'map.jpg', function (image) {
+			var texture = new THREE.Texture(image);
+			texture.needsUpdate = true;
+			done(params, geometry, new THREE.MeshPhongMaterial({map: texture}));
+	    });
+	});
+}
+
 VirtualBookshelf.Data.getData = function(url, done) {
 	VirtualBookshelf.Data.ajax([url], 'GET', done);
 }
 
 VirtualBookshelf.Data.putBooks = function(books, done) {
 	VirtualBookshelf.Data.ajax(['/books'] , 'PUT', done, books);
+}
+
+VirtualBookshelf.Data.putSections = function(sections, done) {
+	VirtualBookshelf.Data.ajax(['/sections'] , 'PUT', done, sections);
 }
