@@ -2,7 +2,7 @@ VirtualBookshelf.Camera = VirtualBookshelf.Camera || {};
 VirtualBookshelf.Camera.HEIGTH = 1.5;
 
 VirtualBookshelf.Camera.init = function(width, height) {
-	VirtualBookshelf.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+	VirtualBookshelf.camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 50);
 	VirtualBookshelf.camera.position = new THREE.Vector3(0, VirtualBookshelf.Camera.HEIGTH, 0);
 	VirtualBookshelf.camera.rotation.order = 'YXZ';
 
