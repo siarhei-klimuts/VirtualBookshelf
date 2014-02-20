@@ -1,0 +1,15 @@
+{	
+	"libraries": [
+		{"model": "library_0001", "label": "Basement"},
+		{"model": "none", "label": "None"}
+	],
+	"bookshelves": [
+		{"model": "bookshelf_0001", "label": "Wooden simple"},
+		{"model": "bookshelf_0003", "label": "Temporary"}
+	],
+	"books": [
+		{"model": "book_0001", "label": "Gray"},
+		{"model": "book_0002", "label": "Green"},
+		{"model": "book_0003", "label": "Leather"}
+	]
+}

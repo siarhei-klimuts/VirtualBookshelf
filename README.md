@@ -7,4 +7,4 @@ The application placed at http://virtual-bookshelf.herokuapp.com, there you can 
 
 Current version is tested only on Chrome, other browsers will be supported later.
 
-Current version: 0.1.8
+Current version: 0.1.9

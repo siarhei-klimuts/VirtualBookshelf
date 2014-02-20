@@ -1,21 +1,9 @@
 var models = require('../models');
 var Sequelize = require('sequelize');
 
-exports.getBookObjects = function(req, res) {
-	models.BookObject.findAll({}, {raw: true})
-	.success(function(result) {
-		res.json(result);
-		console.log('ROUTE getBookObjects: ', result);
-	})
-	.failure(function(error) {
-		res.send(500);
-		console.log('ROUTE getBookObjects error: ', error);
-	});
-}
-
 exports.postBook = function(req, res) {
 	var book = req.body;
-	if(book && book.bookObjectId) {
+	if(book) {
 		book.userId = req.user.id;
 		models.Book.create(book)
 		.success(function(result) {
@@ -31,10 +19,7 @@ exports.postBook = function(req, res) {
 
 exports.getBooks = function(req, res){
 	models.Book.findAll({
-		where: {sectionId: req.params.sectionId}, 
-		include: [{
-			model: models.BookObject
-		}]
+		where: {sectionId: req.params.sectionId}
 	}, {raw: true})
 	.success(function(result) {
   		res.json(result);
@@ -64,6 +49,8 @@ exports.putBooks = function(req, res) {
 			        item.pos_x = map[item.id].pos_x;
 			        item.pos_y = map[item.id].pos_y;
 			        item.pos_z = map[item.id].pos_z;
+			        item.author = map[item.id].author;
+			        item.title = map[item.id].title;
 
 			        chainer.add(item.save());
 			    });

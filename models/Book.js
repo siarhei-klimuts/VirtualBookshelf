@@ -4,6 +4,8 @@ module.exports = function(sequelize, DataTypes) {
 		pos_y: DataTypes.FLOAT,
 		pos_z: DataTypes.FLOAT,
 		author: DataTypes.STRING,
-		title: DataTypes.STRING
+		title: DataTypes.STRING,
+		model: DataTypes.STRING,
+		shelfId: DataTypes.INTEGER
 	}, {timestamps: false});
 } 

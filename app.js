@@ -58,17 +58,12 @@ app.get('/auth/google/return', passport.authenticate('google', {failureRedirect:
 
 app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);
 app.get('/libraries', isAuthorized, routes.library.getLibraries);
-app.get('/libraryObjects', isAuthorized, routes.library.getLibraryObjects);
-app.post('/library/:libraryObjectId', isAuthorized, routes.library.postLibrary);
+app.post('/library/:libraryModel', isAuthorized, routes.library.postLibrary);
 
-app.get('/sectionObjects', isAuthorized, routes.section.getSectionObjects);
-app.post('/section/:sectionObjectId/:libraryId', isAuthorized, routes.section.postSection);
+app.post('/section', isAuthorized, routes.section.postSection);
 app.get('/sections/:libraryId', isAuthorized, routes.section.getSections);
 app.put('/sections', isAuthorized, routes.section.putSections);
 
-app.get('/shelves/:sectionObjectId', isAuthorized, routes.library.getShelves);
-
-app.get('/bookObjects', isAuthorized, routes.book.getBookObjects);
 app.post('/book', isAuthorized, routes.book.postBook);
 app.get('/books/:sectionId', isAuthorized, routes.book.getBooks);
 app.put('/books', isAuthorized, routes.book.putBooks);

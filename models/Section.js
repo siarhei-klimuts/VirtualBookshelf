@@ -5,6 +5,7 @@ module.exports = function(sequelize, DataTypes) {
 		pos_z: DataTypes.FLOAT,
 		dir_x: DataTypes.FLOAT,
 		dir_y: DataTypes.FLOAT,
-		dir_z: DataTypes.FLOAT
+		dir_z: DataTypes.FLOAT,
+		model: DataTypes.STRING
 	}, {timestamps: false});
 } 

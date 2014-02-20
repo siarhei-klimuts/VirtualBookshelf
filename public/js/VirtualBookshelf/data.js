@@ -20,6 +20,10 @@ VirtualBookshelf.Data.ajax = function(urlArray, type, done, data) {
 	request.send(JSON.stringify(data));
 }
 
+VirtualBookshelf.Data.getUIData = function(done) {
+	VirtualBookshelf.Data.getData('/obj/data.json', done);
+}
+
 VirtualBookshelf.Data.getLibrary = function(libraryId, done) {
 	VirtualBookshelf.Data.ajax(['/library', libraryId], 'GET', done);
 }
@@ -28,28 +32,16 @@ VirtualBookshelf.Data.getLibraries = function(done) {
 	VirtualBookshelf.Data.ajax(['/libraries'], 'GET', done);
 }
 
-VirtualBookshelf.Data.getLibraryObjects = function(done) {
-	VirtualBookshelf.Data.ajax(['/libraryObjects'], 'GET', done);
-}
-
-VirtualBookshelf.Data.postLibrary = function(libraryObjectId, done) {
-	VirtualBookshelf.Data.ajax(['/library', libraryObjectId], 'POST', done);
-}
-
-VirtualBookshelf.Data.getSectionObjects = function(done) {
-	VirtualBookshelf.Data.ajax(['/sectionObjects'], 'GET', done);
+VirtualBookshelf.Data.postLibrary = function(libraryModel, done) {
+	VirtualBookshelf.Data.ajax(['/library', libraryModel], 'POST', done);
 }
 
 VirtualBookshelf.Data.getSections = function(libraryId, done) {
 	VirtualBookshelf.Data.ajax(['/sections', libraryId], 'GET', done);
 }
 
-VirtualBookshelf.Data.postSection = function(sectionObjectId, libraryId, done) {
-	VirtualBookshelf.Data.ajax(['/section', sectionObjectId, libraryId] , 'POST', done);
-}
-
-VirtualBookshelf.Data.getBookObjects = function(done) {
-	VirtualBookshelf.Data.ajax(['/bookObjects'], 'GET', done);
+VirtualBookshelf.Data.postSection = function(sectionData, done) {
+	VirtualBookshelf.Data.ajax(['/section'] , 'POST', done, sectionData);
 }
 
 VirtualBookshelf.Data.postBook = function(book, done) {
@@ -60,23 +52,23 @@ VirtualBookshelf.Data.getBooks = function(sectionId, done) {
 	VirtualBookshelf.Data.ajax(['/books', sectionId], 'GET', done);
 }
 
-VirtualBookshelf.Data.loadBookData = function(params, done) {
-	var path = '/obj/books/{model}/'.replace('{model}', params.bookObject.model);
+VirtualBookshelf.Data.loadBookData = function(dataObject, done) {
+	var path = '/obj/books/{model}/'.replace('{model}', dataObject.model);
 	var jsonLoader = new THREE.JSONLoader();
 	jsonLoader.load(path + 'model.js', function (geometry) {
 		var imgLoader = new THREE.ImageLoader();
 	    imgLoader.load(path + 'map.jpg', function (image) {
-			var map = VirtualBookshelf.Editor.getUpdatedTexture(params, image);
+			var map = VirtualBookshelf.Editor.getUpdatedTexture(dataObject, image);
 		    var material = new THREE.MeshPhongMaterial({map: map});
     		geometry.computeBoundingBox();
     		
-			done(params, geometry, material);
+			done(dataObject, geometry, material);
 	    });
 	});
 }
 
 VirtualBookshelf.Data.loadSection = function(params, done) {
-	var path = '/obj/sections/{model}/'.replace('{model}', params.sectionObject.model);
+	var path = '/obj/sections/{model}/'.replace('{model}', params.model);
 	var jsonLoader = new THREE.JSONLoader();
 	jsonLoader.load(path + 'model.js', function (geometry) {
 		var imgLoader = new THREE.ImageLoader();
@@ -93,7 +85,7 @@ VirtualBookshelf.Data.loadSection = function(params, done) {
 }
 
 VirtualBookshelf.Data.loadLibrary = function(params, done) {
-	var path = '/obj/libraries/{model}/'.replace('{model}', params.libraryObject.model);
+	var path = '/obj/libraries/{model}/'.replace('{model}', params.model);
 	var jsonLoader = new THREE.JSONLoader();
 	jsonLoader.load(path + 'model.js', function (geometry) {
 		var imgLoader = new THREE.ImageLoader();
@@ -110,9 +102,13 @@ VirtualBookshelf.Data.getData = function(url, done) {
 }
 
 VirtualBookshelf.Data.putBooks = function(books, done) {
-	VirtualBookshelf.Data.ajax(['/books'] , 'PUT', done, books);
+	VirtualBookshelf.Data.ajax(['/books'], 'PUT', done, books);
+}
+
+VirtualBookshelf.Data.putBook = function(book, done) {
+	VirtualBookshelf.Data.ajax(['/books'], 'PUT', done, [book]);
 }
 
 VirtualBookshelf.Data.putSections = function(sections, done) {
-	VirtualBookshelf.Data.ajax(['/sections'] , 'PUT', done, sections);
+	VirtualBookshelf.Data.ajax(['/sections'], 'PUT', done, sections);
 }

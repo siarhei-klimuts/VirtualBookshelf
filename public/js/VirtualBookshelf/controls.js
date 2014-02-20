@@ -127,7 +127,7 @@ VirtualBookshelf.Controls.onKeyUp = function(event) {
 //****
 
 VirtualBookshelf.Controls.selectObject = function(event) {
-	if(!VirtualBookshelf.Controls.isCanvasEvent(event)) return;
+	if(!VirtualBookshelf.Controls.isCanvasEvent(event) || !VirtualBookshelf.library) return;
 	var vector = VirtualBookshelf.Controls.getMouseVector(event.offsetX, event.offsetY);
 	var raycaster = new THREE.Raycaster(VirtualBookshelf.camera.position, vector);
 	var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children, true);
