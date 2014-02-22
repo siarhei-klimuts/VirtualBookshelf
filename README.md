@@ -1,21 +1,19 @@
 VirtualBookshelf
 Current version: 0.2.0
-================
-
+__
 Virtual 3D library for everyone. There you can store your virtual books in virtual 3D bookshelves. 
 
 The application placed at http://virtual-bookshelf.herokuapp.com, there you can see how it looks at this moment.
 
 Current version is tested only on Chrome, other browsers will be supported later.
-
-================
+__
 Controls:
 right mouse - look;
 right mouse + left mouse - walk;
 left mouse - select section/book;
 left mouse drag-drop - move section/book;
 double click - get book for overview
-================
+__
 Planned features:
 Create personal library/libraries;
 Select which library you want to go;
