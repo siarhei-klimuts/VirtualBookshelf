@@ -7,7 +7,7 @@ VirtualBookshelf.Camera.init = function(width, height) {
 	VirtualBookshelf.camera.rotation.order = 'YXZ';
 
 	var candle = new THREE.PointLight(0x665555, 1.5, 6);
-	candle.position.set(0.1, 0, -0.05);
+	candle.position.set(0, 0, 0);
 	VirtualBookshelf.camera.add(candle);
 }
 

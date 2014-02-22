@@ -3,6 +3,7 @@ VirtualBookshelf.Object = function(dataObject, geometry, material) {
 	if(dataObject) {
 		this.id = dataObject.id;
 		this.position = new THREE.Vector3(dataObject.pos_x, dataObject.pos_y, dataObject.pos_z);
+		this.rotation.order = 'XYZ';
 		this.dataObject = dataObject;
 	}
 }
@@ -24,12 +25,22 @@ VirtualBookshelf.Object.prototype.move = function(newPosition) {
 		}
 	}	
 }
+VirtualBookshelf.Object.prototype.rotate = function(x, y) {
+	this.rotation.x += y * 0.01 || 0;
+	this.rotation.y += x * 0.01 || 0;
+}
 VirtualBookshelf.Object.prototype.getDataObject = function() {
 	this.dataObject.pos_x = this.position.x;
 	this.dataObject.pos_y = this.position.y;
 	this.dataObject.pos_z = this.position.z;
 
 	return this.dataObject;
+}
+VirtualBookshelf.Object.prototype.reload = function() {
+	this.position.setX(this.dataObject.pos_x);
+	this.position.setY(this.dataObject.pos_y);
+	this.position.setZ(this.dataObject.pos_z);
+	this.rotation.set(0, 0, 0);
 }
 
 //*********************

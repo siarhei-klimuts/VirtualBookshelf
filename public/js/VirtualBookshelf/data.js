@@ -1,15 +1,16 @@
 VirtualBookshelf.Data = VirtualBookshelf.Data || {};
 
-VirtualBookshelf.Data.ajax = function(urlArray, type, done, data) {
+VirtualBookshelf.Data.ajax = function(urlArray, type, done, data, content) {
 	var url = urlArray.join('/');
+	var content = content || 'application/json';
 	var request = new XMLHttpRequest;
 	request.open(type, url, true);
-	request.setRequestHeader('Content-Type', 'application/json');
+	request.setRequestHeader('Content-Type', content);
 
 	request.onload = function() {
 	  	if(this.status >= 200 && this.status < 400) {
-	    	data = JSON.parse(request.responseText);
-			console.log('Data result: ', type, url, data);
+    		var data = content == 'application/json' ? JSON.parse(request.responseText) : request.responseText;
+			console.log('Data result: ', type, url);
 			done(null, data);
 		} else {
 			console.error('Data error: ', type, url, data);
@@ -52,48 +53,53 @@ VirtualBookshelf.Data.getBooks = function(sectionId, done) {
 	VirtualBookshelf.Data.ajax(['/books', sectionId], 'GET', done);
 }
 
-VirtualBookshelf.Data.loadBookData = function(dataObject, done) {
-	var path = '/obj/books/{model}/'.replace('{model}', dataObject.model);
+VirtualBookshelf.Data.loadObject = function(root, model, done) {
+	var path = '/obj/{root}/{model}/'.replace('{root}', root).replace('{model}', model);
 	var jsonLoader = new THREE.JSONLoader();
 	jsonLoader.load(path + 'model.js', function (geometry) {
 		var imgLoader = new THREE.ImageLoader();
-	    imgLoader.load(path + 'map.jpg', function (image) {
-			var map = VirtualBookshelf.Editor.getUpdatedTexture(dataObject, image);
-		    var material = new THREE.MeshPhongMaterial({map: map});
+	    imgLoader.load(path + 'map.jpg', function (mapImage) {
     		geometry.computeBoundingBox();
-    		
-			done(dataObject, geometry, material);
+	    	done(geometry, mapImage);
 	    });
 	});
 }
 
-VirtualBookshelf.Data.loadSection = function(params, done) {
-	var path = '/obj/sections/{model}/'.replace('{model}', params.model);
-	var jsonLoader = new THREE.JSONLoader();
-	jsonLoader.load(path + 'model.js', function (geometry) {
+VirtualBookshelf.Data.loadBookData = function(dataObject, done) {
+	VirtualBookshelf.Data.loadObject('books', dataObject.model, function (geometry, mapImage) {
 		var imgLoader = new THREE.ImageLoader();
-	    imgLoader.load(path + 'texture.jpg', function (image) {
-			var texture = new THREE.Texture(image);
-			texture.needsUpdate = true;
-		    var material = new THREE.MeshPhongMaterial({map: texture});
-			VirtualBookshelf.Data.getData(path + 'data.json', function (err, data) {
-				params.data = data;
-				done(params, geometry, material);
-			});   
-	    });
+    	if(dataObject.cover) {
+	    	imgLoader.load('/outside?link=' + dataObject.cover, function (coverImage) {
+				done(dataObject, geometry, VirtualBookshelf.Editor.getBookMaterial(dataObject, mapImage, coverImage));
+	    	}, function () {}, function (event) {
+				console.error('Cover load error:', event);
+				done(dataObject, geometry, VirtualBookshelf.Editor.getBookMaterial(dataObject, mapImage));
+	    	});
+    	} else {
+			done(dataObject, geometry, VirtualBookshelf.Editor.getBookMaterial(dataObject, mapImage));
+		}
 	});
 }
 
-VirtualBookshelf.Data.loadLibrary = function(params, done) {
-	var path = '/obj/libraries/{model}/'.replace('{model}', params.model);
-	var jsonLoader = new THREE.JSONLoader();
-	jsonLoader.load(path + 'model.js', function (geometry) {
-		var imgLoader = new THREE.ImageLoader();
-	    imgLoader.load(path + 'map.jpg', function (image) {
-			var texture = new THREE.Texture(image);
-			texture.needsUpdate = true;
-			done(params, geometry, new THREE.MeshPhongMaterial({map: texture}));
-	    });
+VirtualBookshelf.Data.loadSection = function(dataObject, done) {
+	VirtualBookshelf.Data.loadObject('sections', dataObject.model, function (geometry, mapImage) {
+		var path = '/obj/sections/{model}/'.replace('{model}', dataObject.model);
+		var texture = new THREE.Texture(mapImage);
+		texture.needsUpdate = true;
+
+		VirtualBookshelf.Data.getData(path + 'data.json', function (err, data) {
+			dataObject.data = data;
+			done(dataObject, geometry, new THREE.MeshPhongMaterial({map: texture}));
+		});   
+	});
+}
+
+VirtualBookshelf.Data.loadLibrary = function(dataObject, done) {
+	VirtualBookshelf.Data.loadObject('libraries', dataObject.model, function (geometry, mapImage) {
+		var texture = new THREE.Texture(mapImage);
+		texture.needsUpdate = true;
+
+		done(dataObject, geometry, new THREE.MeshPhongMaterial({map: texture}));
 	});
 }
 
