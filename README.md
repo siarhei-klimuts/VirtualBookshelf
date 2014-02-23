@@ -1,5 +1,5 @@
 Virtual Bookshelf
-
+=
 Current version: 0.2.0
 
 Virtual 3D library for everyone. There you can store your virtual books in virtual 3D bookshelves. 
@@ -8,49 +8,28 @@ The application placed at http://virtual-bookshelf.herokuapp.com, there you can 
 
 Current version is tested only on Chrome, other browsers will be supported later.
 
-
 Controls:
-
-right mouse - look;
-
-right mouse + left mouse - walk;
-
-left mouse - select section/book;
-
-left mouse drag-drop - move section/book;
-
-double click - get book for overview
-
-
+-
+- right mouse - look;
+- right mouse + left mouse - walk;
+- left mouse - select section/book;
+- left mouse drag-drop - move section/book;
+- double click - get book for overview
 
 Planned features:
-
-Create personal library/libraries;
-
-Select which library you want to go;
-
-Choise/change environment model for library;
-
-Add sections to current library;
-
-Choice/change section model;
-
-Move/rotate sections;
-
-Add books to section's shelves;
-
-Choice/change book model;
-
-Move books inside shelves;
-
-Customize book author, title, cover, color, size;
-
-Share link to a library with friends;
-
-Change permissions to see, read books by friends, by link, by all;
-
-Search book models already created by other users;
-
-Cross-brouser support;
-
-Touch support for mobile chrome;
+-
+- Create personal library/libraries;
+- Select which library you want to go;
+- Choise/change environment model for library;
+- Add sections to current library;
+- Choice/change section model;
+- Move/rotate sections;
+- Add books to section's shelves;
+- Choice/change book model;
+- Move books inside shelves;
+- Customize book author, title, cover, color, size;
+- Share link to a library with friends;
+- Change permissions to see, read books by friends, by link, by all;
+- Search book models already created by other users;
+- Cross-brouser support;
+- Touch support for mobile chrome;
