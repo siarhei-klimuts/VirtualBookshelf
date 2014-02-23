@@ -1,4 +1,4 @@
-VirtualBookshel
+Virtual Bookshelf
 
 Current version: 0.2.0
 
