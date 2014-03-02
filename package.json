@@ -13,7 +13,7 @@
     "passport": "~0.1.18",
     "i18n": "~0.4.1",
     "pg": "~2.11.1",
-    "sequelize": "1.7.0-rc6"
+    "sequelize": "1.7.0"
   },
   "engines": {
     "node": "0.10.x"
