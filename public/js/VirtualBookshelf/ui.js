@@ -1,11 +1,43 @@
 VirtualBookshelf.UI = VirtualBookshelf.UI || {};
 
-VirtualBookshelf.UI.init = function() {
-	var scope = VirtualBookshelf.UI;
+VirtualBookshelf.UI.MenuNode = function(id) {
+	this.id = id;
+};
+VirtualBookshelf.UI.MenuNode.prototype = {
+	constructor: VirtualBookshelf.UI.MenuNode,
+	show: function() {
+		VirtualBookshelf.UI.show(this.container);
+	},
+	hide: function() {
+		VirtualBookshelf.UI.hide(this.container);
+	},
+	setValues: function(dataObject, fields) {
+		if(dataObject && fields && fields.length) {
+			for(var i = fields.length - 1; i >= 0; i--) {
+				if(this[fields[i]]) {
+					this[fields[i]].value = dataObject[fields[i]];
+				}
+			}
+		}
+	}
+}
 
-	scope.searchForUIs();
-	scope.prepareValues();
-	scope.refresh();
+VirtualBookshelf.UI.menu = {
+	login: new VirtualBookshelf.UI.MenuNode('UI_LOGIN'),
+	createLibrary: new VirtualBookshelf.UI.MenuNode('UI_LIBRARY_CREATE'),
+	selectLibrary: new VirtualBookshelf.UI.MenuNode('UI_LIBRARY_SELECT'),
+	libraryMenu: new VirtualBookshelf.UI.MenuNode('UI_LIBRARY_MENU'),
+	sectionMenu: new VirtualBookshelf.UI.MenuNode('UI_SECTION_MENU'),
+	createBook: new VirtualBookshelf.UI.MenuNode('UI_CREATE_BOOK'),
+	saveDialog: new VirtualBookshelf.UI.MenuNode('UI_SAVE_DIALOG')
+};
+
+VirtualBookshelf.UI.init = function() {
+	VirtualBookshelf.UI.loadMenuNodes();
+	VirtualBookshelf.UI.searchForUIs();
+	VirtualBookshelf.UI.initControlsData();
+	VirtualBookshelf.UI.initControlsEvents();
+	VirtualBookshelf.UI.refresh();
 }
 
 VirtualBookshelf.UI.searchForUIs = function() {
@@ -18,17 +50,35 @@ VirtualBookshelf.UI.searchForUIs = function() {
 	scope.librarySelectPanelDropdown = document.getElementById('UI_LIBRARY_SELECT_DROPDOWN');
 	scope.libraryMenuPanel = document.getElementById('UI_LIBRARY_MENU');
 	scope.sectionCreateDropdown = document.getElementById('UI_SECTION_CREATE_DROPDOWN');
-	scope.createBookPanel = document.getElementById('UI_CREATE_BOOK');
-	scope.createBookObject = document.getElementById('UI_CREATE_BOOK_OBJECT');
-	scope.createBookAuthor = document.getElementById('UI_CREATE_BOOK_AUTHOR');
-	scope.createBookTitle = document.getElementById('UI_CREATE_BOOK_TITLE');
 	scope.sectionMenu = document.getElementById('UI_SECTION_MENU');
 	scope.saveDialog = document.getElementById('UI_SAVE_DIALOG');
 }
 
-VirtualBookshelf.UI.prepareValues = function() {
+VirtualBookshelf.UI.loadMenuNodes = function() {
+	var menu = VirtualBookshelf.UI.menu;
+	
+	for(key in menu) {
+		var menuNode = menu[key];
+
+		if(menuNode && menuNode.id) {
+			menuNode.container = document.getElementById(menuNode.id);
+			var controls = menuNode.container.querySelectorAll('input, select, a, canvas');
+
+			for(var j = controls.length - 1; j >= 0; j--) {
+				var control = controls[j];
+
+				if(control && (control.name || control.id)) {
+					menuNode[control.name || control.id] = control;
+				}
+			}
+		}
+	};
+}
+
+VirtualBookshelf.UI.initControlsData = function() {
 	var scope = VirtualBookshelf.UI;
 
+	// fill selects by availible options
 	VirtualBookshelf.Data.getUIData(function (err, data) {
 		if(!err && data) {
 			if(!scope.libraryCreatePanelSelect.options.length && data.libraries) {
@@ -37,11 +87,27 @@ VirtualBookshelf.UI.prepareValues = function() {
 			if(!scope.sectionCreateDropdown.options.length && data.bookshelves) {
 				scope.fillElement(scope.sectionCreateDropdown, data.bookshelves, {value: 'model', text: 'label'});
 			}
-			if(!scope.createBookObject.options.length && data.books) {
-				scope.fillElement(scope.createBookObject, data.books, {value: 'model', text: 'label'});
+			if(!scope.menu.createBook.model.options.length && data.books) {
+				scope.fillElement(scope.menu.createBook.model, data.books, {value: 'model', text: 'label'});
+			}
+			if(!scope.menu.createBook.texture.options.length && data.bookTextures) {
+				scope.fillElement(scope.menu.createBook.texture, data.bookTextures, {value: 'image', text: 'label'});
 			}
 		}
 	});
+}
+
+VirtualBookshelf.UI.initControlsEvents = function() {
+	VirtualBookshelf.UI.menu.createBook.model.onchange = VirtualBookshelf.UI.changeModel;
+	VirtualBookshelf.UI.menu.createBook.texture.onchange = VirtualBookshelf.UI.changeBookTexture;
+	VirtualBookshelf.UI.menu.createBook.cover.onchange = VirtualBookshelf.UI.changeBookCover;
+	VirtualBookshelf.UI.menu.createBook.author.onchange = VirtualBookshelf.UI.changeValue;
+	VirtualBookshelf.UI.menu.createBook.title.onchange = VirtualBookshelf.UI.changeValue;
+	VirtualBookshelf.UI.menu.createBook.editCover.onclick = VirtualBookshelf.UI.switchEdited;
+	VirtualBookshelf.UI.menu.createBook.editAuthor.onclick = VirtualBookshelf.UI.switchEdited;
+	VirtualBookshelf.UI.menu.createBook.editTitle.onclick = VirtualBookshelf.UI.switchEdited;
+	VirtualBookshelf.UI.menu.createBook.ok.onclick = VirtualBookshelf.UI.saveBook;
+	VirtualBookshelf.UI.menu.createBook.cancel.onclick = VirtualBookshelf.UI.cancelBookEdit;
 }
 
 // library create
@@ -112,16 +178,111 @@ VirtualBookshelf.UI.showSectionMenu = function() {
 // create book
 
 VirtualBookshelf.UI.showCreateBook = function() {
-	VirtualBookshelf.UI.show(VirtualBookshelf.UI.createBookPanel);
+	var menuNode = VirtualBookshelf.UI.menu.createBook;
+	menuNode.show();
+
+	if(VirtualBookshelf.selected.isBook()) {
+		menuNode.setValues(VirtualBookshelf.selected.object.dataObject, ['model', 'texture', 'cover', 'author', 'title']);
+	} else if(VirtualBookshelf.selected.isSection()) {
+		var dataObject = {
+			model: menuNode.model.value, 
+			texture: menuNode.texture.value, 
+			cover: menuNode.cover.value
+		};
+
+		VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
+			VirtualBookshelf.selected.object = book;
+			VirtualBookshelf.selected.get();
+		});
+	}
 }
 
-VirtualBookshelf.UI.cerateBook = function() {
-	if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Section) {
+VirtualBookshelf.UI.changeModel = function() {
+	if(VirtualBookshelf.selected.isBook()) {
+		var oldBook = VirtualBookshelf.selected.object;
+		var dataObject = {
+			model: this.value,
+			texture: oldBook.texture.toString(),
+			cover: oldBook.cover.toString()
+		};
+
+		VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
+			book.copyState(oldBook);
+		});
+	}
+}
+
+VirtualBookshelf.UI.changeBookTexture = function() {
+	if(VirtualBookshelf.selected.isBook()) {
+		var book = VirtualBookshelf.selected.object;
+		book.texture.load(this.value, false, function () {
+			book.updateTexture();
+		});
+	}
+}
+
+VirtualBookshelf.UI.changeBookCover = function() {
+	if(VirtualBookshelf.selected.isBook()) {
+		var book = VirtualBookshelf.selected.object;
+		book.cover.load(this.value, true, function() {
+			book.updateTexture();
+		});
+	}
+}
+
+VirtualBookshelf.UI.changeValue = function() {
+	if(VirtualBookshelf.selected.isBook()) {
+		var book = VirtualBookshelf.selected.object;
+
+		if(book[this.name].setText) {
+			book[this.name].setText(this.value);
+		} else {
+			book[this.name] = this.value;
+		}
+
+		book.updateTexture();
+	}
+}
+
+VirtualBookshelf.UI.switchEdited = function() {
+	var activeElemets = document.querySelectorAll('a.activeEdit');
+
+	for(var i = activeElemets.length - 1; i >= 0; i--) {
+		activeElemets[i].className = 'inactiveEdit';
+	};
+
+	var previousEdited = VirtualBookshelf.UI.menu.createBook.edited;
+	var currentEdited = this.getAttribute('edit');
+
+	if(previousEdited != currentEdited) {
+		this.className = 'activeEdit';
+		VirtualBookshelf.UI.menu.createBook.edited = currentEdited;
+	} else {
+		VirtualBookshelf.UI.menu.createBook.edited = null;
+	}
+}
+
+VirtualBookshelf.UI.saveBook = function() {
+	if(VirtualBookshelf.selected.isBook()) {
+		VirtualBookshelf.selected.invocate('save');
+		VirtualBookshelf.selected.put();
+		VirtualBookshelf.selected.clear();
+	}
+}
+
+VirtualBookshelf.UI.cancelBookEdit = function() {
+	if(VirtualBookshelf.selected.isBook()) {
+		VirtualBookshelf.selected.invocate('refresh');
+		VirtualBookshelf.selected.put();
+		VirtualBookshelf.selected.clear();
+	}
+}
+
+VirtualBookshelf.UI.createBook = function() {
+	if(VirtualBookshelf.selected.isSection()) {
 		var shelf = VirtualBookshelf.selected.object.getShelfByPoint(VirtualBookshelf.selected.point);
-		console.log('shelf',shelf);
 		if(!shelf) return;
 		var freePosition = VirtualBookshelf.selected.object.getGetFreeShelfPosition(shelf, 0.1); 
-		console.log('freePosition',freePosition);
 		if(freePosition) {
 			var book = {
 				sectionId: VirtualBookshelf.selected.object.id,
@@ -213,21 +374,9 @@ VirtualBookshelf.UI.hide = function(element) {
 }
 
 VirtualBookshelf.UI.hideAll = function() {
-	var scope = VirtualBookshelf.UI;
-
-	scope.hide(scope.loginPanel);
-	scope.hide(scope.libraryCreatePanel);
-	scope.hide(scope.libraryCreatePanelSelect);
-	scope.hide(scope.librarySelectPanel);
-	scope.hide(scope.librarySelectPanelDropdown);
-	scope.hide(scope.libraryMenuPanel);
-	scope.hide(scope.sectionCreateDropdown);
-	scope.hide(scope.createBookPanel);
-	scope.hide(scope.createBookObject);
-	scope.hide(scope.createBookAuthor);
-	scope.hide(scope.createBookTitle);
-	scope.hide(scope.sectionMenu);
-	scope.hide(scope.saveDialog);
+	for(key in VirtualBookshelf.UI.menu) {
+		VirtualBookshelf.UI.menu[key].hide();
+	}
 }
 
 VirtualBookshelf.UI.refresh = function() {

@@ -6,11 +6,11 @@ exports.postBook = function(req, res) {
 	if(book) {
 		book.userId = req.user.id;
 		models.Book.create(book)
-		.success(function(result) {
+		.success(function (result) {
 			res.json(result);
 			console.log('ROUTE postBook: ', result);
 		})
-		.failure(function(error) {
+		.failure(function (error) {
 			res.send(500);
 			console.log('ROUTE postBook error: ', error);
 		});
@@ -21,11 +21,11 @@ exports.getBooks = function(req, res){
 	models.Book.findAll({
 		where: {sectionId: req.params.sectionId}
 	}, {raw: true})
-	.success(function(result) {
+	.success(function (result) {
   		res.json(result);
 		console.log('ROUTE getBooks: ', result);
 	})
-	.failure(function(err){
+	.failure(function (err){
 		res.send(500);
 		console.log('ROUTE getBooks: ', err);
 	});
@@ -36,7 +36,7 @@ exports.putBooks = function(req, res) {
 	var map = {};
 
 	if(books && books.length) {
-		books.forEach(function(item) {
+		books.forEach(function (item) {
 		    map[item.id] = item;
 		});
 
@@ -46,12 +46,9 @@ exports.putBooks = function(req, res) {
 			    var chainer = new Sequelize.Utils.QueryChainer;
 
 			    result.forEach(function (item) {
-			        item.pos_x = map[item.id].pos_x;
-			        item.pos_y = map[item.id].pos_y;
-			        item.pos_z = map[item.id].pos_z;
-			        item.author = map[item.id].author;
-			        item.title = map[item.id].title;
-
+			    	['model', 'texture', 'cover', 'coverPos', 'author', 'title', 'authorFont', 'titleFont', 'pos_x', 'pos_y', 'pos_z', 'shelfId', 'sectionId'].forEach(function (field) {
+			    		item[field] = map[item.id][field];
+			    	});
 			        chainer.add(item.save());
 			    });
 

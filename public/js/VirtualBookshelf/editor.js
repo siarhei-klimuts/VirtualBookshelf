@@ -11,9 +11,8 @@ VirtualBookshelf.Editor.getBookMaterial = function(bookData, mapImage, coverImag
 		context.drawImage(mapImage, 0, 0, size, size);
 	}
 	if(coverImage && bookData.coverPos) {
-		var pos = bookData.coverPos.split(',');
-		if(pos.length === 4) {
-			context.drawImage(coverImage, pos[0], pos[1], pos[2], pos[3]);
+		if(bookData.coverPos.length == 4) {
+			context.drawImage(coverImage, bookData.coverPos[0], bookData.coverPos[1], bookData.coverPos[2], bookData.coverPos[3]);
 		}
 	}
 
@@ -26,6 +25,9 @@ VirtualBookshelf.Editor.getBookMaterial = function(bookData, mapImage, coverImag
 	var texture = new THREE.Texture(canvas);
     var material = new THREE.MeshPhongMaterial({map: texture});
 	texture.needsUpdate = true;
+
+	bookData.context = context;
+	bookData.canvas = canvas;
 
 	return material;
 }

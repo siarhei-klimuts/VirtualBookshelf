@@ -15,5 +15,8 @@
 	"ui.create_book.cancel": "Cancel",
 	"ui.create_book.ok": "Ok",
 	"ui.save_dialog.cancel": "Cancel",
-	"ui.save_dialog.save": "Save"
+	"ui.save_dialog.save": "Save",
+	"ui.create_book.texture": "Texture",
+	"ui.create_book.cover": "Cover",
+	"ui.create_book.edit": "edit"
 }

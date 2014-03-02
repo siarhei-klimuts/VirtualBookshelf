@@ -1,5 +1,6 @@
 var VirtualBookshelf = VirtualBookshelf || {};
 
+VirtualBookshelf.canvas;
 VirtualBookshelf.renderer;
 VirtualBookshelf.library;
 VirtualBookshelf.user;
@@ -22,11 +23,9 @@ VirtualBookshelf.start = function() {
 }
 
 VirtualBookshelf.init = function(width, height) {
-	VirtualBookshelf.renderer = new THREE.WebGLRenderer();
+	VirtualBookshelf.canvas = document.getElementById('LIBRARY');
+	VirtualBookshelf.renderer = new THREE.WebGLRenderer({canvas: VirtualBookshelf.canvas});
 	VirtualBookshelf.renderer.setSize(width, height);
-
-	VirtualBookshelf.container = document.getElementById('LIBRARY');
-	VirtualBookshelf.container.appendChild(VirtualBookshelf.renderer.domElement);
 
 	VirtualBookshelf.scene = new THREE.Scene();
 	VirtualBookshelf.scene.fog = new THREE.Fog(0x000000, 4, 7);

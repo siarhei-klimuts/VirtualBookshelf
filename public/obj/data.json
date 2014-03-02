@@ -8,8 +8,12 @@
 		{"model": "bookshelf_0003", "label": "Temporary"}
 	],
 	"books": [
-		{"model": "book_0001", "label": "Gray"},
-		{"model": "book_0002", "label": "Green"},
-		{"model": "book_0003", "label": "Leather"}
+		{"model": "book_0002", "label": "Old"},
+		{"model": "book_0003", "label": "New"}
+	],
+	"bookTextures": [
+		{"image": "template", "label": "Template"},
+		{"image": "2", "label": "Green"},
+		{"image": "4", "label": "Brown"}
 	]
 }

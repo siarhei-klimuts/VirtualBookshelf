@@ -1,11 +1,10 @@
 VirtualBookshelf.Object = function(dataObject, geometry, material) {
 	THREE.Mesh.call(this, geometry, material);
-	if(dataObject) {
-		this.id = dataObject.id;
-		this.position = new THREE.Vector3(dataObject.pos_x, dataObject.pos_y, dataObject.pos_z);
-		this.rotation.order = 'XYZ';
-		this.dataObject = dataObject;
-	}
+
+	this.dataObject = dataObject || {};
+	this.id = this.dataObject.id;
+	this.position = new THREE.Vector3(this.dataObject.pos_x, this.dataObject.pos_y, this.dataObject.pos_z);
+	this.rotation.order = 'XYZ';
 }
 VirtualBookshelf.Object.prototype = new THREE.Mesh();
 VirtualBookshelf.Object.prototype.constructor = VirtualBookshelf.Object;
@@ -91,13 +90,19 @@ VirtualBookshelf.Section.prototype.loadBooks = function() {
 
 	VirtualBookshelf.Data.getBooks(section.id, function (err, data) {
 		if(!err && data && data.length) {
-			data.forEach(function (book) {
-				VirtualBookshelf.Data.loadBookData(book, function (params, geometry, material) {
-					var shelf = section.shelves[params.shelfId];
-					if(shelf && shelf) {
-						shelf.add(new VirtualBookshelf.Book(params, geometry, material));
-					}
+			data.forEach(function (dataObject) {
+				VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
+					var shelf = section.shelves[dataObject.shelfId];
+					shelf && shelf.add(book);
 				});
+				// VirtualBookshelf.Data.loadBookData(book, function (dataObject, geometry, material, properties) {
+				// 	var shelf = section.shelves[dataObject.shelfId];
+				// 	if(shelf) {
+				// 		var book = new VirtualBookshelf.Book(dataObject, geometry, material, properties);
+				// 		book.updateTexture();
+				// 		shelf.add(book);
+				// 	}
+				// });
 			});
 		}
 	});
@@ -184,12 +189,48 @@ VirtualBookshelf.Shelf.prototype = new THREE.Object3D();
 VirtualBookshelf.Shelf.prototype.constructor = VirtualBookshelf.Shelf; 
 //*****
 
-VirtualBookshelf.Book = function(params, geometry, material) {
-	VirtualBookshelf.Object.call(this, params, geometry, material);
+VirtualBookshelf.Book = function(dataObject, geometry, material) {
+	VirtualBookshelf.Object.call(this, dataObject, geometry, material);
+	
+	this.model = this.dataObject.model;
+	this.canvas = material.map.image;
+	this.texture = new VirtualBookshelf.Data.CanvasImage();
+	this.cover = new VirtualBookshelf.Data.CanvasImage(this.dataObject.coverPos);
+	this.author = new VirtualBookshelf.Data.CanvasText(this.dataObject.author, this.dataObject.authorFont);
+	this.title = new VirtualBookshelf.Data.CanvasText(this.dataObject.title, this.dataObject.titleFont);
 }
 VirtualBookshelf.Book.prototype = new VirtualBookshelf.Object();
 VirtualBookshelf.Book.prototype.constructor = VirtualBookshelf.Book;
+VirtualBookshelf.Book.prototype.textNodes = ['author', 'title'];
+VirtualBookshelf.Book.prototype.updateTexture = function() {
+	var context = this.canvas.getContext('2d');
+	var cover = this.cover;
 
+	if(this.texture.image) {
+		context.drawImage(this.texture.image, 0, 0);
+	}
+
+	if(cover.image) {
+		var diff = cover.y + cover.height - VirtualBookshelf.Data.COVER_MAX_Y;
+	 	var limitedHeight = diff > 0 ? cover.height - diff : cover.height;
+	 	var cropHeight = diff > 0 ? cover.image.naturalHeight - (cover.image.naturalHeight / cover.height * diff) : cover.image.naturalHeight;
+
+		context.drawImage(cover.image, 0, 0, cover.image.naturalWidth, cropHeight, cover.x, cover.y, cover.width, limitedHeight);
+	}
+
+	for(var i = this.textNodes.length - 1; i >= 0; i--) {
+		var textNode = this[this.textNodes[i]];
+
+		if(textNode.isValid()) {
+
+			context.font = textNode.getFont();
+			context.fillStyle = textNode.color;
+	    	context.fillText(textNode.text, textNode.x, textNode.y, textNode.width);
+	    }
+	}
+
+	this.material.map.needsUpdate = true;
+}
 VirtualBookshelf.Book.prototype.move = function(newPosition) {
 	var collision = false;
 	var newPosition = newPosition.x;
@@ -217,5 +258,75 @@ VirtualBookshelf.Book.prototype.move = function(newPosition) {
 	if(!collision) {
 		this.position.setX(newPosition);
 		this.changed = true;
+	}
+}
+VirtualBookshelf.Book.prototype.moveElement = function(dX, dY, element) {
+	var element = element && this[element];
+	
+	if(element) {
+		if(element.move) {
+			element.move(dX, dY);
+		} else {
+			element.x += dX;
+			element.y += dY;
+		}
+
+		this.updateTexture();
+	}
+}
+VirtualBookshelf.Book.prototype.scaleElement = function(dX, dY) {
+	this.cover.width += dX;
+	this.cover.height += dY;
+	this.updateTexture();
+}
+VirtualBookshelf.Book.prototype.save = function() {
+	var scope = this;
+
+	this.dataObject.model = this.model;
+	this.dataObject.texture = this.texture.toString();
+	this.dataObject.cover = this.cover.toString();
+	this.dataObject.coverPos = this.cover.serializeProperties();
+	this.dataObject.author = this.author.toString();
+	this.dataObject.authorFont = this.author.serializeFont();
+	this.dataObject.title = this.title.toString();
+	this.dataObject.titleFont = this.title.serializeFont();
+
+	console.log(this.dataObject);
+	VirtualBookshelf.Data.putBook(this.dataObject, function(err, result) {
+		if(!err && result && result[0]) {
+			scope.dataObject = result[0];
+		} else {
+			//TODO: hide edit, notify user
+		}
+	});
+}
+VirtualBookshelf.Book.prototype.refresh = function() {
+	var scope = this;
+	//TODO: use in constructor instead of separate images loading
+	scope.texture.load(scope.dataObject.texture, false, function () {
+		scope.cover.load(scope.dataObject.cover, true, function() {
+			scope.model = scope.dataObject.model;
+			scope.cover.parseProperties(scope.dataObject.coverPos);
+			scope.author.setText(scope.dataObject.author);
+			scope.author.parseProperties(scope.dataObject.authorFont);
+			scope.title.setText(scope.dataObject.title);
+			scope.title.parseProperties(scope.dataObject.titleFont);
+
+			scope.updateTexture();
+		});
+	});
+}
+VirtualBookshelf.Book.prototype.copyState = function(book) {
+	if(book instanceof VirtualBookshelf.Book) {
+		var fields = ['dataObject', 'position', 'rotation', 'model', 'texture', 'cover', 'author', 'title'];
+		for(var i = fields.length - 1; i >= 0; i--) {
+			var field = fields[i];
+			this[field] = book[field];
+		};
+
+		this.updateTexture();
+		book.parent.add(this);
+		book.parent.remove(book);
+		VirtualBookshelf.selected.object = this;
 	}
 }
