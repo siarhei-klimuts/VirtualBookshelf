@@ -168,7 +168,7 @@ VirtualBookshelf.Data.getImage = function(url, done) {
 	var img = new Image();
     img.crossOrigin = ''; 
 	img.src = url;
-
+	
 	img.onload = function () {
 		console.log('Data.getImage:', url, 'Ok');
 		done(null, this);
@@ -260,7 +260,7 @@ VirtualBookshelf.Data.CanvasImage.prototype = {
 		}
 
 		if(scope.link != link && link) {
-			var path = (proxy ? '{link}' : '/obj/bookTextures/{link}.jpg').replace('{link}', link);
+			var path = (proxy ? '/outside?link={link}' : '/obj/bookTextures/{link}.jpg').replace('{link}', link);
 			VirtualBookshelf.Data.getImage(path, function (err, image) {
 				sync(link, image);				
 			});
