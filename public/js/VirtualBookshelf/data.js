@@ -165,18 +165,30 @@ VirtualBookshelf.Data.putSections = function(sections, done) {
 }
 
 VirtualBookshelf.Data.getImage = function(url, done) {
-	var imgLoader = new THREE.ImageLoader();
-	imgLoader.load(url,
-		function (image) {
-			console.log('Data.getImage:', url, 'Ok');
-			done(null, image);
-		}, 
-		function () {}, 
-		function (error) {
-			console.error('Data.getImage:', url, error);
-			done(error, null);
-		}
-	);
+	var img = new Image();
+    img.crossOrigin = ''; 
+	img.src = url;
+
+	img.onload = function () {
+		console.log('Data.getImage:', url, 'Ok');
+		done(null, this);
+	};
+	img.onerror = function (error) {
+		console.error('Data.getImage:', url, error);
+		done(error, null);
+	}
+	// var imgLoader = new THREE.ImageLoader();
+	// imgLoader.load(url,
+	// 	function (image) {
+	// 		console.log('Data.getImage:', url, 'Ok');
+	// 		done(null, image);
+	// 	}, 
+	// 	function () {}, 
+	// 	function (error) {
+	// 		console.error('Data.getImage:', url, error);
+	// 		done(error, null);
+	// 	}
+	// );
 }
 
 // VirtualBookshelf.Data.getCover = function(url, done) {
@@ -248,7 +260,7 @@ VirtualBookshelf.Data.CanvasImage.prototype = {
 		}
 
 		if(scope.link != link && link) {
-			var path = (proxy ? '/outside?link={link}' : '/obj/bookTextures/{link}.jpg').replace('{link}', link);
+			var path = (proxy ? '{link}' : '/obj/bookTextures/{link}.jpg').replace('{link}', link);
 			VirtualBookshelf.Data.getImage(path, function (err, image) {
 				sync(link, image);				
 			});
