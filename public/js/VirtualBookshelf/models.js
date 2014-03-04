@@ -291,10 +291,8 @@ VirtualBookshelf.Book.prototype.save = function() {
 	this.dataObject.title = this.title.toString();
 	this.dataObject.titleFont = this.title.serializeFont();
 
-	console.log(this.dataObject);
 	VirtualBookshelf.Data.postBook(this.dataObject, function(err, result) {
 		if(!err && result && result) {
-			console.log('result', result);
 			scope.dataObject = result;
 		} else {
 			//TODO: hide edit, notify user
