@@ -3,16 +3,13 @@ var Sequelize = require('sequelize');
 
 exports.postBook = function(req, res) {
 	var book = req.body;
-	if(book) {
-		book.userId = req.user.id;
-		models.Book.create(book)
-		.success(function (result) {
-			res.json(result);
-			console.log('ROUTE postBook: ', result);
-		})
-		.failure(function (error) {
-			res.send(500);
-			console.log('ROUTE postBook error: ', error);
+	if(book.userId == req.user.id) {
+		models.Book.saveBook(book, function(err, result) {
+			if(!err && result) {
+				res.json(result);
+			} else {
+				res.send(500);			
+			}
 		});
 	}
 }

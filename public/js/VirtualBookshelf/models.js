@@ -168,8 +168,8 @@ VirtualBookshelf.Section.prototype.getGetFreeShelfPosition = function(shelf, boo
 		var right = sortedBooks[i + 1].left;
 		var distance = right - left;
 		
-		if(distance > bookSize) {
-			result = new THREE.Vector3(left + bookSize * 0.5, 0, 0);		
+		if(distance > bookSize.x) {
+			result = new THREE.Vector3(left + bookSize.x * 0.5, bookSize.y, bookSize.z);		
 			break;
 		}
 	};
@@ -292,9 +292,10 @@ VirtualBookshelf.Book.prototype.save = function() {
 	this.dataObject.titleFont = this.title.serializeFont();
 
 	console.log(this.dataObject);
-	VirtualBookshelf.Data.putBook(this.dataObject, function(err, result) {
-		if(!err && result && result[0]) {
-			scope.dataObject = result[0];
+	VirtualBookshelf.Data.postBook(this.dataObject, function(err, result) {
+		if(!err && result && result) {
+			console.log('result', result);
+			scope.dataObject = result;
 		} else {
 			//TODO: hide edit, notify user
 		}

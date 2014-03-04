@@ -184,13 +184,23 @@ VirtualBookshelf.UI.showCreateBook = function() {
 	if(VirtualBookshelf.selected.isBook()) {
 		menuNode.setValues(VirtualBookshelf.selected.object.dataObject, ['model', 'texture', 'cover', 'author', 'title']);
 	} else if(VirtualBookshelf.selected.isSection()) {
+		var section = VirtualBookshelf.selected.object;
+		var shelf = section.getShelfByPoint(VirtualBookshelf.selected.point);
+		var freePosition = section.getGetFreeShelfPosition(shelf, {x: 0.05, y: 0.12, z: 0.1}); 
 		var dataObject = {
 			model: menuNode.model.value, 
 			texture: menuNode.texture.value, 
-			cover: menuNode.cover.value
+			cover: menuNode.cover.value,
+			pos_x: freePosition.x,
+			pos_y: freePosition.y,
+			pos_z: freePosition.z,
+			sectionId: section.dataObject.id,
+			shelfId: shelf.id,
+			userId: VirtualBookshelf.user.id
 		};
 
 		VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
+			book.parent = shelf;
 			VirtualBookshelf.selected.object = book;
 			VirtualBookshelf.selected.get();
 		});
@@ -275,49 +285,6 @@ VirtualBookshelf.UI.cancelBookEdit = function() {
 		VirtualBookshelf.selected.invocate('refresh');
 		VirtualBookshelf.selected.put();
 		VirtualBookshelf.selected.clear();
-	}
-}
-
-VirtualBookshelf.UI.createBook = function() {
-	if(VirtualBookshelf.selected.isSection()) {
-		var shelf = VirtualBookshelf.selected.object.getShelfByPoint(VirtualBookshelf.selected.point);
-		if(!shelf) return;
-		var freePosition = VirtualBookshelf.selected.object.getGetFreeShelfPosition(shelf, 0.1); 
-		if(freePosition) {
-			var book = {
-				sectionId: VirtualBookshelf.selected.object.id,
-				shelfId: shelf.id,
-				pos_x: freePosition.x,
-				pos_y: freePosition.y,
-				pos_z: freePosition.z,
-				model: VirtualBookshelf.UI.getSelectedOption(VirtualBookshelf.UI.createBookObject),
-				author: VirtualBookshelf.UI.createBookAuthor.value,
-				title: VirtualBookshelf.UI.createBookTitle.value
-			};
-
-			if(book.model && book.sectionId) {
-				VirtualBookshelf.Data.postBook(book, function(err, result) {
-					if(!err && result) {
-						//TODO: show created book without refresh
-						VirtualBookshelf.loadLibrary(VirtualBookshelf.library.id);
-					}
-				});
-			}
-		} else {
-			alert('There are no free space, select another shelf.');
-		}
-	} else if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Book) {
-		var book = VirtualBookshelf.selected.object.getDataObject();
-		book.bookObjectId = VirtualBookshelf.UI.getSelectedOption(VirtualBookshelf.UI.createBookObject);
-		book.author = VirtualBookshelf.UI.createBookAuthor.value;
-		book.title = VirtualBookshelf.UI.createBookTitle.value;
-
-		VirtualBookshelf.Data.putBook(book, function(err, result) {
-			if(!err && result) {
-				//TODO: show created book without refresh
-				VirtualBookshelf.loadLibrary(VirtualBookshelf.library.id);
-			}
-		});
 	}
 }
 
