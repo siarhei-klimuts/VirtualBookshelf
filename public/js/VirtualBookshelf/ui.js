@@ -179,31 +179,36 @@ VirtualBookshelf.UI.showSectionMenu = function() {
 
 VirtualBookshelf.UI.showCreateBook = function() {
 	var menuNode = VirtualBookshelf.UI.menu.createBook;
-	menuNode.show();
 
 	if(VirtualBookshelf.selected.isBook()) {
+		menuNode.show();
 		menuNode.setValues(VirtualBookshelf.selected.object.dataObject, ['model', 'texture', 'cover', 'author', 'title']);
 	} else if(VirtualBookshelf.selected.isSection()) {
 		var section = VirtualBookshelf.selected.object;
 		var shelf = section.getShelfByPoint(VirtualBookshelf.selected.point);
 		var freePosition = section.getGetFreeShelfPosition(shelf, {x: 0.05, y: 0.12, z: 0.1}); 
-		var dataObject = {
-			model: menuNode.model.value, 
-			texture: menuNode.texture.value, 
-			cover: menuNode.cover.value,
-			pos_x: freePosition.x,
-			pos_y: freePosition.y,
-			pos_z: freePosition.z,
-			sectionId: section.dataObject.id,
-			shelfId: shelf.id,
-			userId: VirtualBookshelf.user.id
-		};
+		if(freePosition) {
+			var dataObject = {
+				model: menuNode.model.value, 
+				texture: menuNode.texture.value, 
+				cover: menuNode.cover.value,
+				pos_x: freePosition.x,
+				pos_y: freePosition.y,
+				pos_z: freePosition.z,
+				sectionId: section.dataObject.id,
+				shelfId: shelf.id,
+				userId: VirtualBookshelf.user.id
+			};
 
-		VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
-			book.parent = shelf;
-			VirtualBookshelf.selected.object = book;
-			VirtualBookshelf.selected.get();
-		});
+			VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
+				menuNode.show();
+				book.parent = shelf;
+				VirtualBookshelf.selected.object = book;
+				VirtualBookshelf.selected.get();
+			});
+		} else {
+			alert('There is no free space on selected shelf.');
+		}
 	}
 }
 
