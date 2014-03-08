@@ -6,6 +6,7 @@ VirtualBookshelf.UI.MenuNode = function(id) {
 VirtualBookshelf.UI.MenuNode.prototype = {
 	constructor: VirtualBookshelf.UI.MenuNode,
 	show: function() {
+		this.clear();
 		VirtualBookshelf.UI.show(this.container);
 	},
 	hide: function() {
@@ -19,6 +20,13 @@ VirtualBookshelf.UI.MenuNode.prototype = {
 				}
 			}
 		}
+	},
+	clear: function() {
+		this.model.selectedIndex = 0;
+		this.texture.selectedIndex = 0;
+		this.cover.value = null;
+		this.author.value = null;
+		this.title.value = null;
 	}
 }
 
