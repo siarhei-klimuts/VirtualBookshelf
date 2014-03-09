@@ -12,22 +12,7 @@ VirtualBookshelf.UI.MenuNode.prototype = {
 	hide: function() {
 		VirtualBookshelf.UI.hide(this.container);
 	},
-	setValues: function(dataObject, fields) {
-		if(dataObject && fields && fields.length) {
-			for(var i = fields.length - 1; i >= 0; i--) {
-				if(this[fields[i]]) {
-					this[fields[i]].value = dataObject[fields[i]];
-				}
-			}
-		}
-	},
-	clear: function() {
-		this.model.selectedIndex = 0;
-		this.texture.selectedIndex = 0;
-		this.cover.value = null;
-		this.author.value = null;
-		this.title.value = null;
-	}
+	clear: function() {}
 }
 
 VirtualBookshelf.UI.menu = {
@@ -38,6 +23,34 @@ VirtualBookshelf.UI.menu = {
 	sectionMenu: new VirtualBookshelf.UI.MenuNode('UI_SECTION_MENU'),
 	createBook: new VirtualBookshelf.UI.MenuNode('UI_CREATE_BOOK'),
 	saveDialog: new VirtualBookshelf.UI.MenuNode('UI_SAVE_DIALOG')
+};
+
+VirtualBookshelf.UI.menu.createBook.clear = function() {
+	this.model.selectedIndex = 0;
+	this.texture.selectedIndex = 0;
+	this.cover.value = null;
+	this.author.value = null;
+	this.authorSize.value = null;
+	this.authorColor.value = null;
+	this.title.value = null;
+	this.titleSize.value = null;
+	this.titleColor.value = null;
+}
+
+VirtualBookshelf.UI.menu.createBook.setValues = function() {
+	if(VirtualBookshelf.selected.isBook()) {
+		var book = VirtualBookshelf.selected.object;
+
+		this.model.value = book.model;
+		this.texture.value = book.texture.toString();
+		this.cover.value = book.cover.toString();
+		this.author.value = book.author.toString();
+		this.authorSize.value = book.author.size;
+		this.authorColor.value = book.author.color;
+		this.title.value = book.title.toString();
+		this.titleSize.value = book.title.size;
+		this.titleColor.value = book.title.color;
+	}
 };
 
 VirtualBookshelf.UI.init = function() {
@@ -109,8 +122,12 @@ VirtualBookshelf.UI.initControlsEvents = function() {
 	VirtualBookshelf.UI.menu.createBook.model.onchange = VirtualBookshelf.UI.changeModel;
 	VirtualBookshelf.UI.menu.createBook.texture.onchange = VirtualBookshelf.UI.changeBookTexture;
 	VirtualBookshelf.UI.menu.createBook.cover.onchange = VirtualBookshelf.UI.changeBookCover;
-	VirtualBookshelf.UI.menu.createBook.author.onchange = VirtualBookshelf.UI.changeValue;
-	VirtualBookshelf.UI.menu.createBook.title.onchange = VirtualBookshelf.UI.changeValue;
+	VirtualBookshelf.UI.menu.createBook.author.onchange = VirtualBookshelf.UI.changeSpecificValue('author', 'text');
+	VirtualBookshelf.UI.menu.createBook.authorSize.onchange = VirtualBookshelf.UI.changeSpecificValue('author', 'size');
+	VirtualBookshelf.UI.menu.createBook.authorColor.onchange = VirtualBookshelf.UI.changeSpecificValue('author', 'color');
+	VirtualBookshelf.UI.menu.createBook.title.onchange = VirtualBookshelf.UI.changeSpecificValue('title', 'text');
+	VirtualBookshelf.UI.menu.createBook.titleSize.onchange = VirtualBookshelf.UI.changeSpecificValue('title', 'size');
+	VirtualBookshelf.UI.menu.createBook.titleColor.onchange = VirtualBookshelf.UI.changeSpecificValue('title', 'color');
 	VirtualBookshelf.UI.menu.createBook.editCover.onclick = VirtualBookshelf.UI.switchEdited;
 	VirtualBookshelf.UI.menu.createBook.editAuthor.onclick = VirtualBookshelf.UI.switchEdited;
 	VirtualBookshelf.UI.menu.createBook.editTitle.onclick = VirtualBookshelf.UI.switchEdited;
@@ -190,12 +207,14 @@ VirtualBookshelf.UI.showCreateBook = function() {
 
 	if(VirtualBookshelf.selected.isBook()) {
 		menuNode.show();
-		menuNode.setValues(VirtualBookshelf.selected.object.dataObject, ['model', 'texture', 'cover', 'author', 'title']);
+		menuNode.setValues();
 	} else if(VirtualBookshelf.selected.isSection()) {
 		var section = VirtualBookshelf.selected.object;
 		var shelf = section.getShelfByPoint(VirtualBookshelf.selected.point);
 		var freePosition = section.getGetFreeShelfPosition(shelf, {x: 0.05, y: 0.12, z: 0.1}); 
 		if(freePosition) {
+			menuNode.show();
+
 			var dataObject = {
 				model: menuNode.model.value, 
 				texture: menuNode.texture.value, 
@@ -209,7 +228,6 @@ VirtualBookshelf.UI.showCreateBook = function() {
 			};
 
 			VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
-				menuNode.show();
 				book.parent = shelf;
 				VirtualBookshelf.selected.object = book;
 				VirtualBookshelf.selected.get();
@@ -253,19 +271,14 @@ VirtualBookshelf.UI.changeBookCover = function() {
 	}
 }
 
-VirtualBookshelf.UI.changeValue = function() {
-	if(VirtualBookshelf.selected.isBook()) {
-		var book = VirtualBookshelf.selected.object;
-
-		if(book[this.name].setText) {
-			book[this.name].setText(this.value);
-		} else {
-			book[this.name] = this.value;
+VirtualBookshelf.UI.changeSpecificValue = function(field, property) {
+	return function () {
+		if(VirtualBookshelf.selected.isBook()) {
+			VirtualBookshelf.selected.object[field][property] = this.value;
+			VirtualBookshelf.selected.object.updateTexture();
 		}
-
-		book.updateTexture();
-	}
-}
+	};
+};
 
 VirtualBookshelf.UI.switchEdited = function() {
 	var activeElemets = document.querySelectorAll('a.activeEdit');

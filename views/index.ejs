@@ -47,6 +47,9 @@
 				margin: 10px;
 				padding: 15px;
 			}
+			div#UI_CREATE_BOOK table td.font {
+				display: inline-flex;
+			}
 			select, input, option {
 				background: #200707;
 				border-color: #000000;
@@ -121,12 +124,20 @@
 	    				</tr>
 	    				<tr>
 	    					<td><label><%= __('ui.create_book.author') %></label></td>
-	    					<td><input name="author" type="text"></input></td>
+	    					<td class="font">
+	    						<input name="author" type="text"></input>
+	    						<input name="authorSize" type="number"></input>
+	    						<input name="authorColor" type="text"></input>
+	    					</td>
 	    					<td><a name="editAuthor" edit="author" class="inactiveEdit"><%= __('ui.create_book.edit') %></a></td>
 	    				</tr>
 	    				<tr>
 	    					<td><label><%= __('ui.create_book.title') %></label></td>
-	    					<td><input name="title" type="text"></input></td>
+	    					<td class="font">
+	    						<input name="title" type="text"></input>
+	    						<input name="titleSize" type="number"></input>
+	    						<input name="titleColor" type="text"></input>
+	    					</td>
 	    					<td><a name="editTitle" edit="title" class="inactiveEdit"><%= __('ui.create_book.edit') %></a></td>
 	    				</tr>
 	    			</tbody>

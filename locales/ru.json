@@ -1,1 +1,22 @@
-{}
+{
+	"menu.login.google": "Войти через Google",
+	"ui.login.text": "Вы не авторизованы.",
+	"ui.library.create.text": "У вас нет библиотек. Хотите создать?",
+	"ui.library.create.link": "Создать новую библиотеку.",
+	"ui.library.create.select.label": "Выберите модель окружения для библиотеки.",
+	"ui.library.select.text": "Выберите библиотеку в которую хотите войти.",
+	"ui.library.select.link": "Войти в выбранную библиотеку.",
+	"ui.library.menu.add.section": "Добавить шкаф.",
+	"ui.library.menu.add.book": "Добавить книгу.",
+	"ui.library.menu.exit": "Выход",
+	"ui.create_book.object": "Форма",
+	"ui.create_book.author": "Автор",
+	"ui.create_book.title": "Название",
+	"ui.create_book.cancel": "Отмена",
+	"ui.create_book.ok": "Создать",
+	"ui.save_dialog.cancel": "Отмена",
+	"ui.save_dialog.save": "Сохранить",
+	"ui.create_book.texture": "Текстура",
+	"ui.create_book.cover": "Обложка",
+	"ui.create_book.edit": "изменить"
+}

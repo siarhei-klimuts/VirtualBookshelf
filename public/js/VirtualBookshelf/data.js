@@ -93,38 +93,6 @@ VirtualBookshelf.Data.createBook = function(dataObject, done) {
 	});
 }
 
-// VirtualBookshelf.Data.loadBookData = function(dataObject, done) {
-// 	VirtualBookshelf.Data.createBook(dataObject.model, dataObject.texture, dataObject.cover, function (book) {
-
-// 	});
-	// var modelPath = '/obj/books/{model}/model.js'.replace('{model}', dataObject.model);
-	// var mapPath = '/obj/bookTextures/{model}.jpg'.replace('{model}', dataObject.texture || 'default');
-
-	// VirtualBookshelf.Data.loadObject(modelPath, mapPath, function (geometry, mapImage) {
-	// 	var canvas = document.createElement('canvas');
-	// 	var texture = new THREE.Texture(canvas);
-	//     var material = new THREE.MeshPhongMaterial({map: texture});
-	//     var properties = {
-	//     	textureImage: mapImage,
-	//     	coverImage: null
-	//     };
-
-	// 	canvas.width = canvas.height = VirtualBookshelf.Data.TEXTURE_RESOLUTION;
-
-	// 	if(dataObject.cover) {
-	// 		VirtualBookshelf.Data.getCover(dataObject.cover, function (err, coverImage) {
-	// 			if(!err && coverImage) {
-	// 				properties.coverImage = coverImage;
-	// 			}
-				
-	// 			done(dataObject, geometry, material, properties);
-	// 		});
-	// 	} else {
-	// 		done(dataObject, geometry, material, properties);
-	// 	}
-	// });
-// }
-
 VirtualBookshelf.Data.loadSection = function(dataObject, done) {
 	var path = '/obj/sections/{model}/'.replace('{model}', dataObject.model);
 	VirtualBookshelf.Data.loadObject(path + 'model.js', path + 'map.jpg', function (geometry, mapImage) {
@@ -177,28 +145,7 @@ VirtualBookshelf.Data.getImage = function(url, done) {
 		console.error('Data.getImage:', url, error);
 		done(error, null);
 	}
-	// var imgLoader = new THREE.ImageLoader();
-	// imgLoader.load(url,
-	// 	function (image) {
-	// 		console.log('Data.getImage:', url, 'Ok');
-	// 		done(null, image);
-	// 	}, 
-	// 	function () {}, 
-	// 	function (error) {
-	// 		console.error('Data.getImage:', url, error);
-	// 		done(error, null);
-	// 	}
-	// );
 }
-
-// VirtualBookshelf.Data.getCover = function(url, done) {
-// 	VirtualBookshelf.Data.getImage('/outside?link=' + url, done);
-// }
-
-// VirtualBookshelf.Data.getBookTexture = function(texture, done) {
-// 	var path = '/obj/bookTextures/{image}.jpg'.replace('{image}', texture);
-// 	VirtualBookshelf.Data.getImage(path, done);
-// }
 
 VirtualBookshelf.Data.CanvasText = function(text, properties) {
 
@@ -226,11 +173,11 @@ VirtualBookshelf.Data.CanvasText.prototype = {
 		var args = properties && properties.split(',') || [];
 
 		this.style = args[0];
-		this.size = args[1];
-		this.font = args[2];
+		this.size = args[1] || 14;
+		this.font = args[2] || 'Arial';
 		this.x = Number(args[3]) || VirtualBookshelf.Data.COVER_FACE_X;
 		this.y = Number(args[4]) || 10;
-		this.color = args[5];
+		this.color = args[5] || 'black';
 		this.width = args[6] || 512;
 	},
 	move: function(dX, dY) {
