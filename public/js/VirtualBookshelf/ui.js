@@ -21,8 +21,7 @@ VirtualBookshelf.UI.menu = {
 	selectLibrary: new VirtualBookshelf.UI.MenuNode('UI_LIBRARY_SELECT'),
 	libraryMenu: new VirtualBookshelf.UI.MenuNode('UI_LIBRARY_MENU'),
 	sectionMenu: new VirtualBookshelf.UI.MenuNode('UI_SECTION_MENU'),
-	createBook: new VirtualBookshelf.UI.MenuNode('UI_CREATE_BOOK'),
-	saveDialog: new VirtualBookshelf.UI.MenuNode('UI_SAVE_DIALOG')
+	createBook: new VirtualBookshelf.UI.MenuNode('UI_CREATE_BOOK')
 };
 
 VirtualBookshelf.UI.menu.createBook.clear = function() {
@@ -72,7 +71,6 @@ VirtualBookshelf.UI.searchForUIs = function() {
 	scope.libraryMenuPanel = document.getElementById('UI_LIBRARY_MENU');
 	scope.sectionCreateDropdown = document.getElementById('UI_SECTION_CREATE_DROPDOWN');
 	scope.sectionMenu = document.getElementById('UI_SECTION_MENU');
-	scope.saveDialog = document.getElementById('UI_SAVE_DIALOG');
 }
 
 VirtualBookshelf.UI.loadMenuNodes = function() {
@@ -300,24 +298,20 @@ VirtualBookshelf.UI.switchEdited = function() {
 
 VirtualBookshelf.UI.saveBook = function() {
 	if(VirtualBookshelf.selected.isBook()) {
-		VirtualBookshelf.selected.invocate('save');
+		var book = VirtualBookshelf.selected.object;
+
 		VirtualBookshelf.selected.put();
-		VirtualBookshelf.selected.clear();
+		book.save();
 	}
 }
 
 VirtualBookshelf.UI.cancelBookEdit = function() {
 	if(VirtualBookshelf.selected.isBook()) {
-		VirtualBookshelf.selected.invocate('refresh');
+		var book = VirtualBookshelf.selected.object;
+		
 		VirtualBookshelf.selected.put();
-		VirtualBookshelf.selected.clear();
+		book.refresh();
 	}
-}
-
-// save dialog
-
-VirtualBookshelf.UI.showSaveDialog = function() {
-	VirtualBookshelf.UI.show(VirtualBookshelf.UI.saveDialog);
 }
 
 // utils
@@ -386,9 +380,6 @@ VirtualBookshelf.UI.refresh = function() {
 		}
 		if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Book) {
 			scope.showCreateBook();
-		}
-		if(Object.getOwnPropertyNames(VirtualBookshelf.Controls.changedObjects).length) {
-			scope.showSaveDialog();
 		}
 	} else {
 		scope.show(scope.loginPanel);

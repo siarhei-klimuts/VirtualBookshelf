@@ -67,7 +67,6 @@ app.put('/sections', isAuthorized, routes.section.putSections);
 
 app.post('/book', isAuthorized, routes.book.postBook);
 app.get('/books/:sectionId', isAuthorized, routes.book.getBooks);
-app.put('/books', isAuthorized, routes.book.putBooks);
 
 models.init(function(err) {
     if(!err) {

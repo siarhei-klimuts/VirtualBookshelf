@@ -1,28 +1,41 @@
-VirtualBookshelf.Camera = VirtualBookshelf.Camera || {};
-VirtualBookshelf.Camera.HEIGTH = 1.5;
+VirtualBookshelf.Camera = VirtualBookshelf.Camera || {
+	HEIGTH: 1.5,
+	object: new VirtualBookshelf.CameraObject(),
+	setParent: function(parent) {
+		parent.add(this.object);
+	},
+	getPosition: function() {
+		return this.object.position;
+	}
+};
 
 VirtualBookshelf.Camera.init = function(width, height) {
 	VirtualBookshelf.camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 50);
-	VirtualBookshelf.camera.position = new THREE.Vector3(0, VirtualBookshelf.Camera.HEIGTH, 0);
-	VirtualBookshelf.camera.rotation.order = 'YXZ';
+	this.object.position = new THREE.Vector3(0, VirtualBookshelf.Camera.HEIGTH, 0);
+	this.object.rotation.order = 'YXZ';
 
 	var candle = new THREE.PointLight(0x665555, 1.5, 6);
 	candle.position.set(0, 0, 0);
-	VirtualBookshelf.camera.add(candle);
+	this.object.add(candle);
+
+	this.object.add(VirtualBookshelf.camera);
 }
 
 VirtualBookshelf.Camera.rotate = function(x, y) {
-	var newX = VirtualBookshelf.camera.rotation.x + y * 0.0001 || 0;
-	var newY = VirtualBookshelf.camera.rotation.y + x * 0.0001 || 0;
+	var newX = this.object.rotation.x + y * 0.0001 || 0;
+	var newY = this.object.rotation.y + x * 0.0001 || 0;
 
 	if(newX < 1.57 && newX > -1.57) {	
-		VirtualBookshelf.camera.rotation.x = newX;
+		this.object.rotation.x = newX;
 	}
 
-	VirtualBookshelf.camera.rotation.y = newY;
+	this.object.rotation.y = newY;
 }
 
 VirtualBookshelf.Camera.goForward = function() {
-	VirtualBookshelf.camera.translateZ(-0.02);
-	VirtualBookshelf.camera.position.y = VirtualBookshelf.Camera.HEIGTH;
+	var direction = VirtualBookshelf.Controls.mouse.getVector().clone();
+	var newPosition = this.object.position.clone();
+	newPosition.add(direction.multiplyScalar(0.02));
+
+	this.object.move(newPosition);
 }

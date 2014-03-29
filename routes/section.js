@@ -3,18 +3,17 @@ var Sequelize = require('sequelize');
 
 exports.postSection = function(req, res) {	
 	var sectionData = req.body;
+
 	if(sectionData && req.user && sectionData.userId == req.user.id) {
-		models.Section.create(sectionData, {raw: true})
-		.success(function (result) {
-			res.json(result);
-			console.log('ROUTE postSection: ', result);
-		})
-		.failure(function (error) {
-			res.send(500);
-			console.log('ROUTE postSection error: ', error);
+		models.Section.saveSection(sectionData, function(err, result) {
+			if(!err && result) {
+				res.json(result);
+			} else {
+				res.send(500);			
+			}
 		});
 	}
-}
+};
 
 exports.getSections = function(req, res){
 	models.Section.findAll({

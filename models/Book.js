@@ -46,7 +46,6 @@ function saveBook(dataObject, done) {
 
 function updateBook(dataObject, done) {
 	for(key in dataObject) {
-		console.log('key',key);
 		this[key] = dataObject[key];
 	}
 

@@ -7,5 +7,48 @@ module.exports = function(sequelize, DataTypes) {
 		dir_y: DataTypes.FLOAT,
 		dir_z: DataTypes.FLOAT,
 		model: DataTypes.STRING
-	}, {timestamps: false});
-} 
+	}, {
+		timestamps: false,
+		classMethods: {
+    		saveSection: saveSection
+		},
+		instanceMethods: {
+			updateSection: updateSection
+		}
+	});
+};
+
+function saveSection(dataObject, done) {
+	var scope = this;
+
+	if(dataObject) {
+		this.findOrCreate({id: dataObject.id}, dataObject)
+		.success(function (result) {
+			if(!result.options.isNewRecord) {
+				result.updateSection(dataObject, function (err, result) {
+					done(err, result);
+				});
+			} else {
+				done(null, result);
+			}
+		})
+		.failure(function (error) {
+			console.error('Section save: ', error);
+			done(error, null);
+		});
+	}
+};
+
+function updateSection(dataObject, done) {
+	for(key in dataObject) {
+		this[key] = dataObject[key];
+	}
+
+	this.save()
+	.success(function (result) {
+		done(null, result);
+	})
+	.failure(function (error) {
+		done(error, null);
+	});
+};

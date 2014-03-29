@@ -1,7 +1,5 @@
 VirtualBookshelf.Controls = VirtualBookshelf.Controls || {};
 
-VirtualBookshelf.Controls.changedObjects = {};
-
 VirtualBookshelf.selected = {
 	object: null,
 	parent: null,
@@ -14,10 +12,8 @@ VirtualBookshelf.selected = {
 	isSection: function() {
 		return this.object instanceof VirtualBookshelf.Section;
 	},
-	invocate: function(method) {
-		if(this.object && this.object[method]) {
-			this.object[method].call(this.object);
-		}
+	isMovable: function() {
+		return Boolean(this.isBook() || this.isSection());
 	},
 	clear: function() {
 		this.object = null;
@@ -47,6 +43,12 @@ VirtualBookshelf.selected = {
 	},
 	isGetted: function() {
 		return this.isBook() && this.getted;
+	},
+	save: function() {
+		if(this.isMovable() && this.object.changed) {
+			this.object.save();
+			VirtualBookshelf.UI.refresh();
+		}
 	}
 };
 
@@ -90,13 +92,10 @@ VirtualBookshelf.Controls.mouse = {
 		var vector = new THREE.Vector3((this.x / this.width) * 2 - 1, - (this.y / this.height) * 2 + 1, 0.5);
 		projector.unprojectVector(vector, VirtualBookshelf.camera);
 	
-		return vector.sub(VirtualBookshelf.camera.position).normalize();
+		return vector.sub(VirtualBookshelf.Camera.getPosition()).normalize();
 	},
 	isCanvas: function() {
 		return this.target == VirtualBookshelf.canvas;
-	},
-	isPreview: function() {
-		return this.target == VirtualBookshelf.UI.menu.createBook.preview;
 	}
 };
 
@@ -114,8 +113,7 @@ VirtualBookshelf.Controls.initListeners = function(domElement) {
 }
 
 VirtualBookshelf.Controls.clear = function() {
-	VirtualBookshelf.selected.clear();
-	VirtualBookshelf.Controls.changedObjects = {};	
+	VirtualBookshelf.selected.clear();	
 }
 
 VirtualBookshelf.Controls.update = function() {
@@ -157,7 +155,7 @@ VirtualBookshelf.Controls.onMouseUp = function(event) {
 	VirtualBookshelf.Controls.mouse.up(event);
 	
 	switch(event.which) {
-		case 1: VirtualBookshelf.Controls.objectChanged(VirtualBookshelf.selected.object); break;
+		 case 1: VirtualBookshelf.selected.save(); break;
 	}
 }
 
@@ -195,10 +193,10 @@ VirtualBookshelf.Controls.onMouseMove = function(event) {
 VirtualBookshelf.Controls.selectObject = function() {
 	if(VirtualBookshelf.Controls.mouse.isCanvas() && VirtualBookshelf.library) {
 		var vector = VirtualBookshelf.Controls.mouse.getVector();
-		var raycaster = new THREE.Raycaster(VirtualBookshelf.camera.position, vector);
+		var raycaster = new THREE.Raycaster(VirtualBookshelf.Camera.getPosition(), vector);
 		var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children, true);
 
-		VirtualBookshelf.Controls.releaseObject();
+		VirtualBookshelf.selected.clear();
 
 		if(intersects.length) {
 			for(var i = 0; i < intersects.length; i++) {
@@ -212,81 +210,19 @@ VirtualBookshelf.Controls.selectObject = function() {
 		
 		VirtualBookshelf.UI.refresh();
 	}
-}
-
-VirtualBookshelf.Controls.releaseObject = function() {
-	VirtualBookshelf.selected.clear();
-	VirtualBookshelf.UI.refresh();
-}
+};
 
 VirtualBookshelf.Controls.moveObject = function() {
-	var object = VirtualBookshelf.selected.object;
-	if(object instanceof VirtualBookshelf.Section || object instanceof VirtualBookshelf.Book) {
-		var mouseVector = VirtualBookshelf.Controls.mouse.getVector();
-		var cameraPosition = VirtualBookshelf.camera.position;
-		var planePoint = VirtualBookshelf.selected.point;
-		var planeNormal = new THREE.Vector3(0, 1, 0);
-		var d = -(planeNormal.x * planePoint.x + planeNormal.y * planePoint.y + planeNormal.z * planePoint.z);
-		var a = -(planeNormal.dot(cameraPosition) + d);
-		var b = (planeNormal.dot(mouseVector));
-		var c = a / b;
-		var intersectionPoint = new THREE.Vector3(cameraPosition.x + mouseVector.x * c, cameraPosition.y + mouseVector.y * c, cameraPosition.z + mouseVector.z * c);
-		object.parent.worldToLocal(intersectionPoint);
-		object.move(intersectionPoint);
-	}
-}
+	var mouseVector;
+	var newPosition;
 
-VirtualBookshelf.Controls.saveChanged = function() {
-	var sections = [];
-	var books = [];
-	
-	for(key in VirtualBookshelf.Controls.changedObjects) {
-		var object = VirtualBookshelf.Controls.changedObjects[key];
-		if(object && object.position) {
-			var dao = {
-				id: object.id,
-				pos_x: object.position.x,
-				pos_y: object.position.y,
-				pos_z: object.position.z
-			}
-			if(object instanceof VirtualBookshelf.Section) {
-				sections.push(dao);
-			} else if(object instanceof VirtualBookshelf.Book) {
-				books.push(dao);
-			}
-		}
-	}
+	if(VirtualBookshelf.selected.isMovable()) {
+		mouseVector = VirtualBookshelf.Controls.mouse.getVector();
+		newPosition = VirtualBookshelf.selected.object.position.clone();
 
-	if(books && books.length) {
-		VirtualBookshelf.Data.putBooks(books, function (err, data) {
-			if(!err && data) {
-				data.forEach(function (book) {
-					delete VirtualBookshelf.Controls.changedObjects[book.id];
-				});
-				VirtualBookshelf.UI.refresh();
-			} else {
-				alert('Can\'t save books. Please try again.');
-			}
-		});
-	}
+		newPosition.x -= (mouseVector.z * VirtualBookshelf.Controls.mouse.dX + mouseVector.x * VirtualBookshelf.Controls.mouse.dY) * 0.003;
+		newPosition.z -= (-mouseVector.x * VirtualBookshelf.Controls.mouse.dX + mouseVector.z * VirtualBookshelf.Controls.mouse.dY) * 0.003;
 
-	if(sections && sections.length) {
-		VirtualBookshelf.Data.putSections(sections, function (err, data) {
-			if(!err && data) {
-				data.forEach(function (section) {
-					delete VirtualBookshelf.Controls.changedObjects[section.id];
-				});
-				VirtualBookshelf.UI.refresh();
-			} else {
-				alert('Can\'t save sections. Please try again.');
-			}
-		});
+		VirtualBookshelf.selected.object.move(newPosition)			
 	}
-}
-
-VirtualBookshelf.Controls.objectChanged = function(object) {
-	if(object && object.changed) {
-		VirtualBookshelf.Controls.changedObjects[object.id] = object;
-		VirtualBookshelf.UI.refresh();
-	}
-}
+};

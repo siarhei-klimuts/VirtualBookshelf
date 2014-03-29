@@ -47,14 +47,10 @@ VirtualBookshelf.clearScene = function() {
 
 	while(VirtualBookshelf.scene.children.length > 0) {
 		if(VirtualBookshelf.scene.children[0].dispose) {
-			console.log('dis');
 			VirtualBookshelf.scene.children[0].dispose();
 		}
 		VirtualBookshelf.scene.remove(VirtualBookshelf.scene.children[0]);
-
 	}
-
-	VirtualBookshelf.scene.add(VirtualBookshelf.camera);
 }
 
 VirtualBookshelf.loadLibrary = function(libraryId) {
@@ -62,7 +58,9 @@ VirtualBookshelf.loadLibrary = function(libraryId) {
 	VirtualBookshelf.Data.getLibrary(libraryId, function(err, library) {
 		VirtualBookshelf.Data.loadLibrary(library, function (params, geometry, material) {
 			VirtualBookshelf.library = new VirtualBookshelf.Library(params, geometry, material);
+			VirtualBookshelf.Camera.setParent(VirtualBookshelf.library);
 			VirtualBookshelf.scene.add(VirtualBookshelf.library);
+			VirtualBookshelf.library.loadSections();
 			VirtualBookshelf.UI.refresh();
 		});				
 	});
