@@ -11,61 +11,8 @@
 		<script src="/js/VirtualBookshelf/controls.js"></script>
 		<script src="/js/VirtualBookshelf/ui.js"></script>
 		<script src="/js/VirtualBookshelf/data.js"></script>
-		<style>
-			body {
-				padding: 0;
-				margin: 0;
-  				overflow: hidden;
-			}
-			canvas#LIBRARY {
-				width: 100%;
-				height: 100%;
-    			display: block; 
-			}
-			p, label{
-				color: #C5DEBF;
-				font-size: 14pt;
-				margin: 0;
-				margin-bottom: 5px;
-			}
-			a {
-				color: #9582FF;
-				text-decoration: none;
-				cursor: pointer;
-				margin: 
-			}
-			div.ui {
-				position: absolute;
-				max-width: 30%;
-				left: 0;
-				top: 0;
-			}
-			div.ui div.uiPanel {
-				border: 1px;
-				border-color: #8F2222;
-				border-style: dashed;
-				margin: 10px;
-				padding: 15px;
-			}
-			div#UI_CREATE_BOOK table td.font {
-				display: inline-flex;
-			}
-			select, input, option {
-				background: #200707;
-				border-color: #000000;
-				border-style: solid;
-				border-width: 1px;
-				box-sizing: inherit;
-				width: 100%;
-				color: #C5DEBF;
-			}
-			.activeEdit {
-				color: #007700;
-			}
-			.inactiveEdit {
-				color: #770000;
-			}
-		</style>
+
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
 	</head>
 	<body>
 		<script type="text/javascript">
@@ -104,6 +51,12 @@
 
 	    	<div id="UI_SECTION_MENU" class="uiPanel">
     			<a onclick="VirtualBookshelf.UI.showCreateBook();"><%= __('ui.library.menu.add.book') %></a>
+    			<br/>
+    			<input id="UI_SECTION_MENU_TRANSLATE_MOVE" type="radio" menuControl="translateMove" name="translate" value="move" checked="true" />
+    			<label for="UI_SECTION_MENU_TRANSLATE_MOVE"><%= __('ui.section.move') %></label>
+    			<br/>
+    			<input id="UI_SECTION_MENU_TRANSLATE_ROTATE" type="radio" menuControl="translateRotate" name="translate" value="rotate" />
+    			<label for="UI_SECTION_MENU_TRANSLATE_ROTATE"><%= __('ui.section.rotate') %></label>
 	    	</div>
 
 	    	<div id="UI_CREATE_BOOK" class="uiPanel">

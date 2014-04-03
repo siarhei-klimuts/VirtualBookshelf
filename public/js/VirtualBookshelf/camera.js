@@ -33,9 +33,15 @@ VirtualBookshelf.Camera.rotate = function(x, y) {
 }
 
 VirtualBookshelf.Camera.goForward = function() {
-	var direction = VirtualBookshelf.Controls.mouse.getVector().clone();
+	var direction = this.getVector();
 	var newPosition = this.object.position.clone();
 	newPosition.add(direction.multiplyScalar(0.02));
 
 	this.object.move(newPosition);
+}
+
+VirtualBookshelf.Camera.getVector = function() {
+	var vector = new THREE.Vector3(0, 0, -1);
+
+	return vector.applyEuler(this.object.rotation);
 }

@@ -15,6 +15,9 @@ VirtualBookshelf.selected = {
 	isMovable: function() {
 		return Boolean(this.isBook() || this.isSection());
 	},
+	isRotatable: function() {
+		return Boolean(this.isSection());
+	},
 	clear: function() {
 		this.object = null;
 		this.getted = null;
@@ -216,13 +219,17 @@ VirtualBookshelf.Controls.moveObject = function() {
 	var mouseVector;
 	var newPosition;
 
-	if(VirtualBookshelf.selected.isMovable()) {
-		mouseVector = VirtualBookshelf.Controls.mouse.getVector();
+	if(VirtualBookshelf.selected.isBook() || (VirtualBookshelf.selected.isSection() && VirtualBookshelf.UI.menu.sectionMenu.isMoveOption())) {
+		mouseVector = VirtualBookshelf.Camera.getVector();	
 		newPosition = VirtualBookshelf.selected.object.position.clone();
+		VirtualBookshelf.selected.object.parent.localToWorld(newPosition);
 
 		newPosition.x -= (mouseVector.z * VirtualBookshelf.Controls.mouse.dX + mouseVector.x * VirtualBookshelf.Controls.mouse.dY) * 0.003;
 		newPosition.z -= (-mouseVector.x * VirtualBookshelf.Controls.mouse.dX + mouseVector.z * VirtualBookshelf.Controls.mouse.dY) * 0.003;
 
+		VirtualBookshelf.selected.object.parent.worldToLocal(newPosition);
 		VirtualBookshelf.selected.object.move(newPosition)			
+	} else if(VirtualBookshelf.UI.menu.sectionMenu.isRotateOption() && VirtualBookshelf.selected.isSection()) {
+		VirtualBookshelf.selected.object.rotate(VirtualBookshelf.Controls.mouse.dX);			
 	}
 };

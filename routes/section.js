@@ -9,6 +9,7 @@ exports.postSection = function(req, res) {
 			if(!err && result) {
 				res.json(result);
 			} else {
+				console.error('ROUTE: sections POST: ', err);
 				res.send(500);			
 			}
 		});

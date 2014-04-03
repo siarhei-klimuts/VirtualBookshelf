@@ -18,5 +18,7 @@
 	"ui.save_dialog.save": "Сохранить",
 	"ui.create_book.texture": "Текстура",
 	"ui.create_book.cover": "Обложка",
-	"ui.create_book.edit": "изменить"
+	"ui.create_book.edit": "изменить",
+	"ui.section.move": "Двигать",
+	"ui.section.rotate": "Вращать"
 }

@@ -2,10 +2,14 @@ VirtualBookshelf.Object = function(dataObject, geometry, material) {
 	THREE.Mesh.call(this, geometry, material);
 
 	this.dataObject = dataObject || {};
+	this.dataObject.rotation = this.dataObject.rotation || [0, 0, 0];
+	
 	this.id = this.dataObject.id;
 	this.position = new THREE.Vector3(this.dataObject.pos_x, this.dataObject.pos_y, this.dataObject.pos_z);
 	this.rotation.order = 'XYZ';
+	this.rotation.fromArray(this.dataObject.rotation.map(Number));
 
+	this.updateMatrix();
 	this.geometry.computeBoundingBox();
 	this.updateBoundingBox();		
 }
@@ -17,12 +21,20 @@ VirtualBookshelf.Object.prototype.isOutOfParrent = function() {
 		|| Math.abs(this.boundingBox.center.z - this.parent.boundingBox.center.z) > (this.parent.boundingBox.radius.z - this.boundingBox.radius.z);
 }
 VirtualBookshelf.Object.prototype.isCollided = function() {
-	var result = this.isOutOfParrent();
-	var targets = this.parent.children;
+	var
+		result,
+		targets,
+		target,
+		i;
+
+	this.updateBoundingBox();
+
+	result = this.isOutOfParrent();
+	targets = this.parent.children;
 
 	if(!result) {
-		for(var i = targets.length - 1; i >= 0; i--) {
-			var target = targets[i].boundingBox;
+		for(i = targets.length - 1; i >= 0; i--) {
+			target = targets[i].boundingBox;
 
 			if(targets[i] === this
 			|| (Math.abs(this.boundingBox.center.x - target.center.x) > (this.boundingBox.radius.x + target.radius.x))
@@ -43,7 +55,6 @@ VirtualBookshelf.Object.prototype.move = function(newPosition) {
 	
 	if(newPosition.x) {
 		this.position.setX(newPosition.x);
-		this.updateBoundingBox();
 
 		if(this.isCollided()) {
 			this.position.setX(currentPosition.x);
@@ -54,7 +65,6 @@ VirtualBookshelf.Object.prototype.move = function(newPosition) {
 
 	if(newPosition.z) {
 		this.position.setZ(newPosition.z);
-		this.updateBoundingBox();
 
 		if(this.isCollided()) {
 			this.position.setZ(currentPosition.z);
@@ -65,26 +75,46 @@ VirtualBookshelf.Object.prototype.move = function(newPosition) {
 
 	this.updateBoundingBox();
 }
+VirtualBookshelf.Object.prototype.rotate = function(dX) {
+	var currentRotation = this.rotation.y;
+	
+	if(dX) {
+		this.rotation.y += dX * 0.01;
+
+		if(this.isCollided()) {
+			this.rotation.y = currentRotation;
+		} else {
+			this.changed = true;
+		}
+	}
+		
+	this.updateBoundingBox();
+}
 VirtualBookshelf.Object.prototype.updateBoundingBox = function() {
-	var radius = {
-		x: (this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x) * 0.5,
-		y: (this.geometry.boundingBox.max.y - this.geometry.boundingBox.min.y) * 0.5,
-		z: (this.geometry.boundingBox.max.z - this.geometry.boundingBox.min.z) * 0.5
+	var
+		boundingBox,
+		radius,
+		center;
+
+	this.updateMatrix();
+	boundingBox = this.geometry.boundingBox.clone().applyMatrix4(this.matrix);
+	
+	radius = {
+		x: (boundingBox.max.x - boundingBox.min.x) * 0.5,
+		y: (boundingBox.max.y - boundingBox.min.y) * 0.5,
+		z: (boundingBox.max.z - boundingBox.min.z) * 0.5
 	};
-	var center = new THREE.Vector3(
-		radius.x + this.geometry.boundingBox.min.x,
-		radius.y + this.geometry.boundingBox.min.y,
-		radius.z + this.geometry.boundingBox.min.z
+
+	center = new THREE.Vector3(
+		radius.x + boundingBox.min.x,
+		radius.y + boundingBox.min.y,
+		radius.z + boundingBox.min.z
 	);
 
 	this.boundingBox = {
 		radius: radius,
-		center: this.position //TODO: needs center of section in parent or world coordinates
+		center: center
 	};
-}
-VirtualBookshelf.Object.prototype.rotate = function(x, y) {
-	this.rotation.x += y * 0.01 || 0;
-	this.rotation.y += x * 0.01 || 0;
 }
 VirtualBookshelf.Object.prototype.reload = function() {
 	this.position.setX(this.dataObject.pos_x);
@@ -138,8 +168,6 @@ VirtualBookshelf.Section = function(params, geometry, material) {
 	VirtualBookshelf.Object.call(this, params, geometry, material);
 
 	this.shelves = {};
-	this.position = new THREE.Vector3(params.pos_x, params.pos_y, params.pos_z);
-	
 	for(key in params.data.shelves) {
 		this.shelves[key] = new VirtualBookshelf.Shelf(params.data.shelves[key]); 
 		this.add(this.shelves[key]);
@@ -170,9 +198,12 @@ VirtualBookshelf.Section.prototype.save = function() {
 	this.dataObject.pos_y = this.position.y;
 	this.dataObject.pos_z = this.position.z;
 
+	this.dataObject.rotation = [this.rotation.x, this.rotation.y, this.rotation.z];
+
 	VirtualBookshelf.Data.postSection(this.dataObject, function(err, result) {
 		if(!err && result) {
 			scope.dataObject = result;
+			scope.changed = false;
 		} else {
 			//TODO: hide edit, notify user
 		}

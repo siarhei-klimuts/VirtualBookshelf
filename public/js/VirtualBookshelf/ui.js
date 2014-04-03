@@ -24,6 +24,14 @@ VirtualBookshelf.UI.menu = {
 	createBook: new VirtualBookshelf.UI.MenuNode('UI_CREATE_BOOK')
 };
 
+VirtualBookshelf.UI.menu.sectionMenu.isMoveOption = function() {
+	return this.translateMove.checked;
+};
+
+VirtualBookshelf.UI.menu.sectionMenu.isRotateOption = function() {
+	return this.translateRotate.checked;
+};
+
 VirtualBookshelf.UI.menu.createBook.clear = function() {
 	this.model.selectedIndex = 0;
 	this.texture.selectedIndex = 0;
@@ -70,29 +78,33 @@ VirtualBookshelf.UI.searchForUIs = function() {
 	scope.librarySelectPanelDropdown = document.getElementById('UI_LIBRARY_SELECT_DROPDOWN');
 	scope.libraryMenuPanel = document.getElementById('UI_LIBRARY_MENU');
 	scope.sectionCreateDropdown = document.getElementById('UI_SECTION_CREATE_DROPDOWN');
-	scope.sectionMenu = document.getElementById('UI_SECTION_MENU');
-}
+};
 
 VirtualBookshelf.UI.loadMenuNodes = function() {
 	var menu = VirtualBookshelf.UI.menu;
-	
+	var menuNode;
+	var controls;
+	var control;
+	var menuControlAttribute;
+	var j;
+
 	for(key in menu) {
-		var menuNode = menu[key];
+		menuNode = menu[key];
 
 		if(menuNode && menuNode.id) {
 			menuNode.container = document.getElementById(menuNode.id);
-			var controls = menuNode.container.querySelectorAll('input, select, a, canvas');
+			controls = menuNode.container.querySelectorAll('[menuControl], input, select, a');
 
-			for(var j = controls.length - 1; j >= 0; j--) {
-				var control = controls[j];
-
-				if(control && (control.name || control.id)) {
-					menuNode[control.name || control.id] = control;
+			for(j = controls.length - 1; j >= 0; j--) {
+				control = controls[j];
+				menuControlAttribute = control.getAttribute('menuControl');
+				if(control && (menuControlAttribute || control.name || control.id)) {
+					menuNode[menuControlAttribute || control.name || control.id] = control;
 				}
 			}
 		}
-	};
-}
+	}
+};
 
 VirtualBookshelf.UI.initControlsData = function() {
 	var scope = VirtualBookshelf.UI;
@@ -195,7 +207,7 @@ VirtualBookshelf.UI.createSection = function() {
 // section menu
 
 VirtualBookshelf.UI.showSectionMenu = function() {
-	VirtualBookshelf.UI.show(VirtualBookshelf.UI.sectionMenu);
+	VirtualBookshelf.UI.menu.sectionMenu.show();
 }
 
 // create book

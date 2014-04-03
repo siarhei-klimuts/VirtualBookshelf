@@ -18,5 +18,7 @@
 	"ui.save_dialog.save": "Save",
 	"ui.create_book.texture": "Texture",
 	"ui.create_book.cover": "Cover",
-	"ui.create_book.edit": "edit"
+	"ui.create_book.edit": "edit",
+	"ui.section.move": "Move",
+	"ui.section.rotate": "Rotate"
 }
