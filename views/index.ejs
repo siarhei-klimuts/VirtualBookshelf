@@ -22,34 +22,41 @@
     	<canvas id="LIBRARY"></canvas>
 
     	<div class="ui">
-	    	<div id="UI_LOGIN" class="uiPanel">
+	    	<div menuNode="inventory" class="uiPanel right">
+	    		<ul menuControl="books"></ul>
+	    	</div>
+
+	    	<div menuNode="feedback" class="uiPanel right">
+    			<textarea menuControl="message" placeholder="<%= __('ui.feedback.message') %>"></textarea>
+    			<input type="submit" menuControl="submit" value="<%= __('ui.feedback.submit') %>" />
+	    	</div>
+
+	    	<div menuNode="login" class="uiPanel left">
 	    		<p><%= __('ui.login.text') %></p>
 	    		<a href="/auth/google"><img src="/img/google.png"/></a>
 	    	</div>
 
-	    	<div id="UI_LIBRARY_CREATE" class="uiPanel">
+	    	<div menuNode="createLibrary" class="uiPanel left">
 	    		<p><%= __('ui.library.create.text') %></p>
 	    		<p><%= __('ui.library.create.select.label') %></p>
 	    		<br>
-	    		<select id="UI_LIBRARY_CREATE_SELECT"></select>
+	    		<select menuControl="model"></select>
 	    		<a onclick="VirtualBookshelf.UI.createLibrary();"><%= __('ui.library.create.link') %></a>
 	    	</div>
 
-	    	<div id="UI_LIBRARY_SELECT" class="uiPanel">
+	    	<div menuNode="selectLibrary" class="uiPanel left">
 	    		<p><%= __('ui.library.select.text') %></p>
 	    		<br>
-	    		<select id="UI_LIBRARY_SELECT_DROPDOWN"></select>
+	    		<select menuControl="library"></select>
 	    		<a onclick="VirtualBookshelf.UI.selectLibrary();"><%= __('ui.library.select.link') %></a>
 	    	</div>
 
-	    	<div id="UI_LIBRARY_MENU" class="uiPanel">
-	    		<select id="UI_SECTION_CREATE_DROPDOWN"></select>
+	    	<div menuNode="libraryMenu" class="uiPanel left">
+	    		<select menuControl="model"></select>
     			<a onclick="VirtualBookshelf.UI.createSection();"><%= __('ui.library.menu.add.section') %></a>
-    			<br>
-    			<a onclick="alert('Not implemented!');"><%= __('ui.library.menu.exit') %></a>
 	    	</div>
 
-	    	<div id="UI_SECTION_MENU" class="uiPanel">
+	    	<div menuNode="sectionMenu" class="uiPanel left">
     			<a onclick="VirtualBookshelf.UI.showCreateBook();"><%= __('ui.library.menu.add.book') %></a>
     			<br/>
     			<input id="UI_SECTION_MENU_TRANSLATE_MOVE" type="radio" menuControl="translateMove" name="translate" value="move" checked="true" />
@@ -59,49 +66,37 @@
     			<label for="UI_SECTION_MENU_TRANSLATE_ROTATE"><%= __('ui.section.rotate') %></label>
 	    	</div>
 
-	    	<div id="UI_CREATE_BOOK" class="uiPanel">
-	    		<table>
-	    			<tbody>
-	    				<tr>
-	    					<td><label><%= __('ui.create_book.object') %></label></td>
-	    					<td><select name="model"></select></td>
-	    				</tr>
-	    				<tr>
-	    					<td><label><%= __('ui.create_book.texture') %></label></td>
-	    					<td><select name="texture"></select></td>
-	    				</tr>
-	    				<tr>
-	    					<td><label><%= __('ui.create_book.cover') %></label></td>
-	    					<td><input name="cover" type="url"></input></td>
-	    					<td><a name="editCover" edit="cover" class="inactiveEdit"><%= __('ui.create_book.edit') %></a></td>
-	    				</tr>
-	    				<tr>
-	    					<td><label><%= __('ui.create_book.author') %></label></td>
-	    					<td class="font">
-	    						<input name="author" type="text"></input>
-	    						<input name="authorSize" type="number"></input>
-	    						<input name="authorColor" type="text"></input>
-	    					</td>
-	    					<td><a name="editAuthor" edit="author" class="inactiveEdit"><%= __('ui.create_book.edit') %></a></td>
-	    				</tr>
-	    				<tr>
-	    					<td><label><%= __('ui.create_book.title') %></label></td>
-	    					<td class="font">
-	    						<input name="title" type="text"></input>
-	    						<input name="titleSize" type="number"></input>
-	    						<input name="titleColor" type="text"></input>
-	    					</td>
-	    					<td><a name="editTitle" edit="title" class="inactiveEdit"><%= __('ui.create_book.edit') %></a></td>
-	    				</tr>
-	    			</tbody>
-	    			<tfoot>
-	    				<tr>
-	    					<td><a name="cancel"><%= __('ui.create_book.cancel') %></a></td>
-	    					<td><a name="ok"><%= __('ui.create_book.ok') %></a></td>
-	    				</tr>
-	    			</tfoot>
-	    		</table>
-	    	</div>
+	    	<div menuNode="createBook" class="uiPanel left">
+	    		<div class="field">
+					<label><%= __('ui.create_book.object') %></label>
+					<select menuControl="model"></select>
+	    		</div>
+	    		<div class="field">
+					<label><%= __('ui.create_book.texture') %></label>
+					<select menuControl="texture"></select>
+				</div>
+	    		<div class="field">
+					<label><%= __('ui.create_book.cover') %></label>
+					<input menuControl="cover" type="url"></input>
+					<a menuControl="editCover" edit="cover" class="inactiveEdit"><%= __('ui.create_book.edit') %></a>
+				</div>
+	    		<div class="field">
+					<label><%= __('ui.create_book.author') %></label>
+					<input menuControl="author" type="text"></input>
+					<input menuControl="authorSize" type="number"></input>
+					<input menuControl="authorColor" type="text"></input>
+					<a menuControl="editAuthor" edit="author" class="inactiveEdit"><%= __('ui.create_book.edit') %></a>
+				</div>
+	    		<div class="field">
+					<label><%= __('ui.create_book.title') %></label>
+					<input menuControl="title" type="text"></input>
+					<input menuControl="titleSize" type="number"></input>
+					<input menuControl="titleColor" type="text"></input>
+					<a menuControl="editTitle" edit="title" class="inactiveEdit"><%= __('ui.create_book.edit') %></a>
+				</div>
+				<a menuControl="cancel"><%= __('ui.create_book.cancel') %></a>
+				<a menuControl="ok"><%= __('ui.create_book.ok') %></a>
+			</div>
     	</div>
 	</body>
 </html>

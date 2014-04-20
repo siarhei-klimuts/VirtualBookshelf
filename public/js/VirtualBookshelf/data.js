@@ -57,6 +57,10 @@ VirtualBookshelf.Data.getBooks = function(sectionId, done) {
 	VirtualBookshelf.Data.ajax(['/books', sectionId], 'GET', done);
 }
 
+VirtualBookshelf.Data.getFreeBooks = function(userId, done) {
+	VirtualBookshelf.Data.ajax(['/freeBooks', userId], 'GET', done);
+}
+
 VirtualBookshelf.Data.loadGeometry = function(link, done) {
 	var jsonLoader = new THREE.JSONLoader();
 	jsonLoader.load(link, function (geometry) {
@@ -70,7 +74,7 @@ VirtualBookshelf.Data.loadObject = function(modelUrl, mapUrl, done) {
 	    	done(geometry, mapImage);
 	    });
 	});
-}
+};
 
 VirtualBookshelf.Data.createBook = function(dataObject, done) {
 	var modelPath = '/obj/books/{model}/model.js'.replace('{model}', dataObject.model);
@@ -89,7 +93,7 @@ VirtualBookshelf.Data.createBook = function(dataObject, done) {
 			});
 		});
 	});
-}
+};
 
 VirtualBookshelf.Data.loadSection = function(dataObject, done) {
 	var path = '/obj/sections/{model}/'.replace('{model}', dataObject.model);
@@ -102,7 +106,7 @@ VirtualBookshelf.Data.loadSection = function(dataObject, done) {
 			done(dataObject, geometry, new THREE.MeshPhongMaterial({map: texture}));
 		});   
 	});
-}
+};
 
 VirtualBookshelf.Data.loadLibrary = function(dataObject, done) {
 	var path = '/obj/libraries/{model}/'.replace('{model}', dataObject.model);
@@ -120,6 +124,10 @@ VirtualBookshelf.Data.getData = function(url, done) {
 
 VirtualBookshelf.Data.putSections = function(sections, done) {
 	VirtualBookshelf.Data.ajax(['/sections'], 'PUT', done, sections);
+}
+
+VirtualBookshelf.Data.postFeedback = function(dataObject, done) {
+	VirtualBookshelf.Data.ajax(['/feedback'], 'POST', done, dataObject);
 }
 
 VirtualBookshelf.Data.getImage = function(url, done) {

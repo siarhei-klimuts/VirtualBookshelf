@@ -8,7 +8,8 @@ exports.postBook = function(req, res) {
 			if(!err && result) {
 				res.json(result);
 			} else {
-				res.send(500);			
+				res.send(500);	
+				console.log('ROUTE postBook: ', err);		
 			}
 		});
 	}
@@ -20,10 +21,22 @@ exports.getBooks = function(req, res){
 	}, {raw: true})
 	.success(function (result) {
   		res.json(result);
-		console.log('ROUTE getBooks: ', result);
 	})
 	.failure(function (err){
 		res.send(500);
 		console.log('ROUTE getBooks: ', err);
 	});
+};
+
+exports.getFreeBooks = function(req, res) {
+	if(req.params.userId == req.user.id) {
+		models.Book.getFreeBooks(req.params.userId, function(err, result) {
+			if(!err && result) {
+	  			res.json(result);
+			} else {
+				res.send(500);
+				console.error('ROUTE getFreeBooks: ', result);
+			}
+		});
+	}
 };

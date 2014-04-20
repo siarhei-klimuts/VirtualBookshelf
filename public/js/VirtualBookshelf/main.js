@@ -16,8 +16,8 @@ VirtualBookshelf.start = function() {
 
 	VirtualBookshelf.init(width, height);
 	VirtualBookshelf.Camera.init(width, height);
-	VirtualBookshelf.Controls.init(VirtualBookshelf.container);
 	VirtualBookshelf.UI.init();
+	VirtualBookshelf.Controls.init();
 
 	VirtualBookshelf.startRenderLoop();
 }

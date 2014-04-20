@@ -1,3 +1,5 @@
+var Sequelize = require('sequelize');
+
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('book', {
 		pos_x: DataTypes.FLOAT,
@@ -15,13 +17,14 @@ module.exports = function(sequelize, DataTypes) {
 	}, {
 		timestamps: false,
 		classMethods: {
-    		saveBook: saveBook
+    		saveBook: saveBook,
+    		getFreeBooks: getFreeBooks
 		},
 		instanceMethods: {
 			updateBook: updateBook
 		}
 	});
-}
+};
 
 function saveBook(dataObject, done) {
 	var scope = this;
@@ -38,11 +41,10 @@ function saveBook(dataObject, done) {
 			}
 		})
 		.failure(function (error) {
-			console.error('Book save: ', error);
 			done(error, null);
 		});
 	}
-}
+};
 
 function updateBook(dataObject, done) {
 	for(key in dataObject) {
@@ -56,4 +58,22 @@ function updateBook(dataObject, done) {
 	.failure(function (error) {
 		done(error, null);
 	});
-}
+};
+
+function getFreeBooks(userId, done) {
+	this.findAll({
+		where: Sequelize.and(
+			{userId: userId},
+			Sequelize.or(
+				{sectionId: null},
+				{shelfId: null}
+			)
+		) 
+	}, {raw: true})
+	.success(function (result) {
+  		done(null, result);
+	})
+	.failure(function (err){
+  		done(err, null);
+	});
+};

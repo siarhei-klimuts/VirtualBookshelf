@@ -1,7 +1,16 @@
 body {
+	color: #C5DEBF;
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
+
+	/*Text selection*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;		
 }
 canvas#LIBRARY {
 	width: 100%;
@@ -22,30 +31,55 @@ a {
 }
 div.ui {
 	position: absolute;
-	max-width: 30%;
+	width: 100%;
 	left: 0;
 	top: 0;
 }
-div.ui div.uiPanel {
-	border: 1px;
-	border-color: #8F2222;
-	border-style: dashed;
+div.ui > div.uiPanel {
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 20px;
 	margin: 10px;
 	padding: 15px;
 }
-div#UI_CREATE_BOOK table td.font {
-	display: inline-flex;
+.left {
+	float: left;
+	clear: left;
 }
-select, input:not([type = radio]), option {
+.right {
+	float: right;
+}
+div.ui > div.uiPanel > div.field {
+	border-bottom: 1px solid #550000;
+	padding: 0px 10px 0px 10px;
+	margin:  0px 0px 5px 0px;
+	border-radius: 10px;
+}
+select, option, input:not([type = radio]), textarea {
 	background: #200707;
 	border-color: #000000;
 	border-style: solid;
 	border-width: 1px;
-	box-sizing: inherit;
 	width: 100%;
 	color: #C5DEBF;
+	display: block;
+	margin: 0;
+	padding: 0;
 }
-input[type = radio] {
+textarea {
+	width: 250px;
+	height: 100px;
+}
+ul {
+	margin: 0;
+	padding: 0;
+    cursor: default;
+}
+ul > li {
+	margin: 5px;
+	padding: 3px;
+	list-style: none;
+	background-color: rgba(100, 0, 0, 0.4);
+	border-radius: 5px;
 }
 .activeEdit {
 	color: #007700;

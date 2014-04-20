@@ -51,7 +51,12 @@ VirtualBookshelf.Object.prototype.isCollided = function() {
 	return result;
 };
 VirtualBookshelf.Object.prototype.move = function(newPosition) {
-	var currentPosition = this.position.clone();
+	var 
+		currentPosition,
+		result;
+
+	result = false;
+	currentPosition = this.position.clone();
 	
 	if(newPosition.x) {
 		this.position.setX(newPosition.x);
@@ -59,7 +64,7 @@ VirtualBookshelf.Object.prototype.move = function(newPosition) {
 		if(this.isCollided()) {
 			this.position.setX(currentPosition.x);
 		} else {
-			this.changed = true;
+			result = true;
 		}
 	}
 
@@ -69,25 +74,41 @@ VirtualBookshelf.Object.prototype.move = function(newPosition) {
 		if(this.isCollided()) {
 			this.position.setZ(currentPosition.z);
 		} else {
-			this.changed = true;
+			result = true;
 		}
 	}
 
+	this.changed = this.changed || result;
 	this.updateBoundingBox();
+
+	return result;
 }
-VirtualBookshelf.Object.prototype.rotate = function(dX) {
-	var currentRotation = this.rotation.y;
+VirtualBookshelf.Object.prototype.rotate = function(dX, dY, isDemo) {
+	var 
+		currentRotation = this.rotation.clone(),
+		result = false; 
 	
 	if(dX) {
 		this.rotation.y += dX * 0.01;
 
-		if(this.isCollided()) {
-			this.rotation.y = currentRotation;
+		if(!isDemo && this.isCollided()) {
+			this.rotation.y = currentRotation.y;
 		} else {
-			this.changed = true;
+			result = true;
 		}
 	}
-		
+
+	if(dY) {
+		this.rotation.x += dY * 0.01;
+
+		if(!isDemo && this.isCollided()) {
+			this.rotation.x = currentRotation.x;
+		} else {
+			result = true;
+		}
+	}
+
+	this.changed = this.changed || (!isDemo && result);
 	this.updateBoundingBox();
 }
 VirtualBookshelf.Object.prototype.updateBoundingBox = function() {
@@ -404,5 +425,18 @@ VirtualBookshelf.Book.prototype.copyState = function(book) {
 		book.parent.add(this);
 		book.parent.remove(book);
 		VirtualBookshelf.selected.object = this;
+	}
+}
+VirtualBookshelf.Book.prototype.setParent = function(parent) {
+	if(this.parent != parent) {
+		if(parent) {
+			parent.add(this);
+			this.dataObject.shelfId = parent.id;
+			this.dataObject.sectionId = parent.parent.id;
+		} else {
+			this.parent.remove(this);
+			this.dataObject.shelfId = null;
+			this.dataObject.sectionId = null;
+		}
 	}
 }

@@ -18,3 +18,4 @@ exports.getOutside = function(req, res) {
 exports.library = require('./library');
 exports.section = require('./section');
 exports.book = require('./book');
+exports.feedback = require('./feedback');

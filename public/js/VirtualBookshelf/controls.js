@@ -1,5 +1,49 @@
 VirtualBookshelf.Controls = VirtualBookshelf.Controls || {};
 
+VirtualBookshelf.Controls.Pocket = {
+	_books: {},
+
+	selectObject: function(target) {
+		var 
+			dataObject = this._books[target.value]
+
+		VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
+			VirtualBookshelf.Controls.Pocket.remove(dataObject.id);
+			VirtualBookshelf.selected.select(book, null);
+			// book.changed = true;
+		});
+	},
+	remove: function(id) {
+		this._books[id] = null;
+		delete this._books[id];
+	},
+	put: function(dataObject) {
+		this._books[dataObject.id] = dataObject;
+	},
+	getBooks: function() {
+		return this._books;
+	},
+	isEmpty: function() {
+		return this._books.length == 0;
+	},
+	loadFreeBooks: function() {
+		var
+			scope = this,
+			dataObject,
+			i;
+			
+		if(VirtualBookshelf.user) {
+			VirtualBookshelf.Data.getFreeBooks(VirtualBookshelf.user.id, function (err, result) {
+				if(!err && result) {
+					for(i = result.length - 1; i >= 0; i--) {
+						scope.put(result[i]);
+					}
+				}
+			});
+		}
+	}
+};
+
 VirtualBookshelf.selected = {
 	object: null,
 	parent: null,
@@ -21,11 +65,24 @@ VirtualBookshelf.selected = {
 	clear: function() {
 		this.object = null;
 		this.getted = null;
+		VirtualBookshelf.UI.refresh();//TODO: research for remove
+	},
+	select: function(object, point) {
+		this.clear();
+
+		this.object = object;
+		this.point = point;
+
 		VirtualBookshelf.UI.refresh();
 	},
-	select: function(intersected) {
-		this.object = intersected.object;
-		this.point = intersected.point;
+	release: function() {
+		if(this.isBook() && !this.object.parent) {
+			VirtualBookshelf.Controls.Pocket.put(this.object.dataObject);
+			this.clear();
+		}
+
+		this.save();
+		VirtualBookshelf.UI.refresh();
 	},
 	get: function() {
 		if(this.isBook() && !this.isGetted()) {
@@ -50,7 +107,6 @@ VirtualBookshelf.selected = {
 	save: function() {
 		if(this.isMovable() && this.object.changed) {
 			this.object.save();
-			VirtualBookshelf.UI.refresh();
 		}
 	}
 };
@@ -65,6 +121,7 @@ VirtualBookshelf.Controls.mouse = {
 	dY: null,
 	longX: null,
 	longY: null,
+
 	down: function(event) {
 		if(event) {
 			this[event.which] = true;
@@ -82,6 +139,7 @@ VirtualBookshelf.Controls.mouse = {
 	},
 	move: function(event) {
 		if(event) {
+			this.target = event.target;
 			this.longX = this.width * 0.5 - this.x;
 			this.longY = this.height * 0.5 - this.y;
 			this.dX = event.x - this.x;
@@ -98,16 +156,57 @@ VirtualBookshelf.Controls.mouse = {
 		return vector.sub(VirtualBookshelf.Camera.getPosition()).normalize();
 	},
 	isCanvas: function() {
-		return this.target == VirtualBookshelf.canvas;
+		return this.target == VirtualBookshelf.canvas || (this.target && this.target.className == 'ui');
+	},
+	isPocketBook: function() {
+		return !!(this.target && this.target.parentNode == VirtualBookshelf.UI.menu.inventory.books);
+	},
+	getIntersected: function(objects, recursive, searchFor) {
+		var
+			vector,
+			raycaster,
+			intersects,
+			intersected,
+			result,
+			i, j;
+
+		result = null;
+		vector = this.getVector();
+		raycaster = new THREE.Raycaster(VirtualBookshelf.Camera.getPosition(), vector);
+		intersects = raycaster.intersectObjects(objects, recursive);
+
+		if(searchFor) {
+			if(intersects.length) {
+				for(i = 0; i < intersects.length; i++) {
+					intersected = intersects[i];
+					
+					for(j = searchFor.length - 1; j >= 0; j--) {
+						if(intersected.object instanceof searchFor[j]) {
+							result = intersected;
+							break;
+						}
+					}
+
+					if(result) {
+						break;
+					}
+				}
+			}		
+		} else {
+			result = intersects;
+		}
+
+		return result;
 	}
 };
 
-VirtualBookshelf.Controls.init = function(domElement) {
+VirtualBookshelf.Controls.init = function() {
 	VirtualBookshelf.Controls.clear();
-	VirtualBookshelf.Controls.initListeners(domElement);
+	VirtualBookshelf.Controls.initListeners();
+	VirtualBookshelf.Controls.Pocket.loadFreeBooks();
 }
 
-VirtualBookshelf.Controls.initListeners = function(domElement) {
+VirtualBookshelf.Controls.initListeners = function() {
 	document.addEventListener('dblclick', VirtualBookshelf.Controls.onDblClick, false);
 	document.addEventListener('mousedown', VirtualBookshelf.Controls.onMouseDown, false);
 	document.addEventListener('mouseup', VirtualBookshelf.Controls.onMouseUp, false);
@@ -144,12 +243,16 @@ VirtualBookshelf.Controls.onDblClick = function(event) {
 VirtualBookshelf.Controls.onMouseDown = function(event) {
 	var mouse = VirtualBookshelf.Controls.mouse; 
 	mouse.down(event); 
-		
-	if(VirtualBookshelf.Controls.mouse.isCanvas()) {
+
+	if(mouse.isCanvas() || mouse.isPocketBook()) {
 		event.preventDefault();
 
 		if(mouse[1] && !mouse[3] && !VirtualBookshelf.selected.isGetted()) {
-			VirtualBookshelf.Controls.selectObject();
+			if(mouse.isCanvas()) {
+				VirtualBookshelf.Controls.selectObject();
+			} else if(mouse.isPocketBook()) {
+				VirtualBookshelf.Controls.Pocket.selectObject(mouse.target);
+			}
 		}
 	}
 }
@@ -158,7 +261,7 @@ VirtualBookshelf.Controls.onMouseUp = function(event) {
 	VirtualBookshelf.Controls.mouse.up(event);
 	
 	switch(event.which) {
-		 case 1: VirtualBookshelf.selected.save(); break;
+		 case 1: VirtualBookshelf.selected.release(); break;
 	}
 }
 
@@ -166,11 +269,11 @@ VirtualBookshelf.Controls.onMouseMove = function(event) {
 	var mouse = VirtualBookshelf.Controls.mouse; 
 	mouse.move(event);
 
-	if(VirtualBookshelf.Controls.mouse.isCanvas()) {
+	if(mouse.isCanvas()) {
 		event.preventDefault();
 
 	 	if(!VirtualBookshelf.selected.isGetted()) {
-			if(mouse[1] && !mouse[3]) {		 	
+			if(mouse[1] && !mouse[3]) {		
 				VirtualBookshelf.Controls.moveObject();
 			}
 		} else {
@@ -184,51 +287,64 @@ VirtualBookshelf.Controls.onMouseMove = function(event) {
 			 		obj.scaleElement(mouse.dX, mouse.dY);
 				}
 				if(mouse[3]) {
-			 		obj.rotate(mouse.dX, mouse.dY);
+			 		obj.rotate(mouse.dX, mouse.dY, true);
 				}
 			} 
 		}
 	}
-}
+};
 
 //****
 
 VirtualBookshelf.Controls.selectObject = function() {
+	var
+		intersected,
+		object,
+		point;
+
 	if(VirtualBookshelf.Controls.mouse.isCanvas() && VirtualBookshelf.library) {
-		var vector = VirtualBookshelf.Controls.mouse.getVector();
-		var raycaster = new THREE.Raycaster(VirtualBookshelf.Camera.getPosition(), vector);
-		var intersects = raycaster.intersectObjects(VirtualBookshelf.library.children, true);
-
-		VirtualBookshelf.selected.clear();
-
-		if(intersects.length) {
-			for(var i = 0; i < intersects.length; i++) {
-				var intersected = intersects[i];
-				if(intersected.object instanceof VirtualBookshelf.Section || intersected.object instanceof VirtualBookshelf.Book) {
-					VirtualBookshelf.selected.select(intersected);
-					break;
-				}
-			}
+		intersected = VirtualBookshelf.Controls.mouse.getIntersected(VirtualBookshelf.library.children, true, [VirtualBookshelf.Section, VirtualBookshelf.Book]);
+		if(intersected) {
+			object = intersected.object;
+			point = intersected.point; 
 		}
-		
-		VirtualBookshelf.UI.refresh();
+
+		VirtualBookshelf.selected.select(object, point);
 	}
 };
 
 VirtualBookshelf.Controls.moveObject = function() {
-	var mouseVector;
-	var newPosition;
+	var 
+		mouseVector,
+		newPosition,
+		intersected,
+		parent,
+		oldParent;
 
 	if(VirtualBookshelf.selected.isBook() || (VirtualBookshelf.selected.isSection() && VirtualBookshelf.UI.menu.sectionMenu.isMoveOption())) {
 		mouseVector = VirtualBookshelf.Camera.getVector();	
 		newPosition = VirtualBookshelf.selected.object.position.clone();
-		VirtualBookshelf.selected.object.parent.localToWorld(newPosition);
+		oldParent = VirtualBookshelf.selected.object.parent;
 
-		newPosition.x -= (mouseVector.z * VirtualBookshelf.Controls.mouse.dX + mouseVector.x * VirtualBookshelf.Controls.mouse.dY) * 0.003;
-		newPosition.z -= (-mouseVector.x * VirtualBookshelf.Controls.mouse.dX + mouseVector.z * VirtualBookshelf.Controls.mouse.dY) * 0.003;
+		if(VirtualBookshelf.selected.isBook()) {
+			intersected = VirtualBookshelf.Controls.mouse.getIntersected(VirtualBookshelf.library.children, true, [VirtualBookshelf.Shelf]);
+			VirtualBookshelf.selected.object.setParent(intersected ? intersected.object : null);
+		}
 
-		VirtualBookshelf.selected.object.parent.worldToLocal(newPosition);
-		VirtualBookshelf.selected.object.move(newPosition)			
+		parent = VirtualBookshelf.selected.object.parent;
+		if(parent) {
+			parent.localToWorld(newPosition);
+
+			newPosition.x -= (mouseVector.z * VirtualBookshelf.Controls.mouse.dX + mouseVector.x * VirtualBookshelf.Controls.mouse.dY) * 0.003;
+			newPosition.z -= (-mouseVector.x * VirtualBookshelf.Controls.mouse.dX + mouseVector.z * VirtualBookshelf.Controls.mouse.dY) * 0.003;
+
+			parent.worldToLocal(newPosition);
+			if(!VirtualBookshelf.selected.object.move(newPosition) && VirtualBookshelf.selected.isBook()) {
+				if(parent !== oldParent) {
+					VirtualBookshelf.selected.object.setParent(oldParent);
+				}
+			}
+		}
 	} else if(VirtualBookshelf.UI.menu.sectionMenu.isRotateOption() && VirtualBookshelf.selected.isSection()) {
 		VirtualBookshelf.selected.object.rotate(VirtualBookshelf.Controls.mouse.dX);			
 	}

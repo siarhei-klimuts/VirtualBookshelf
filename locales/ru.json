@@ -8,7 +8,6 @@
 	"ui.library.select.link": "Войти в выбранную библиотеку.",
 	"ui.library.menu.add.section": "Добавить шкаф.",
 	"ui.library.menu.add.book": "Добавить книгу.",
-	"ui.library.menu.exit": "Выход",
 	"ui.create_book.object": "Форма",
 	"ui.create_book.author": "Автор",
 	"ui.create_book.title": "Название",
@@ -20,5 +19,7 @@
 	"ui.create_book.cover": "Обложка",
 	"ui.create_book.edit": "изменить",
 	"ui.section.move": "Двигать",
-	"ui.section.rotate": "Вращать"
+	"ui.section.rotate": "Вращать",
+	"ui.feedback.message": "Оставьте свой отзыв. Что вам понравилось, что нет, чего не хватает.",
+	"ui.feedback.submit": "Отправить"
 }

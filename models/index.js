@@ -7,9 +7,11 @@ module.exports.User = sequelize.import(__dirname + '/User');
 module.exports.Library = sequelize.import(__dirname + '/Library');
 module.exports.Section = sequelize.import(__dirname + '/Section');
 module.exports.Book = sequelize.import(__dirname + '/Book');
+module.exports.Feedback = sequelize.import(__dirname + '/Feedback');
 
 // describe relationships
 module.exports.User.hasMany(module.exports.Library);
+module.exports.User.hasMany(module.exports.Feedback);
 module.exports.Library.hasMany(module.exports.Section);
 module.exports.Section.hasMany(module.exports.Book);
 
