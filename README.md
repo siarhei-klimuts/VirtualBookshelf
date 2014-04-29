@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/galiaf47/virtualbookshelf.png?label=ready&title=Ready)](https://waffle.io/galiaf47/virtualbookshelf)
 Virtual Bookshelf
 =
 Current version: 0.2.54
