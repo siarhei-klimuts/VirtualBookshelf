@@ -1,7 +1,7 @@
 {	
 	"libraries": [
 		{"model": "library_0001", "label": "Basement"},
-		{"model": "none", "label": "None"}
+		{"model": "library_0002", "label": "Room"}
 	],
 	"bookshelves": [
 		{"model": "bookshelf_0001", "label": "Wooden simple"},
