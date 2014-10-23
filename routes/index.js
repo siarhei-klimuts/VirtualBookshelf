@@ -1,8 +1,7 @@
 var request = require('request');
 
-exports.index = function(req, res){
-	var user = req.user;
-  	res.render('index', {user: user});
+exports.index = function(req, res) {
+  	res.render('index');
 };
 
 exports.getOutside = function(req, res) {
@@ -19,3 +18,4 @@ exports.library = require('./library');
 exports.section = require('./section');
 exports.book = require('./book');
 exports.feedback = require('./feedback');
+exports.user = require('./user');

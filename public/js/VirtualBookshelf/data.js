@@ -130,6 +130,14 @@ VirtualBookshelf.Data.postFeedback = function(dataObject, done) {
 	VirtualBookshelf.Data.ajax(['/feedback'], 'POST', done, dataObject);
 }
 
+VirtualBookshelf.Data.getUser = function(done) {
+	VirtualBookshelf.Data.ajax(['/user'], 'GET', done);
+}
+
+VirtualBookshelf.Data.putUser = function(dataObject, done) {
+	VirtualBookshelf.Data.ajax(['/user'], 'PUT', done, dataObject);
+}
+
 VirtualBookshelf.Data.getImage = function(url, done) {
 	var img = new Image();
     img.crossOrigin = ''; 
@@ -142,14 +150,13 @@ VirtualBookshelf.Data.getImage = function(url, done) {
 	img.onerror = function (error) {
 		console.error('Data.getImage:', url, error);
 		done(error, null);
-	}
-}
+	};
+};
 
 VirtualBookshelf.Data.CanvasText = function(text, properties) {
-
 	this.text = text || '';
 	this.parseProperties(properties);
-}
+};
 VirtualBookshelf.Data.CanvasText.prototype = {
 	constructor: VirtualBookshelf.CanvasText,
 	getFont: function() {

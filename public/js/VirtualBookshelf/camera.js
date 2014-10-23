@@ -14,7 +14,7 @@ VirtualBookshelf.Camera.init = function(width, height) {
 	this.object.position = new THREE.Vector3(0, VirtualBookshelf.Camera.HEIGTH, 0);
 	this.object.rotation.order = 'YXZ';
 
-	var candle = new THREE.PointLight(0x665555, 1.5, 6);
+	var candle = new THREE.PointLight(0x665555, 1.6, 10);
 	candle.position.set(0, 0, 0);
 	this.object.add(candle);
 

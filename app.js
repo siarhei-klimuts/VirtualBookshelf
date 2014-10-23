@@ -52,7 +52,7 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
+app.get('/:libraryId([0-9]+)?', routes.index);
 app.get('/outside', isAuthorized, routes.getOutside);
 app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/', successRedirect: '/'}));
@@ -70,6 +70,9 @@ app.get('/books/:sectionId', isAuthorized, routes.book.getBooks);
 app.get('/freeBooks/:userId', isAuthorized, routes.book.getFreeBooks);
 
 app.post('/feedback', routes.feedback.postFeedback);
+
+app.get('/user', isAuthorized, routes.user.getUser, respondJSON);
+app.put('/user', isAuthorized, routes.user.putUser, respondJSON);
 
 models.init(function(err) {
     if(!err) {
@@ -95,7 +98,11 @@ function isAuthorized(req, res, next) {
     if(req.user) {
         next();
     } else {
-        req.user = {id: 1};//galiaf by default
+        req.user = {};//galiaf by default
         next();
     }
+}
+
+function respondJSON(req, res) {
+    res.json(res.result);
 }

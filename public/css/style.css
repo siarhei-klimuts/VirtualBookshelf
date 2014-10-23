@@ -40,6 +40,7 @@ div.ui > div.uiPanel {
 	border-radius: 20px;
 	margin: 10px;
 	padding: 15px;
+	display: none;
 }
 .left {
 	float: left;

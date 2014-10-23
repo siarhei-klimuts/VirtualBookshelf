@@ -26,7 +26,7 @@ exports.postLibrary = function(req, res) {
 
 exports.getLibrary = function(req, res) {
 	models.Library.find({
-		where: {userId: req.user.id, id: req.params.libraryId}
+		where: {id: req.params.libraryId}
 	}, {raw: true})
 	.success(function (result) {
   		res.json(result);

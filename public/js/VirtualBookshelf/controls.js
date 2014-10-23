@@ -241,6 +241,9 @@ VirtualBookshelf.Controls.onDblClick = function(event) {
 }
 
 VirtualBookshelf.Controls.onMouseDown = function(event) {
+	VirtualBookshelf.Data.getUser(function (err, result) {
+		console.log(result);
+	});
 	var mouse = VirtualBookshelf.Controls.mouse; 
 	mouse.down(event); 
 

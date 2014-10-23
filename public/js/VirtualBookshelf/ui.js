@@ -159,6 +159,14 @@ VirtualBookshelf.UI.initControlsData = function() {
 			}
 		}
 	});
+
+	VirtualBookshelf.Data.getLibraries(function (err, result) {
+		if(!err && result) {
+			if(!scope.menu.selectLibrary.library.options.length) {
+				scope.fillElement(scope.menu.selectLibrary.library, result, {value: 'id', text: 'id'});
+			}
+		}
+	});
 }
 
 VirtualBookshelf.UI.initControlsEvents = function() {
@@ -217,13 +225,6 @@ VirtualBookshelf.UI.createLibrary = function() {
 }
 
 // library select
-VirtualBookshelf.UI.showLibrarySelect = function(libraries) {
-	VirtualBookshelf.UI.menu.selectLibrary.show();
-	if(!VirtualBookshelf.UI.menu.selectLibrary.library.options.length) {
-		VirtualBookshelf.UI.fillElement(VirtualBookshelf.UI.menu.selectLibrary.library, libraries, {value: 'id', text: 'id'});
-	}
-}
-
 VirtualBookshelf.UI.selectLibrary = function() {
 	var libraryId = VirtualBookshelf.UI.getSelectedOption(VirtualBookshelf.UI.menu.selectLibrary.library);
 
@@ -352,6 +353,7 @@ VirtualBookshelf.UI.switchEdited = function() {
 }
 
 VirtualBookshelf.UI.saveBook = function() {
+	console.log('onclick');
 	if(VirtualBookshelf.selected.isBook()) {
 		var book = VirtualBookshelf.selected.object;
 
@@ -425,7 +427,7 @@ VirtualBookshelf.UI.refresh = function() {
 	this.hideAll();
 	this.menu.feedback.refresh();
 
-	if(VirtualBookshelf.user) {
+	if(VirtualBookshelf.user.isAuthorized()) {
 		if(VirtualBookshelf.library) {
 			this.menu.libraryMenu.show();
 		}
@@ -436,6 +438,7 @@ VirtualBookshelf.UI.refresh = function() {
 			this.showCreateBook();
 		}
 		this.menu.inventory.refresh();
+		this.menu.selectLibrary.show();		
 	} else {
 		this.menu.login.show();
 	}
