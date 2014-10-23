@@ -110,7 +110,7 @@ VirtualBookshelf.Data.loadSection = function(dataObject, done) {
 
 VirtualBookshelf.Data.loadLibrary = function(dataObject, done) {
 	var path = '/obj/libraries/{model}/'.replace('{model}', dataObject.model);
-	VirtualBookshelf.Data.loadObject(path + 'model.js', path + 'map.jpg', function (geometry, mapImage) {
+	VirtualBookshelf.Data.loadObject(path + 'model.json', path + 'map.jpg', function (geometry, mapImage) {
 		var texture = new THREE.Texture(mapImage);
 		texture.needsUpdate = true;
 
