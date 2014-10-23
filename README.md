@@ -1,7 +1,7 @@
 [![Stories in Ready](https://badge.waffle.io/galiaf47/virtualbookshelf.png?label=ready&title=Ready)](https://waffle.io/galiaf47/virtualbookshelf)
 Virtual Bookshelf
 =
-Current version: 0.2.54
+Current version: 0.2.55
 
 Virtual 3D library for everyone. There you can store your virtual books in virtual 3D bookshelves. 
 The application placed at http://virtual-bookshelf.herokuapp.com, there you can see how it looks at this moment.
