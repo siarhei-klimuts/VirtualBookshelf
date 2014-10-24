@@ -32,7 +32,7 @@ passport.deserializeUser(function (id, done) {
     done(null, {id: id});
 });
 
-app.use(express.favicon());
+app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
 app.use(express.logger('dev'));
 app.use(express.bodyParser()); // стандартный модуль, для парсинга JSON в запросах
 app.use(express.methodOverride()); // поддержка put и delete
