@@ -75,7 +75,7 @@ VirtualBookshelf.selected = {
 	clear: function() {
 		this.object = null;
 		this.getted = null;
-		VirtualBookshelf.UI.refresh();//TODO: research for remove
+		// VirtualBookshelf.UI.refresh();//TODO: research for remove
 	},
 	select: function(object, point) {
 		this.clear();
@@ -83,7 +83,7 @@ VirtualBookshelf.selected = {
 		this.object = object;
 		this.point = point;
 
-		VirtualBookshelf.UI.refresh();
+		// VirtualBookshelf.UI.refresh();
 	},
 	release: function() {
 		if(this.isBook() && !this.object.parent) {
@@ -92,7 +92,7 @@ VirtualBookshelf.selected = {
 		}
 
 		this.save();
-		VirtualBookshelf.UI.refresh();
+		// VirtualBookshelf.UI.refresh();
 	},
 	get: function() {
 		if(this.isBook() && !this.isGetted()) {
@@ -145,6 +145,7 @@ VirtualBookshelf.Controls.mouse = {
 	up: function(event) {
 		if(event) {
 			this[event.which] = false;
+			this[1] = false; // linux chrome bug fix (when both keys release then both event.which equal 3)
 		}
 	},
 	move: function(event) {
@@ -259,9 +260,6 @@ VirtualBookshelf.Controls.onDblClick = function(event) {
 }
 
 VirtualBookshelf.Controls.onMouseDown = function(event) {
-	VirtualBookshelf.Data.getUser(function (err, result) {
-		console.log(result);
-	});
 	var mouse = VirtualBookshelf.Controls.mouse; 
 	mouse.down(event); 
 

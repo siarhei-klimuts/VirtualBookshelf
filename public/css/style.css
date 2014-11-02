@@ -36,11 +36,13 @@ div.ui {
 	left: 0;
 	top: 0;
 }
-div.ui > div.uiPanel {
+div.uiPanel {
 	background-color: rgba(0, 0, 0, 0.4);
 	border-radius: 20px;
 	margin: 10px;
 	padding: 15px;
+}
+div[menuNode] {
 	display: none;
 }
 .left {
@@ -55,12 +57,17 @@ div.ui > div.uiPanel {
     right: 0;
     bottom: 0;
 }
-.navigation i{
+i.fa{
 	color: lightgreen;
 	cursor: default;
 }
-.navigation i:hover {
+i.fa:hover {
 	color: lime;
+}
+.mainMenu {
+	position: absolute;
+	left: 0;
+	bottom: 0;
 }
 div.ui > div.uiPanel > div.field {
 	border-bottom: 1px solid #550000;
@@ -92,8 +99,8 @@ ul > li {
 	margin: 5px;
 	padding: 3px;
 	list-style: none;
-	background-color: rgba(100, 0, 0, 0.4);
-	border-radius: 5px;
+	/*background-color: rgba(100, 0, 0, 0.4);*/
+	/*border-radius: 5px;*/
 }
 .activeEdit {
 	color: #007700;

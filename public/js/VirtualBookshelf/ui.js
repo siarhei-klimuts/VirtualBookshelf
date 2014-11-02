@@ -12,12 +12,47 @@ VirtualBookshelf.UI.MenuNode.prototype = {
 	hide: function() {
 		VirtualBookshelf.UI._hide(this.container);
 	},
+	isHidden: function() {
+		return this.container.style.display == 'none';
+	},
 	clear: function() {}
 }
 
 VirtualBookshelf.UI.menu = {};
 
 VirtualBookshelf.UI.menuFunctions = {
+	mainMenu: {
+		toggle: {
+			onclick: function() {
+				var node = VirtualBookshelf.UI.menu.rootList;
+
+				if(node.isHidden()) {
+					VirtualBookshelf.UI.menu.createList.hide();
+					VirtualBookshelf.UI.menu.createLibrary.hide();
+					VirtualBookshelf.UI.menu.libraryMenu.hide();
+					node.show();
+				} else {
+					node.hide();
+				}
+			}
+		}
+	},
+	rootList: {
+		create: {
+			onclick: function() {
+				VirtualBookshelf.UI.menu.rootList.hide();
+				VirtualBookshelf.UI.menu.createList.show();
+			}
+		}
+	},
+	createList: {
+		library: {
+			onclick: function() {
+				VirtualBookshelf.UI.menu.createList.hide();
+				VirtualBookshelf.UI.menu.createLibrary.show();
+			}
+		}
+	},
 	sectionMenu: {
 		isMoveOption: function() {
 			return this.translateMove.checked;
@@ -110,17 +145,21 @@ VirtualBookshelf.UI.menuFunctions = {
 
 VirtualBookshelf.UI.init = function() {
 	VirtualBookshelf.UI.loadMenuNodes();
-	VirtualBookshelf.UI.applyMenuFunctions();
+	VirtualBookshelf.UI.applyMenuFunctions(this.menu, this.menuFunctions);
 
 	VirtualBookshelf.UI.initControlsData();
 	VirtualBookshelf.UI.initControlsEvents();
 	VirtualBookshelf.UI.refresh();
 };
 
-VirtualBookshelf.UI.applyMenuFunctions = function() {
-	for(node in this.menuFunctions) {
-		for(functionName in this.menuFunctions[node]) {
-			this.menu[node][functionName] = this.menuFunctions[node][functionName];
+VirtualBookshelf.UI.applyMenuFunctions = function(target, functions) {
+	for(node in functions) {
+		var item = functions[node];
+
+		if(typeof(item) == 'function') {
+			target[node] = item;
+		} else if(typeof(item) == 'object') {
+			this.applyMenuFunctions(target[node], item);
 		}
 	}
 };
@@ -136,13 +175,13 @@ VirtualBookshelf.UI.loadMenuNodes = function() {
 		i, j,
 		nodes;
 
-	nodes = document.querySelectorAll('div.ui > div.uiPanel[menuNode]');
+	nodes = document.querySelectorAll('div[menuNode]');
 
 	for(i = nodes.length - 1; i >= 0; i--) {
 		container = nodes[i];
 		containerAttribute = container.getAttribute('menuNode');
 		menuNode = new VirtualBookshelf.UI.MenuNode(container),
-		controls = container.querySelectorAll('[menuControl]');
+		controls = container.querySelectorAll('[menuControl]');//TODO not select inner div controls
 
 		for(j = controls.length - 1; j >= 0; j--) {
 			control = controls[j];
@@ -385,7 +424,6 @@ VirtualBookshelf.UI.switchEdited = function() {
 }
 
 VirtualBookshelf.UI.saveBook = function() {
-	console.log('onclick');
 	if(VirtualBookshelf.selected.isBook()) {
 		var book = VirtualBookshelf.selected.object;
 
@@ -461,17 +499,18 @@ VirtualBookshelf.UI.refresh = function() {
 	this.menu.navigation.show();
 
 	if(VirtualBookshelf.user.isAuthorized()) {
-		if(VirtualBookshelf.library) {
-			this.menu.libraryMenu.show();
-		}
-		if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Section) {
-			this.menu.sectionMenu.show();
-		}
-		if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Book) {
-			this.showCreateBook();
-		}
-		this.menu.inventory.refresh();
-		this.menu.selectLibrary.show();		
+		this.menu.mainMenu.show();
+		// if(VirtualBookshelf.library) {
+		// 	this.menu.libraryMenu.show();
+		// }
+		// if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Section) {
+		// 	this.menu.sectionMenu.show();
+		// }
+		// if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Book) {
+		// 	this.showCreateBook();
+		// }
+		// this.menu.inventory.refresh();
+		// this.menu.selectLibrary.show();		
 	} else {
 		this.menu.login.show();
 	}

@@ -21,11 +21,45 @@
 		<canvas id="LIBRARY"></canvas>
 
     	<div class="ui">
+    		<div menuNode="mainMenu" class="uiPanel mainMenu">
+    			<div menuNode="rootList">
+	    			<ul>
+	    				<li><i menuControl="create" class="fa fa-plus fa-2x"></i>&nbsp; !Create</li>
+	    				<li><i menuControl="select" class="fa fa-bars fa-2x"></i>&nbsp; !Select lib</li>
+	    				<li><i menuControl="edit" class="fa fa-sliders fa-2x"></i>&nbsp; !Edit</li>
+	    			</ul>
+
+    			</div>
+
+    			<div menuNode="createList">
+	    			<ul>
+	    				<li><i menuControl="library" class="fa fa-sliders fa-2x"></i>&nbsp; !Library</li>
+	    				<li><i menuControl="section" class="fa fa-bars fa-2x"></i>&nbsp; !Shelf</li>
+	    				<li><i menuControl="book" class="fa fa-plus fa-2x"></i>&nbsp; !Book</li>
+	    			</ul>
+    			</div>
+
+		    	<div menuNode="createLibrary">
+		    		<p><%= __('ui.library.create.text') %></p>
+		    		<p><%= __('ui.library.create.select.label') %></p>
+		    		<br>
+		    		<select menuControl="model"></select>
+		    		<a onclick="VirtualBookshelf.UI.createLibrary();"><%= __('ui.library.create.link') %></a>
+		    	</div>		   
+
+		    	<div menuNode="libraryMenu">
+		    		<select menuControl="model"></select>
+	    			<a onclick="VirtualBookshelf.UI.createSection();"><%= __('ui.library.menu.add.section') %></a>
+		    	</div> 			
+
+    			<i menuControl="toggle" class="fa fa-sliders fa-2x"></i>
+    		</div>
+    		
     		<div menuNode="navigation" class="uiPanel navigation">
-    			<i menuControl="left" class="fa fa-chevron-left fa-3x"></i>
-    			<i menuControl="right" class="fa fa-chevron-right fa-3x"></i>
-    			<i menuControl="down" class="fa fa-chevron-down fa-3x"></i>
-    			<i menuControl="up" class="fa fa-chevron-up fa-3x"></i>
+    			<i menuControl="left" class="fa fa-chevron-left fa-2x"></i>
+    			<i menuControl="right" class="fa fa-chevron-right fa-2x"></i>
+    			<i menuControl="down" class="fa fa-chevron-down fa-2x"></i>
+    			<i menuControl="up" class="fa fa-chevron-up fa-2x"></i>
     		</div>
 
 	    	<div menuNode="inventory" class="uiPanel right">
@@ -42,24 +76,11 @@
 	    		<a href="/auth/google"><img src="/img/google.png"/></a>
 	    	</div>
 
-	    	<div menuNode="createLibrary" class="uiPanel left">
-	    		<p><%= __('ui.library.create.text') %></p>
-	    		<p><%= __('ui.library.create.select.label') %></p>
-	    		<br>
-	    		<select menuControl="model"></select>
-	    		<a onclick="VirtualBookshelf.UI.createLibrary();"><%= __('ui.library.create.link') %></a>
-	    	</div>
-
 	    	<div menuNode="selectLibrary" class="uiPanel left">
 	    		<p><%= __('ui.library.select.text') %></p>
 	    		<br>
 	    		<select menuControl="library"></select>
 	    		<a onclick="VirtualBookshelf.UI.selectLibrary();"><%= __('ui.library.select.link') %></a>
-	    	</div>
-
-	    	<div menuNode="libraryMenu" class="uiPanel left">
-	    		<select menuControl="model"></select>
-    			<a onclick="VirtualBookshelf.UI.createSection();"><%= __('ui.library.menu.add.section') %></a>
 	    	</div>
 
 	    	<div menuNode="sectionMenu" class="uiPanel left">
