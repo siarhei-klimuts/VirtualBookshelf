@@ -32,6 +32,7 @@ a {
 div.ui {
 	position: absolute;
 	width: 100%;
+	height: 100%;
 	left: 0;
 	top: 0;
 }
@@ -48,6 +49,18 @@ div.ui > div.uiPanel {
 }
 .right {
 	float: right;
+}
+.navigation {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.navigation i{
+	color: lightgreen;
+	cursor: default;
+}
+.navigation i:hover {
+	color: lime;
 }
 div.ui > div.uiPanel > div.field {
 	border-bottom: 1px solid #550000;

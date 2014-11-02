@@ -32,10 +32,10 @@ VirtualBookshelf.Camera.rotate = function(x, y) {
 	this.object.rotation.y = newY;
 }
 
-VirtualBookshelf.Camera.goForward = function() {
+VirtualBookshelf.Camera.go = function(speed) {
 	var direction = this.getVector();
 	var newPosition = this.object.position.clone();
-	newPosition.add(direction.multiplyScalar(0.02));
+	newPosition.add(direction.multiplyScalar(speed));
 
 	this.object.move(newPosition);
 }

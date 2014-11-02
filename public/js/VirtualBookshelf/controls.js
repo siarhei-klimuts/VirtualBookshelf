@@ -1,5 +1,15 @@
 VirtualBookshelf.Controls = VirtualBookshelf.Controls || {};
 
+VirtualBookshelf.Controls.BUTTONS_ROTATE_SPEED = 100;
+VirtualBookshelf.Controls.BUTTONS_GO_SPEED = 0.02;
+
+VirtualBookshelf.Controls.state = {
+	forward: false,
+	backward: false,
+	left: false,
+	right: false
+}
+
 VirtualBookshelf.Controls.Pocket = {
 	_books: {},
 
@@ -203,7 +213,7 @@ VirtualBookshelf.Controls.mouse = {
 VirtualBookshelf.Controls.init = function() {
 	VirtualBookshelf.Controls.clear();
 	VirtualBookshelf.Controls.initListeners();
-	VirtualBookshelf.Controls.Pocket.loadFreeBooks();
+	// VirtualBookshelf.Controls.Pocket.loadFreeBooks();
 }
 
 VirtualBookshelf.Controls.initListeners = function() {
@@ -221,11 +231,19 @@ VirtualBookshelf.Controls.clear = function() {
 VirtualBookshelf.Controls.update = function() {
 	var mouse = VirtualBookshelf.Controls.mouse; 
 
-	if(mouse[3] && !VirtualBookshelf.selected.isGetted()) {
-		VirtualBookshelf.Camera.rotate(mouse.longX, mouse.longY);
-		
-		if(mouse[1]) {
-			VirtualBookshelf.Camera.goForward();
+	if(!VirtualBookshelf.selected.isGetted()) {
+		if(mouse[3]) {
+			VirtualBookshelf.Camera.rotate(mouse.longX, mouse.longY);
+		}
+
+		if((mouse[1] && mouse[3]) || this.state.forward) {
+			VirtualBookshelf.Camera.go(this.BUTTONS_GO_SPEED);
+		} else if(this.state.backward) {
+			VirtualBookshelf.Camera.go(-this.BUTTONS_GO_SPEED);
+		} else if(this.state.left) {
+			VirtualBookshelf.Camera.rotate(this.BUTTONS_ROTATE_SPEED, 0);
+		} else if(this.state.right) {
+			VirtualBookshelf.Camera.rotate(-this.BUTTONS_ROTATE_SPEED, 0);
 		}
 	}
 }
@@ -352,3 +370,26 @@ VirtualBookshelf.Controls.moveObject = function() {
 		VirtualBookshelf.selected.object.rotate(VirtualBookshelf.Controls.mouse.dX);			
 	}
 };
+
+VirtualBookshelf.Controls.goStop = function() {
+	this.state.forward = false;
+	this.state.backward = false;
+	this.state.left = false;
+	this.state.right = false;
+}
+
+VirtualBookshelf.Controls.goForward = function() {
+	this.state.forward = true;
+}
+
+VirtualBookshelf.Controls.goBackward = function() {
+	this.state.backward = true;
+}
+
+VirtualBookshelf.Controls.goLeft = function() {
+	this.state.left = true;
+}
+
+VirtualBookshelf.Controls.goRight = function() {
+	this.state.right = true;
+}

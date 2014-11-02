@@ -13,11 +13,21 @@
 		<script src="/js/VirtualBookshelf/data.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/css/style.css">
+		<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<body>
 		<canvas id="LIBRARY"></canvas>
 
     	<div class="ui">
+    		<div menuNode="navigation" class="uiPanel navigation">
+    			<i menuControl="left" class="fa fa-chevron-left fa-3x"></i>
+    			<i menuControl="right" class="fa fa-chevron-right fa-3x"></i>
+    			<i menuControl="down" class="fa fa-chevron-down fa-3x"></i>
+    			<i menuControl="up" class="fa fa-chevron-up fa-3x"></i>
+    		</div>
+
 	    	<div menuNode="inventory" class="uiPanel right">
 	    		<ul menuControl="books"></ul>
 	    	</div>

@@ -88,6 +88,23 @@ VirtualBookshelf.UI.menuFunctions = {
 				this.show();
 			}
 		}
+	},
+	navigation: {
+		goStop: function() {
+			VirtualBookshelf.Controls.goStop();
+		},
+		goForward: function() {
+			VirtualBookshelf.Controls.goForward();
+		},
+		goBackward: function() {
+			VirtualBookshelf.Controls.goBackward();
+		},
+		goLeft: function() {
+			VirtualBookshelf.Controls.goLeft();
+		},
+		goRight: function() {
+			VirtualBookshelf.Controls.goRight();
+		}
 	}
 };
 
@@ -186,6 +203,21 @@ VirtualBookshelf.UI.initControlsEvents = function() {
 	VirtualBookshelf.UI.menu.createBook.cancel.onclick = VirtualBookshelf.UI.cancelBookEdit;
 
 	this.menu.feedback.submit.onclick = this.submitFeedback;
+
+	this.menu.navigation.left.onmousedown = this.menu.navigation.goLeft;
+	this.menu.navigation.right.onmousedown = this.menu.navigation.goRight;
+	this.menu.navigation.up.onmousedown = this.menu.navigation.goForward;
+	this.menu.navigation.down.onmousedown = this.menu.navigation.goBackward;
+ 	
+ 	this.menu.navigation.left.onmouseup
+	= this.menu.navigation.left.onmouseout
+ 	= this.menu.navigation.right.onmouseup
+ 	= this.menu.navigation.right.onmouseout 
+ 	= this.menu.navigation.up.onmouseup
+ 	= this.menu.navigation.up.onmouseout 
+ 	= this.menu.navigation.down.onmouseup
+ 	= this.menu.navigation.down.onmouseout 
+		= this.menu.navigation.goStop;
 };
 
 VirtualBookshelf.UI.submitFeedback = function() {
@@ -426,6 +458,7 @@ VirtualBookshelf.UI.hideAll = function() {
 VirtualBookshelf.UI.refresh = function() {
 	this.hideAll();
 	this.menu.feedback.refresh();
+	this.menu.navigation.show();
 
 	if(VirtualBookshelf.user.isAuthorized()) {
 		if(VirtualBookshelf.library) {
