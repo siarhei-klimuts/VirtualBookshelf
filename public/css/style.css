@@ -2,15 +2,7 @@ body {
 	color: #C5DEBF;
 	padding: 0;
 	margin: 0;
-	overflow: hidden;
-
-	/*Text selection*/
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;		
+	overflow: hidden;	
 }
 canvas#LIBRARY {
 	width: 100%;
@@ -31,10 +23,18 @@ a {
 }
 div.ui {
 	position: absolute;
+	cursor: default;
 	width: 100%;
 	height: 100%;
 	left: 0;
 	top: 0;
+	/*Text selection*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;	
 }
 div.uiPanel {
 	background-color: rgba(0, 0, 0, 0.4);
@@ -42,7 +42,7 @@ div.uiPanel {
 	margin: 10px;
 	padding: 15px;
 }
-div[menuNode] {
+[menuNode] {
 	display: none;
 }
 .left {

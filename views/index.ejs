@@ -21,21 +21,20 @@
 		<canvas id="LIBRARY"></canvas>
 
     	<div class="ui">
-    		<div menuNode="mainMenu" class="uiPanel mainMenu">
+    		<div class="uiPanel mainMenu">
     			<div menuNode="rootList">
 	    			<ul>
-	    				<li><i menuControl="create" class="fa fa-plus fa-2x"></i>&nbsp; !Create</li>
-	    				<li><i menuControl="select" class="fa fa-bars fa-2x"></i>&nbsp; !Select lib</li>
-	    				<li><i menuControl="edit" class="fa fa-sliders fa-2x"></i>&nbsp; !Edit</li>
+	    				<li menuControl="create"><i class="fa fa-plus fa-2x"></i>&nbsp; !Create</li>
+	    				<li menuControl="select"><i class="fa fa-bars fa-2x"></i>&nbsp; !Select lib</li>
+	    				<li menuControl="edit"><i class="fa fa-sliders fa-2x"></i>&nbsp; !Edit</li>
 	    			</ul>
-
     			</div>
 
     			<div menuNode="createList">
 	    			<ul>
-	    				<li><i menuControl="library" class="fa fa-sliders fa-2x"></i>&nbsp; !Library</li>
-	    				<li><i menuControl="section" class="fa fa-bars fa-2x"></i>&nbsp; !Shelf</li>
-	    				<li><i menuControl="book" class="fa fa-plus fa-2x"></i>&nbsp; !Book</li>
+	    				<li menuControl="library"><i class="fa fa-sliders fa-2x"></i>&nbsp; !Library</li>
+	    				<li menuControl="section"><i class="fa fa-bars fa-2x"></i>&nbsp; !Shelf</li>
+	    				<li menuControl="book"><i class="fa fa-plus fa-2x"></i>&nbsp; !Book</li>
 	    			</ul>
     			</div>
 
@@ -50,9 +49,11 @@
 		    	<div menuNode="libraryMenu">
 		    		<select menuControl="model"></select>
 	    			<a onclick="VirtualBookshelf.UI.createSection();"><%= __('ui.library.menu.add.section') %></a>
-		    	</div> 			
+		    	</div> 		
 
-    			<i menuControl="toggle" class="fa fa-sliders fa-2x"></i>
+		    	<div menuNode="mainMenu">
+    				<i menuControl="toggle" class="fa fa-sliders fa-2x"></i>
+		    	</div>
     		</div>
     		
     		<div menuNode="navigation" class="uiPanel navigation">
