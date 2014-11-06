@@ -1,10 +1,42 @@
 VirtualBookshelf.UI = VirtualBookshelf.UI || {};
 
-VirtualBookshelf.UI.MenuNode = function(container) {
-	this.container = container;
+VirtualBookshelf.UI.MenuNode = function(container, data) {
+	var key;
+
+	this.setContainer(container);
+
+	if(data && typeof(data) === 'object') {
+		for(key in data) {
+			this[key] = data[key];
+		}
+	}
 };
 VirtualBookshelf.UI.MenuNode.prototype = {
 	constructor: VirtualBookshelf.UI.MenuNode,
+	setContainer: function(container) {
+        var controls;
+        var controlIndex;
+        var control;
+        var controlName;
+        var functionName;
+
+        if(container) {
+            this.container = container;
+            controls = this.container.querySelectorAll('[menuControl]');
+            for (controlIndex = controls.length - 1; controlIndex >= 0; controlIndex--) {
+                control = controls[controlIndex];
+                controlName = control.getAttribute('menuControl');
+                
+                if(this[controlName]) {
+                    for(functionName in this[controlName]) {
+                        control[functionName] = this[controlName][functionName];
+                    }
+                }
+
+                this[controlName] = control;
+            };
+        }
+	},
 	show: function() {
 		this.clear();
 		VirtualBookshelf.UI._show(this.container);
@@ -12,21 +44,54 @@ VirtualBookshelf.UI.MenuNode.prototype = {
 	hide: function() {
 		VirtualBookshelf.UI._hide(this.container);
 	},
+	isHidden: function() {
+		return this.container.style.display == 'none';
+	},
 	clear: function() {}
 }
 
-VirtualBookshelf.UI.menu = {};
+VirtualBookshelf.UI.menu = {
+	mainMenu: new VirtualBookshelf.UI.MenuNode(null, {
+		toggle: { //button
+			onclick: function() {
+				var node = VirtualBookshelf.UI.menu.rootList;
 
-VirtualBookshelf.UI.menuFunctions = {
-	sectionMenu: {
+				if(node.isHidden()) {
+					VirtualBookshelf.UI.menu.createList.hide();
+					VirtualBookshelf.UI.menu.createLibrary.hide();
+					VirtualBookshelf.UI.menu.libraryMenu.hide();
+					node.show();
+				} else {
+					node.hide();
+				}
+			}
+		}
+	}),
+	rootList: new VirtualBookshelf.UI.MenuNode(null, {
+		create: {
+			onclick: function() {
+				VirtualBookshelf.UI.menu.rootList.hide();
+				VirtualBookshelf.UI.menu.createList.show();
+			}
+		}
+	}),
+	createList: new VirtualBookshelf.UI.MenuNode(null, {
+		library: {
+			onclick: function() {
+				VirtualBookshelf.UI.menu.createList.hide();
+				VirtualBookshelf.UI.menu.createLibrary.show();
+			}
+		}
+	}),
+	sectionMenu: new VirtualBookshelf.UI.MenuNode(null, {
 		isMoveOption: function() {
 			return this.translateMove.checked;
 		},
 		isRotateOption: function() {
 			return this.translateRotate.checked;
 		}
-	},
-	createBook: {
+	}),
+	createBook: new VirtualBookshelf.UI.MenuNode(null, {
 		clear: function() {
 			this.model.selectedIndex = 0;
 			this.texture.selectedIndex = 0;
@@ -53,8 +118,8 @@ VirtualBookshelf.UI.menuFunctions = {
 				this.titleColor.value = book.title.color;
 			}
 		}
-	},
-	inventory: {
+	}),
+	inventory: new VirtualBookshelf.UI.MenuNode(null, {
 		refresh: function() {
 			var
 				books,
@@ -77,8 +142,8 @@ VirtualBookshelf.UI.menuFunctions = {
 				this.show();
 			}
 		}
-	},
-	feedback: {
+	}),
+	feedback: new VirtualBookshelf.UI.MenuNode(null, {
 		close: function() {
 			this._closed = true;
 			this.hide();
@@ -88,8 +153,8 @@ VirtualBookshelf.UI.menuFunctions = {
 				this.show();
 			}
 		}
-	},
-	navigation: {
+	}),
+	navigation: new VirtualBookshelf.UI.MenuNode(null, {
 		goStop: function() {
 			VirtualBookshelf.Controls.goStop();
 		},
@@ -105,56 +170,77 @@ VirtualBookshelf.UI.menuFunctions = {
 		goRight: function() {
 			VirtualBookshelf.Controls.goRight();
 		}
-	}
+	})
 };
 
 VirtualBookshelf.UI.init = function() {
 	VirtualBookshelf.UI.loadMenuNodes();
-	VirtualBookshelf.UI.applyMenuFunctions();
+	// VirtualBookshelf.UI.applyMenuFunctions(this.menu, this.menuFunctions);
 
 	VirtualBookshelf.UI.initControlsData();
 	VirtualBookshelf.UI.initControlsEvents();
 	VirtualBookshelf.UI.refresh();
 };
 
-VirtualBookshelf.UI.applyMenuFunctions = function() {
-	for(node in this.menuFunctions) {
-		for(functionName in this.menuFunctions[node]) {
-			this.menu[node][functionName] = this.menuFunctions[node][functionName];
-		}
-	}
-};
+// VirtualBookshelf.UI.applyMenuFunctions = function(target, functions) {
+// 	for(node in functions) {
+// 		var item = functions[node];
+
+// 		if(typeof(item) === 'function') {
+// 			target[node] = item;
+// 		} else if(typeof(item) === 'object') {
+// 			this.applyMenuFunctions(target[node], item);
+// 		}
+// 	}
+// };
 
 VirtualBookshelf.UI.loadMenuNodes = function() {
-	var 
-		menuNode,
-		container,
-		containerAttribute,
-		controls,
-		control,
-		menuControlAttribute,
-		i, j,
-		nodes;
+	var nodes = document.querySelectorAll('[menuNode]');
+    var container;
+    var containerName;
 
-	nodes = document.querySelectorAll('div.ui > div.uiPanel[menuNode]');
+    for (var nodeIndex = nodes.length - 1; nodeIndex >= 0; nodeIndex--) {
+        container = nodes[nodeIndex];
+		containerName = container.getAttribute('menuNode');
 
-	for(i = nodes.length - 1; i >= 0; i--) {
-		container = nodes[i];
-		containerAttribute = container.getAttribute('menuNode');
-		menuNode = new VirtualBookshelf.UI.MenuNode(container),
-		controls = container.querySelectorAll('[menuControl]');
+        if(this.menu[containerName]) {
+            this.menu[containerName].setContainer(container);
+        } else {
+            this.menu[containerName] = new VirtualBookshelf.UI.MenuNode(container);
+        }
+    }
+}
 
-		for(j = controls.length - 1; j >= 0; j--) {
-			control = controls[j];
-			menuControlAttribute = control.getAttribute('menuControl');
-			if(control && (menuControlAttribute)) {
-				menuNode[menuControlAttribute] = control;
-			}
-		}
+// VirtualBookshelf.UI.loadMenuNodes = function() {
+//  var 
+//      menuNode,
+//      container,
+//      containerAttribute,
+//      controls,
+//      control,
+//      menuControlAttribute,
+//      i, j,
+//      nodes;
 
-		this.menu[containerAttribute] = menuNode;
-	}
-};
+//  nodes = document.querySelectorAll('div[menuNode]');
+
+//  for(i = nodes.length - 1; i >= 0; i--) {
+//      container = nodes[i];
+//      containerAttribute = container.getAttribute('menuNode');
+// 		menuNode = new VirtualBookshelf.UI.MenuNode(container),
+// 		controls = container.querySelectorAll('[menuControl]');//TODO not select inner div controls
+
+// 		for(j = controls.length - 1; j >= 0; j--) {
+// 			control = controls[j];
+// 			menuControlAttribute = control.getAttribute('menuControl');
+// 			if(control && (menuControlAttribute)) {
+// 				menuNode[menuControlAttribute] = control;
+// 			}
+// 		}
+
+// 		this.menu[containerAttribute] = menuNode;
+// 	}
+// };
 
 VirtualBookshelf.UI.initControlsData = function() {
 	var scope = VirtualBookshelf.UI;
@@ -385,7 +471,6 @@ VirtualBookshelf.UI.switchEdited = function() {
 }
 
 VirtualBookshelf.UI.saveBook = function() {
-	console.log('onclick');
 	if(VirtualBookshelf.selected.isBook()) {
 		var book = VirtualBookshelf.selected.object;
 
@@ -438,15 +523,11 @@ VirtualBookshelf.UI.fillElement = function(element, data, fields) {
 }
 
 VirtualBookshelf.UI._show = function(element) {
-	if(element instanceof HTMLDivElement) {
-		element.style.display = 'block';
-	}
+	element.style.display = 'block';
 }
 
 VirtualBookshelf.UI._hide = function(element) {
-	if(element instanceof HTMLDivElement) {
-		element.style.display = 'none';
-	}
+	element.style.display = 'none';
 }
 
 VirtualBookshelf.UI.hideAll = function() {
@@ -461,17 +542,18 @@ VirtualBookshelf.UI.refresh = function() {
 	this.menu.navigation.show();
 
 	if(VirtualBookshelf.user.isAuthorized()) {
-		if(VirtualBookshelf.library) {
-			this.menu.libraryMenu.show();
-		}
-		if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Section) {
-			this.menu.sectionMenu.show();
-		}
-		if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Book) {
-			this.showCreateBook();
-		}
-		this.menu.inventory.refresh();
-		this.menu.selectLibrary.show();		
+		this.menu.mainMenu.show();
+		// if(VirtualBookshelf.library) {
+		// 	this.menu.libraryMenu.show();
+		// }
+		// if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Section) {
+		// 	this.menu.sectionMenu.show();
+		// }
+		// if(VirtualBookshelf.selected.object instanceof VirtualBookshelf.Book) {
+		// 	this.showCreateBook();
+		// }
+		// this.menu.inventory.refresh();
+		// this.menu.selectLibrary.show();		
 	} else {
 		this.menu.login.show();
 	}
