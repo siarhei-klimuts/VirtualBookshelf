@@ -49,7 +49,7 @@ div.uiPanel {
 	float: left;
 	clear: left;
 }
-.right {
+.inventory {
 	float: right;
 }
 .navigation {
@@ -57,54 +57,73 @@ div.uiPanel {
     right: 0;
     bottom: 0;
 }
-i.fa{
+.feedback {
+	float: right;
+	text-align: center;
+}
+.login {
+	float: left;
+}
+a.fa {
 	color: lightgreen;
 	cursor: default;
 }
-i.fa:hover {
+a.fa:hover {
 	color: lime;
+}
+i.fa {
+	margin: 0px 5px 0px 0px;
 }
 .mainMenu {
 	position: absolute;
 	left: 0;
 	bottom: 0;
 }
-div.ui > div.uiPanel > div.field {
-	border-bottom: 1px solid #550000;
-	padding: 0px 10px 0px 10px;
-	margin:  0px 0px 5px 0px;
-	border-radius: 10px;
+.mainMenuButton {
+	float: left;
 }
-select, option, input:not([type = radio]), textarea {
-	background: #200707;
-	border-color: #000000;
-	border-style: solid;
-	border-width: 1px;
-	width: 100%;
-	color: #C5DEBF;
-	display: block;
-	margin: 0;
-	padding: 0;
+.uiPanel .submitButton {
+	float: right;
+	clear: right;
+	margin-left: 20px;
 }
-textarea {
-	width: 250px;
-	height: 100px;
+input[type="text"], textarea {
+	font-size: large;
+  	padding: 5px;
+  	border: none;
+  	outline: none;
+  	background-color: rgba(50, 50, 50, 0.5);
+  	color: #C5DEBF;
 }
 ul {
 	margin: 0;
 	padding: 0;
     cursor: default;
+    overflow-y: overlay;
+    max-height: 250px; 
 }
-ul > li {
+ul li {
 	margin: 5px;
 	padding: 3px;
 	list-style: none;
-	/*background-color: rgba(100, 0, 0, 0.4);*/
-	/*border-radius: 5px;*/
+	border-radius: 5px;
 }
-.activeEdit {
-	color: #007700;
+li:hover:not(.selectedItem) {
+	background-color: rgba(20, 50, 20, 0.4);
 }
-.inactiveEdit {
-	color: #770000;
+.inventory li {
+	width: 110px;
+	font-size: 10pt;
+	word-wrap: break-word;
+	background-color: darkslategray;
+}
+.selectedItem {
+	background-color: rgba(0, 100, 0, 0.4);
+}
+.previewImg {
+	width: 128px;
+	height: 128px;
+	border: solid darkslategrey;
+	border-radius: 30px;
+	float: right;
 }

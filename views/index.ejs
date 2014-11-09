@@ -11,120 +11,140 @@
 		<script src="/js/VirtualBookshelf/controls.js"></script>
 		<script src="/js/VirtualBookshelf/ui.js"></script>
 		<script src="/js/VirtualBookshelf/data.js"></script>
+		<script src="/js/angular/angular.min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/css/style.css">
 		<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-	<body>
+	<body ng-app="vbUserInterface">
 		<canvas id="LIBRARY"></canvas>
 
-    	<div class="ui">
+    	<div ng-controller="UIController" class="ui">
     		<div class="uiPanel mainMenu">
-    			<div menuNode="rootList">
+    			<div ng-show="show == 'rootList'">
 	    			<ul>
-	    				<li menuControl="create"><i class="fa fa-plus fa-2x"></i>&nbsp; !Create</li>
-	    				<li menuControl="select"><i class="fa fa-bars fa-2x"></i>&nbsp; !Select lib</li>
-	    				<li menuControl="edit"><i class="fa fa-sliders fa-2x"></i>&nbsp; !Edit</li>
+	    				<li ng-click="show = 'createList'"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
+	    				<li ng-click="show = 'selectLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
 	    			</ul>
     			</div>
 
-    			<div menuNode="createList">
+    			<div ng-show="show == 'createList'">
 	    			<ul>
-	    				<li menuControl="library"><i class="fa fa-sliders fa-2x"></i>&nbsp; !Library</li>
-	    				<li menuControl="section"><i class="fa fa-bars fa-2x"></i>&nbsp; !Shelf</li>
-	    				<li menuControl="book"><i class="fa fa-plus fa-2x"></i>&nbsp; !Book</li>
+	    				<li ng-click="show = 'createLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.createLibrary')%></li>
+	    				<li ng-click="show = 'createSection'"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
+	    				<li ng-click="show = 'createBook'"><i class="fa fa-book fa-2x"></i><%=__('ui.menuItem.createBook')%></li>
 	    			</ul>
     			</div>
 
-		    	<div menuNode="createLibrary">
-		    		<p><%= __('ui.library.create.text') %></p>
+		    	<div ng-show="show == 'createLibrary'">
 		    		<p><%= __('ui.library.create.select.label') %></p>
-		    		<br>
-		    		<select menuControl="model"></select>
-		    		<a onclick="VirtualBookshelf.UI.createLibrary();"><%= __('ui.library.create.link') %></a>
+    				<img ng-src="{{menu.createLibrary.getImg()}}" class="previewImg">
+		    		<ul>
+		    			<li 
+		    				ng-repeat="item in menu.createLibrary.list" 
+		    				ng-click="menu.createLibrary.select(item.model)" 
+		    				ng-class="{selectedItem: menu.createLibrary.isSelected(item.model)}">
+		    				<i class="fa fa-home fa-2x"></i>{{item.label}}
+		    			</li>
+		    		</ul>
+
+		    		<a ng-click="menu.createLibrary.create()" class="fa fa-check fa-2x submitButton"></a>
 		    	</div>		   
 
-		    	<div menuNode="libraryMenu">
-		    		<select menuControl="model"></select>
-	    			<a onclick="VirtualBookshelf.UI.createSection();"><%= __('ui.library.menu.add.section') %></a>
-		    	</div> 		
+		    	<div ng-show="show == 'createSection'">
+    				<img ng-src="{{menu.createSection.getImg()}}" class="previewImg">
+		    		<ul>
+		    			<li 
+		    				ng-repeat="item in menu.createSection.list" 
+		    				ng-click="menu.createSection.select(item.model)" 
+		    				ng-class="{selectedItem: menu.createSection.isSelected(item.model)}">
+		    				<i class="fa fa-bars fa-2x"></i>{{item.label}}
+		    			</li>
+		    		</ul>
+		    		<a ng-click="menu.createSection.create()" class="fa fa-check fa-2x submitButton"></a>
+		    	</div> 	
 
-		    	<div menuNode="mainMenu">
-    				<i menuControl="toggle" class="fa fa-sliders fa-2x"></i>
+		    	<div ng-show="show == 'createBook'">
+		    		<table>
+		    			<tr>
+		    				<td>
+								<label><%= __('ui.create_book.object') %></label>
+					    		<ul>
+					    			<li 
+					    				ng-repeat="item in menu.createBook.list" 
+					    				ng-click="menu.createBook.select(item.model)" 
+					    				ng-class="{selectedItem: menu.createBook.isSelected(item.model)}">
+					    				<i class="fa fa-book fa-2x"></i>{{item.label}}
+					    			</li>
+					    		</ul>
+		    				</td>
+	    					<td><img ng-src="{{menu.createBook.getImg()}}" class="previewImg"></td>
+		    			</tr>
+		    			<tr><td colspan="2">
+				    		<table>
+			    				<tr>
+			    					<td><label><%= __('ui.create_book.cover') %></label></td>
+			    					<td><input ng-model="menu.createBook.cover" type="text"></input></td>
+			    				</tr>
+			    				<tr>
+			    					<td><label><%= __('ui.create_book.author') %></label></td>
+			    					<td><input ng-model="menu.createBook.author" type="text"></input></td>
+			    				</tr>
+			    				<tr>
+			    					<td><label><%= __('ui.create_book.title') %></label></td>
+			    					<td><input ng-model="menu.createBook.title" type="text"></input></td>
+			    				</tr>
+				    		</table>
+		    			</td></tr>
+		    		</table>
+					
+					<a ng-click="menu.createBook.create()" class="fa fa-check fa-2x submitButton"></a>
+				</div>	
+
+		    	<div ng-show="show == 'selectLibrary'">
+		    		<p><%= __('ui.library.select.text') %></p>
+		    		<ul>
+		    			<li ng-repeat="item in menu.selectLibrary.list" ng-click="menu.selectLibrary.go(item.id)">
+		    				<i class="fa fa-home fa-2x"></i>{{item.id}}
+		    			</li>
+		    		</ul>
 		    	</div>
+
+				<a ng-click="show = show ? '' : 'rootList'" class="fa fa-sliders fa-2x mainMenuButton"></a>
     		</div>
     		
-    		<div menuNode="navigation" class="uiPanel navigation">
-    			<i menuControl="left" class="fa fa-chevron-left fa-2x"></i>
-    			<i menuControl="right" class="fa fa-chevron-right fa-2x"></i>
-    			<i menuControl="down" class="fa fa-chevron-down fa-2x"></i>
-    			<i menuControl="up" class="fa fa-chevron-up fa-2x"></i>
+    		<div class="uiPanel navigation" ng-mouseup="menu.navigation.stop()" ng-mouseleave="menu.navigation.stop()">
+    			<a ng-mousedown="menu.navigation.left()" class="fa fa-chevron-left fa-2x"></a>
+    			<a ng-mousedown="menu.navigation.right()" class="fa fa-chevron-right fa-2x"></a>
+    			<a ng-mousedown="menu.navigation.backward()" class="fa fa-chevron-down fa-2x"></a>
+    			<a ng-mousedown="menu.navigation.forward()" class="fa fa-chevron-up fa-2x"></a>
     		</div>
 
-	    	<div menuNode="inventory" class="uiPanel right">
-	    		<ul menuControl="books"></ul>
-	    	</div>
-
-	    	<div menuNode="feedback" class="uiPanel right">
-    			<textarea menuControl="message" placeholder="<%= __('ui.feedback.message') %>"></textarea>
-    			<input type="submit" menuControl="submit" value="<%= __('ui.feedback.submit') %>" />
-	    	</div>
-
-	    	<div menuNode="login" class="uiPanel left">
+	    	<div ng-show="menu.login.isShow()" class="uiPanel login">
 	    		<p><%= __('ui.login.text') %></p>
 	    		<a href="/auth/google"><img src="/img/google.png"/></a>
 	    	</div>
 
-	    	<div menuNode="selectLibrary" class="uiPanel left">
-	    		<p><%= __('ui.library.select.text') %></p>
-	    		<br>
-	    		<select menuControl="library"></select>
-	    		<a onclick="VirtualBookshelf.UI.selectLibrary();"><%= __('ui.library.select.link') %></a>
+	    	<div class="uiPanel inventory">
+		    	<ul>
+		    		<li ng-repeat="i in ['Невменяемый колдун','Война невменяемого','Месть колдуна','Невменяемый скиталец','Выюор невменяемого']">
+		    			<i class="fa fa-book"></i>
+		    			{{i}}
+		    		</li>	
+		    	</ul>
 	    	</div>
 
-	    	<div menuNode="sectionMenu" class="uiPanel left">
-    			<a onclick="VirtualBookshelf.UI.showCreateBook();"><%= __('ui.library.menu.add.book') %></a>
-    			<br/>
-    			<input id="UI_SECTION_MENU_TRANSLATE_MOVE" type="radio" menuControl="translateMove" name="translate" value="move" checked="true" />
-    			<label for="UI_SECTION_MENU_TRANSLATE_MOVE"><%= __('ui.section.move') %></label>
-    			<br/>
-    			<input id="UI_SECTION_MENU_TRANSLATE_ROTATE" type="radio" menuControl="translateRotate" name="translate" value="rotate" />
-    			<label for="UI_SECTION_MENU_TRANSLATE_ROTATE"><%= __('ui.section.rotate') %></label>
-	    	</div>
-
-	    	<div menuNode="createBook" class="uiPanel left">
-	    		<div class="field">
-					<label><%= __('ui.create_book.object') %></label>
-					<select menuControl="model"></select>
+	    	<div ng-show="menu.feedback.show" class="uiPanel feedback">
+	    		<div>
+		    		<p><%= __('ui.feedback.message') %></p>
+					<textarea ng-model="menu.feedback.message"></textarea>
 	    		</div>
-	    		<div class="field">
-					<label><%= __('ui.create_book.texture') %></label>
-					<select menuControl="texture"></select>
-				</div>
-	    		<div class="field">
-					<label><%= __('ui.create_book.cover') %></label>
-					<input menuControl="cover" type="url"></input>
-					<a menuControl="editCover" edit="cover" class="inactiveEdit"><%= __('ui.create_book.edit') %></a>
-				</div>
-	    		<div class="field">
-					<label><%= __('ui.create_book.author') %></label>
-					<input menuControl="author" type="text"></input>
-					<input menuControl="authorSize" type="number"></input>
-					<input menuControl="authorColor" type="text"></input>
-					<a menuControl="editAuthor" edit="author" class="inactiveEdit"><%= __('ui.create_book.edit') %></a>
-				</div>
-	    		<div class="field">
-					<label><%= __('ui.create_book.title') %></label>
-					<input menuControl="title" type="text"></input>
-					<input menuControl="titleSize" type="number"></input>
-					<input menuControl="titleColor" type="text"></input>
-					<a menuControl="editTitle" edit="title" class="inactiveEdit"><%= __('ui.create_book.edit') %></a>
-				</div>
-				<a menuControl="cancel"><%= __('ui.create_book.cancel') %></a>
-				<a menuControl="ok"><%= __('ui.create_book.ok') %></a>
-			</div>
+				<a ng-click="menu.feedback.submit()" class="fa fa-check fa-2x submitButton"></a>
+	    	</div>
     	</div>
+
+		<script src="/js/angular/app.js"></script>
 	</body>
 </html>

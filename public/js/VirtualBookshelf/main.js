@@ -74,7 +74,6 @@ VirtualBookshelf.loadLibrary = function(libraryId) {
 			VirtualBookshelf.Camera.setParent(VirtualBookshelf.library);
 			VirtualBookshelf.scene.add(VirtualBookshelf.library);
 			VirtualBookshelf.library.loadSections();
-			VirtualBookshelf.UI.refresh();
 		});				
 	});
 };

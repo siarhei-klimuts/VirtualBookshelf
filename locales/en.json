@@ -8,7 +8,7 @@
 	"ui.library.select.link": "Go to selected library.",
 	"ui.library.menu.add.section": "Add new section.",
 	"ui.library.menu.add.book": "Add new book.",
-	"ui.create_book.object": "Shape",
+	"ui.create_book.object": "Select book",
 	"ui.create_book.author": "Author",
 	"ui.create_book.title": "Title",
 	"ui.create_book.cancel": "Cancel",
@@ -21,5 +21,10 @@
 	"ui.section.move": "Move",
 	"ui.section.rotate": "Rotate",
 	"ui.feedback.message": "What do you think about this service?",
-	"ui.feedback.submit": "Submit"
+	"ui.feedback.submit": "Submit",
+	"ui.menuItem.create": "Create...",
+	"ui.menuItem.createLibrary": "Create library",
+	"ui.menuItem.createSection": "Create shelf",
+	"ui.menuItem.createBook": "Create book",
+	"ui.menuItem.selectLibrary": "Select Library"
 }
