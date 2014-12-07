@@ -32,6 +32,7 @@ passport.deserializeUser(function (id, done) {
     done(null, {id: id});
 });
 
+app.disable('x-powered-by');
 app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
 app.use(express.logger('dev'));
 app.use(express.bodyParser()); // стандартный модуль, для парсинга JSON в запросах
@@ -53,6 +54,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/:libraryId([0-9]+)?', routes.index);
+app.get('/ui/:page', routes.ui);
 app.get('/outside', isAuthorized, routes.getOutside);
 app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/', successRedirect: '/'}));
@@ -66,6 +68,7 @@ app.get('/sections/:libraryId', isAuthorized, routes.section.getSections);
 app.put('/sections', isAuthorized, routes.section.putSections);
 
 app.post('/book', isAuthorized, routes.book.postBook);
+app.delete('/book', isAuthorized, routes.book.deleteBook);
 app.get('/books/:sectionId', isAuthorized, routes.book.getBooks);
 app.get('/freeBooks/:userId', isAuthorized, routes.book.getFreeBooks);
 

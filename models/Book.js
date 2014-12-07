@@ -18,7 +18,8 @@ module.exports = function(sequelize, DataTypes) {
 		timestamps: false,
 		classMethods: {
     		saveBook: saveBook,
-    		getFreeBooks: getFreeBooks
+    		getFreeBooks: getFreeBooks,
+    		deleteBook: deleteBook
 		},
 		instanceMethods: {
 			updateBook: updateBook
@@ -44,7 +45,7 @@ function saveBook(dataObject, done) {
 			done(error, null);
 		});
 	}
-};
+}
 
 function updateBook(dataObject, done) {
 	for(key in dataObject) {
@@ -58,17 +59,11 @@ function updateBook(dataObject, done) {
 	.failure(function (error) {
 		done(error, null);
 	});
-};
+}
 
 function getFreeBooks(userId, done) {
 	this.findAll({
-		where: Sequelize.and(
-			{userId: userId},
-			Sequelize.or(
-				{sectionId: null},
-				{shelfId: null}
-			)
-		) 
+		where: {userId: userId} 
 	}, {raw: true})
 	.success(function (result) {
   		done(null, result);
@@ -76,4 +71,12 @@ function getFreeBooks(userId, done) {
 	.failure(function (err){
   		done(err, null);
 	});
-};
+}
+
+function deleteBook(id) {
+	return this.find(id)
+		.then(function (book) {
+			//TODO: throw custom error
+			return book.destroy();
+		});
+}

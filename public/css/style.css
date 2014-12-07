@@ -9,7 +9,7 @@ canvas#LIBRARY {
 	height: 100%;
 	display: block; 
 }
-p, label{
+p, label {
 	color: #C5DEBF;
 	font-size: 14pt;
 	margin: 0;
@@ -20,6 +20,9 @@ a {
 	text-decoration: none;
 	cursor: pointer;
 	margin: 
+}
+table {
+	width: 100%;
 }
 div.ui {
 	position: absolute;
@@ -36,14 +39,17 @@ div.ui {
     -ms-user-select: none;
     user-select: none;	
 }
-div.uiPanel {
-	background-color: rgba(0, 0, 0, 0.4);
+.uiPanel, .block-ui-overlay {
 	border-radius: 20px;
+	background: linear-gradient(to bottom, rgba(50,50,50,0.7) 0%,rgba(0,0,0,0.7) 100%);
+}
+.uiPanel {
 	margin: 10px;
 	padding: 15px;
 }
-[menuNode] {
-	display: none;
+.block-ui-message {
+	background-color: transparent;
+	font-size: 14px;
 }
 .left {
 	float: left;
@@ -52,10 +58,34 @@ div.uiPanel {
 .inventory {
 	float: right;
 }
+.inventory li {
+	font-size: 10pt;
+}
+.inventoryItem {
+	background: linear-gradient(to bottom, rgba(50,100,50,0.5) 0%, rgba(0,0,0,0.5) 100%);
+	border-radius: 10px;
+	padding: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.inventoryControls {
+	float: right;
+}
 .navigation {
     position: absolute;
     right: 0;
     bottom: 0;
+}
+.search { 
+	position: relative; 
+}
+.search input { 
+	text-indent: 25px;
+}
+.search .fa-search { 
+  position: absolute;
+  font-size: 20px;
+  color: grey;
 }
 .feedback {
 	float: right;
@@ -84,23 +114,21 @@ i.fa {
 }
 .uiPanel .submitButton {
 	float: right;
-	clear: right;
 	margin-left: 20px;
 }
 input[type="text"], textarea {
 	font-size: large;
-  	padding: 5px;
+	width: 100%;
+  	padding: 0px; /* for width: 100%*/
   	border: none;
   	outline: none;
-  	background-color: rgba(50, 50, 50, 0.5);
+	background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(50,50,50,0.5) 100%);
   	color: #C5DEBF;
 }
 ul {
 	margin: 0;
 	padding: 0;
     cursor: default;
-    overflow-y: overlay;
-    max-height: 250px; 
 }
 ul li {
 	margin: 5px;
@@ -108,16 +136,10 @@ ul li {
 	list-style: none;
 	border-radius: 5px;
 }
-li:hover:not(.selectedItem) {
+ul.select li:hover:not(.selectedItem) {
 	background-color: rgba(20, 50, 20, 0.4);
 }
-.inventory li {
-	width: 110px;
-	font-size: 10pt;
-	word-wrap: break-word;
-	background-color: darkslategray;
-}
-.selectedItem {
+ul.select li.selectedItem {
 	background-color: rgba(0, 100, 0, 0.4);
 }
 .previewImg {
@@ -126,4 +148,8 @@ li:hover:not(.selectedItem) {
 	border: solid darkslategrey;
 	border-radius: 30px;
 	float: right;
+}
+ul.pagination > li {
+	display: inline;
+	margin: 0px;
 }

@@ -1,0 +1,8 @@
+<ul class="select">
+	<li ng-repeat="item in options" 
+		ng-click="select(item)" 
+		ng-class="{selectedItem: isSelected(item)}">
+			<ng-transclude></ng-transclude>
+			<span ng-bind="item[label]"></span>
+	</li>
+</ul>

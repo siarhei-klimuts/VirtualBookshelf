@@ -1,0 +1,38 @@
+<div ng-show="menu.createBook.isShow()">
+	<table>
+		<tr>
+			<td>
+				<label><%= __('ui.create_book.object') %></label>
+				<vb-select options="menu.createBook.list" selected="menu.createBook.book.model" value="model" label="label">
+					<i class="fa fa-book fa-2x"></i>
+				</vb-select>
+			</td>
+			<td>
+				<img ng-src="{{menu.createBook.getImg()}}" class="previewImg"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+	    		<table>
+					<tr>
+						<td><label><%= __('ui.create_book.title') %></label></td>
+						<td><input ng-model="menu.createBook.book.title" type="text"></input></td>
+					</tr>
+					<tr>
+						<td><label><%= __('ui.create_book.author') %></label></td>
+						<td><input ng-model="menu.createBook.book.author" type="text"></input></td>
+					</tr>
+					<tr>
+						<td><label><%= __('ui.create_book.cover') %></label></td>
+						<td><input ng-model="menu.createBook.book.cover" type="text"></input></td>
+					</tr>
+	    		</table>
+			</td>
+		</tr>
+	</table>
+	
+	<div class="submitButton"> 
+		<a ng-click="menu.createBook.cancel()" class="fa fa-times fa-2x"></a>
+		<a ng-click="menu.createBook.save()" class="fa fa-check fa-2x"></a>
+	</div>
+</div>	

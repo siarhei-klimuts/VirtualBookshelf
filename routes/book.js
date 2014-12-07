@@ -12,6 +12,9 @@ exports.postBook = function(req, res) {
 				console.log('ROUTE postBook: ', err);		
 			}
 		});
+	} else {
+		res.send(500);	
+		console.log('ROUTE postBooks');
 	}
 };
 
@@ -38,5 +41,24 @@ exports.getFreeBooks = function(req, res) {
 				console.error('ROUTE getFreeBooks: ', result);
 			}
 		});
+	} else {
+		res.send(500);
+	}
+};
+
+exports.deleteBook = function(req, res) {
+	var book = req.body;
+
+	if(book && book.userId == req.user.id) {
+		models.Book.deleteBook(book.id)
+			.then(function () {
+				res.send(book);
+			})
+			.catch(function (err) {
+				res.send(500);
+				console.error('ROUTE deleteBook: ', err);
+			});
+	} else {
+		res.send(500);
 	}
 };

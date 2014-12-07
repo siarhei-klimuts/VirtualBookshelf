@@ -1,28 +1,53 @@
 VirtualBookshelf.Data = VirtualBookshelf.Data || {};
 
+VirtualBookshelf.Data.init = function($http) {
+	VirtualBookshelf.Data.$http = $http;
+	
+	VirtualBookshelf.Data.getUser = function() {
+		return $http.get('/user');
+	}
+
+	VirtualBookshelf.Data.getUserBooks = function(userId) {
+		return $http.get('/freeBooks/' + userId)
+			.then(function (res) {
+				return res.data;
+			});
+	}
+
+	VirtualBookshelf.Data.postBook = function(book) {
+		return $http.post('/book', book);
+	}
+
+	VirtualBookshelf.Data.deleteBook = function(book) {
+		return $http({
+			method: 'DELETE',
+			url: '/book',
+			data: book,
+			headers: {'Content-Type': 'application/json;charset=utf-8'}
+		});
+	}
+
+	return VirtualBookshelf.Data;
+};
+
 VirtualBookshelf.Data.TEXTURE_RESOLUTION = 512;
 VirtualBookshelf.Data.COVER_MAX_Y = 394;
 VirtualBookshelf.Data.COVER_FACE_X = 296;
 
 VirtualBookshelf.Data.ajax = function(urlArray, type, done, data, content) {
 	var url = urlArray.join('/');
-	var content = content || 'application/json';
-	var request = new XMLHttpRequest;
-	request.open(type, url, true);
-	request.setRequestHeader('Content-Type', content);
 
-	request.onload = function() {
-	  	if(this.status >= 200 && this.status < 400) {
-    		var data = content == 'application/json' ? JSON.parse(request.responseText) : request.responseText;
-			console.log('Data result: ', type, url);
-			done(null, data);
-		} else {
-			console.error('Data error: ', type, url, data);
-			done(data, null);
-		}
-	};
-
-	request.send(JSON.stringify(data));
+	this.$http({
+		method: type,
+		url: url,
+		data: data
+	}).success(function (data) {
+		console.log('Data result: ', type, url);
+    	done(null, data);
+	}).error(function (data) {
+		console.error('Data error: ', type, url, data);
+		done(data, null);
+	});
 }
 
 VirtualBookshelf.Data.getUIData = function(done) {
@@ -49,17 +74,17 @@ VirtualBookshelf.Data.postSection = function(sectionData, done) {
 	VirtualBookshelf.Data.ajax(['/section'] , 'POST', done, sectionData);
 }
 
-VirtualBookshelf.Data.postBook = function(book, done) {
-	VirtualBookshelf.Data.ajax(['/book'], 'POST', done, book);
-}
+// VirtualBookshelf.Data.postBook = function(book, done) {
+// 	VirtualBookshelf.Data.ajax(['/book'], 'POST', done, book);
+// }
 
 VirtualBookshelf.Data.getBooks = function(sectionId, done) {
 	VirtualBookshelf.Data.ajax(['/books', sectionId], 'GET', done);
 }
 
-VirtualBookshelf.Data.getFreeBooks = function(userId, done) {
-	VirtualBookshelf.Data.ajax(['/freeBooks', userId], 'GET', done);
-}
+// VirtualBookshelf.Data.getFreeBooks = function(userId) {
+// 	VirtualBookshelf.Data.ajax(['/freeBooks', userId], 'GET', done);
+// }
 
 VirtualBookshelf.Data.loadGeometry = function(link, done) {
 	var jsonLoader = new THREE.JSONLoader();
@@ -130,9 +155,9 @@ VirtualBookshelf.Data.postFeedback = function(dataObject, done) {
 	VirtualBookshelf.Data.ajax(['/feedback'], 'POST', done, dataObject);
 }
 
-VirtualBookshelf.Data.getUser = function(done) {
-	VirtualBookshelf.Data.ajax(['/user'], 'GET', done);
-}
+// VirtualBookshelf.Data.getUser = function(done) {
+// 	VirtualBookshelf.Data.ajax(['/user'], 'GET', done);
+// }
 
 VirtualBookshelf.Data.putUser = function(dataObject, done) {
 	VirtualBookshelf.Data.ajax(['/user'], 'PUT', done, dataObject);

@@ -5,16 +5,22 @@
 	
 		<script src="/js/three.js/three.min.js"></script>
 		<script src="/js/three.js/Detector.js"></script>
+		<script src="/js/three.js/stats.min.js"></script>
 		<script src="/js/VirtualBookshelf/main.js"></script>
 		<script src="/js/VirtualBookshelf/models.js"></script>
+		<script src="/js/VirtualBookshelf/user.js"></script>
 		<script src="/js/VirtualBookshelf/camera.js"></script>
 		<script src="/js/VirtualBookshelf/controls.js"></script>
 		<script src="/js/VirtualBookshelf/ui.js"></script>
 		<script src="/js/VirtualBookshelf/data.js"></script>
+		<script src="/js/VirtualBookshelf/directives/select.js"></script>
 		<script src="/js/angular/angular.min.js"></script>
+		<script src="/js/angular/block-ui/angular-block-ui.min.js"></script>
+		<script src="/js/angular/dirPagination/dirPagination.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
 		<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/js/angular/block-ui/angular-block-ui.min.css">
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
@@ -22,90 +28,61 @@
 		<canvas id="LIBRARY"></canvas>
 
     	<div ng-controller="UIController" class="ui">
+			<div id="stats" style="float: left;" class="uiPanel"></div>
+
     		<div class="uiPanel mainMenu">
     			<div ng-show="show == 'rootList'">
-	    			<ul>
+	    			<ul class="select">
 	    				<li ng-click="show = 'createList'"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
 	    				<li ng-click="show = 'selectLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
 	    			</ul>
     			</div>
 
     			<div ng-show="show == 'createList'">
-	    			<ul>
+	    			<ul class="select">
 	    				<li ng-click="show = 'createLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.createLibrary')%></li>
 	    				<li ng-click="show = 'createSection'"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
-	    				<li ng-click="show = 'createBook'"><i class="fa fa-book fa-2x"></i><%=__('ui.menuItem.createBook')%></li>
 	    			</ul>
     			</div>
 
 		    	<div ng-show="show == 'createLibrary'">
 		    		<p><%= __('ui.library.create.select.label') %></p>
-    				<img ng-src="{{menu.createLibrary.getImg()}}" class="previewImg">
-		    		<ul>
-		    			<li 
-		    				ng-repeat="item in menu.createLibrary.list" 
-		    				ng-click="menu.createLibrary.select(item.model)" 
-		    				ng-class="{selectedItem: menu.createLibrary.isSelected(item.model)}">
-		    				<i class="fa fa-home fa-2x"></i>{{item.label}}
-		    			</li>
-		    		</ul>
+		    		<table>
+		    			<tr>
+		    				<td>
+								<vb-select options="menu.createLibrary.list" selected="menu.createLibrary.model" value="model" label="label">
+									<i class="fa fa-home fa-2x"></i>
+								</vb-select>
+		    				</td>
+		    				<td>
+			    				<img ng-src="{{menu.createLibrary.getImg()}}" class="previewImg">
+		    				</td>
+		    			</tr>
+		    		</table>
 
 		    		<a ng-click="menu.createLibrary.create()" class="fa fa-check fa-2x submitButton"></a>
 		    	</div>		   
 
 		    	<div ng-show="show == 'createSection'">
-    				<img ng-src="{{menu.createSection.getImg()}}" class="previewImg">
-		    		<ul>
-		    			<li 
-		    				ng-repeat="item in menu.createSection.list" 
-		    				ng-click="menu.createSection.select(item.model)" 
-		    				ng-class="{selectedItem: menu.createSection.isSelected(item.model)}">
-		    				<i class="fa fa-bars fa-2x"></i>{{item.label}}
-		    			</li>
-		    		</ul>
-		    		<a ng-click="menu.createSection.create()" class="fa fa-check fa-2x submitButton"></a>
-		    	</div> 	
-
-		    	<div ng-show="show == 'createBook'">
 		    		<table>
 		    			<tr>
 		    				<td>
-								<label><%= __('ui.create_book.object') %></label>
-					    		<ul>
-					    			<li 
-					    				ng-repeat="item in menu.createBook.list" 
-					    				ng-click="menu.createBook.select(item.model)" 
-					    				ng-class="{selectedItem: menu.createBook.isSelected(item.model)}">
-					    				<i class="fa fa-book fa-2x"></i>{{item.label}}
-					    			</li>
-					    		</ul>
+								<vb-select options="menu.createSection.list" selected="menu.createSection.model" value="model" label="label">
+									<i class="fa fa-bars fa-2x"></i>
+								</vb-select>
 		    				</td>
-	    					<td><img ng-src="{{menu.createBook.getImg()}}" class="previewImg"></td>
+		    				<td>
+			    				<img ng-src="{{menu.createSection.getImg()}}" class="previewImg">
+		    				</td>
 		    			</tr>
-		    			<tr><td colspan="2">
-				    		<table>
-			    				<tr>
-			    					<td><label><%= __('ui.create_book.cover') %></label></td>
-			    					<td><input ng-model="menu.createBook.cover" type="text"></input></td>
-			    				</tr>
-			    				<tr>
-			    					<td><label><%= __('ui.create_book.author') %></label></td>
-			    					<td><input ng-model="menu.createBook.author" type="text"></input></td>
-			    				</tr>
-			    				<tr>
-			    					<td><label><%= __('ui.create_book.title') %></label></td>
-			    					<td><input ng-model="menu.createBook.title" type="text"></input></td>
-			    				</tr>
-				    		</table>
-		    			</td></tr>
 		    		</table>
-					
-					<a ng-click="menu.createBook.create()" class="fa fa-check fa-2x submitButton"></a>
-				</div>	
+		    		
+		    		<a ng-click="menu.createSection.create()" class="fa fa-check fa-2x submitButton"></a>
+		    	</div> 	
 
 		    	<div ng-show="show == 'selectLibrary'">
 		    		<p><%= __('ui.library.select.text') %></p>
-		    		<ul>
+		    		<ul class="select">
 		    			<li ng-repeat="item in menu.selectLibrary.list" ng-click="menu.selectLibrary.go(item.id)">
 		    				<i class="fa fa-home fa-2x"></i>{{item.id}}
 		    			</li>
@@ -127,14 +104,7 @@
 	    		<a href="/auth/google"><img src="/img/google.png"/></a>
 	    	</div>
 
-	    	<div class="uiPanel inventory">
-		    	<ul>
-		    		<li ng-repeat="i in ['Невменяемый колдун','Война невменяемого','Месть колдуна','Невменяемый скиталец','Выюор невменяемого']">
-		    			<i class="fa fa-book"></i>
-		    			{{i}}
-		    		</li>	
-		    	</ul>
-	    	</div>
+	    	<ng-include src="'ui/inventory.ejs'"></ng-include>
 
 	    	<div ng-show="menu.feedback.show" class="uiPanel feedback">
 	    		<div>

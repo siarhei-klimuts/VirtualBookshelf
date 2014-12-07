@@ -35,22 +35,6 @@ VirtualBookshelf.Controls.Pocket = {
 	},
 	isEmpty: function() {
 		return this._books.length == 0;
-	},
-	loadFreeBooks: function() {
-		var
-			scope = this,
-			dataObject,
-			i;
-			
-		if(VirtualBookshelf.user) {
-			VirtualBookshelf.Data.getFreeBooks(VirtualBookshelf.user.id, function (err, result) {
-				if(!err && result) {
-					for(i = result.length - 1; i >= 0; i--) {
-						scope.put(result[i]);
-					}
-				}
-			});
-		}
 	}
 };
 
@@ -214,7 +198,6 @@ VirtualBookshelf.Controls.mouse = {
 VirtualBookshelf.Controls.init = function() {
 	VirtualBookshelf.Controls.clear();
 	VirtualBookshelf.Controls.initListeners();
-	// VirtualBookshelf.Controls.Pocket.loadFreeBooks();
 }
 
 VirtualBookshelf.Controls.initListeners = function() {

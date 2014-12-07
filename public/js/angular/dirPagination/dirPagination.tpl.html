@@ -1,0 +1,9 @@
+<ul class="pagination select" ng-if="1 < pages.length">
+    <a href="" ng-click="setCurrent(pagination.current - 1)" class="fa fa-chevron-left" ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }"></a>
+
+    <li ng-repeat="pageNumber in pages track by $index" ng-class="{ selectedItem : pagination.current == pageNumber, disabled : pageNumber == '...' }" ng-click="setCurrent(pageNumber)">
+        {{ pageNumber }}
+    </li>
+
+    <a href="" ng-click="setCurrent(pagination.current + 1)" class="fa fa-chevron-right" ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }"></a>
+</ul>

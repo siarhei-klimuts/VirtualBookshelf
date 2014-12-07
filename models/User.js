@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     		getUser: function(id, done) {
 				this.find({
 					where: {id: id}, 
-					attributes: ['position']
+					attributes: ['id', 'position']
 				}, {raw: true})
 				.success(function (result) {
 			  		done(null, result);

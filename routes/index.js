@@ -4,6 +4,10 @@ exports.index = function(req, res) {
   	res.render('index');
 };
 
+exports.ui = function(req, res) {
+	res.render('ui/' + req.params.page);
+};
+
 exports.getOutside = function(req, res) {
 	try {
 		console.log('getOutside', req.query.link);

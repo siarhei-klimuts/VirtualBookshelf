@@ -1,27 +1,12 @@
 var VirtualBookshelf = VirtualBookshelf || {};
 
+var STATS_CONTAINER_ID = 'stats';
+
 VirtualBookshelf.canvas;
 VirtualBookshelf.renderer;
 VirtualBookshelf.library;
 VirtualBookshelf.scene;
-
-VirtualBookshelf.user = {
-	_dataObject: null,
-	_position: null,
-	_library: null,
-	setDataObject: function(dataObject) {
-		this._dataObject = dataObject;
-	},
-	getLibrary: function() {
-		return this._library;
-	},
-	setLibrary: function(libraryId) {
-		this._library = libraryId || window.location.pathname.substring(1);
-	},
-	isAuthorized: function() {
-		return Boolean(this._dataObject);
-	}
-};
+VirtualBookshelf.stats;
 
 VirtualBookshelf.start = function() {
 	if(!Detector.webgl) {
@@ -33,13 +18,18 @@ VirtualBookshelf.start = function() {
 
 	VirtualBookshelf.init(width, height);
 	VirtualBookshelf.Camera.init(width, height);
-	VirtualBookshelf.UI.init();
+	VirtualBookshelf.UI.initControlsData();
 	VirtualBookshelf.Controls.init();
 
 	VirtualBookshelf.startRenderLoop();
 }
 
 VirtualBookshelf.init = function(width, height) {
+	var statsContainer = document.getElementById(STATS_CONTAINER_ID);
+	VirtualBookshelf.stats = new Stats();
+	statsContainer.appendChild(VirtualBookshelf.stats.domElement);
+
+
 	VirtualBookshelf.canvas = document.getElementById('LIBRARY');
 	VirtualBookshelf.renderer = new THREE.WebGLRenderer({canvas: VirtualBookshelf.canvas});
 	VirtualBookshelf.renderer.setSize(width, height);
@@ -52,6 +42,8 @@ VirtualBookshelf.startRenderLoop = function() {
 	requestAnimationFrame(VirtualBookshelf.startRenderLoop);
 	VirtualBookshelf.Controls.update();
 	VirtualBookshelf.renderer.render(VirtualBookshelf.scene, VirtualBookshelf.camera);
+
+	VirtualBookshelf.stats.update();
 }
 
 VirtualBookshelf.clearScene = function() {
@@ -78,30 +70,11 @@ VirtualBookshelf.loadLibrary = function(libraryId) {
 	});
 };
 
-document.addEventListener('DOMContentLoaded', function () {
-	VirtualBookshelf.Data.getUser(function (err, result) {
-		VirtualBookshelf.user.setDataObject(result);
-		VirtualBookshelf.user.setLibrary();
-
+VirtualBookshelf.run = function(data, user) {
+	user.load().then(function (res) {
 		VirtualBookshelf.start();
-		VirtualBookshelf.loadLibrary(VirtualBookshelf.user.getLibrary() || 1);
-
-		// if(!VirtualBookshelf.user.getLibrary() && VirtualBookshelf.user.isAuthorized()) {
-			// VirtualBookshelf.Data.getLibraries(function (err, result) {
-			// 	if(err) return;
-
-			// 	if(result && result.length > 0) {
-			// 		if(result.length == 1) {
-			// 			VirtualBookshelf.user.setLibrary(result[0].id);
-			// 			VirtualBookshelf.loadLibrary(VirtualBookshelf.user.getLibrary());
-			// 		} else {
-			// 			VirtualBookshelf.UI.showLibrarySelect(result);
-			// 		}
-			// 	} else {
-			// 		VirtualBookshelf.UI.showLibraryCreate();
-			// 	}
-			// });
-		// } else {
-		// } 
+		VirtualBookshelf.loadLibrary(user.getLibrary() || 1);
+	}, function (res) {
+		//TODO: show error message
 	});
-});
+};
