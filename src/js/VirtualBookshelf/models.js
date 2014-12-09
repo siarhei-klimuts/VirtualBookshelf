@@ -1,3 +1,5 @@
+VirtualBookshelf = VirtualBookshelf || {};
+
 VirtualBookshelf.Object = function(dataObject, geometry, material) {
 	THREE.Mesh.call(this, geometry, material);
 

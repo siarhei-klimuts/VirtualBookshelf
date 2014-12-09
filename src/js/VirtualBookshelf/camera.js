@@ -1,3 +1,5 @@
+VirtualBookshelf = VirtualBookshelf || {};
+
 VirtualBookshelf.Camera = VirtualBookshelf.Camera || {
 	HEIGTH: 1.5,
 	object: new VirtualBookshelf.CameraObject(),
