@@ -1,5 +1,6 @@
-VirtualBookshelf.User = function(data) {
-	var user = {
+angular.module('VirtualBookshelf')
+.factory('User', function (Data) {
+	var User = {
 		_dataObject: null,
 		_position: null,
 		_library: null,
@@ -7,7 +8,7 @@ VirtualBookshelf.User = function(data) {
 		load: function() {
 			var scope = this;
 
-			return data.getUser()
+			return Data.getUser()
 				.then(function (res) {
 					scope.setDataObject(res.data);
 					scope.setLibrary();
@@ -30,5 +31,5 @@ VirtualBookshelf.User = function(data) {
 		}
 	};
 
-	return user;
-};
+	return User;
+});

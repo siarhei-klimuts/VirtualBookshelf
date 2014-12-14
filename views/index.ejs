@@ -9,7 +9,6 @@
 		<script src="/js/angular/angular.min.js"></script>
 		<script src="/js/angular/block-ui/angular-block-ui.min.js"></script>
 		<script src="/js/angular/dirPagination/dirPagination.js"></script>
-		<script src="/js/index.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/angular/block-ui/angular-block-ui.min.css">
@@ -17,10 +16,10 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-	<body ng-app="vbUserInterface">
+	<body ng-app="VirtualBookshelf">
 		<canvas id="LIBRARY"></canvas>
 
-    	<div ng-controller="UIController" class="ui">
+    	<div ng-controller="UiCtrl" class="ui">
 			<div id="stats" style="float: left;" class="uiPanel"></div>
 
     		<div class="uiPanel mainMenu">
@@ -108,6 +107,6 @@
 	    	</div>
     	</div>
 
-		<script src="/js/angular/app.js"></script>
+		<script src="/js/index.js"></script>
 	</body>
 </html>

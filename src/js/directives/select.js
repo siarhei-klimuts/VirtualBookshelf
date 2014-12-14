@@ -1,6 +1,5 @@
-VirtualBookshelf.Directives = VirtualBookshelf.Directives || {};
-
-VirtualBookshelf.Directives.Select = function() {
+angular.module('VirtualBookshelf')
+.directive('vbSelect', function() {
 	return {
 		restrict: 'E',
     	transclude: true,
@@ -20,5 +19,5 @@ VirtualBookshelf.Directives.Select = function() {
 				return scope.selected === item[scope.value];
 			};
 		}
-	};
-};
+	}
+});

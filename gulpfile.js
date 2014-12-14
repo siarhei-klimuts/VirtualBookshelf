@@ -5,7 +5,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var env = require('gulp-env');
 
 gulp.task('js', function() {
-    gulp.src(['./src/js/VirtualBookshelf/models.js', './src/js/**/*.js'])
+    gulp.src(['./src/js/app.js', './src/js/**/*.js'])
     	.pipe(sourcemaps.init())
         .pipe(concat('index.js'))
     	.pipe(sourcemaps.write())

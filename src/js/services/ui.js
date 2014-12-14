@@ -1,34 +1,26 @@
-VirtualBookshelf.UI = VirtualBookshelf.UI || {};
+angular.module('VirtualBookshelf')
+.factory('UI', function ($q, User, Data, navigation, environment, blockUI) {
+	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
+	var UI = {menu: {}};
 
-VirtualBookshelf.UI.BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
-
-VirtualBookshelf.UI.init = function($q, user, data, blockUI) {
-	VirtualBookshelf.UI.$q = $q;
-	VirtualBookshelf.UI.user = user;
-	VirtualBookshelf.UI.blockUI = blockUI;
-
-	return VirtualBookshelf.UI;
-};
-
-VirtualBookshelf.UI.menu = {
-	selectLibrary: {
+	UI.menu.selectLibrary = {
 		list: [],
 		updateList: function() {
 			var scope = this;
 
-		    VirtualBookshelf.Data.getLibraries(function (err, result) {
-		        if(!err && result) {
-		            scope.list = result;
-		        }
-		    });
+		    Data.getLibraries()
+		    	.then(function (res) {
+		            scope.list = res.data;
+		    	});
 		},
 		go: function(id) {
 			if(id) {
-				VirtualBookshelf.loadLibrary(id);
+				environment.loadLibrary(id);
 			}
 		}
-	},
-	createLibrary: {
+	};
+
+	UI.menu.createLibrary = {
 		list: [],
 		model: null,
 
@@ -37,18 +29,19 @@ VirtualBookshelf.UI.menu = {
 		},
 		create: function() {
 			if(this.model) {
-				VirtualBookshelf.Data.postLibrary(this.model, function (err, result) {
-					if(!err && result) {
-						//TODO: add library without reload
-						VirtualBookshelf.loadLibrary(result.id);
-						VirtualBookshelf.UI.menu.show = null; // TODO: hide after go 
-						VirtualBookshelf.UI.menu.selectLibrary.updateList();
-					}
+				Data.postLibrary(this.model).then(function (result) {
+					environment.loadLibrary(result.id);
+					UI.menu.show = null; // TODO: hide after go 
+					UI.menu.selectLibrary.updateList();
+					//TODO: add library without reload
+				}).catch(function (res) {
+					//TODO: show an error
 				});
 			}
 		}		
-	},
-	createSection: {
+	};
+
+	UI.menu.createSection = {
 		list: [],
 		model: null,
 		
@@ -59,26 +52,20 @@ VirtualBookshelf.UI.menu = {
 			if(this.model) {
 				var sectionData = {
 					model: this.model,
-					userId: VirtualBookshelf.UI.user.id
+					userId: User.getId()
 				};
 
-				VirtualBookshelf.Data.postSection(sectionData, function (err, result) {
-					if(!err && result) {
-						//TODO: refactor
-					}
+				Data.postSection(sectionData).then(function () {
+					//TODO: refactor (don't see new section creation)
+					// possibly add to inventory only
+				}).catch(function () {
+					//TODO: show an error
 				});
 			}
 		}
-	},
-	// sectionMenu: {
-	// 	isMoveOption: function() {
-	// 		return true;
-	// 	},
-	// 	isRotateOption: function() {
-	// 		return false;
-	// 	}
-	// },
-	feedback: {
+	};
+
+	UI.menu.feedback = {
 		message: null,
 		show: true,
 
@@ -91,62 +78,63 @@ VirtualBookshelf.UI.menu = {
 			if(this.message) {
 				dataObject = {
 					message: this.message,
-					userId: VirtualBookshelf.UI.user && VirtualBookshelf.UI.user.id
+					userId: User.getId()
 				};
 
-				VirtualBookshelf.Data.postFeedback(dataObject, function(err, result) {
-					// TODO: 
-				});
+				Data.postFeedback(dataObject);
 			}
 
 			this.close();
 		}
-	},
-	navigation: {
+	};
+
+	UI.menu.navigation = {
 		stop: function() {
-			VirtualBookshelf.Controls.goStop();
+			navigation.goStop();
 		},
 		forward: function() {
-			VirtualBookshelf.Controls.goForward();
+			navigation.goForward();
 		},
 		backward: function() {
-			VirtualBookshelf.Controls.goBackward();
+			navigation.goBackward();
 		},
 		left: function() {
-			VirtualBookshelf.Controls.goLeft();
+			navigation.goLeft();
 		},
 		right: function() {
-			VirtualBookshelf.Controls.goRight();
+			navigation.goRight();
 		}
-	},
-	login: {
+	};
+
+	UI.menu.login = {
 		// TODO: oauth.io
 		isShow: function() {
-			return !VirtualBookshelf.UI.user.isAuthorized();
+			return !User.isAuthorized();
 		}
-	},
-	inventory: {
+	};
+
+	UI.menu.inventory = {
 		search: null,
 		list: null,
 		blocker: 'inventory',
 	
 		expand: function(book) {
-			VirtualBookshelf.UI.menu.createBook.setBook(book);
+			UI.menu.createBook.setBook(book);
 		},
 		block: function() {
-			VirtualBookshelf.UI.blockUI.instances.get(this.blocker).start();
+			blockUI.instances.get(this.blocker).start();
 		},
 		unblock: function() {
-			VirtualBookshelf.UI.blockUI.instances.get(this.blocker).stop();
+			blockUI.instances.get(this.blocker).stop();
 		},
 		isShow: function() {
-			return VirtualBookshelf.UI.user.isAuthorized();
+			return User.isAuthorized();
 		},
 		addBook: function() {
 			var scope = this;
 
 			scope.block();
-			VirtualBookshelf.Data.postBook({userId: VirtualBookshelf.UI.user.getId()})
+			Data.postBook({userId: User.getId()})
 				.then(function (res) {
 					scope.expand(res.data);
 					return scope.loadData();
@@ -165,7 +153,7 @@ VirtualBookshelf.UI.menu = {
 			var scope = this;
 
 			scope.block();
-			VirtualBookshelf.Data.deleteBook(book)
+			Data.deleteBook(book)
 				.then(function (res) {
 					return scope.loadData();
 				})
@@ -178,11 +166,10 @@ VirtualBookshelf.UI.menu = {
 		},
 		loadData: function() {
 			var scope = this;
-			var $q = VirtualBookshelf.UI.$q;
 			var promise;
 
 			scope.block();
-			promise = $q.when(this.isShow() ? VirtualBookshelf.Data.getUserBooks(VirtualBookshelf.UI.user.getId()) : null)
+			promise = $q.when(this.isShow() ? Data.getUserBooks(User.getId()) : null)
 				.then(function (books) {
 					scope.list = books;
 				})
@@ -192,8 +179,9 @@ VirtualBookshelf.UI.menu = {
 
 			return promise;
 		}
-	},
-	createBook: {
+	};
+
+	UI.menu.createBook = {
 		list: [],
 		book: {},
 
@@ -209,7 +197,7 @@ VirtualBookshelf.UI.menu = {
 			}
 		},
 		getImg: function() {
-			return this.book.model ? VirtualBookshelf.UI.BOOK_IMAGE_URL.replace('{model}', this.book.model) : null;
+			return this.book.model ? BOOK_IMAGE_URL.replace('{model}', this.book.model) : null;
 		},
 		isShow: function() {
 			return !!this.book.id;
@@ -218,39 +206,42 @@ VirtualBookshelf.UI.menu = {
 			var scope = this;
 
 			
-			VirtualBookshelf.UI.menu.inventory.block();
-			VirtualBookshelf.Data.postBook(this.book)
+			UI.menu.inventory.block();
+			Data.postBook(this.book)
 				.then(function (res) {
 					scope.cancel();
-					return VirtualBookshelf.UI.menu.inventory.loadData()
+					return UI.menu.inventory.loadData()
 				})
 				.catch(function (res) {
 					//TODO: show error
 				})
 				.finally(function (res) {
-					VirtualBookshelf.UI.menu.inventory.unblock();
+					UI.menu.inventory.unblock();
 				});
 		},
 		cancel: function() {
 			this.setBook();
 		}
-	}
-};
+	};
 
-VirtualBookshelf.UI.initControlsData = function() {
-	var scope = VirtualBookshelf.UI;
+	UI.init = function() {
+		//TODO: move to menu models
+		Data.getUIData()
+		.then(function (res) {
+			UI.menu.createLibrary.list = res.data.libraries;
+			UI.menu.createSection.list = res.data.bookshelves;
+			UI.menu.createBook.list = res.data.books;
+		})
+		.catch(function (res) {
+			//TODO: show an error
+		});
 
-	VirtualBookshelf.Data.getUIData(function (err, data) {
-		if(!err && data) {
-			scope.menu.createLibrary.list = data.libraries;
-			scope.menu.createSection.list = data.bookshelves;
-			scope.menu.createBook.list = data.books;
-		}
-	});
+		UI.menu.selectLibrary.updateList();
+		UI.menu.inventory.loadData();	
+	};
 
-	VirtualBookshelf.UI.menu.selectLibrary.updateList();
-	VirtualBookshelf.UI.menu.inventory.loadData();
-}
+	return UI;
+});
 
 // VirtualBookshelf.UI.initControlsEvents = function() {
 	// VirtualBookshelf.UI.menu.createBook.model.onchange = VirtualBookshelf.UI.changeModel;
