@@ -9,25 +9,25 @@ angular.module('VirtualBookshelf')
 			this.add(this.shelves[key]);
 		}
 		
-		this.loadBooks();
+		// this.loadBooks();
 	};
 	SectionObject.prototype = new BaseObject();
 	SectionObject.prototype.constructor = SectionObject;
 	
-	SectionObject.prototype.loadBooks = function() {	
-		var section = this;
+	// SectionObject.prototype.loadBooks = function() {	
+	// 	var section = this;
 
-		Data.getBooks(section.id).then(function (books) {
-			books.forEach(function (dataObject) {
-				createBook(dataObject, function (book, dataObject) {
-					var shelf = section.shelves[dataObject.shelfId];
-					shelf && shelf.add(book);
-				});
-			});
-		}).catch(function (res) {
-			//TODO: show an error
-		});
-	};
+	// 	Data.getBooks(section.id).then(function (books) {
+	// 		books.forEach(function (dataObject) {
+	// 			createBook(dataObject, function (book, dataObject) {
+	// 				var shelf = section.shelves[dataObject.shelfId];
+	// 				shelf && shelf.add(book);
+	// 			});
+	// 		});
+	// 	}).catch(function (res) {
+	// 		//TODO: show an error
+	// 	});
+	// };
 
 	SectionObject.prototype.save = function() {
 		var scope = this;
@@ -114,24 +114,24 @@ angular.module('VirtualBookshelf')
 		return result;
 	};
 
-	var createBook = function(dataObject, done) {
-		var modelPath = '/obj/books/{model}/model.js'.replace('{model}', dataObject.model);
+	// var createBook = function(dataObject, done) {
+	// 	var modelPath = '/obj/books/{model}/model.js'.replace('{model}', dataObject.model);
 
-		Data.loadGeometry(modelPath).then(function (geometry) {
-			var canvas = document.createElement('canvas');
-			var texture = new THREE.Texture(canvas);
-		    var material = new THREE.MeshPhongMaterial({map: texture});
-			var book = new BookObject(dataObject, geometry, material);
+	// 	Data.loadGeometry(modelPath).then(function (geometry) {
+	// 		var canvas = document.createElement('canvas');
+	// 		var texture = new THREE.Texture(canvas);
+	// 	    var material = new THREE.MeshPhongMaterial({map: texture});
+	// 		var book = new BookObject(dataObject, geometry, material);
 
-			canvas.width = canvas.height = Data.TEXTURE_RESOLUTION;
-			book.texture.load(dataObject.texture, false, function () {
-				book.cover.load(dataObject.cover, true, function () {
-					book.updateTexture();
-					done(book, dataObject);
-				});
-			});
-		});
-	};	
+	// 		canvas.width = canvas.height = Data.TEXTURE_RESOLUTION;
+	// 		book.texture.load(dataObject.texture, false, function () {
+	// 			book.cover.load(dataObject.cover, true, function () {
+	// 				book.updateTexture();
+	// 				done(book, dataObject);
+	// 			});
+	// 		});
+	// 	});
+	// };	
 
 	return SectionObject;
 });
