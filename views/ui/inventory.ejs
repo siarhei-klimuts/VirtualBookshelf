@@ -7,11 +7,12 @@
 		
 		<ul>
 			<li dir-paginate="item in menu.inventory.list | filter:menu.inventory.search | orderBy:'title' | itemsPerPage:5">
-				<div class="inventoryItem">
+				<div class="inventoryItem" ng-class="{selected: menu.inventory.isBookSelected(item.id)}" ng-click="menu.inventory.selectBook(item.id)">
 					<i class="fa fa-book"></i>
 					<span ng-bind="item.title"></span>
 
 	    			<div class="inventoryControls">
+		    			<a class="fa fa-exchange inventoryItemButton" ng-click="menu.inventory.place(item)"></a>
 		    			<a class="fa fa-trash inventoryItemButton" ng-click="menu.inventory.remove(item)"></a>
 		    			<a class="fa fa-gear inventoryItemButton" ng-click="menu.inventory.expand(item)"></a>
 	    			</div>

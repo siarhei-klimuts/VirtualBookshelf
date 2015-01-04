@@ -1,18 +1,25 @@
 angular.module('VirtualBookshelf')
 .factory('BookObject', function (BaseObject, CanvasText, CanvasImage, Data) {	
-	var BookObject = function(dataObject, geometry, material) {
+	var BookObject = function(dataObject, geometry, material, mapImage, coverImage) {
 		BaseObject.call(this, dataObject, geometry, material);
 		
 		this.model = this.dataObject.model;
 		this.canvas = material.map.image;
-		this.texture = new CanvasImage();
-		this.cover = new CanvasImage(this.dataObject.coverPos);
+		this.texture = new CanvasImage(null, null, mapImage);
+		this.cover = new CanvasImage(this.dataObject.coverPos, this.dataObject.cover, coverImage);
 		this.author = new CanvasText(this.dataObject.author, this.dataObject.authorFont);
 		this.title = new CanvasText(this.dataObject.title, this.dataObject.titleFont);
+
+		this.updateTexture();
 	};
+
+	BookObject.TYPE = 'BookObject';
+
 	BookObject.prototype = new BaseObject();
 	BookObject.prototype.constructor = BookObject;
 	BookObject.prototype.textNodes = ['author', 'title'];
+	BookObject.prototype.type = BookObject.TYPE;
+
 	BookObject.prototype.updateTexture = function() {
 		var context = this.canvas.getContext('2d');
 		var cover = this.cover;

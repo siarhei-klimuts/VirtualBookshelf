@@ -38,7 +38,7 @@ function saveSection(dataObject, done) {
 };
 
 function updateSection(dataObject, done) {
-	for(key in dataObject) {
+	for(var key in dataObject) {
 		this[key] = dataObject[key];
 	}
 

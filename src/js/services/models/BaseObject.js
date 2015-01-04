@@ -12,14 +12,20 @@ angular.module('VirtualBookshelf')
 		this.rotation.fromArray(this.dataObject.rotation.map(Number));
 
 		this.updateMatrix();
+
+		//TODO: research, after caching geometry this can be run once
 		this.geometry.computeBoundingBox();
+		
 		this.updateBoundingBox();		
 	};
 	
 	BaseObject.prototype = new THREE.Mesh();
-	
 	BaseObject.prototype.constructor = BaseObject;
-	
+
+	BaseObject.prototype.getType = function() {
+		return this.type;
+	};
+
 	BaseObject.prototype.isOutOfParrent = function() {
 		return Math.abs(this.boundingBox.center.x - this.parent.boundingBox.center.x) > (this.parent.boundingBox.radius.x - this.boundingBox.radius.x)
 			//|| Math.abs(this.boundingBox.center.y - this.parent.boundingBox.center.y) > (this.parent.boundingBox.radius.y - this.boundingBox.radius.y)

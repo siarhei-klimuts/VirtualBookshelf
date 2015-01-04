@@ -1,5 +1,7 @@
 angular.module('VirtualBookshelf')
-.factory('User', function (Data) {
+.factory('User', function ($log, Data) {
+	var loaded = false;
+
 	var User = {
 		_dataObject: null,
 		_position: null,
@@ -7,12 +9,13 @@ angular.module('VirtualBookshelf')
 
 		load: function() {
 			var scope = this;
+			$log.log('user loading');
 
-			return Data.getUser()
-				.then(function (res) {
-					scope.setDataObject(res.data);
-					scope.setLibrary();
-				});
+			return Data.getUser().then(function (res) {
+				scope.setDataObject(res.data);
+				scope.setLibrary();
+				loaded = true;
+			});
 		},
 		setDataObject: function(dataObject) {
 			this._dataObject = dataObject;
@@ -28,6 +31,9 @@ angular.module('VirtualBookshelf')
 		},
 		isAuthorized: function() {
 			return Boolean(this._dataObject);
+		},
+		isLoaded: function() {
+			return loaded;
 		}
 	};
 

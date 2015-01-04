@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('Main', function (Data, Camera, LibraryObject, Controls, User, UI, environment) {
+.factory('Main', function ($log, Data, Camera, LibraryObject, Controls, User, UI, environment) {
 	var STATS_CONTAINER_ID = 'stats';
 	var LIBRARY_CANVAS_ID = 'LIBRARY';
 	
@@ -23,11 +23,11 @@ angular.module('VirtualBookshelf')
 
 		startRenderLoop();
 
-
 		User.load().then(function (res) {
 			environment.loadLibrary(User.getLibrary() || 1);
 			UI.init();
-		}, function (res) {
+		}, function (error) {
+			$log.error(error);
 			//TODO: show error message  
 		});		
 	};

@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('UI', function ($q, User, Data, navigation, environment, blockUI) {
+.factory('UI', function ($q, $log, User, Data, Controls, navigation, environment, locator, selector, blockUI) {
 	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
 	var UI = {menu: {}};
 
@@ -109,7 +109,7 @@ angular.module('VirtualBookshelf')
 	UI.menu.login = {
 		// TODO: oauth.io
 		isShow: function() {
-			return !User.isAuthorized();
+			return !User.isAuthorized() && User.isLoaded();
 		}
 	};
 
@@ -130,52 +130,68 @@ angular.module('VirtualBookshelf')
 		isShow: function() {
 			return User.isAuthorized();
 		},
+		isBookSelected: function(id) {
+			return selector.isBookSelected(id);
+		},
+		selectBook: function(id) {
+			selector.selectBook(id);
+		},
 		addBook: function() {
 			var scope = this;
 
 			scope.block();
-			Data.postBook({userId: User.getId()})
-				.then(function (res) {
-					scope.expand(res.data);
-					return scope.loadData();
-				})
-				.then(function (res) {
-					//TODO: research, looks rigth
-				})
-				.finally(function (res) {
-					scope.unblock();
-				})
-				.catch(function (res) {
-					//TODO: show an error
-				});
+			Data.postBook({userId: User.getId()}).then(function (res) {
+				scope.expand(res.data);
+				return scope.loadData();
+			}).then(function (res) {
+				//TODO: research, looks rigth
+			}).catch(function (error) {
+				$log.error(error);
+				//TODO: show an error
+			}).finally(function (res) {
+				scope.unblock();
+			});
 		},
 		remove: function(book) {
 			var scope = this;
 
 			scope.block();
-			Data.deleteBook(book)
-				.then(function (res) {
-					return scope.loadData();
-				})
-				.catch(function (res) {
-					//TODO: show an error
-				})
-				.finally(function (res) {
-					scope.unblock();
-				});
+			Data.deleteBook(book).then(function (res) {
+				environment.removeBook(res.data);
+				return scope.loadData();
+			}).catch(function (error) {
+				//TODO: show an error
+				$log.error(error);
+			}).finally(function (res) {
+				scope.unblock();
+			});
+		},
+		place: function(book) {
+			var scope = this;
+			var promise;
+			var isBookPlaced = !!book.sectionId;
+
+			scope.block();
+			promise = isBookPlaced ? locator.unplaceBook(book) : locator.placeBook(book);
+			promise.then(function (res) {
+				return scope.loadData();
+			}).catch(function (error) {
+				//TODO: show an error
+				$log.error(error);
+			}).finally(function (res) {
+				scope.unblock(); 
+			});
 		},
 		loadData: function() {
 			var scope = this;
 			var promise;
 
 			scope.block();
-			promise = $q.when(this.isShow() ? Data.getUserBooks(User.getId()) : null)
-				.then(function (books) {
-					scope.list = books;
-				})
-				.finally(function () {
-					scope.unblock();		
-				});
+			promise = $q.when(this.isShow() ? Data.getUserBooks(User.getId()) : null).then(function (books) {
+				scope.list = books;
+			}).finally(function () {
+				scope.unblock();		
+			});
 
 			return promise;
 		}
@@ -204,20 +220,17 @@ angular.module('VirtualBookshelf')
 		},
 		save: function() {
 			var scope = this;
-
 			
 			UI.menu.inventory.block();
-			Data.postBook(this.book)
-				.then(function (res) {
-					scope.cancel();
-					return UI.menu.inventory.loadData()
-				})
-				.catch(function (res) {
-					//TODO: show error
-				})
-				.finally(function (res) {
-					UI.menu.inventory.unblock();
-				});
+			Data.postBook(this.book).then(function (res) {
+				environment.updateBook(res.data);
+				scope.cancel();
+				return UI.menu.inventory.loadData()
+			}).catch(function (res) {
+				//TODO: show error
+			}).finally(function (res) {
+				UI.menu.inventory.unblock();
+			});
 		},
 		cancel: function() {
 			this.setBook();

@@ -62,11 +62,14 @@ div.ui {
 	font-size: 10pt;
 }
 .inventoryItem {
-	background: linear-gradient(to bottom, rgba(50,100,50,0.5) 0%, rgba(0,0,0,0.5) 100%);
+	background: linear-gradient(to bottom, rgba(50, 100, 50, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
 	border-radius: 10px;
 	padding: 5px;
 	white-space: nowrap;
 	overflow: hidden;
+}
+.inventoryItem.selected {
+	background: linear-gradient(to bottom, rgba(14, 179, 35, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
 }
 .inventoryControls {
 	float: right;
