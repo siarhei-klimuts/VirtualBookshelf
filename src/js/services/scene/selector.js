@@ -1,36 +1,20 @@
 angular.module('VirtualBookshelf')
-.factory('selector', function ($rootScope, BookObject, ShelfObject, SectionObject, environment) {
+.factory('selector', function ($rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, environment) {
 	var selector = {};
-
-	var selected = null;
-	var focused = null;
 	
-	var SelectedObject = function(selectedObject) {
-		if(selectedObject) {
-			this.id = selectedObject.id;
-			this.parentId = selectedObject.parent.id;
-			this.type = selectedObject.getType();
-		}
-	};//TODO: recheck
-	SelectedObject.prototype.equals = function(meta) {
-		return !((!!meta !== !!this.id)
-			|| meta
-				&& (meta.id !== this.id
-					|| meta.parentId !== this.parentId
-					|| meta.type !== this.type));
-	};
+	var selected = new SelectorMeta();
+	var focused = new SelectorMeta();
 
-	selector.focus = function(focusedObject) {
-		var newFocused = new SelectedObject(focusedObject);
+	selector.focus = function(meta) {
+		if(!meta.equals(focused)) {
+			if(!focused.equals(selected)) {
+				unhighlight(focused);
+			}
 
-		if(!newFocused.equals(focused)) {
-			unhighlight(focused);
+			focused = meta;
 
-			if(focusedObject && !newFocused.equals(selected)) {
-				focused = newFocused;
+			if(!focused.isEmpty() && !focused.equals(selected)) {
 				highlight(focused, 0x55ffff);
-			} else {
-				focused = null;
 			}
 		}
 	};
@@ -49,35 +33,25 @@ angular.module('VirtualBookshelf')
 		isShelf(meta) && (obj.visible = false);
 	};
 
-	selector.select = function() {
-		if(focused && !focused.equals(selected)) {
-			selector.unselect();
-			selected = focused;
-			//TODO: make it possible to have selected and focused object at the same time
-			// this will make possible to unselect object when clicking on empty space
-			// and do not uselect it when klicking on it twice
-			selector.focus(null);
-			highlight(selected, 0x55ff55);
-			$rootScope.$apply();
-		}
+	selector.selectFocused = function() {
+		var meta = focused;
+
+		selector.select(meta);
+		$rootScope.$apply();
 	};
 
-	selector.selectBook = function(bookId) {
-		var book = environment.getBook(bookId);
-		var newSelected = new SelectedObject(book);
-
-		if(!newSelected.equals(selected)) {
+	selector.select = function(meta) {
+		if(!meta.equals(selected)) {
 			selector.unselect();
-			selected = newSelected;
-			selector.focus(null);
+			selected = meta;
 			highlight(selected, 0x55ff55);
 		}
 	};
 
 	selector.unselect = function() {
-		if(selected) {
+		if(!selected.isEmpty()) {
 			unhighlight(selected);
-			selected = null;
+			selected = new SelectorMeta();
 		}
 	};
 
@@ -88,7 +62,7 @@ angular.module('VirtualBookshelf')
 	var getObject = function(meta) {
 		var object;
 
-		if(meta) {
+		if(!meta.isEmpty()) {
 			object = isShelf(meta) ? environment.getShelf(meta.parentId, meta.id)
 				: isBook(meta) ? environment.getBook(meta.id)
 				: isSection(meta) ? environment.getSection(meta.id)
@@ -115,15 +89,15 @@ angular.module('VirtualBookshelf')
 	};
 
 	var isShelf = function(meta) {
-		return meta && meta.type === ShelfObject.TYPE;
+		return meta.type === ShelfObject.TYPE;
 	};
 
 	var isBook = function(meta) {
-		return meta && meta.type === BookObject.TYPE;
+		return meta.type === BookObject.TYPE;
 	};
 
 	var isSection = function(meta) {
-		return meta && meta.type === SectionObject.TYPE;
+		return meta.type === SectionObject.TYPE;
 	};
 
 	return selector;

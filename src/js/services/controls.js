@@ -6,7 +6,7 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('Controls', function ($q, $log, BookObject, ShelfObject, SectionObject, Camera, Data, navigation, environment, mouse, selector) {
+.factory('Controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, Data, navigation, environment, mouse, selector) {
 	var Controls = {};
 
 	Controls.BUTTONS_ROTATE_SPEED = 100;
@@ -67,7 +67,7 @@ angular.module('VirtualBookshelf')
 			this.getted = null;
 		},
 		select: function() {
-			selector.select();
+			selector.selectFocused();
 
 			// this.clear();
 			this.object = selector.getSelectedObject();
@@ -232,7 +232,7 @@ angular.module('VirtualBookshelf')
 			}
 
 			// Controls.selected.select(object, point);
-			selector.focus(object);
+			selector.focus(new SelectorMeta(object));
 		}
 	};
 

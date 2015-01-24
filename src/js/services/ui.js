@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('UI', function ($q, $log, User, Data, Controls, navigation, environment, locator, selector, blockUI) {
+.factory('UI', function ($q, $log, SelectorMeta, User, Data, Controls, navigation, environment, locator, selector, blockUI) {
 	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
 	var UI = {menu: {}};
 
@@ -133,8 +133,10 @@ angular.module('VirtualBookshelf')
 		isBookSelected: function(id) {
 			return selector.isBookSelected(id);
 		},
-		selectBook: function(id) {
-			selector.selectBook(id);
+		select: function(dto) {
+			var book = environment.getBook(dto.id);
+			var meta = new SelectorMeta(book);
+			selector.select(meta);
 		},
 		addBook: function() {
 			var scope = this;
