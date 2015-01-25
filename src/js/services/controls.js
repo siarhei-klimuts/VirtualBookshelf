@@ -217,21 +217,21 @@ angular.module('VirtualBookshelf')
 	Controls.selectObject = function() {
 		var
 			intersected,
-			// point,
 			object;
 
 		if(mouse.isCanvas() && environment.library) {
-			intersected = mouse.getIntersected(environment.library.children, true, [SectionObject, BookObject]);
+			//TODO: optimize
+			intersected = mouse.getIntersected(environment.library.children, true, [BookObject]);
 			if(!intersected) {
 				intersected = mouse.getIntersected(environment.library.children, true, [ShelfObject]);
 			}
-
+			if(!intersected) {
+				intersected = mouse.getIntersected(environment.library.children, true, [SectionObject]);
+			}
 			if(intersected) {
 				object = intersected.object;
-				// point = intersected.point; 
 			}
 
-			// Controls.selected.select(object, point);
 			selector.focus(new SelectorMeta(object));
 		}
 	};

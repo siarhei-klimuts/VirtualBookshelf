@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('selector', function ($rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, environment) {
+.factory('selector', function ($rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, environment, highlight) {
 	var selector = {};
 	
 	var selected = new SelectorMeta();
@@ -8,29 +8,16 @@ angular.module('VirtualBookshelf')
 	selector.focus = function(meta) {
 		if(!meta.equals(focused)) {
 			if(!focused.equals(selected)) {
-				unhighlight(focused);
+				highlight.focus(null);
 			}
 
 			focused = meta;
 
 			if(!focused.isEmpty() && !focused.equals(selected)) {
-				highlight(focused, 0x55ffff);
+				var obj = getObject(focused);
+				highlight.focus(obj);
 			}
 		}
-	};
-
-	var highlight = function(meta, color) {
-		var obj = getObject(meta);
-
-		obj && obj.material.color.setHex(color);
-		isShelf(meta) && (obj.visible = true);
-	};
-
-	var unhighlight = function(meta) {
-		var obj = getObject(meta);
-
-		obj && obj.material.color.setHex(0xffffff);
-		isShelf(meta) && (obj.visible = false);
 	};
 
 	selector.selectFocused = function() {
@@ -44,13 +31,16 @@ angular.module('VirtualBookshelf')
 		if(!meta.equals(selected)) {
 			selector.unselect();
 			selected = meta;
-			highlight(selected, 0x55ff55);
+
+			var obj = getObject(selected);
+			highlight.select(obj);
+			highlight.focus(null);
 		}
 	};
 
 	selector.unselect = function() {
 		if(!selected.isEmpty()) {
-			unhighlight(selected);
+			highlight.select(null);
 			selected = new SelectorMeta();
 		}
 	};

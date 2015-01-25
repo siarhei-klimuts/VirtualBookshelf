@@ -1,6 +1,8 @@
 angular.module('VirtualBookshelf')
 .factory('environment', function ($q, $log, LibraryObject, SectionObject, BookObject, Data, Camera, cache) {
 	var environment = {};
+
+	environment.CLEARANCE = 0.001;
 	 
 	var libraryDto = null;
 	var sections = null;

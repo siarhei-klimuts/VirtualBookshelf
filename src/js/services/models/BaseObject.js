@@ -48,7 +48,8 @@ angular.module('VirtualBookshelf')
 			for(i = targets.length - 1; i >= 0; i--) {
 				target = targets[i].boundingBox;
 
-				if(targets[i] === this
+				if(targets[i] === this 
+				|| !target // children without BB
 				|| (Math.abs(this.boundingBox.center.x - target.center.x) > (this.boundingBox.radius.x + target.radius.x))
 				|| (Math.abs(this.boundingBox.center.y - target.center.y) > (this.boundingBox.radius.y + target.radius.y))
 				|| (Math.abs(this.boundingBox.center.z - target.center.z) > (this.boundingBox.radius.z + target.radius.z))) {	

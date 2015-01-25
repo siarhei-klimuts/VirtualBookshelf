@@ -1,0 +1,69 @@
+angular.module('VirtualBookshelf')
+.factory('highlight', function (environment) {
+	var highlight = {};
+
+	var PLANE_ROTATION = Math.PI * 0.5;
+	var PLANE_MULTIPLIER = 3.5;
+	var COLOR_SELECT = 0x005533;
+	var COLOR_FOCUS = 0x003355;
+
+	var select;
+	var focus;
+
+	var init = function() {
+		var materialProperties = {
+			map: new THREE.ImageUtils.loadTexture( 'img/glow.png' ),
+			transparent: true, 
+			side: THREE.DoubleSide,
+			blending: THREE.AdditiveBlending
+		};
+
+		materialProperties.color = COLOR_SELECT;
+		var materialSelect = new THREE.MeshBasicMaterial(materialProperties);
+
+		materialProperties.color = COLOR_FOCUS;
+		var materialFocus = new THREE.MeshBasicMaterial(materialProperties);
+
+		var geometry = new THREE.PlaneGeometry(1, 1, 1);
+
+		select = new THREE.Mesh(geometry, materialSelect);
+		select.rotation.x = PLANE_ROTATION;
+
+		focus = new THREE.Mesh(geometry, materialFocus);
+		focus.rotation.x = PLANE_ROTATION;
+	};
+
+	var commonHighlight = function(which, obj) {
+		if(obj) {
+			var width = obj.geometry.boundingBox.max.x * PLANE_MULTIPLIER;
+			var height = obj.geometry.boundingBox.max.z * PLANE_MULTIPLIER;
+			var bottom = obj.geometry.boundingBox.min.y + environment.CLEARANCE;
+			
+			// var m = new THREE.Matrix4();
+			// m.extractRotation(obj.matrixWorld);
+			// focus.position = obj.localToWorld(new THREE.Vector3(0, bottom, 0));
+			// focus.rotation.setFromRotationMatrix(m, 'YXZ');
+			// focus.rotation.x = Math.PI * 0.5;
+			
+			which.position.y = bottom;
+			which.scale.set(width, height, 1);
+			obj.add(which);
+
+			which.visible = true;
+		} else {
+			which.visible = false;
+		}
+	}
+
+	highlight.focus = function(obj) {
+		commonHighlight(focus, obj);
+	};
+
+	highlight.select = function(obj) {
+		commonHighlight(select, obj);
+	};
+
+	init();
+
+	return highlight;
+});
