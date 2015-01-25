@@ -39,12 +39,6 @@ angular.module('VirtualBookshelf')
 			var height = obj.geometry.boundingBox.max.z * PLANE_MULTIPLIER;
 			var bottom = obj.geometry.boundingBox.min.y + environment.CLEARANCE;
 			
-			// var m = new THREE.Matrix4();
-			// m.extractRotation(obj.matrixWorld);
-			// focus.position = obj.localToWorld(new THREE.Vector3(0, bottom, 0));
-			// focus.rotation.setFromRotationMatrix(m, 'YXZ');
-			// focus.rotation.x = Math.PI * 0.5;
-			
 			which.position.y = bottom;
 			which.scale.set(width, height, 1);
 			obj.add(which);
