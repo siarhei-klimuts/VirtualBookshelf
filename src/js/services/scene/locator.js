@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('locator', function ($q, Data, selector, environment, cache) {
+.factory('locator', function ($q, BaseObject, Data, selector, environment, cache) {
 	var locator = {};
 
 	locator.placeBook = function(bookDto) {
@@ -110,16 +110,22 @@ angular.module('VirtualBookshelf')
 
 	var getOccupiedMatrix = function(objects, matrixPrecision) {
 		var result = {};
+		var objectBB;
+		var objPos;
+		var minKey;
+		var maxKey;
 
-		for (var objectIndex = objects.length - 1; objectIndex >= 0; objectIndex--) {
-			var objectBB = objects[objectIndex].geometry.boundingBox;
-			var objPos = objects[objectIndex].position;
-			var minKey = Math.floor((objPos.x + objectBB.min.x) / matrixPrecision.x);
-			var maxKey = Math.floor((objPos.x + objectBB.max.x) / matrixPrecision.x);
+		objects.forEach(function (obj) {
+			if (obj instanceof BaseObject) {
+				objectBB = obj.geometry.boundingBox;
+				objPos = obj.position;
+				minKey = Math.floor((objPos.x + objectBB.min.x) / matrixPrecision.x);
+				maxKey = Math.floor((objPos.x + objectBB.max.x) / matrixPrecision.x);
 
-			result[minKey] = true;
-			result[maxKey] = true;
-		}
+				result[minKey] = true;
+				result[maxKey] = true;
+			};
+		});
 
 		return result;
 	};

@@ -67,6 +67,8 @@ angular.module('VirtualBookshelf')
 	var commonAdder = function(where, what, loader, key) {
 		var promise = loader(what).then(function (loadedCache) {
 			where[key || what] = loadedCache;
+
+			return loadedCache;
 		});
 
 		return promise;
