@@ -1,41 +1,53 @@
 angular.module('VirtualBookshelf')
 .factory('User', function ($log, Data) {
+	var user = {};
+
 	var loaded = false;
+	var _dataObject = null;
+	var _position = null;
+	var _library = null;
 
-	var User = {
-		_dataObject: null,
-		_position: null,
-		_library: null,
+	user.load = function() {
+		var scope = this;
 
-		load: function() {
-			var scope = this;
-			$log.log('user loading');
+		return Data.getUser().then(function (res) {
+			scope.setDataObject(res.data);
+			scope.setLibrary();
+			loaded = true;
 
-			return Data.getUser().then(function (res) {
-				scope.setDataObject(res.data);
-				scope.setLibrary();
-				loaded = true;
-			});
-		},
-		setDataObject: function(dataObject) {
-			this._dataObject = dataObject;
-		},
-		getLibrary: function() {
-			return this._library;
-		},
-		setLibrary: function(libraryId) {
-			this._library = libraryId || window.location.pathname.substring(1);
-		},
-		getId: function() {
-			return this._dataObject && this._dataObject.id;
-		},
-		isAuthorized: function() {
-			return Boolean(this._dataObject);
-		},
-		isLoaded: function() {
-			return loaded;
-		}
+			$log.log('user loaded');
+		});
 	};
 
-	return User;
+	user.logout = function() {
+		return Data.logout().then(function () {
+			return user.load();
+		});
+	};
+
+	user.setDataObject = function(dataObject) {
+		_dataObject = dataObject;
+	};
+
+	user.getLibrary = function() {
+		return _library;
+	};
+
+	user.setLibrary = function(libraryId) {
+		_library = libraryId || window.location.pathname.substring(1);
+	};
+
+	user.getId = function() {
+		return _dataObject && _dataObject.id;
+	};
+
+	user.isAuthorized = function() {
+		return Boolean(_dataObject);
+	};
+
+	user.isLoaded = function() {
+		return loaded;
+	}
+
+	return user;
 });

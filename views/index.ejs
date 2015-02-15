@@ -27,6 +27,7 @@
 	    			<ul class="select">
 	    				<li ng-click="show = 'createList'"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
 	    				<li ng-click="show = 'selectLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
+	    				<li ng-click="menu.login.logout()" ng-hide="menu.login.isShow()"><i class="fa fa-sign-out fa-2x"></i><%=__('ui.menuItem.logout')%></li>
 	    			</ul>
     			</div>
 
@@ -93,7 +94,7 @@
 
 	    	<div ng-show="menu.login.isShow()" class="uiPanel login">
 	    		<p><%= __('ui.login.text') %></p>
-	    		<a href="/auth/google"><img src="/img/google.png"/></a>
+    			<img src="/img/google.png" ng-click="menu.login.google()"/>
 	    	</div>
 
 	    	<ng-include src="'ui/inventory.ejs'"></ng-include>

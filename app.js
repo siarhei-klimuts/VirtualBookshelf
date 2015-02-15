@@ -28,15 +28,14 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    console.log('PAS:',id);
     done(null, {id: id});
 });
 
 app.disable('x-powered-by');
 app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
 app.use(express.logger('dev'));
-app.use(express.bodyParser()); // стандартный модуль, для парсинга JSON в запросах
-app.use(express.methodOverride()); // поддержка put и delete
+app.use(express.bodyParser());
+app.use(express.methodOverride());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
@@ -56,8 +55,10 @@ if ('development' == app.get('env')) {
 app.get('/:libraryId([0-9]+)?', routes.index);
 app.get('/ui/:page', routes.ui);
 app.get('/outside', isAuthorized, routes.getOutside);
+app.get('/auth/close', routes.page);
 app.get('/auth/google', passport.authenticate('google'));
-app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/', successRedirect: '/'}));
+app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/auth/close', successRedirect: '/auth/close'}));
+app.post('/auth/logout', routes.logout);
 
 app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);
 app.get('/libraries', isAuthorized, routes.library.getLibraries);

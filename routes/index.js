@@ -8,6 +8,15 @@ exports.ui = function(req, res) {
 	res.render('ui/' + req.params.page);
 };
 
+exports.page = function(req, res) {
+	res.render('auth');
+};
+
+exports.logout = function(req, res) {
+	req.logout();
+	res.send(200);
+};
+
 exports.getOutside = function(req, res) {
 	try {
 		console.log('getOutside', req.query.link);

@@ -27,6 +27,10 @@ angular.module('VirtualBookshelf')
         return deffered.promise; 
     };
 
+    Data.logout = function() {
+    	return $http.post('/auth/logout');
+    };
+
 	Data.getUser = function() {
 		return $http.get('/user');
 	};

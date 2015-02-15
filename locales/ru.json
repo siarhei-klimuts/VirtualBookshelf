@@ -26,5 +26,6 @@
 	"ui.menuItem.createLibrary": "Создать библиотеку",
 	"ui.menuItem.createSection": "Создать шкаф",
 	"ui.menuItem.createBook": "Создать книгу",
-	"ui.menuItem.selectLibrary": "Выбрать библиотеку"
+	"ui.menuItem.selectLibrary": "Выбрать библиотеку",
+	"ui.menuItem.logout": "Выход"
 }

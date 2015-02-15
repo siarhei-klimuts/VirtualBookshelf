@@ -16,13 +16,14 @@ angular.module('VirtualBookshelf')
 
 		var promise = Data.getLibrary(libraryId).then(function (dto) {
 			var dict = parseLibraryDto(dto);
+			
 			sections = dict.sections;
 			books = dict.books;
 			libraryDto = dto;
 
 			return initCache(libraryDto, dict.sections, dict.books);
 		}).then(function () {
-			createLibrary(libraryDto); // sync
+			createLibrary(libraryDto);
 			return createSections(sections);
 		}).then(function () {
 			return createBooks(books);
@@ -53,6 +54,15 @@ angular.module('VirtualBookshelf')
 		return dictObject;
 	};
 
+	environment.updateSection = function(dto) {
+		if(dto.libraryId == environment.library.id) {
+			removeObject(sections, dto.id);
+			createSection(dto);
+		} else {
+			removeObject(sections, dto.id);
+		}	
+	};
+
 	environment.updateBook = function(dto) {
 		var shelf = getBookShelf(dto);
 
@@ -61,7 +71,7 @@ angular.module('VirtualBookshelf')
 			createBook(dto);
 		} else {
 			removeObject(books, dto.id);
-		}	
+		}
 	};
 
 	environment.removeBook = function(bookDto) {

@@ -3,7 +3,7 @@ angular.module('VirtualBookshelf')
 	var highlight = {};
 
 	var PLANE_ROTATION = Math.PI * 0.5;
-	var PLANE_MULTIPLIER = 3.5;
+	var PLANE_MULTIPLIER = 2;
 	var COLOR_SELECT = 0x005533;
 	var COLOR_FOCUS = 0x003355;
 
@@ -15,7 +15,8 @@ angular.module('VirtualBookshelf')
 			map: new THREE.ImageUtils.loadTexture( 'img/glow.png' ),
 			transparent: true, 
 			side: THREE.DoubleSide,
-			blending: THREE.AdditiveBlending
+			blending: THREE.AdditiveBlending,
+			depthTest: false
 		};
 
 		materialProperties.color = COLOR_SELECT;

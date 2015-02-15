@@ -1,4 +1,3 @@
-//var userDao = require('../dao/userDao');
 var models = require('../models');
 
 exports.authGoogle = function(host) {
@@ -6,8 +5,8 @@ exports.authGoogle = function(host) {
 	var host = host || 'http://127.0.0.1:3000';
 	var result = new GoogleStrategy({
 	    returnURL: host + '/auth/google/return',
-	    realm: host + '/'}, authCallback  		
-	);
+	    realm: host + '/'
+	}, authCallback);
 
 	return result;
 }
@@ -24,5 +23,4 @@ function authCallback(identifier, profile, done) {
 		done(error, null);
 		console.log('AUTH error:', err);
 	});
-
 }
