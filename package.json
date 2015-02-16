@@ -12,7 +12,7 @@
     "passport": "~0.1.18",
     "passport-google": "~0.3.0",
     "pg": "~2.11.1",
-    "request": "~2.34.0",
+    "request": "~2.53.0",
     "sequelize": "~1.7.0"
   },
   "engines": {

@@ -81,7 +81,9 @@ angular.module('VirtualBookshelf')
 	};
 
 	Data.postSection = function(sectionData) {
-        return $http.post('/section', sectionData);
+        return $http.post('/section', sectionData).then(function (res) {
+        	return res.data;
+        });
 	};
 
 	Data.getBooks = function(sectionId) {

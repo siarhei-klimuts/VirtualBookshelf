@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('cache', function ($q, Data) {
+.factory('cache', function ($q, $log, Data) {
 	var cache = {};
 
 	var library = null;
@@ -83,7 +83,10 @@ angular.module('VirtualBookshelf')
 	};
 
 	var addImage = function(url) {
-		return commonAdder(images, '/outside?link=' + url, Data.loadImage, url);
+		return commonAdder(images, '/outside?link=' + url, Data.loadImage, url).catch(function (error) {
+			$log.error('Error adding image:', url);
+			return null;
+		});
 	};
 
 	var loadLibraryData = function(model) {

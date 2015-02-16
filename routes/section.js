@@ -4,15 +4,18 @@ var Sequelize = require('sequelize');
 exports.postSection = function(req, res) {	
 	var sectionData = req.body;
 
-	if(sectionData && req.user && sectionData.userId == req.user.id) {
+	if(sectionData && req.user && sectionData.userId === req.user.id) {
 		models.Section.saveSection(sectionData, function(err, result) {
 			if(!err && result) {
 				res.json(result);
 			} else {
-				console.error('ROUTE: sections POST: ', err);
-				res.send(500);			
+				res.send(500);
+				console.error('ROUTE: section POST: ', err);
 			}
 		});
+	} else {
+		res.send(500);			
+		console.error('ROUTE: section POST: ', 'wrong data');
 	}
 };
 

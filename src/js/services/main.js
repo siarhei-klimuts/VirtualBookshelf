@@ -24,9 +24,10 @@ angular.module('VirtualBookshelf')
 		startRenderLoop();
 
 		User.load().then(function (res) {
-			environment.loadLibrary(User.getLibrary() || 1);
-			UI.init();
-		}, function (error) {
+			return environment.loadLibrary(User.getLibrary() || 1).then(function () {
+				UI.init();
+			});
+		}).catch(function (error) {
 			$log.error(error);
 			//TODO: show error message  
 		});		
