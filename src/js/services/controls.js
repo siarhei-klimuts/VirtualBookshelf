@@ -85,21 +85,21 @@ angular.module('VirtualBookshelf')
 			this.save();
 		},
 		get: function() {
-			if(this.isBook() && !this.isGetted()) {
-				this.getted = true;
-				this.parent = this.object.parent;
-				this.object.position.set(0, 0, -this.object.geometry.boundingBox.max.z - 0.25);
-				Camera.camera.add(this.object);			
-			} else {
-				this.put();
-			}
+			// if(this.isBook() && !this.isGetted()) {
+			// 	this.getted = true;
+			// 	this.parent = this.object.parent;
+			// 	this.object.position.set(0, 0, -this.object.geometry.boundingBox.max.z - 0.25);
+			// 	Camera.camera.add(this.object);			
+			// } else {
+			// 	this.put();
+			// }
 		},
 		put: function() {
-			if(this.isGetted()) {
-				this.parent.add(this.object);
-				this.object.reload();//position
-				this.clear();
-			}
+			// if(this.isGetted()) {
+			// 	this.parent.add(this.object);
+			// 	this.object.reload();//position
+			// 	this.clear();
+			// }
 		},
 		isGetted: function() {
 			return this.isBook() && this.getted;
