@@ -4,8 +4,7 @@
 		{"model": "library_0002", "label": "Room"}
 	],
 	"bookshelves": [
-		{"model": "bookshelf_0001", "label": "Wooden simple"},
-		{"model": "bookshelf_0003", "label": "Temporary"}
+		{"model": "bookshelf_0001", "label": "Wooden simple"}
 	],
 	"books": [
 		{"model": "book_0002", "label": "New green"},
