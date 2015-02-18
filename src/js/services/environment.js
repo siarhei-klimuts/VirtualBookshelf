@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('environment', function ($q, $log, LibraryObject, SectionObject, BookObject, Data, Camera, cache) {
+.factory('environment', function ($q, $log, $window, LibraryObject, SectionObject, BookObject, Data, Camera, cache) {
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;
@@ -30,6 +30,12 @@ angular.module('VirtualBookshelf')
 		});
 
 		return promise;
+	};
+
+	environment.goToLibrary = function(id) {
+		if(id) {
+			$window.location = '/' + id;
+		}
 	};
 
 	environment.getBook = function(bookId) {
