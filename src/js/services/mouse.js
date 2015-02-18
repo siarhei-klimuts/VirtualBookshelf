@@ -27,8 +27,8 @@ angular.module('VirtualBookshelf')
 		if(event) {
 			this[event.which] = true;
 			this.target = event.target;
-			x = event.x;
-			y = event.y;
+			x = event.clientX;
+			y = event.clientY;
 			mouse.longX = getWidth() * 0.5 - x;
 			mouse.longY = getHeight() * 0.5 - y;
 		}
@@ -46,10 +46,10 @@ angular.module('VirtualBookshelf')
 			this.target = event.target;
 			mouse.longX = getWidth() * 0.5 - x;
 			mouse.longY = getHeight() * 0.5 - y;
-			mouse.dX = event.x - x;
-			mouse.dY = event.y - y;
-			x = event.x;
-			y = event.y;
+			mouse.dX = event.clientX - x;
+			mouse.dY = event.clientY - y;
+			x = event.clientX;
+			y = event.clientY;
 		}
 	};
 
