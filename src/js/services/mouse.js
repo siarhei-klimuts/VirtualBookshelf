@@ -2,8 +2,13 @@ angular.module('VirtualBookshelf')
 .factory('mouse', function (Camera) {
 	var mouse = {};
 
-	var width = window.innerWidth;
-	var height = window.innerHeight;
+	var getWidth = function() {
+		return window.innerWidth;
+	};
+
+	var getHeight = function() {
+		return window.innerHeight;
+	};
 
 	var x = null;
 	var y = null;
@@ -24,8 +29,8 @@ angular.module('VirtualBookshelf')
 			this.target = event.target;
 			x = event.x;
 			y = event.y;
-			mouse.longX = width * 0.5 - x;
-			mouse.longY = height * 0.5 - y;
+			mouse.longX = getWidth() * 0.5 - x;
+			mouse.longY = getHeight() * 0.5 - y;
 		}
 	};
 
@@ -39,8 +44,8 @@ angular.module('VirtualBookshelf')
 	mouse.move = function(event) {
 		if(event) {
 			this.target = event.target;
-			mouse.longX = width * 0.5 - x;
-			mouse.longY = height * 0.5 - y;
+			mouse.longX = getWidth() * 0.5 - x;
+			mouse.longY = getHeight() * 0.5 - y;
 			mouse.dX = event.x - x;
 			mouse.dY = event.y - y;
 			x = event.x;
@@ -97,7 +102,7 @@ angular.module('VirtualBookshelf')
 
 	var getVector = function() {
 		var projector = new THREE.Projector();
-		var vector = new THREE.Vector3((x / width) * 2 - 1, - (y / height) * 2 + 1, 0.5);
+		var vector = new THREE.Vector3((x / getWidth()) * 2 - 1, - (y / getHeight()) * 2 + 1, 0.5);
 		projector.unprojectVector(vector, Camera.camera);
 	
 		return vector.sub(Camera.getPosition()).normalize();

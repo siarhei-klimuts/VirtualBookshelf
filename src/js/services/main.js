@@ -10,6 +10,7 @@ angular.module('VirtualBookshelf')
 	var Main = {};
 
 	Main.start = function() {
+		var winResize;
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
@@ -21,9 +22,11 @@ angular.module('VirtualBookshelf')
 		Camera.init(width, height);
 		Controls.init();
 
+		winResize = new THREEx.WindowResize(renderer, Camera.camera);
+
 		startRenderLoop();
 
-		User.load().then(function (res) {
+		User.load().then(function () {
 			return environment.loadLibrary(User.getLibrary() || 1).then(function () {
 				UI.init();
 			});
