@@ -54,11 +54,13 @@ if ('development' == app.get('env')) {
 
 app.get('/:libraryId([0-9]+)?', routes.index);
 app.get('/ui/:page', routes.ui);
-app.get('/outside', isAuthorized, routes.getOutside);
 app.get('/auth/close', routes.page);
 app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/auth/close', successRedirect: '/auth/close'}));
 app.post('/auth/logout', routes.logout);
+
+app.get('/outside', isAuthorized, routes.getOutside);
+app.post('/archive', isAuthorized, routes.postArchive);
 
 app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);
 app.get('/libraries', isAuthorized, routes.library.getLibraries);

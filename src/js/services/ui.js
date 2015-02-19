@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('UI', function ($q, $log, $window, $interval, SelectorMeta, User, Data, Controls, navigation, environment, locator, selector, blockUI) {
+.factory('UI', function ($q, $log, $window, $interval, SelectorMeta, User, Data, Controls, navigation, environment, locator, selector, archive, blockUI) {
 	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
 	var UI = {menu: {}};
 
@@ -214,6 +214,7 @@ angular.module('VirtualBookshelf')
 	UI.menu.createBook = {
 		list: [],
 		book: {},
+		coverInputURL: null,
 
 		setBook: function(book) {
 			this.book = {}; // create new object for unbind from scope
@@ -226,8 +227,38 @@ angular.module('VirtualBookshelf')
 				this.book.author = book.author;
 			}
 		},
+		applyCover: function() {
+			if(!this.isCoverDisabled()) {
+				UI.menu.inventory.block();
+				archive.sendExternalURL(this.coverInputURL, [this.book.title, this.book.author]).then(function (result) {
+					UI.menu.createBook.book.cover = result.url;
+					UI.menu.createBook.coverInputURL = null;
+				}).catch(function () {
+					$log.error('Apply cover error');
+					//TODO: show an error
+				}).finally(function () {
+					UI.menu.inventory.unblock();
+				});
+			} else {
+				$log.log('There are no tags for image');
+				//TODO: show an error
+			}
+		},
+		removeCover: function() {
+			this.book.cover = null;
+			this.coverInputURL = null;
+		},
 		getImg: function() {
 			return this.book.model ? BOOK_IMAGE_URL.replace('{model}', this.book.model) : null;
+		},
+		getCoverImg: function() {
+			return this.isCoverShow ? this.book.cover : null;
+		},
+		isCoverDisabled: function() {
+			return !(this.book.title && this.book.author);
+		},
+		isCoverShow: function() {
+			return Boolean(this.book.cover);
 		},
 		isShow: function() {
 			return !!this.book.userId;
@@ -241,6 +272,7 @@ angular.module('VirtualBookshelf')
 				scope.cancel();
 				return UI.menu.inventory.loadData();
 			}).catch(function () {
+				$log.error('Book save error');
 				//TODO: show error
 			}).finally(function () {
 				UI.menu.inventory.unblock();

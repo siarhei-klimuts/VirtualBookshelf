@@ -1,6 +1,31 @@
 <div ng-show="menu.createBook.isShow()">
 	<table>
 		<tr>
+			<td colspan="2">
+	    		<table>
+					<tr>
+						<td><label><%= __('ui.create_book.title') %></label></td>
+						<td colspan="2"><input ng-model="menu.createBook.book.title" type="text"></input></td>
+					</tr>
+					<tr>
+						<td><label><%= __('ui.create_book.author') %></label></td>
+						<td colspan="2"><input ng-model="menu.createBook.book.author" type="text"></input></td>
+					</tr>
+					<tr>
+						<td><label><%= __('ui.create_book.cover') %></label></td>
+						<td>
+							<input ng-model="menu.createBook.coverInputURL" ng-hide="menu.createBook.isCoverShow()" type="text"></input>
+							<img ng-src="{{menu.createBook.getCoverImg()}}" ng-show="menu.createBook.isCoverShow()" class="previewImg"/>
+						</td>
+						<td>
+							<a ng-click="menu.createBook.applyCover()" ng-hide="menu.createBook.isCoverShow()" class="fa fa-check"></a>
+							<a ng-click="menu.createBook.removeCover()" ng-show="menu.createBook.isCoverShow()" class="fa fa-times"></a>
+						</td>
+					</tr>
+	    		</table>
+			</td>
+		</tr>
+		<tr>
 			<td>
 				<label><%= __('ui.create_book.object') %></label>
 				<vb-select options="menu.createBook.list" selected="menu.createBook.book.model" value="model" label="label">
@@ -9,24 +34,6 @@
 			</td>
 			<td>
 				<img ng-src="{{menu.createBook.getImg()}}" class="previewImg"/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-	    		<table>
-					<tr>
-						<td><label><%= __('ui.create_book.title') %></label></td>
-						<td><input ng-model="menu.createBook.book.title" type="text"></input></td>
-					</tr>
-					<tr>
-						<td><label><%= __('ui.create_book.author') %></label></td>
-						<td><input ng-model="menu.createBook.book.author" type="text"></input></td>
-					</tr>
-					<tr>
-						<td><label><%= __('ui.create_book.cover') %></label></td>
-						<td><input ng-model="menu.createBook.book.cover" type="text"></input></td>
-					</tr>
-	    		</table>
 			</td>
 		</tr>
 	</table>

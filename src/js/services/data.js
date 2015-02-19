@@ -27,6 +27,17 @@ angular.module('VirtualBookshelf')
         return deffered.promise; 
     };
 
+    Data.postArchiveImage = function(externalURL, tags) {
+    	var data = {
+    		url: externalURL,
+    		tags: tags
+    	};
+
+    	return $http.post('/archive', data).then(function (res) {
+    		return res.data;
+    	});
+    };
+
     Data.logout = function() {
     	return $http.post('/auth/logout');
     };
@@ -107,7 +118,7 @@ angular.module('VirtualBookshelf')
 
 	Data.getData = function(url) {
         return $http.get(url).then(function (res) {
-            return res.data
+            return res.data;
         });
 	};
 
