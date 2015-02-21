@@ -94,10 +94,6 @@ div.ui {
   font-size: 20px;
   color: grey;
 }
-.feedback {
-	float: right;
-	text-align: center;
-}
 .login {
 	float: left;
 }
@@ -161,6 +157,6 @@ ul.pagination > li {
 	display: inline;
 	margin: 0px;
 }
-input.ng-invalid, vb-select.ng-invalid ul {
+input.ng-invalid, textarea.ng-invalid, vb-select.ng-invalid ul {
 	border: solid red thin;
 }

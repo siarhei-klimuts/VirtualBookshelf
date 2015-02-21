@@ -23,25 +23,26 @@
 		<canvas id="LIBRARY"></canvas>
 
     	<div ng-controller="UiCtrl" class="ui">
-			<div id="stats" style="float: left;" class="uiPanel"></div>
+			<div id="stats" style="float: left;" class="uiPanel" ng-show="false"></div>
 
     		<div class="uiPanel mainMenu">
-    			<div ng-show="show == 'rootList'">
+    			<div ng-show="menu.show == 'rootList'">
 	    			<ul class="select">
-	    				<li ng-click="show = 'createList'"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
-	    				<li ng-click="show = 'selectLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
+	    				<li ng-click="menu.show = 'createList'"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
+	    				<li ng-click="menu.show = 'selectLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
+	    				<li ng-click="menu.show = 'feedback'"><i class="fa fa-comment-o fa-2x"></i><%=__('ui.menuItem.leaveFeedback')%></li>
 	    				<li ng-click="menu.login.logout()" ng-hide="menu.login.isShow()"><i class="fa fa-sign-out fa-2x"></i><%=__('ui.menuItem.logout')%></li>
 	    			</ul>
     			</div>
 
-    			<div ng-show="show == 'createList'">
+    			<div ng-show="menu.show == 'createList'">
 	    			<ul class="select">
-	    				<li ng-click="show = 'createLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.createLibrary')%></li>
-	    				<li ng-click="show = 'createSection'"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
+	    				<li ng-click="menu.show = 'createLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.createLibrary')%></li>
+	    				<li ng-click="menu.show = 'createSection'"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
 	    			</ul>
     			</div>
 
-		    	<div ng-show="show == 'createLibrary'">
+		    	<div ng-show="menu.show == 'createLibrary'">
 		    		<p><%= __('ui.library.create.select.label') %></p>
 		    		<table>
 		    			<tr>
@@ -59,7 +60,7 @@
 		    		<a ng-click="menu.createLibrary.create()" class="fa fa-check fa-2x submitButton"></a>
 		    	</div>		   
 
-		    	<div ng-show="show == 'createSection'">
+		    	<div ng-show="menu.show == 'createSection'">
 		    		<table>
 		    			<tr>
 		    				<td>
@@ -76,7 +77,7 @@
 		    		<a ng-click="menu.createSection.create()" class="fa fa-check fa-2x submitButton"></a>
 		    	</div> 	
 
-		    	<div ng-show="show == 'selectLibrary'">
+		    	<div ng-show="menu.show == 'selectLibrary'">
 		    		<p><%= __('ui.library.select.text') %></p>
 		    		<ul class="select">
 		    			<li ng-repeat="item in menu.selectLibrary.list" ng-click="menu.selectLibrary.go(item.id)">
@@ -85,7 +86,15 @@
 		    		</ul>
 		    	</div>
 
-				<a ng-click="show = show ? '' : 'rootList'" class="fa fa-sliders fa-2x mainMenuButton"></a>
+		    	<form name="menu.feedback.form" ng-show="menu.show == 'feedback'">
+		    		<div>
+			    		<p><%= __('ui.feedback.message') %></p>
+						<textarea name="message" ng-model="menu.feedback.message" required></textarea>
+		    		</div>
+					<a ng-click="menu.feedback.submit()" class="fa fa-check fa-2x submitButton"></a>
+		    	</form>
+
+				<a ng-click="menu.show = menu.show ? '' : 'rootList'" class="fa fa-sliders fa-2x mainMenuButton"></a>
     		</div>
     		
     		<div class="uiPanel navigation" ng-mouseup="menu.navigation.stop()" ng-mouseleave="menu.navigation.stop()">
@@ -101,14 +110,6 @@
 	    	</div>
 
 	    	<ng-include src="'ui/inventory.ejs'"></ng-include>
-
-	    	<div ng-show="menu.feedback.show" class="uiPanel feedback">
-	    		<div>
-		    		<p><%= __('ui.feedback.message') %></p>
-					<textarea ng-model="menu.feedback.message"></textarea>
-	    		</div>
-				<a ng-click="menu.feedback.submit()" class="fa fa-check fa-2x submitButton"></a>
-	    	</div>
     	</div>
 
 		<script src="/js/index.js"></script>

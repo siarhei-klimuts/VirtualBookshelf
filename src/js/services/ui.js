@@ -68,24 +68,30 @@ angular.module('VirtualBookshelf')
 
 	UI.menu.feedback = {
 		message: null,
-		show: true,
 
 		close: function() {
-			this.show = false;
+			this.message = null;
+			UI.menu.show = null;
 		},
 		submit: function() {
 			var dataObject;
 			
-			if(this.message) {
-				dataObject = {
-					message: this.message,
-					userId: User.getId()
-				};
+			if(this.form.message.$valid) {
+				dialog.openConfirm('Send feedback?').then(function () {
+					dataObject = {
+						message: this.message,
+						userId: User.getId()
+					};
 
-				Data.postFeedback(dataObject);
+					return Data.postFeedback(dataObject).then(function () {
+						UI.menu.feedback.close();
+					}, function () {
+						dialog.openError('Can not send feedback because of an error.');
+					});
+				});
+			} else {
+				dialog.openError('Feedback field is required.');
 			}
-
-			this.close();
 		}
 	};
 
@@ -169,15 +175,18 @@ angular.module('VirtualBookshelf')
 		remove: function(book) {
 			var scope = this;
 
-			scope.block();
-			Data.deleteBook(book).then(function (res) {
-				environment.removeBook(res.data);
-				return scope.loadData();
-			}).catch(function (error) {
-				//TODO: show an error
-				$log.error(error);
-			}).finally(function () {
-				scope.unblock();
+			dialog.openConfirm('Delete book?').then(function () {
+				scope.block();
+
+				Data.deleteBook(book).then(function (res) {
+					environment.removeBook(res.data);
+					return scope.loadData();
+				}).catch(function (error) {
+					dialog.openError('Delete book error.');
+					$log.error(error);
+				}).finally(function () {
+					scope.unblock();
+				});
 			});
 		},
 		place: function(book) {

@@ -27,5 +27,6 @@
 	"ui.menuItem.createSection": "Create shelf",
 	"ui.menuItem.createBook": "Create book",
 	"ui.menuItem.selectLibrary": "Select Library",
-	"ui.menuItem.logout": "Logout"
+	"ui.menuItem.logout": "Logout",
+	"ui.menuItem.leaveFeedback": "Leave feedback"
 }
