@@ -1,12 +1,5 @@
 var request = require('request');
 var cloudinary = require('cloudinary');
-var match = process.env.CLOUDINARY_URL.match(/cloudinary:\/\/([^:]+):([^@]+)@([^:]+)/);
-
-cloudinary.config({ 
-  cloud_name: match[3], 
-  api_key: match[1], 
-  api_secret: match[2] 
-});
 
 exports.index = function(req, res) {
   	res.render('index');
@@ -29,20 +22,20 @@ exports.postArchive = function(req, res) {
 	var externalURL = req.body.url;
 	var tags = req.body.tags;
 
-	cloudinary.uploader.upload(externalURL, function (result) {
-		if(!result.error) {
-			res.send(result);
-		} else {
-			res.send(result.error.http_code);
-		}
-	}, {
-		tags: tags,
-		format: 'jpg',
-		width: 256,
-		height: 256,
-		colors: true,
-		folder: 'vb/books/covers'
-	});
+	if(externalURL && externalURL.match(/^https?:|^s3:|^data:[^;]*;base64,([a-zA-Z0-9\/+\n=]+)$/)) {
+		cloudinary.uploader.upload(externalURL, function (result) {
+			res.send(result.error ? result.error.http_code : result);
+		}, {
+			tags: tags,
+			format: 'jpg',
+			width: 256,
+			height: 256,
+			colors: true,
+			folder: 'vb/books/covers'
+		});
+	} else {
+		res.send(500);
+	}
 };
 
 exports.getOutside = function(req, res) {

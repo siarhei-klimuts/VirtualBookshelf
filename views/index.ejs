@@ -9,9 +9,12 @@
 		<script src="/js/angular/angular.min.js"></script>
 		<script src="/js/angular/block-ui/angular-block-ui.min.js"></script>
 		<script src="/js/angular/dirPagination/dirPagination.js"></script>
+		<script src="/js/angular/ngDialog/ngDialog.min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/angular/block-ui/angular-block-ui.min.css">
+		<link rel="stylesheet" type="text/css" href="/js/angular/ngDialog/ngDialog.min.css">
+		<link rel="stylesheet" type="text/css" href="/js/angular/ngDialog/ngDialog-theme-default.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/style.css">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,7 +46,7 @@
 		    		<table>
 		    			<tr>
 		    				<td>
-								<vb-select options="menu.createLibrary.list" selected="menu.createLibrary.model" value="model" label="label">
+								<vb-select ng-model="menu.createLibrary.model" options="menu.createLibrary.list" value="model" label="label">
 									<i class="fa fa-home fa-2x"></i>
 								</vb-select>
 		    				</td>
@@ -60,7 +63,7 @@
 		    		<table>
 		    			<tr>
 		    				<td>
-								<vb-select options="menu.createSection.list" selected="menu.createSection.model" value="model" label="label">
+								<vb-select ng-model="menu.createSection.model" options="menu.createSection.list" value="model" label="label">
 									<i class="fa fa-bars fa-2x"></i>
 								</vb-select>
 		    				</td>

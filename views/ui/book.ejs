@@ -1,34 +1,35 @@
-<div ng-show="menu.createBook.isShow()">
+<form name="menu.createBook.form" ng-show="menu.createBook.isShow()">
 	<table>
 		<tr>
 			<td colspan="2">
 	    		<table>
 					<tr>
 						<td><label><%= __('ui.create_book.title') %></label></td>
-						<td colspan="2"><input ng-model="menu.createBook.book.title" type="text"></input></td>
+						<td><input name="title" ng-model="menu.createBook.book.title" type="text" required></input></td>
 					</tr>
 					<tr>
 						<td><label><%= __('ui.create_book.author') %></label></td>
-						<td colspan="2"><input ng-model="menu.createBook.book.author" type="text"></input></td>
-					</tr>
-					<tr>
-						<td><label><%= __('ui.create_book.cover') %></label></td>
-						<td>
-							<input ng-model="menu.createBook.coverInputURL" ng-hide="menu.createBook.isCoverShow()" type="text"></input>
-							<img ng-src="{{menu.createBook.getCoverImg()}}" ng-show="menu.createBook.isCoverShow()" class="previewImg"/>
-						</td>
-						<td>
-							<a ng-click="menu.createBook.applyCover()" ng-hide="menu.createBook.isCoverShow()" class="fa fa-check"></a>
-							<a ng-click="menu.createBook.removeCover()" ng-show="menu.createBook.isCoverShow()" class="fa fa-times"></a>
-						</td>
+						<td><input name="author" ng-model="menu.createBook.book.author" type="text" required></input></td>
 					</tr>
 	    		</table>
 			</td>
 		</tr>
+
+		<tr class="cover">
+			<td>
+				<label><%= __('ui.create_book.cover') %></label>
+				<input ng-model="menu.createBook.coverInputURL" type="text"></input>
+				<a ng-click="menu.createBook.applyCover()" class="fa fa-cloud-upload fa-2x"></a>
+			</td>
+			<td>
+				<img ng-src="{{menu.createBook.getCoverImg()}}" class="previewImg"/>
+			</td>
+		</tr>
+
 		<tr>
 			<td>
 				<label><%= __('ui.create_book.object') %></label>
-				<vb-select options="menu.createBook.list" selected="menu.createBook.book.model" value="model" label="label">
+				<vb-select ng-model="menu.createBook.book.model" options="menu.createBook.list" value="model" label="label" required>
 					<i class="fa fa-book fa-2x"></i>
 				</vb-select>
 			</td>
@@ -40,6 +41,6 @@
 	
 	<div class="submitButton"> 
 		<a ng-click="menu.createBook.cancel()" class="fa fa-times fa-2x"></a>
-		<a ng-click="menu.createBook.save()" class="fa fa-check fa-2x"></a>
+		<a ng-click="menu.createBook.submit()" class="fa fa-check fa-2x"></a>
 	</div>
-</div>	
+</form>	

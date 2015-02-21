@@ -1,5 +1,5 @@
 angular
-    .module('VirtualBookshelf', ['blockUI', 'angularUtils.directives.dirPagination'])
+    .module('VirtualBookshelf', ['blockUI', 'ngDialog', 'angularUtils.directives.dirPagination'])
     	.config(function (blockUIConfig, paginationTemplateProvider) {
     		blockUIConfig.delay = 0;
     		blockUIConfig.autoBlock = false;

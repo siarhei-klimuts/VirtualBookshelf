@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('UI', function ($q, $log, $window, $interval, SelectorMeta, User, Data, Controls, navigation, environment, locator, selector, archive, blockUI) {
+.factory('UI', function ($q, $log, $window, $interval, SelectorMeta, User, Data, Controls, navigation, environment, locator, selector, archive, dialog, blockUI) {
 	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
 	var UI = {menu: {}};
 
@@ -225,43 +225,57 @@ angular.module('VirtualBookshelf')
 				this.book.cover = book.cover;
 				this.book.title = book.title;
 				this.book.author = book.author;
+
+				this.coverInputURL = null;
 			}
-		},
-		applyCover: function() {
-			if(!this.isCoverDisabled()) {
-				UI.menu.inventory.block();
-				archive.sendExternalURL(this.coverInputURL, [this.book.title, this.book.author]).then(function (result) {
-					UI.menu.createBook.book.cover = result.url;
-					UI.menu.createBook.coverInputURL = null;
-				}).catch(function () {
-					$log.error('Apply cover error');
-					//TODO: show an error
-				}).finally(function () {
-					UI.menu.inventory.unblock();
-				});
-			} else {
-				$log.log('There are no tags for image');
-				//TODO: show an error
-			}
-		},
-		removeCover: function() {
-			this.book.cover = null;
-			this.coverInputURL = null;
 		},
 		getImg: function() {
 			return this.book.model ? BOOK_IMAGE_URL.replace('{model}', this.book.model) : null;
 		},
 		getCoverImg: function() {
-			return this.isCoverShow ? this.book.cover : null;
+			return this.isCoverShow() ? this.book.cover : '/img/empty_cover.jpg';
 		},
 		isCoverDisabled: function() {
-			return !(this.book.title && this.book.author);
+			return this.coverInputURL && (this.form.title.$invalid || this.form.author.$invalid);
 		},
 		isCoverShow: function() {
 			return Boolean(this.book.cover);
 		},
 		isShow: function() {
 			return !!this.book.userId;
+		},
+		submit: function() {
+			if(this.form.$valid) {
+				this.save();
+			} else {
+				dialog.openError('Fill all required fields, please.');
+				$log.error('Form is not valid');
+				//TODO: show an error
+			}
+		},
+		applyCover: function() {
+			if(!this.isCoverDisabled()) {
+				if(this.coverInputURL) {
+					UI.menu.inventory.block();
+					archive.sendExternalURL(this.coverInputURL, [this.book.title, this.book.author]).then(function (result) {
+						UI.menu.createBook.book.cover = result.url;
+					}).catch(function () {
+						UI.menu.createBook.book.cover = null;
+						dialog.openError('Can not apply this cover. Try another one, please.');
+						$log.error('Apply cover error');
+						//TODO: show an error
+					}).finally(function () {
+						UI.menu.createBook.coverInputURL = null;
+						UI.menu.inventory.unblock();
+					});
+				} else {
+					UI.menu.createBook.book.cover = null;
+				}
+			} else {
+				dialog.openError('Fill author and title fields, please.');
+				$log.log('There are no tags for image');
+				//TODO: show an error
+			}
 		},
 		save: function() {
 			var scope = this;

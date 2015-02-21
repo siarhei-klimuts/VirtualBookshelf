@@ -1,23 +1,24 @@
 angular.module('VirtualBookshelf')
 .directive('vbSelect', function() {
 	return {
+		require: 'ngModel',
 		restrict: 'E',
     	transclude: true,
 		templateUrl: '/ui/select.ejs',
 		scope: {
 			options: '=',
-			selected: '=',
 			value: '@',
 			label: '@'
 		},
-		link: function(scope, element, attrs, controller, transclude) {
+
+		link: function(scope, element, attrs, controller) {
 			scope.select = function(item) {
-				scope.selected = item[scope.value];
+				controller.$setViewValue(item[scope.value]);
 			};
 
 			scope.isSelected = function(item) {
-				return scope.selected === item[scope.value];
+				return controller.$modelValue === item[scope.value];
 			};
 		}
-	}
+	};
 });
