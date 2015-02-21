@@ -103,7 +103,7 @@ angular.module('VirtualBookshelf')
 
 		for (zIndex = minZCell; zIndex <= maxZCell; zIndex++) {
 			for (xIndex = minXCell; xIndex <= maxXCell; xIndex++) {
-				if (!occupiedMatrix[zIndex][xIndex]) {
+				if (!occupiedMatrix[zIndex] || !occupiedMatrix[zIndex][xIndex]) {
 					freeCellsStart || (freeCellsStart = xIndex);
 					freeCellsCount++;
 

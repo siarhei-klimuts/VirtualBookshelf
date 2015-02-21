@@ -249,8 +249,6 @@ angular.module('VirtualBookshelf')
 				this.save();
 			} else {
 				dialog.openError('Fill all required fields, please.');
-				$log.error('Form is not valid');
-				//TODO: show an error
 			}
 		},
 		applyCover: function() {
@@ -262,8 +260,6 @@ angular.module('VirtualBookshelf')
 					}).catch(function () {
 						UI.menu.createBook.book.cover = null;
 						dialog.openError('Can not apply this cover. Try another one, please.');
-						$log.error('Apply cover error');
-						//TODO: show an error
 					}).finally(function () {
 						UI.menu.createBook.coverInputURL = null;
 						UI.menu.inventory.unblock();
@@ -273,8 +269,6 @@ angular.module('VirtualBookshelf')
 				}
 			} else {
 				dialog.openError('Fill author and title fields, please.');
-				$log.log('There are no tags for image');
-				//TODO: show an error
 			}
 		},
 		save: function() {
