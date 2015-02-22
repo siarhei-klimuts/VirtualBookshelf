@@ -9,9 +9,6 @@ angular.module('VirtualBookshelf')
 .factory('Controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, navigation, environment, mouse, selector) {
 	var Controls = {};
 
-	Controls.BUTTONS_ROTATE_SPEED = 100;
-	Controls.BUTTONS_GO_SPEED = 0.02;
-
 	Controls.init = function() {
 		Controls.initListeners();
 	};
@@ -27,15 +24,8 @@ angular.module('VirtualBookshelf')
 		if(mouse[3]) {
 			Camera.rotate(mouse.longX, mouse.longY);
 		}
-
-		if((mouse[1] && mouse[3]) || navigation.state.forward) {
-			Camera.go(this.BUTTONS_GO_SPEED);
-		} else if(navigation.state.backward) {
-			Camera.go(-this.BUTTONS_GO_SPEED);
-		} else if(navigation.state.left) {
-			Camera.rotate(this.BUTTONS_ROTATE_SPEED, 0);
-		} else if(navigation.state.right) {
-			Camera.rotate(-this.BUTTONS_ROTATE_SPEED, 0);
+		if(mouse[1] && mouse[3]) {
+			Camera.go(navigation.BUTTONS_GO_SPEED);
 		}
 	};
 

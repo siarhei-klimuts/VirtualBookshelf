@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('Main', function ($log, Camera, Controls, User, UI, environment, uiTools) {	
+.factory('Main', function ($log, Camera, Controls, User, UI, environment, uiTools, navigation) {	
 	var canvas;
 	var renderer;
 	
@@ -45,6 +45,7 @@ angular.module('VirtualBookshelf')
 		requestAnimationFrame(startRenderLoop);
 
 		Controls.update();
+		navigation.update();
 		uiTools.update();
 		
 		renderer.render(environment.scene, Camera.camera);
