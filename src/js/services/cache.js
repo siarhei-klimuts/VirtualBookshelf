@@ -54,6 +54,21 @@ angular.module('VirtualBookshelf')
 		return commonGetter(images, url, addImage);
 	};
 
+	var addSection = function(model) {
+		return commonAdder(sections, model, loadSectionData);
+	};
+
+	var addBook = function(model) {
+		return commonAdder(books, model, loadBookData);
+	};
+
+	var addImage = function(url) {
+		return commonAdder(images, '/outside?link=' + url, Data.loadImage, url).catch(function () {
+			$log.error('Error adding image:', url);
+			return null;
+		});
+	};
+
 	var commonGetter = function(from, key, addFunction) {
 		var result = from[key];
 
@@ -72,21 +87,6 @@ angular.module('VirtualBookshelf')
 		});
 
 		return promise;
-	};
-
-	var addSection = function(model) {
-		return commonAdder(sections, model, loadSectionData);
-	};
-
-	var addBook = function(model) {
-		return commonAdder(books, model, loadBookData);
-	};
-
-	var addImage = function(url) {
-		return commonAdder(images, '/outside?link=' + url, Data.loadImage, url).catch(function (error) {
-			$log.error('Error adding image:', url);
-			return null;
-		});
 	};
 
 	var loadLibraryData = function(model) {

@@ -9,13 +9,11 @@ angular.module('VirtualBookshelf')
 			var libraryBB = environment.library.geometry.boundingBox;
 			var freePlace = getFreePlace(environment.library.children, libraryBB, sectionBB);
 
-			if (freePlace) {
-				return saveSection(sectionDto, freePlace);
-			} else {
+			return freePlace ?
+				saveSection(sectionDto, freePlace) :
 				$q.reject('there is no free space');
-			}
-		}).then(function () {
-			return environment.updateSection(sectionDto);
+		}).then(function (newDto) {
+			return environment.updateSection(newDto);
 		});
 
 		return promise;
@@ -40,13 +38,11 @@ angular.module('VirtualBookshelf')
 				var bookBB = bookCache.geometry.boundingBox;
 				var freePlace = getFreePlace(shelf.children, shelfBB, bookBB);
 
-				if(freePlace) {
-					return saveBook(bookDto, freePlace, shelf);
-				} else {
-					return $q.reject('there is no free space');
-				}
-			}).then(function () {
-				return environment.updateBook(bookDto);
+				return freePlace ? 
+					saveBook(bookDto, freePlace, shelf) : 
+					$q.reject('there is no free space');
+			}).then(function (newDto) {
+				return environment.updateBook(newDto);
 			});
 		} else {
 			promise = $q.reject('shelf is not selected');

@@ -284,8 +284,8 @@ angular.module('VirtualBookshelf')
 			var scope = this;
 			
 			UI.menu.inventory.block();
-			Data.postBook(this.book).then(function (res) {
-				environment.updateBook(res.data);
+			Data.postBook(this.book).then(function (dto) {
+				environment.updateBook(dto);
 				scope.cancel();
 				return UI.menu.inventory.loadData();
 			}).catch(function () {

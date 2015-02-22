@@ -53,7 +53,9 @@ angular.module('VirtualBookshelf')
 	};
 
 	Data.postBook = function(book) {
-		return $http.post('/book', book);
+		return $http.post('/book', book).then(function (res) {
+			return res.data;
+		});
 	};
 
 	Data.deleteBook = function(book) {
@@ -110,6 +112,7 @@ angular.module('VirtualBookshelf')
 
         //TODO: found no way to reject
 		jsonLoader.load(link, function (geometry) {
+			geometry.computeBoundingBox();
 			deffered.resolve(geometry);
 		});
 

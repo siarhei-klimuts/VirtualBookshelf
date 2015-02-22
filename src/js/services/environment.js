@@ -74,10 +74,10 @@ angular.module('VirtualBookshelf')
 		var shelf = getBookShelf(dto);
 
 		if(shelf) {
-			removeObject(books, dto.id);
+			environment.removeBook(dto);
 			createBook(dto);
 		} else {
-			removeObject(books, dto.id);
+			environment.removeBook(dto);
 		}
 	};
 
