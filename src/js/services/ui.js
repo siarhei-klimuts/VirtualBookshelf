@@ -189,11 +189,13 @@ angular.module('VirtualBookshelf')
 				});
 			});
 		},
-		place: function(book) {
+		place: function(book, event) {
 			var scope = this;
 			var promise;
 			var isBookPlaced = !!book.sectionId;
 
+			event.stopPropagation();
+			
 			scope.block();
 			promise = isBookPlaced ? locator.unplaceBook(book) : locator.placeBook(book);
 			promise.then(function () {
