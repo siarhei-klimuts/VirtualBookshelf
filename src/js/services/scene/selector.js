@@ -62,6 +62,10 @@ angular.module('VirtualBookshelf')
 		return object;	
 	};
 
+	selector.isSelectedEditable = function() {
+		return selector.isSelectedBook() || selector.isSelectedSection();
+	};
+
 	selector.isBookSelected = function(id) {
 		return isBook(selected) && selected.id === id;
 	};

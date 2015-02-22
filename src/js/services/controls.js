@@ -21,7 +21,7 @@ angular.module('VirtualBookshelf')
 
 			Data.createBook(dataObject, function (book, dataObject) {
 				Controls.Pocket.remove(dataObject.id);
-				Controls.selected.select(book, null);
+				// Controls.selected.select(book, null);
 				// book.changed = true;
 			});
 		},
@@ -40,135 +40,43 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	Controls.selected = {
-		object: null,
-		// parent: null,
-		getted: null,
-		// point: null,
-
-		isBook: function() {
-			return selector.isSelectedBook();
-		},
-		isSection: function() {
-			return selector.isSelectedSection();
-		},
-		isShelf: function() {
-			return selector.isSelectedShelf();
-		},
-		isMovable: function() {
-			return Boolean(this.isBook() || this.isSection());
-		},
-		isRotatable: function() {
-			return Boolean(this.isSection());
-		},
-		clear: function() {
-			selector.unselect();
-			this.object = null;
-			this.getted = null;
-		},
-		select: function() {
-			selector.selectFocused();
-
-			// this.clear();
-			this.object = selector.getSelectedObject();
-			// this.point = point;
-
-		},
-		release: function() {
-			var selectedObject = selector.getSelectedObject();
-			//TODO: there is no selected object after remove frome scene
-			if(this.isBook() && !selectedObject.parent) {
-				Controls.Pocket.put(selectedObject.dataObject);
-				this.clear();
-			}
-
-			this.save();
-		},
-		get: function() {
-			// if(this.isBook() && !this.isGetted()) {
-			// 	this.getted = true;
-			// 	this.parent = this.object.parent;
-			// 	this.object.position.set(0, 0, -this.object.geometry.boundingBox.max.z - 0.25);
-			// 	Camera.camera.add(this.object);			
-			// } else {
-			// 	this.put();
-			// }
-		},
-		put: function() {
-			// if(this.isGetted()) {
-			// 	this.parent.add(this.object);
-			// 	this.object.reload();//position
-			// 	this.clear();
-			// }
-		},
-		isGetted: function() {
-			return this.isBook() && this.getted;
-		},
-		save: function() {
-			var selectedObject = selector.getSelectedObject();
-	
-			if(this.isMovable() && selectedObject.changed) {
-				selectedObject.save();
-			}
-		}
-	};
-
 	Controls.init = function() {
-		Controls.clear();
 		Controls.initListeners();
 	};
 
 	Controls.initListeners = function() {
-		document.addEventListener('dblclick', Controls.onDblClick, false);
 		document.addEventListener('mousedown', Controls.onMouseDown, false);
 		document.addEventListener('mouseup', Controls.onMouseUp, false);
 		document.addEventListener('mousemove', Controls.onMouseMove, false);	
-		document.oncontextmenu = function() {return false;}
-	};
-
-	Controls.clear = function() {
-		Controls.selected.clear();	
+		document.oncontextmenu = function() {return false;};
 	};
 
 	Controls.update = function() {
-		if(!Controls.selected.isGetted()) {
-			if(mouse[3]) {
-				Camera.rotate(mouse.longX, mouse.longY);
-			}
-
-			if((mouse[1] && mouse[3]) || navigation.state.forward) {
-				Camera.go(this.BUTTONS_GO_SPEED);
-			} else if(navigation.state.backward) {
-				Camera.go(-this.BUTTONS_GO_SPEED);
-			} else if(navigation.state.left) {
-				Camera.rotate(this.BUTTONS_ROTATE_SPEED, 0);
-			} else if(navigation.state.right) {
-				Camera.rotate(-this.BUTTONS_ROTATE_SPEED, 0);
-			}
+		if(mouse[3]) {
+			Camera.rotate(mouse.longX, mouse.longY);
 		}
+
+		if((mouse[1] && mouse[3]) || navigation.state.forward) {
+			Camera.go(this.BUTTONS_GO_SPEED);
+		} else if(navigation.state.backward) {
+			Camera.go(-this.BUTTONS_GO_SPEED);
+		} else if(navigation.state.left) {
+			Camera.rotate(this.BUTTONS_ROTATE_SPEED, 0);
+		} else if(navigation.state.right) {
+			Camera.rotate(-this.BUTTONS_ROTATE_SPEED, 0);
+		}
+
 		uiTools.update();
-	};
-
-	// Events
-
-	Controls.onDblClick = function(event) {
-		if(mouse.isCanvas()) {
-			switch(event.which) {
-				case 1: Controls.selected.get(); break;
-			}   	
-		}
 	};
 
 	Controls.onMouseDown = function(event) {
 		mouse.down(event); 
 
 		if(mouse.isCanvas() || mouse.isPocketBook()) {
-			// event.preventDefault();//TODO: research (enabled cannot set cursor to input)
-
-			if(mouse[1] && !mouse[3] && !Controls.selected.isGetted()) {
+			if(mouse[1] && !mouse[3]) {
 				if(mouse.isCanvas()) {
 					Controls.selectObject();
-					Controls.selected.select();
+					selector.selectFocused();
 				} else if(mouse.isPocketBook()) {
 					Controls.Pocket.selectObject(mouse.target);
 				}
@@ -180,7 +88,13 @@ angular.module('VirtualBookshelf')
 		mouse.up(event);
 		
 		if(event.which === 1) {
-			Controls.selected.release();
+			if(selector.isSelectedEditable()) {
+				var obj = selector.getSelectedObject();
+
+				if(obj.changed) {
+					obj.save();
+				}
+			}
 		}
 	};
 
@@ -190,26 +104,10 @@ angular.module('VirtualBookshelf')
 		if(mouse.isCanvas()) {
 			event.preventDefault();
 
-		 	if(!Controls.selected.isGetted()) {
-				if(mouse[1] && !mouse[3]) {		
-					Controls.moveObject();
-				} else {
-					Controls.selectObject();
-				}
+			if(mouse[1] && !mouse[3]) {		
+				Controls.moveObject();
 			} else {
-				// var obj = Controls.selected.object;
-
-				// if(obj instanceof BookObject) {
-				// 	if(mouse[1]) {
-				// 		obj.moveElement(mouse.dX, mouse.dY, UI.menu.createBook.edited);
-				// 	}
-				// 	if(mouse[2] && UI.menu.createBook.edited == 'cover') {
-				//  		obj.scaleElement(mouse.dX, mouse.dY);
-				// 	}
-				// 	if(mouse[3]) {
-				//  		obj.rotate(mouse.dX, mouse.dY, true);
-				// 	}
-				// } 
+				Controls.selectObject();
 			}
 		}
 	};
@@ -246,14 +144,14 @@ angular.module('VirtualBookshelf')
 		var oldParent;
 		var selectedObject;
 
-		if(Controls.selected.isBook() || Controls.selected.isSection()) {
+		if(selector.isSelectedEditable()) {
 			selectedObject = selector.getSelectedObject();
 			mouseVector = Camera.getVector();	
 
 			newPosition = selectedObject.position.clone();
 			oldParent = selectedObject.parent;
 
-			if(Controls.selected.isBook()) {
+			if(selector.isSelectedBook()) {
 				intersected = mouse.getIntersected(environment.library.children, true, [ShelfObject]);
 				selectedObject.setParent(intersected ? intersected.object : null);
 			}
@@ -266,7 +164,7 @@ angular.module('VirtualBookshelf')
 				newPosition.z -= (-mouseVector.x * mouse.dX + mouseVector.z * mouse.dY) * 0.003;
 
 				parent.worldToLocal(newPosition);
-				if(!selectedObject.move(newPosition) && Controls.selected.isBook()) {
+				if(!selectedObject.move(newPosition) && selector.isSelectedBook()) {
 					if(parent !== oldParent) {
 						selectedObject.setParent(oldParent);
 					}

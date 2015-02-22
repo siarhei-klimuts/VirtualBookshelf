@@ -120,7 +120,6 @@ angular.module('VirtualBookshelf')
 	};
 
 	var clearScene = function() {
-		// Controls.clear();
 		environment.library = null;
 		sections = {};
 		books = {};
