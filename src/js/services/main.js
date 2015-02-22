@@ -4,7 +4,6 @@ angular.module('VirtualBookshelf')
 	
 	var canvas;
 	var renderer;
-	var stats;
 	
 	var Main = {};
 
@@ -36,11 +35,6 @@ angular.module('VirtualBookshelf')
 	};
 
 	var init = function(width, height) {
-		var statsContainer = document.getElementById(STATS_CONTAINER_ID);
-
-		stats = new Stats();
-		statsContainer.appendChild(stats.domElement);
-
 		canvas = document.getElementById(environment.LIBRARY_CANVAS_ID);
 		renderer = new THREE.WebGLRenderer({canvas: canvas});
 		renderer.setSize(width, height);
@@ -53,8 +47,6 @@ angular.module('VirtualBookshelf')
 		requestAnimationFrame(startRenderLoop);
 		Controls.update();
 		renderer.render(environment.scene, Camera.camera);
-
-		stats.update();
 	};
 
 	return Main;
