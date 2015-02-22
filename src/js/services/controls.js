@@ -6,39 +6,11 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('Controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, Data, navigation, environment, mouse, selector, uiTools) {
+.factory('Controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, navigation, environment, mouse, selector) {
 	var Controls = {};
 
 	Controls.BUTTONS_ROTATE_SPEED = 100;
 	Controls.BUTTONS_GO_SPEED = 0.02;
-
-	Controls.Pocket = {
-		_books: {},
-
-		selectObject: function(target) {
-			var 
-				dataObject = this._books[target.value]
-
-			Data.createBook(dataObject, function (book, dataObject) {
-				Controls.Pocket.remove(dataObject.id);
-				// Controls.selected.select(book, null);
-				// book.changed = true;
-			});
-		},
-		remove: function(id) {
-			this._books[id] = null;
-			delete this._books[id];
-		},
-		put: function(dataObject) {
-			this._books[dataObject.id] = dataObject;
-		},
-		getBooks: function() {
-			return this._books;
-		},
-		isEmpty: function() {
-			return this._books.length == 0;
-		}
-	};
 
 	Controls.init = function() {
 		Controls.initListeners();
@@ -65,22 +37,14 @@ angular.module('VirtualBookshelf')
 		} else if(navigation.state.right) {
 			Camera.rotate(-this.BUTTONS_ROTATE_SPEED, 0);
 		}
-
-		uiTools.update();
 	};
 
 	Controls.onMouseDown = function(event) {
 		mouse.down(event); 
 
-		if(mouse.isCanvas() || mouse.isPocketBook()) {
-			if(mouse[1] && !mouse[3]) {
-				if(mouse.isCanvas()) {
-					Controls.selectObject();
-					selector.selectFocused();
-				} else if(mouse.isPocketBook()) {
-					Controls.Pocket.selectObject(mouse.target);
-				}
-			}
+		if(mouse.isCanvas() && mouse[1] && !mouse[3]) {
+			Controls.selectObject();
+			selector.selectFocused();
 		}
 	};
 
