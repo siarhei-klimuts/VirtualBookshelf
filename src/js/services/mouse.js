@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('mouse', function (Camera) {
+.factory('mouse', function (Camera, environment) {
 	var mouse = {};
 
 	var getWidth = function() {
@@ -37,7 +37,8 @@ angular.module('VirtualBookshelf')
 	mouse.up = function(event) {
 		if(event) {
 			this[event.which] = false;
-			this[1] = false; // linux chrome bug fix (when both keys release then both event.which equal 3)
+			// linux chrome bug fix (when both keys release then both event.which equal 3)
+			this[1] = false; 
 		}
 	};
 
@@ -54,7 +55,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	mouse.isCanvas = function() {
-		return this.target && this.target.className.indexOf('ui') > -1;
+		return this.target.id === environment.LIBRARY_CANVAS_ID;
 	};
 
 	mouse.isPocketBook = function() {

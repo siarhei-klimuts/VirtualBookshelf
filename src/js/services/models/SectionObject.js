@@ -25,11 +25,9 @@ angular.module('VirtualBookshelf')
 
 		this.dataObject.rotation = [this.rotation.x, this.rotation.y, this.rotation.z];
 
-		Data.postSection(this.dataObject).then(function (dto) {
+		return Data.postSection(this.dataObject).then(function (dto) {
 			scope.dataObject = dto;
 			scope.changed = false;
-		}).catch(function (res) {
-			//TODO: hide edit, notify user
 		});
 	};
 

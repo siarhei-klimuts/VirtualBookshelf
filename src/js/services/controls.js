@@ -6,7 +6,7 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('Controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, Data, navigation, environment, mouse, selector) {
+.factory('Controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, Data, navigation, environment, mouse, selector, uiTools) {
 	var Controls = {};
 
 	Controls.BUTTONS_ROTATE_SPEED = 100;
@@ -106,6 +106,7 @@ angular.module('VirtualBookshelf')
 		},
 		save: function() {
 			var selectedObject = selector.getSelectedObject();
+	
 			if(this.isMovable() && selectedObject.changed) {
 				selectedObject.save();
 			}
@@ -145,6 +146,7 @@ angular.module('VirtualBookshelf')
 				Camera.rotate(-this.BUTTONS_ROTATE_SPEED, 0);
 			}
 		}
+		uiTools.update();
 	};
 
 	// Events
@@ -177,8 +179,8 @@ angular.module('VirtualBookshelf')
 	Controls.onMouseUp = function(event) {
 		mouse.up(event);
 		
-		switch(event.which) {
-			 case 1: Controls.selected.release(); break;
+		if(event.which === 1) {
+			Controls.selected.release();
 		}
 	};
 
@@ -237,15 +239,14 @@ angular.module('VirtualBookshelf')
 	};
 
 	Controls.moveObject = function() {
-		var 
-			mouseVector,
-			newPosition,
-			intersected,
-			parent,
-			oldParent;
+		var mouseVector;
+		var newPosition;
+		var intersected;
+		var parent;
+		var oldParent;
 		var selectedObject;
 
-		if(Controls.selected.isBook() || (Controls.selected.isSection()/* && UI.menu.sectionMenu.isMoveOption()*/)) {
+		if(Controls.selected.isBook() || Controls.selected.isSection()) {
 			selectedObject = selector.getSelectedObject();
 			mouseVector = Camera.getVector();	
 
@@ -271,9 +272,7 @@ angular.module('VirtualBookshelf')
 					}
 				}
 			}
-		}/* else if(UI.menu.sectionMenu.isRotateOption() && Controls.selected.isSection()) {
-			Controls.selected.object.rotate(Controls.mouse.dX);			
-		}*/
+		}
 	};
 
 	return Controls;	

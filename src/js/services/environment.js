@@ -3,6 +3,7 @@ angular.module('VirtualBookshelf')
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;
+	environment.LIBRARY_CANVAS_ID = 'LIBRARY';
 	 
 	var libraryDto = null;
 	var sections = null;

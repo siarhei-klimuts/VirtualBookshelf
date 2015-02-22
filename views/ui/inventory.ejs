@@ -1,30 +1,45 @@
-<div ng-show="menu.inventory.isShow()" class="uiPanel inventory" block-ui="inventory">
-	<div ng-hide="menu.createBook.isShow()">
-		<div class="search">
-			<span class="fa fa-search"></span>
-			<input ng-model="menu.inventory.search" type="text"></input>
+<div class="inventory">
+	<div ng-show="menu.inventory.isShow()" class="uiPanel" block-ui="inventory">
+		<div ng-hide="menu.createBook.isShow()">
+			<div class="search">
+				<span class="fa fa-search"></span>
+				<input ng-model="menu.inventory.search" type="text"></input>
+			</div>
+			
+			<ul>
+				<li dir-paginate="item in menu.inventory.list | filter:menu.inventory.search | orderBy:'title' | itemsPerPage:5">
+					<div class="inventoryItem" ng-class="{selected: menu.inventory.isBookSelected(item.id)}" ng-click="menu.inventory.select(item)">
+						<i class="fa fa-book"></i>
+						<span ng-bind="item.title"></span>
+
+		    			<div class="inventoryControls">
+			    			<a class="fa fa-exchange inventoryItemButton" ng-click="menu.inventory.place(item)"></a>
+			    			<a class="fa fa-trash inventoryItemButton" ng-click="menu.inventory.remove(item)"></a>
+			    			<a class="fa fa-gear inventoryItemButton" ng-click="menu.inventory.expand(item)"></a>
+		    			</div>
+					</div>
+				</li>	
+			</ul>
+
+			<center>
+				<dir-pagination-controls></dir-pagination-controls>
+			</center>
+			<span ng-click="menu.inventory.addBook()" class="fa fa-plus fa-2x submitButton"></span>
 		</div>
-		
-		<ul>
-			<li dir-paginate="item in menu.inventory.list | filter:menu.inventory.search | orderBy:'title' | itemsPerPage:5">
-				<div class="inventoryItem" ng-class="{selected: menu.inventory.isBookSelected(item.id)}" ng-click="menu.inventory.select(item)">
-					<i class="fa fa-book"></i>
-					<span ng-bind="item.title"></span>
 
-	    			<div class="inventoryControls">
-		    			<a class="fa fa-exchange inventoryItemButton" ng-click="menu.inventory.place(item)"></a>
-		    			<a class="fa fa-trash inventoryItemButton" ng-click="menu.inventory.remove(item)"></a>
-		    			<a class="fa fa-gear inventoryItemButton" ng-click="menu.inventory.expand(item)"></a>
-	    			</div>
-				</div>
-			</li>	
-		</ul>
 
-		<center>
-			<dir-pagination-controls></dir-pagination-controls>
-		</center>
-		<a ng-click="menu.inventory.addBook()" class="fa fa-plus fa-2x submitButton"></a>
+		<ng-include src="'/ui/book.ejs'"></ng-include>
 	</div>
 
-	<ng-include src="'/ui/book.ejs'"></ng-include>
+	<div ng-controller="ToolsCtrl as tools" ng-show="tools.isShow()" class="uiPanel tools" ng-mouseup="tools.stop()" ng-mouseleave="tools.stop()">
+		<table>
+			<tr ng-show="tools.isRotatable()">
+				<td><label><%=__('ui.section.rotate')%></label></td>
+				<td>
+					<span ng-mousedown="tools.rotateLeft()" class="fa fa-undo fa-2x"></span>
+					<span ng-mousedown="tools.rotateRight()" class="fa fa-repeat fa-2x"></span>
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>

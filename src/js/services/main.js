@@ -1,7 +1,6 @@
 angular.module('VirtualBookshelf')
-.factory('Main', function ($log, Data, Camera, LibraryObject, Controls, User, UI, environment) {
+.factory('Main', function ($log, Camera, Controls, User, UI, environment) {
 	var STATS_CONTAINER_ID = 'stats';
-	var LIBRARY_CANVAS_ID = 'LIBRARY';
 	
 	var canvas;
 	var renderer;
@@ -42,7 +41,7 @@ angular.module('VirtualBookshelf')
 		stats = new Stats();
 		statsContainer.appendChild(stats.domElement);
 
-		canvas = document.getElementById(LIBRARY_CANVAS_ID);
+		canvas = document.getElementById(environment.LIBRARY_CANVAS_ID);
 		renderer = new THREE.WebGLRenderer({canvas: canvas});
 		renderer.setSize(width, height);
 

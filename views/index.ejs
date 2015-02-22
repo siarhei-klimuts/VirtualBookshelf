@@ -19,98 +19,96 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-	<body ng-app="VirtualBookshelf">
+	<body ng-app="VirtualBookshelf" ng-controller="UiCtrl">
 		<canvas id="LIBRARY"></canvas>
 
-    	<div ng-controller="UiCtrl" class="ui">
-			<div id="stats" style="float: left;" class="uiPanel" ng-show="false"></div>
+		<div id="stats" style="float: left;" class="uiPanel" ng-show="false"></div>
 
-    		<div class="uiPanel mainMenu">
-    			<div ng-show="menu.show == 'rootList'">
-	    			<ul class="select">
-	    				<li ng-click="menu.show = 'createList'"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
-	    				<li ng-click="menu.show = 'selectLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
-	    				<li ng-click="menu.show = 'feedback'"><i class="fa fa-comment-o fa-2x"></i><%=__('ui.menuItem.leaveFeedback')%></li>
-	    				<li ng-click="menu.login.logout()" ng-hide="menu.login.isShow()"><i class="fa fa-sign-out fa-2x"></i><%=__('ui.menuItem.logout')%></li>
-	    			</ul>
-    			</div>
+		<div class="uiPanel mainMenu">
+			<div ng-show="menu.show == 'rootList'">
+    			<ul class="select">
+    				<li ng-click="menu.show = 'createList'"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
+    				<li ng-click="menu.show = 'selectLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
+    				<li ng-click="menu.show = 'feedback'"><i class="fa fa-comment-o fa-2x"></i><%=__('ui.menuItem.leaveFeedback')%></li>
+    				<li ng-click="menu.login.logout()" ng-hide="menu.login.isShow()"><i class="fa fa-sign-out fa-2x"></i><%=__('ui.menuItem.logout')%></li>
+    			</ul>
+			</div>
 
-    			<div ng-show="menu.show == 'createList'">
-	    			<ul class="select">
-	    				<li ng-click="menu.show = 'createLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.createLibrary')%></li>
-	    				<li ng-click="menu.show = 'createSection'"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
-	    			</ul>
-    			</div>
+			<div ng-show="menu.show == 'createList'">
+    			<ul class="select">
+    				<li ng-click="menu.show = 'createLibrary'"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.createLibrary')%></li>
+    				<li ng-click="menu.show = 'createSection'"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
+    			</ul>
+			</div>
 
-		    	<div ng-show="menu.show == 'createLibrary'">
-		    		<p><%= __('ui.library.create.select.label') %></p>
-		    		<table>
-		    			<tr>
-		    				<td>
-								<vb-select ng-model="menu.createLibrary.model" options="menu.createLibrary.list" value="model" label="label">
-									<i class="fa fa-home fa-2x"></i>
-								</vb-select>
-		    				</td>
-		    				<td>
-			    				<img ng-src="{{menu.createLibrary.getImg()}}" class="previewImg">
-		    				</td>
-		    			</tr>
-		    		</table>
+	    	<div ng-show="menu.show == 'createLibrary'">
+	    		<p><%= __('ui.library.create.select.label') %></p>
+	    		<table>
+	    			<tr>
+	    				<td>
+							<vb-select ng-model="menu.createLibrary.model" options="menu.createLibrary.list" value="model" label="label">
+								<i class="fa fa-home fa-2x"></i>
+							</vb-select>
+	    				</td>
+	    				<td>
+		    				<img ng-src="{{menu.createLibrary.getImg()}}" class="previewImg">
+	    				</td>
+	    			</tr>
+	    		</table>
 
-		    		<a ng-click="menu.createLibrary.create()" class="fa fa-check fa-2x submitButton"></a>
-		    	</div>		   
+	    		<a ng-click="menu.createLibrary.create()" class="fa fa-check fa-2x submitButton"></a>
+	    	</div>		   
 
-		    	<div ng-show="menu.show == 'createSection'">
-		    		<table>
-		    			<tr>
-		    				<td>
-								<vb-select ng-model="menu.createSection.model" options="menu.createSection.list" value="model" label="label">
-									<i class="fa fa-bars fa-2x"></i>
-								</vb-select>
-		    				</td>
-		    				<td>
-			    				<img ng-src="{{menu.createSection.getImg()}}" class="previewImg">
-		    				</td>
-		    			</tr>
-		    		</table>
-		    		
-		    		<a ng-click="menu.createSection.create()" class="fa fa-check fa-2x submitButton"></a>
-		    	</div> 	
+	    	<div ng-show="menu.show == 'createSection'">
+	    		<table>
+	    			<tr>
+	    				<td>
+							<vb-select ng-model="menu.createSection.model" options="menu.createSection.list" value="model" label="label">
+								<i class="fa fa-bars fa-2x"></i>
+							</vb-select>
+	    				</td>
+	    				<td>
+		    				<img ng-src="{{menu.createSection.getImg()}}" class="previewImg">
+	    				</td>
+	    			</tr>
+	    		</table>
+	    		
+	    		<a ng-click="menu.createSection.create()" class="fa fa-check fa-2x submitButton"></a>
+	    	</div> 	
 
-		    	<div ng-show="menu.show == 'selectLibrary'">
-		    		<p><%= __('ui.library.select.text') %></p>
-		    		<ul class="select">
-		    			<li ng-repeat="item in menu.selectLibrary.list" ng-click="menu.selectLibrary.go(item.id)">
-		    				<i class="fa fa-home fa-2x"></i>{{item.id}}
-		    			</li>
-		    		</ul>
-		    	</div>
-
-		    	<form name="menu.feedback.form" ng-show="menu.show == 'feedback'">
-		    		<div>
-			    		<p><%= __('ui.feedback.message') %></p>
-						<textarea name="message" ng-model="menu.feedback.message" required></textarea>
-		    		</div>
-					<a ng-click="menu.feedback.submit()" class="fa fa-check fa-2x submitButton"></a>
-		    	</form>
-
-				<a ng-click="menu.show = menu.show ? '' : 'rootList'" class="fa fa-sliders fa-2x mainMenuButton"></a>
-    		</div>
-    		
-    		<div class="uiPanel navigation" ng-mouseup="menu.navigation.stop()" ng-mouseleave="menu.navigation.stop()">
-    			<a ng-mousedown="menu.navigation.left()" class="fa fa-chevron-left fa-2x"></a>
-    			<a ng-mousedown="menu.navigation.right()" class="fa fa-chevron-right fa-2x"></a>
-    			<a ng-mousedown="menu.navigation.backward()" class="fa fa-chevron-down fa-2x"></a>
-    			<a ng-mousedown="menu.navigation.forward()" class="fa fa-chevron-up fa-2x"></a>
-    		</div>
-
-	    	<div ng-show="menu.login.isShow()" class="uiPanel login">
-	    		<p><%= __('ui.login.text') %></p>
-    			<img src="/img/google.png" ng-click="menu.login.google()"/>
+	    	<div ng-show="menu.show == 'selectLibrary'">
+	    		<p><%= __('ui.library.select.text') %></p>
+	    		<ul class="select">
+	    			<li ng-repeat="item in menu.selectLibrary.list" ng-click="menu.selectLibrary.go(item.id)">
+	    				<i class="fa fa-home fa-2x"></i>{{item.id}}
+	    			</li>
+	    		</ul>
 	    	</div>
 
-	    	<ng-include src="'ui/inventory.ejs'"></ng-include>
+	    	<form name="menu.feedback.form" ng-show="menu.show == 'feedback'">
+	    		<div>
+		    		<p><%= __('ui.feedback.message') %></p>
+					<textarea name="message" ng-model="menu.feedback.message" required></textarea>
+	    		</div>
+				<a ng-click="menu.feedback.submit()" class="fa fa-check fa-2x submitButton"></a>
+	    	</form>
+
+			<a ng-click="menu.show = menu.show ? '' : 'rootList'" class="fa fa-sliders fa-2x mainMenuButton"></a>
+		</div>
+		
+		<div class="uiPanel navigation" ng-mouseup="menu.navigation.stop()" ng-mouseleave="menu.navigation.stop()">
+			<a ng-mousedown="menu.navigation.left()" class="fa fa-chevron-left fa-2x"></a>
+			<a ng-mousedown="menu.navigation.right()" class="fa fa-chevron-right fa-2x"></a>
+			<a ng-mousedown="menu.navigation.backward()" class="fa fa-chevron-down fa-2x"></a>
+			<a ng-mousedown="menu.navigation.forward()" class="fa fa-chevron-up fa-2x"></a>
+		</div>
+
+    	<div ng-show="menu.login.isShow()" class="uiPanel login">
+    		<p><%= __('ui.login.text') %></p>
+			<img src="/img/google.png" ng-click="menu.login.google()"/>
     	</div>
+
+    	<ng-include src="'ui/inventory.ejs'"></ng-include>
 
 		<script src="/js/index.js"></script>
 	</body>
