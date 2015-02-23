@@ -95,24 +95,6 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	UI.menu.navigation = {
-		stop: function() {
-			navigation.goStop();
-		},
-		forward: function() {
-			navigation.goForward();
-		},
-		backward: function() {
-			navigation.goBackward();
-		},
-		left: function() {
-			navigation.goLeft();
-		},
-		right: function() {
-			navigation.goRight();
-		}
-	};
-
 	UI.menu.login = {
 		isShow: function() {
 			return !User.isAuthorized() && User.isLoaded();
@@ -141,84 +123,6 @@ angular.module('VirtualBookshelf')
 				$log.error('Logout error');
 				//TODO: show an error
 			});
-		}
-	};
-
-	UI.menu.inventory = {
-		search: null,
-		list: null,
-		blocker: 'inventory',
-	
-		expand: function(book) {
-			UI.menu.createBook.setBook(book);
-		},
-		block: function() {
-			blockUI.instances.get(this.blocker).start();
-		},
-		unblock: function() {
-			blockUI.instances.get(this.blocker).stop();
-		},
-		isShow: function() {
-			return User.isAuthorized();
-		},
-		isBookSelected: function(id) {
-			return selector.isBookSelected(id);
-		},
-		select: function(dto) {
-			var book = environment.getBook(dto.id);
-			var meta = new SelectorMeta(book);
-			selector.select(meta);
-		},
-		addBook: function() {
-			this.expand({userId: User.getId()});
-		},
-		remove: function(book) {
-			var scope = this;
-
-			dialog.openConfirm('Delete book?').then(function () {
-				scope.block();
-
-				Data.deleteBook(book).then(function (res) {
-					environment.removeBook(res.data);
-					return scope.loadData();
-				}).catch(function (error) {
-					dialog.openError('Delete book error.');
-					$log.error(error);
-				}).finally(function () {
-					scope.unblock();
-				});
-			});
-		},
-		place: function(book, event) {
-			var scope = this;
-			var promise;
-			var isBookPlaced = !!book.sectionId;
-
-			event.stopPropagation();
-			
-			scope.block();
-			promise = isBookPlaced ? locator.unplaceBook(book) : locator.placeBook(book);
-			promise.then(function () {
-				return scope.loadData();
-			}).catch(function (error) {
-				//TODO: show an error
-				$log.error(error);
-			}).finally(function () {
-				scope.unblock(); 
-			});
-		},
-		loadData: function() {
-			var scope = this;
-			var promise;
-
-			scope.block();
-			promise = $q.when(this.isShow() ? Data.getUserBooks(User.getId()) : null).then(function (books) {
-				scope.list = books;
-			}).finally(function () {
-				scope.unblock();		
-			});
-
-			return promise;
 		}
 	};
 

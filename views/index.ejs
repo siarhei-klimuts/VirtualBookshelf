@@ -91,11 +91,11 @@
 			<a ng-click="menu.show = menu.show ? '' : 'rootList'" class="fa fa-sliders fa-2x mainMenuButton"></a>
 		</div>
 		
-		<div class="uiPanel navigation" ng-mouseup="menu.navigation.stop()" ng-mouseleave="menu.navigation.stop()">
-			<a ng-mousedown="menu.navigation.left()" class="fa fa-chevron-left fa-2x"></a>
-			<a ng-mousedown="menu.navigation.right()" class="fa fa-chevron-right fa-2x"></a>
-			<a ng-mousedown="menu.navigation.backward()" class="fa fa-chevron-down fa-2x"></a>
-			<a ng-mousedown="menu.navigation.forward()" class="fa fa-chevron-up fa-2x"></a>
+		<div class="uiPanel navigation" ng-mouseup="navigation.stop()" ng-mouseleave="navigation.stop()">
+			<a ng-mousedown="navigation.left()" class="fa fa-chevron-left fa-2x"></a>
+			<a ng-mousedown="navigation.right()" class="fa fa-chevron-right fa-2x"></a>
+			<a ng-mousedown="navigation.backward()" class="fa fa-chevron-down fa-2x"></a>
+			<a ng-mousedown="navigation.forward()" class="fa fa-chevron-up fa-2x"></a>
 		</div>
 
     	<div ng-show="menu.login.isShow()" class="uiPanel login">
