@@ -1,6 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('UI', function ($q, $log, $window, $interval, SelectorMeta, User, Data, Controls, navigation, environment, locator, selector, archive, dialog, blockUI) {
-	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
+.factory('UI', function ($q, $log, $window, $interval, User, Data, environment, locator, dialog, catalog, bookEdit) {
 	var UI = {menu: {}};
 
 	UI.menu.selectLibrary = {
@@ -126,92 +125,12 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	UI.menu.createBook = {
-		list: [],
-		book: {},
-		coverInputURL: null,
-
-		setBook: function(book) {
-			this.book = {}; // create new object for unbind from scope
-			if(book) {
-				this.book.id = book.id;
-				this.book.userId = book.userId;
-				this.book.model = book.model;
-				this.book.cover = book.cover;
-				this.book.title = book.title;
-				this.book.author = book.author;
-
-				this.coverInputURL = null;
-			}
-		},
-		getImg: function() {
-			return this.book.model ? BOOK_IMAGE_URL.replace('{model}', this.book.model) : null;
-		},
-		getCoverImg: function() {
-			return this.isCoverShow() ? this.book.cover : '/img/empty_cover.jpg';
-		},
-		isCoverDisabled: function() {
-			return this.coverInputURL && (this.form.title.$invalid || this.form.author.$invalid);
-		},
-		isCoverShow: function() {
-			return Boolean(this.book.cover);
-		},
-		isShow: function() {
-			return !!this.book.userId;
-		},
-		submit: function() {
-			if(this.form.$valid) {
-				this.save();
-			} else {
-				dialog.openError('Fill all required fields, please.');
-			}
-		},
-		applyCover: function() {
-			if(!this.isCoverDisabled()) {
-				if(this.coverInputURL) {
-					UI.menu.inventory.block();
-					archive.sendExternalURL(this.coverInputURL, [this.book.title, this.book.author]).then(function (result) {
-						UI.menu.createBook.book.cover = result.url;
-					}).catch(function () {
-						UI.menu.createBook.book.cover = null;
-						dialog.openError('Can not apply this cover. Try another one, please.');
-					}).finally(function () {
-						UI.menu.createBook.coverInputURL = null;
-						UI.menu.inventory.unblock();
-					});
-				} else {
-					UI.menu.createBook.book.cover = null;
-				}
-			} else {
-				dialog.openError('Fill author and title fields, please.');
-			}
-		},
-		save: function() {
-			var scope = this;
-			
-			UI.menu.inventory.block();
-			Data.postBook(this.book).then(function (dto) {
-				environment.updateBook(dto);
-				scope.cancel();
-				return UI.menu.inventory.loadData();
-			}).catch(function () {
-				$log.error('Book save error');
-				//TODO: show error
-			}).finally(function () {
-				UI.menu.inventory.unblock();
-			});
-		},
-		cancel: function() {
-			this.setBook();
-		}
-	};
-
 	UI.init = function() {
 		//TODO: move to menu models
 		Data.getUIData().then(function (res) {
 			UI.menu.createLibrary.list = res.data.libraries;
 			UI.menu.createSection.list = res.data.bookshelves;
-			UI.menu.createBook.list = res.data.books;
+			bookEdit.list = res.data.books;
 
 			return loadUserData();
 		}).catch(function () {
@@ -223,142 +142,9 @@ angular.module('VirtualBookshelf')
 	var loadUserData = function() {
 		return $q.all([
 			UI.menu.selectLibrary.updateList(), 
-			UI.menu.inventory.loadData()
+			catalog.loadBooks()
 		]);
 	};
 
 	return UI;
 });
-
-// VirtualBookshelf.UI.initControlsEvents = function() {
-	// VirtualBookshelf.UI.menu.createBook.model.onchange = VirtualBookshelf.UI.changeModel;
-	// VirtualBookshelf.UI.menu.createBook.texture.onchange = VirtualBookshelf.UI.changeBookTexture;
-	// VirtualBookshelf.UI.menu.createBook.cover.onchange = VirtualBookshelf.UI.changeBookCover;
-	// VirtualBookshelf.UI.menu.createBook.author.onchange = VirtualBookshelf.UI.changeSpecificValue('author', 'text');
-	// VirtualBookshelf.UI.menu.createBook.authorSize.onchange = VirtualBookshelf.UI.changeSpecificValue('author', 'size');
-	// VirtualBookshelf.UI.menu.createBook.authorColor.onchange = VirtualBookshelf.UI.changeSpecificValue('author', 'color');
-	// VirtualBookshelf.UI.menu.createBook.title.onchange = VirtualBookshelf.UI.changeSpecificValue('title', 'text');
-	// VirtualBookshelf.UI.menu.createBook.titleSize.onchange = VirtualBookshelf.UI.changeSpecificValue('title', 'size');
-	// VirtualBookshelf.UI.menu.createBook.titleColor.onchange = VirtualBookshelf.UI.changeSpecificValue('title', 'color');
-	// VirtualBookshelf.UI.menu.createBook.editCover.onclick = VirtualBookshelf.UI.switchEdited;
-	// VirtualBookshelf.UI.menu.createBook.editAuthor.onclick = VirtualBookshelf.UI.switchEdited;
-	// VirtualBookshelf.UI.menu.createBook.editTitle.onclick = VirtualBookshelf.UI.switchEdited;
-	// VirtualBookshelf.UI.menu.createBook.ok.onclick = VirtualBookshelf.UI.saveBook;
-	// VirtualBookshelf.UI.menu.createBook.cancel.onclick = VirtualBookshelf.UI.cancelBookEdit;
-// };
-
-// create book
-
-// VirtualBookshelf.UI.showCreateBook = function() {
-// 	var menuNode = VirtualBookshelf.UI.menu.createBook;
-
-// 	if(VirtualBookshelf.selected.isBook()) {
-// 		menuNode.show();
-// 		menuNode.setValues();
-// 	} else if(VirtualBookshelf.selected.isSection()) {
-// 		var section = VirtualBookshelf.selected.object;
-// 		var shelf = section.getShelfByPoint(VirtualBookshelf.selected.point);
-// 		var freePosition = section.getGetFreeShelfPosition(shelf, {x: 0.05, y: 0.12, z: 0.1}); 
-// 		if(freePosition) {
-// 			menuNode.show();
-
-// 			var dataObject = {
-// 				model: menuNode.model.value, 
-// 				texture: menuNode.texture.value, 
-// 				cover: menuNode.cover.value,
-// 				pos_x: freePosition.x,
-// 				pos_y: freePosition.y,
-// 				pos_z: freePosition.z,
-// 				sectionId: section.dataObject.id,
-// 				shelfId: shelf.id,
-// 				userId: VirtualBookshelf.user.id
-// 			};
-
-// 			VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
-// 				book.parent = shelf;
-// 				VirtualBookshelf.selected.object = book;
-// 				VirtualBookshelf.selected.get();
-// 			});
-// 		} else {
-// 			alert('There is no free space on selected shelf.');
-// 		}
-// 	}
-// }
-
-// VirtualBookshelf.UI.changeModel = function() {
-// 	if(VirtualBookshelf.selected.isBook()) {
-// 		var oldBook = VirtualBookshelf.selected.object;
-// 		var dataObject = {
-// 			model: this.value,
-// 			texture: oldBook.texture.toString(),
-// 			cover: oldBook.cover.toString()
-// 		};
-
-// 		VirtualBookshelf.Data.createBook(dataObject, function (book, dataObject) {
-// 			book.copyState(oldBook);
-// 		});
-// 	}
-// }
-
-// VirtualBookshelf.UI.changeBookTexture = function() {
-// 	if(VirtualBookshelf.selected.isBook()) {
-// 		var book = VirtualBookshelf.selected.object;
-// 		book.texture.load(this.value, false, function () {
-// 			book.updateTexture();
-// 		});
-// 	}
-// }
-
-// VirtualBookshelf.UI.changeBookCover = function() {
-// 	if(VirtualBookshelf.selected.isBook()) {
-// 		var book = VirtualBookshelf.selected.object;
-// 		book.cover.load(this.value, true, function() {
-// 			book.updateTexture();
-// 		});
-// 	}
-// }
-
-// VirtualBookshelf.UI.changeSpecificValue = function(field, property) {
-// 	return function () {
-// 		if(VirtualBookshelf.selected.isBook()) {
-// 			VirtualBookshelf.selected.object[field][property] = this.value;
-// 			VirtualBookshelf.selected.object.updateTexture();
-// 		}
-// 	};
-// };
-
-// VirtualBookshelf.UI.switchEdited = function() {
-// 	var activeElemets = document.querySelectorAll('a.activeEdit');
-
-// 	for(var i = activeElemets.length - 1; i >= 0; i--) {
-// 		activeElemets[i].className = 'inactiveEdit';
-// 	};
-
-// 	var previousEdited = VirtualBookshelf.UI.menu.createBook.edited;
-// 	var currentEdited = this.getAttribute('edit');
-
-// 	if(previousEdited != currentEdited) {
-// 		this.className = 'activeEdit';
-// 		VirtualBookshelf.UI.menu.createBook.edited = currentEdited;
-// 	} else {
-// 		VirtualBookshelf.UI.menu.createBook.edited = null;
-// 	}
-// }
-
-// VirtualBookshelf.UI.saveBook = function() {
-// 	if(VirtualBookshelf.selected.isBook()) {
-// 		var book = VirtualBookshelf.selected.object;
-
-// 		VirtualBookshelf.selected.put();
-// 		book.save();
-// 	}
-// }
-
-// VirtualBookshelf.UI.cancelBookEdit = function() {
-// 	if(VirtualBookshelf.selected.isBook()) {
-// 		var book = VirtualBookshelf.selected.object;
-		
-// 		VirtualBookshelf.selected.put();
-// 		book.refresh();
-// 	}
-// }

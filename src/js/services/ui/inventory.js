@@ -1,21 +1,11 @@
 angular.module('VirtualBookshelf')
-.factory('inventory', function ($q, $log, SelectorMeta, User, Data, selector, environment, dialog, locator, blockUI) {
+.factory('inventory', function ($log, SelectorMeta, User, Data, bookEdit, selector, environment, dialog, locator, catalog, block) {
 	var inventory = {};
-	var blocker = 'inventory';
 
 	inventory.search = null;
-	inventory.list = null;
 
 	inventory.expand = function(book) {
-		// UI.menu.createBook.setBook(book);
-	};
-
-	inventory.block = function() {
-		blockUI.instances.get(blocker).start();
-	};
-
-	inventory.unblock = function() {
-		blockUI.instances.get(blocker).stop();
+		bookEdit.setBook(book);
 	};
 
 	inventory.isShow = function() {
@@ -38,53 +28,36 @@ angular.module('VirtualBookshelf')
 	};
 
 	inventory.remove = function(book) {
-		var scope = this;
-
 		dialog.openConfirm('Delete book?').then(function () {
-			scope.block();
+			block.inventory.start();
 
 			Data.deleteBook(book).then(function (res) {
 				environment.removeBook(res.data);
-				return scope.loadData();
+				return catalog.loadBooks();
 			}).catch(function () {
 				dialog.openError('Delete book error.');
 			}).finally(function () {
-				scope.unblock();
+				block.inventory.stop();
 			});
 		});
 	};
 
 	inventory.place = function(book, event) {
-		var scope = this;
 		var promise;
 		var isBookPlaced = !!book.sectionId;
 
 		event.stopPropagation();
 		
-		scope.block();
+		block.inventory.start();
 		promise = isBookPlaced ? locator.unplaceBook(book) : locator.placeBook(book);
 		promise.then(function () {
-			return scope.loadData();
+			return catalog.loadBooks();
 		}).catch(function (error) {
 			//TODO: show an error
 			$log.error(error);
 		}).finally(function () {
-			scope.unblock(); 
+			block.inventory.stop();
 		});
-	};
-
-	inventory.loadData = function() {
-		var scope = this;
-		var promise;
-
-		scope.block();
-		promise = $q.when(this.isShow() ? Data.getUserBooks(User.getId()) : null).then(function (books) {
-			scope.list = books;
-		}).finally(function () {
-			scope.unblock();		
-		});
-
-		return promise;
 	};
 
 	return inventory;

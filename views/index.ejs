@@ -16,10 +16,10 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-	<body ng-app="VirtualBookshelf" ng-controller="UiCtrl" ng-cloak>
+	<body ng-app="VirtualBookshelf" ng-controller="UiCtrl" block-ui="global" ng-cloak>
 		<canvas id="LIBRARY"></canvas>
 
-		<div class="uiPanel mainMenu">
+		<div class="uiPanel mainMenu" block-ui="main_menu">
 			<div ng-show="menu.show == 'rootList'">
     			<ul class="select">
     				<li ng-click="menu.show = 'createList'"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>

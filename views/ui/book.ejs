@@ -1,15 +1,15 @@
-<form name="menu.createBook.form" ng-show="menu.createBook.isShow()">
+<form name="bookEdit.form" ng-show="bookEdit.isShow()">
 	<table>
 		<tr>
 			<td colspan="2">
 	    		<table>
 					<tr>
 						<td><label><%= __('ui.create_book.title') %></label></td>
-						<td><input name="title" ng-model="menu.createBook.book.title" type="text" required></input></td>
+						<td><input name="title" ng-model="bookEdit.book.title" type="text" required></input></td>
 					</tr>
 					<tr>
 						<td><label><%= __('ui.create_book.author') %></label></td>
-						<td><input name="author" ng-model="menu.createBook.book.author" type="text" required></input></td>
+						<td><input name="author" ng-model="bookEdit.book.author" type="text" required></input></td>
 					</tr>
 	    		</table>
 			</td>
@@ -18,29 +18,29 @@
 		<tr class="cover">
 			<td>
 				<label><%= __('ui.create_book.cover') %></label>
-				<input ng-model="menu.createBook.coverInputURL" type="text"></input>
-				<a ng-click="menu.createBook.applyCover()" class="fa fa-cloud-upload fa-2x"></a>
+				<input ng-model="bookEdit.coverInputURL" type="text"></input>
+				<a ng-click="bookEdit.applyCover()" class="fa fa-cloud-upload fa-2x"></a>
 			</td>
 			<td>
-				<img ng-src="{{menu.createBook.getCoverImg()}}" class="previewImg"/>
+				<img ng-src="{{bookEdit.getCoverImg()}}" class="previewImg"/>
 			</td>
 		</tr>
 
 		<tr>
 			<td>
 				<label><%= __('ui.create_book.object') %></label>
-				<vb-select ng-model="menu.createBook.book.model" options="menu.createBook.list" value="model" label="label" required>
+				<vb-select ng-model="bookEdit.book.model" options="bookEdit.list" value="model" label="label" required>
 					<i class="fa fa-book fa-2x"></i>
 				</vb-select>
 			</td>
 			<td>
-				<img ng-src="{{menu.createBook.getImg()}}" class="previewImg"/>
+				<img ng-src="{{bookEdit.getImg()}}" class="previewImg"/>
 			</td>
 		</tr>
 	</table>
 	
 	<div class="submitButton"> 
-		<a ng-click="menu.createBook.cancel()" class="fa fa-times fa-2x"></a>
-		<a ng-click="menu.createBook.submit()" class="fa fa-check fa-2x"></a>
+		<a ng-click="bookEdit.cancel()" class="fa fa-times fa-2x"></a>
+		<a ng-click="bookEdit.submit()" class="fa fa-check fa-2x"></a>
 	</div>
 </form>	
