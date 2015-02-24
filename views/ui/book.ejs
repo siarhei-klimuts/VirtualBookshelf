@@ -19,7 +19,7 @@
 			<td>
 				<label><%= __('ui.create_book.cover') %></label>
 				<input ng-model="bookEdit.coverInputURL" type="text"></input>
-				<a ng-click="bookEdit.applyCover()" class="fa fa-cloud-upload fa-2x"></a>
+				<span ng-click="bookEdit.applyCover()" class="fa fa-cloud-upload fa-2x"></span>
 			</td>
 			<td>
 				<img ng-src="{{bookEdit.getCoverImg()}}" class="previewImg"/>
@@ -40,7 +40,7 @@
 	</table>
 	
 	<div class="submitButton"> 
-		<a ng-click="bookEdit.cancel()" class="fa fa-times fa-2x"></a>
-		<a ng-click="bookEdit.submit()" class="fa fa-check fa-2x"></a>
+		<span ng-click="bookEdit.cancel()" class="fa fa-times fa-2x"></span>
+		<span ng-click="bookEdit.submit()" class="fa fa-check fa-2x"></span>
 	</div>
 </form>	

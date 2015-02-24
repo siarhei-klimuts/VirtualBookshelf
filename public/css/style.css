@@ -83,7 +83,7 @@ table {
 .tools span.fa {
 	margin-left: 10px;
 }
-.cover a {
+.cover span.fa {
 	float: right;
 }
 .navigation {
@@ -107,7 +107,7 @@ table {
 	left: 0px;
 	top: 0px;
 }
-span.fa, a.fa {
+span.fa {
 	color: lightgreen;
 	cursor: default;
 }
@@ -129,7 +129,7 @@ i.fa {
 	float: right;
 	margin-left: 20px;
 }
-.submitButton > a {
+.submitButton > span.fa {
 	margin-left: 10px; 
 }
 input[type="text"], textarea {

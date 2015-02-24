@@ -20,10 +20,10 @@
 		<canvas id="LIBRARY"></canvas>
 		
 		<div class="uiPanel navigation" ng-mouseup="navigation.stop()" ng-mouseleave="navigation.stop()">
-			<a ng-mousedown="navigation.left()" class="fa fa-chevron-left fa-2x"></a>
-			<a ng-mousedown="navigation.right()" class="fa fa-chevron-right fa-2x"></a>
-			<a ng-mousedown="navigation.backward()" class="fa fa-chevron-down fa-2x"></a>
-			<a ng-mousedown="navigation.forward()" class="fa fa-chevron-up fa-2x"></a>
+			<span ng-mousedown="navigation.left()" class="fa fa-chevron-left fa-2x"></span>
+			<span ng-mousedown="navigation.right()" class="fa fa-chevron-right fa-2x"></span>
+			<span ng-mousedown="navigation.backward()" class="fa fa-chevron-down fa-2x"></span>
+			<span ng-mousedown="navigation.forward()" class="fa fa-chevron-up fa-2x"></span>
 		</div>
 
     	<div ng-show="authorization.isShow()" class="uiPanel login">
