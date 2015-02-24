@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('bookEdit', function ($log, Data, environment, block, dialog, archive, catalog) {
+.factory('bookEdit', function ($log, Data, environment, block, dialog, archive, catalog, selector) {
 	var bookEdit = {};
 
 	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
@@ -77,6 +77,10 @@ angular.module('VirtualBookshelf')
 		
 		block.inventory.start();
 		Data.postBook(this.book).then(function (dto) {
+			if(selector.isBookSelected(dto.id)) {
+				selector.unselect();
+			}
+
 			environment.updateBook(dto);
 			scope.cancel();
 			return catalog.loadBooks();
