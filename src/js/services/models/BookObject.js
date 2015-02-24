@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('BookObject', function (BaseObject, CanvasText, CanvasImage, Data) {	
+.factory('BookObject', function ($log, BaseObject, CanvasText, CanvasImage, Data) {	
 	var BookObject = function(dataObject, geometry, material, mapImage, coverImage) {
 		BaseObject.call(this, dataObject, geometry, material);
 		
@@ -83,13 +83,11 @@ angular.module('VirtualBookshelf')
 		this.dataObject.pos_y = this.position.y;
 		this.dataObject.pos_z = this.position.z;
 
-		Data.postBook(this.dataObject, function(err, result) {
-			if(!err && result) {
-				scope.dataObject = result;
-				scope.changed = false;
-			} else {
-				//TODO: hide edit, notify user
-			}
+		Data.postBook(this.dataObject).then(function (dto) {
+			scope.dataObject = dto;
+			scope.changed = false;
+		}).catch(function () {
+			$log.error('Error saving book');
 		});
 	};
 	BookObject.prototype.refresh = function() {
@@ -114,12 +112,12 @@ angular.module('VirtualBookshelf')
 			for(var i = fields.length - 1; i >= 0; i--) {
 				var field = fields[i];
 				this[field] = book[field];
-			};
+			}
 
 			this.updateTexture();
 			book.parent.add(this);
 			book.parent.remove(book);
-			VirtualBookshelf.selected.object = this;
+			// VirtualBookshelf.selected.object = this;
 		}
 	};
 	BookObject.prototype.setParent = function(parent) {
