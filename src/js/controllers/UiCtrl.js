@@ -1,6 +1,12 @@
 angular.module('VirtualBookshelf')
-.controller('UiCtrl', function ($scope, UI, navigation, inventory, bookEdit, catalog) {
-    $scope.menu = UI.menu;
+.controller('UiCtrl', function ($scope, mainMenu, selectLibrary, createLibrary, createSection, feedback, authorization, navigation, inventory, bookEdit, catalog) {
+    $scope.mainMenu = mainMenu;
+
+    $scope.selectLibrary = selectLibrary;
+    $scope.createLibrary = createLibrary;
+    $scope.createSection = createSection;
+    $scope.feedback = feedback;
+    $scope.authorization = authorization;
 
     $scope.inventory = inventory;
     $scope.bookEdit = bookEdit;
