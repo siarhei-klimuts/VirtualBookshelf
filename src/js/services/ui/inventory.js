@@ -27,11 +27,15 @@ angular.module('VirtualBookshelf')
 		this.expand({userId: User.getId()});
 	};
 
-	inventory.remove = function(book) {
+	inventory.delete = function(book) {
 		dialog.openConfirm('Delete book?').then(function () {
 			block.inventory.start();
 
 			Data.deleteBook(book).then(function (res) {
+				if(selector.isBookSelected(book.id)) {
+					selector.unselect();
+				}
+
 				environment.removeBook(res.data);
 				return catalog.loadBooks();
 			}).catch(function () {
