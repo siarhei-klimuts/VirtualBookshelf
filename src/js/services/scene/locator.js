@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('locator', function ($q, $log, SectionObject, BookObject, Data, selector, environment, cache) {
+.factory('locator', function ($q, $log, BaseObject, Data, selector, environment, cache) {
 	var VISUAL_DEBUG = false;
 	var locator = {};
 
@@ -139,7 +139,7 @@ angular.module('VirtualBookshelf')
 		var z;
 
 		objects.forEach(function (obj) {
-			if (obj instanceof SectionObject || obj instanceof BookObject) {
+			if (obj instanceof BaseObject) {
 				objectBB = obj.boundingBox;
 
 				minKeyX = Math.round((objectBB.center.x - objectBB.radius.x) / matrixPrecision.x);
@@ -187,7 +187,7 @@ angular.module('VirtualBookshelf')
 
 	var debugAddOccupied = function(cells, matrixPrecision, obj, zKey) {
 		cells.forEach(function (cell) {
-			var pos = getPositionFromCells([cell], zKey, matrixPrecision, obj.parent.geometry.boundingBox, obj.geometry.boundingBox)
+			var pos = getPositionFromCells([cell], zKey, matrixPrecision, obj.parent.geometry.boundingBox, obj.geometry.boundingBox);
 			var cellBox = new THREE.Mesh(new THREE.CubeGeometry(matrixPrecision.x - 0.01, 0.01, matrixPrecision.z - 0.01), new THREE.MeshLambertMaterial({color: 0xff0000}));
 			
 			cellBox.position = pos;
