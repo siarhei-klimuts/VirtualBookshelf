@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('createLibrary', function (Data, environment) {
+.factory('createLibrary', function (data, environment) {
 	var createLibrary = {};
 	
 	createLibrary.list = [];
@@ -24,7 +24,7 @@ angular.module('VirtualBookshelf')
 
 	createLibrary.create = function() {
 		if(this.model) {
-			Data.postLibrary(this.model).then(function (result) {
+			data.postLibrary(this.model).then(function (result) {
 				environment.goToLibrary(result.id);
 			}).catch(function () {
 				//TODO: show an error

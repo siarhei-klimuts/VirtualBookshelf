@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('mouse', function (Camera, environment) {
+.factory('mouse', function (camera, environment) {
 	var mouse = {};
 
 	var getWidth = function() {
@@ -74,7 +74,7 @@ angular.module('VirtualBookshelf')
 
 		result = null;
 		vector = getVector();
-		raycaster = new THREE.Raycaster(Camera.getPosition(), vector);
+		raycaster = new THREE.Raycaster(camera.getPosition(), vector);
 		intersects = raycaster.intersectObjects(objects, recursive);
 
 		if(searchFor) {
@@ -104,9 +104,9 @@ angular.module('VirtualBookshelf')
 	var getVector = function() {
 		var projector = new THREE.Projector();
 		var vector = new THREE.Vector3((x / getWidth()) * 2 - 1, - (y / getHeight()) * 2 + 1, 0.5);
-		projector.unprojectVector(vector, Camera.camera);
+		projector.unprojectVector(vector, camera.camera);
 	
-		return vector.sub(Camera.getPosition()).normalize();
+		return vector.sub(camera.getPosition()).normalize();
 	};
 
 	return mouse;

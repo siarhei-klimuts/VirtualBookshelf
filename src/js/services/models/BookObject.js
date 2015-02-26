@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('BookObject', function ($log, BaseObject, CanvasText, CanvasImage, Data) {	
+.factory('BookObject', function ($log, BaseObject, CanvasText, CanvasImage, data) {	
 	var BookObject = function(dataObject, geometry, material, mapImage, coverImage) {
 		BaseObject.call(this, dataObject, geometry, material);
 		
@@ -29,7 +29,7 @@ angular.module('VirtualBookshelf')
 		}
 
 		if(cover.image) {
-			var diff = cover.y + cover.height - Data.COVER_MAX_Y;
+			var diff = cover.y + cover.height - data.COVER_MAX_Y;
 		 	var limitedHeight = diff > 0 ? cover.height - diff : cover.height;
 		 	var cropHeight = diff > 0 ? cover.image.naturalHeight - (cover.image.naturalHeight / cover.height * diff) : cover.image.naturalHeight;
 
@@ -83,7 +83,7 @@ angular.module('VirtualBookshelf')
 		this.dataObject.pos_y = this.position.y;
 		this.dataObject.pos_z = this.position.z;
 
-		Data.postBook(this.dataObject).then(function (dto) {
+		data.postBook(this.dataObject).then(function (dto) {
 			scope.dataObject = dto;
 			scope.changed = false;
 		}).catch(function () {

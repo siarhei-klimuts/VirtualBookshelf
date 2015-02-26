@@ -6,39 +6,39 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('Controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, Camera, navigation, environment, mouse, selector) {
-	var Controls = {};
+.factory('controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, camera, navigation, environment, mouse, selector) {
+	var controls = {};
 
-	Controls.init = function() {
-		Controls.initListeners();
+	controls.init = function() {
+		controls.initListeners();
 	};
 
-	Controls.initListeners = function() {
-		document.addEventListener('mousedown', Controls.onMouseDown, false);
-		document.addEventListener('mouseup', Controls.onMouseUp, false);
-		document.addEventListener('mousemove', Controls.onMouseMove, false);	
+	controls.initListeners = function() {
+		document.addEventListener('mousedown', controls.onMouseDown, false);
+		document.addEventListener('mouseup', controls.onMouseUp, false);
+		document.addEventListener('mousemove', controls.onMouseMove, false);	
 		document.oncontextmenu = function() {return false;};
 	};
 
-	Controls.update = function() {
+	controls.update = function() {
 		if(mouse[3]) {
-			Camera.rotate(mouse.longX, mouse.longY);
+			camera.rotate(mouse.longX, mouse.longY);
 		}
 		if(mouse[1] && mouse[3]) {
-			Camera.go(navigation.BUTTONS_GO_SPEED);
+			camera.go(navigation.BUTTONS_GO_SPEED);
 		}
 	};
 
-	Controls.onMouseDown = function(event) {
+	controls.onMouseDown = function(event) {
 		mouse.down(event); 
 
 		if(mouse.isCanvas() && mouse[1] && !mouse[3]) {
-			Controls.selectObject();
+			controls.selectObject();
 			selector.selectFocused();
 		}
 	};
 
-	Controls.onMouseUp = function(event) {
+	controls.onMouseUp = function(event) {
 		mouse.up(event);
 		
 		if(event.which === 1) {
@@ -52,23 +52,23 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	Controls.onMouseMove = function(event) {
+	controls.onMouseMove = function(event) {
 		mouse.move(event);
 
 		if(mouse.isCanvas()) {
 			event.preventDefault();
 
 			if(mouse[1] && !mouse[3]) {		
-				Controls.moveObject();
+				controls.moveObject();
 			} else {
-				Controls.selectObject();
+				controls.selectObject();
 			}
 		}
 	};
 
 	//****
 
-	Controls.selectObject = function() {
+	controls.selectObject = function() {
 		var
 			intersected,
 			object;
@@ -90,7 +90,7 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	Controls.moveObject = function() {
+	controls.moveObject = function() {
 		var mouseVector;
 		var newPosition;
 		var intersected;
@@ -100,7 +100,7 @@ angular.module('VirtualBookshelf')
 
 		if(selector.isSelectedEditable()) {
 			selectedObject = selector.getSelectedObject();
-			mouseVector = Camera.getVector();	
+			mouseVector = camera.getVector();	
 
 			newPosition = selectedObject.position.clone();
 			oldParent = selectedObject.parent;
@@ -127,5 +127,5 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	return Controls;	
+	return controls;	
 });

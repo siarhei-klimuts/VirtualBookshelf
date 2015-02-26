@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('createSection', function ($log, User, environment, locator) {
+.factory('createSection', function ($log, user, environment, locator) {
 	var createSection = {};
 
 	createSection.list = [];
@@ -27,7 +27,7 @@ angular.module('VirtualBookshelf')
 			var sectionData = {
 				model: this.model,
 				libraryId: environment.library.id,
-				userId: User.getId()
+				userId: user.getId()
 			};
 
 			this.place(sectionData);

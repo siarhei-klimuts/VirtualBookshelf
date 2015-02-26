@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('CanvasText', function (Data) {
+.factory('CanvasText', function (data) {
 	var CanvasText = function(text, properties) {
 		this.text = text || '';
 		this.parseProperties(properties);
@@ -28,7 +28,7 @@ angular.module('VirtualBookshelf')
 			this.style = args[0];
 			this.size = args[1] || 14;
 			this.font = args[2] || 'Arial';
-			this.x = Number(args[3]) || Data.COVER_FACE_X;
+			this.x = Number(args[3]) || data.COVER_FACE_X;
 			this.y = Number(args[4]) || 10;
 			this.color = args[5] || 'black';
 			this.width = args[6] || 512;
@@ -39,8 +39,8 @@ angular.module('VirtualBookshelf')
 
 			if(this.x <= 0) this.x = 1;
 			if(this.y <= 0) this.y = 1;
-			if(this.x >= Data.TEXTURE_RESOLUTION) this.x = Data.TEXTURE_RESOLUTION;
-			if(this.y >= Data.COVER_MAX_Y) this.y = Data.COVER_MAX_Y;
+			if(this.x >= data.TEXTURE_RESOLUTION) this.x = data.TEXTURE_RESOLUTION;
+			if(this.y >= data.COVER_MAX_Y) this.y = data.COVER_MAX_Y;
 		}
 	};
 

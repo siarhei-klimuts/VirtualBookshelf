@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('SectionObject', function (BaseObject, ShelfObject, Data) {
+.factory('SectionObject', function (BaseObject, ShelfObject, data) {
 	var SectionObject = function(params, geometry, material) {
 		BaseObject.call(this, params, geometry, material);
 
@@ -25,7 +25,7 @@ angular.module('VirtualBookshelf')
 
 		this.dataObject.rotation = [this.rotation.x, this.rotation.y, this.rotation.z];
 
-		return Data.postSection(this.dataObject).then(function (dto) {
+		return data.postSection(this.dataObject).then(function (dto) {
 			scope.dataObject = dto;
 			scope.changed = false;
 		});

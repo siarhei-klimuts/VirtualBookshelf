@@ -1,9 +1,9 @@
 angular.module('VirtualBookshelf')
-.factory('authorization', function ($log, $q, $window, $interval, User, selectLibrary, catalog) {
+.factory('authorization', function ($log, $q, $window, $interval, user, selectLibrary, catalog) {
 	var authorization = {};
 
 	authorization.isShow = function() {
-		return !User.isAuthorized() && User.isLoaded();
+		return !user.isAuthorized() && user.isLoaded();
 	};
 
 	authorization.google = function() {
@@ -12,7 +12,7 @@ angular.module('VirtualBookshelf')
 	        if (win && win.closed) {
 	        	$interval.cancel(checkAuthWindow);
 
-	        	User.load().then(function () {
+	        	user.load().then(function () {
 	        		return authorization.loadUserData();
 	        	}).catch(function () {
 	        		$log.log('User loadind error');
@@ -23,7 +23,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	authorization.logout = function() {
-		User.logout().finally(function () {
+		user.logout().finally(function () {
     		return authorization.loadUserData();
 		}).catch(function () {
 			$log.error('Logout error');

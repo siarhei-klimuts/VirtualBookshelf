@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('environment', function ($q, $log, $window, LibraryObject, SectionObject, BookObject, Data, Camera, cache) {
+.factory('environment', function ($q, $log, $window, LibraryObject, SectionObject, BookObject, data, camera, cache) {
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;
@@ -15,7 +15,7 @@ angular.module('VirtualBookshelf')
 	environment.loadLibrary = function(libraryId) {
 		clearScene(); // inits some fields
 
-		var promise = Data.getLibrary(libraryId).then(function (dto) {
+		var promise = data.getLibrary(libraryId).then(function (dto) {
 			var dict = parseLibraryDto(dto);
 			
 			sections = dict.sections;
@@ -163,7 +163,7 @@ angular.module('VirtualBookshelf')
 
         texture.needsUpdate = true;
 		library = new LibraryObject(libraryDto, libraryCache.geometry, material);
-		Camera.setParent(library);
+		camera.setParent(library);
 
 		environment.scene.add(library);
 		environment.library = library;
@@ -224,7 +224,7 @@ angular.module('VirtualBookshelf')
 			var coverImage = results.coverCache;
 			var canvas = document.createElement('canvas');
 
-			canvas.width = canvas.height = Data.TEXTURE_RESOLUTION;
+			canvas.width = canvas.height = data.TEXTURE_RESOLUTION;
 			var texture = new THREE.Texture(canvas);
 		    var material = new THREE.MeshPhongMaterial({map: texture});
 

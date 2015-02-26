@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('feedback', function (User, Data, dialog) {
+.factory('feedback', function (user, data, dialog) {
 	var feedback = {};
 	var show = false;
 
@@ -24,10 +24,10 @@ angular.module('VirtualBookshelf')
 			dialog.openConfirm('Send feedback?').then(function () {
 				dataObject = {
 					message: this.message,
-					userId: User.getId()
+					userId: user.getId()
 				};
 
-				return Data.postFeedback(dataObject).then(function () {
+				return data.postFeedback(dataObject).then(function () {
 					this.message = null;
 					feedback.hide();
 				}, function () {

@@ -1,6 +1,6 @@
 angular.module('VirtualBookshelf')
-.factory('uiTools', function (selector) {
-	var uiTools = {};
+.factory('tools', function (selector) {
+	var tools = {};
 
 	var ROTATION_SCALE = 1;
 
@@ -9,28 +9,28 @@ angular.module('VirtualBookshelf')
 		rotateRight: false
 	};
 
-	uiTools.isShow = function() {
+	tools.isShow = function() {
 		return selector.isSelectedSection();
 	};
 
-	uiTools.isRotatable = function() {
+	tools.isRotatable = function() {
 		return selector.isSelectedSection();
 	};
 
-	uiTools.rotateLeft = function() {
+	tools.rotateLeft = function() {
 		states.rotateLeft = true;
 	};
 
-	uiTools.rotateRight = function() {
+	tools.rotateRight = function() {
 		states.rotateRight = true;
 	};
 
-	uiTools.stop = function() {
+	tools.stop = function() {
 		states.rotateLeft = false;
 		states.rotateRight = false;
 	};
 
-	uiTools.update = function() {
+	tools.update = function() {
 		if(states.rotateLeft) {
 			rotate(ROTATION_SCALE);
 		} else if(states.rotateRight) {
@@ -43,5 +43,5 @@ angular.module('VirtualBookshelf')
 		obj.rotate(scale);
 	};
 
-	return uiTools;
+	return tools;
 });

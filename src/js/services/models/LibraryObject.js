@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('LibraryObject', function (BaseObject, Data) {
+.factory('LibraryObject', function (BaseObject) {
 	var LibraryObject = function(params, geometry, material) {
 		BaseObject.call(this, params, geometry, material);
 		this.libraryObject = params.libraryObject || {};//TODO: research

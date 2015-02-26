@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('cache', function ($q, $log, Data) {
+.factory('cache', function ($q, $log, data) {
 	var cache = {};
 
 	var library = null;
@@ -63,7 +63,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	var addImage = function(url) {
-		return commonAdder(images, url, Data.loadImage).catch(function () {
+		return commonAdder(images, url, data.loadImage).catch(function () {
 			$log.error('Error adding image:', url);
 			return null;
 		});
@@ -95,8 +95,8 @@ angular.module('VirtualBookshelf')
         var mapUrl = path + 'map.jpg';
 
         var promise = $q.all({
-        	geometry: Data.loadGeometry(modelUrl), 
-        	mapImage: Data.loadImage(mapUrl)
+        	geometry: data.loadGeometry(modelUrl), 
+        	mapImage: data.loadImage(mapUrl)
         });
 
         return promise;
@@ -109,9 +109,9 @@ angular.module('VirtualBookshelf')
         var dataUrl = path + 'data.json';
 
         var promise = $q.all({
-        	geometry: Data.loadGeometry(modelUrl), 
-        	mapImage: Data.loadImage(mapUrl), 
-        	data: Data.getData(dataUrl)
+        	geometry: data.loadGeometry(modelUrl), 
+        	mapImage: data.loadImage(mapUrl), 
+        	data: data.getData(dataUrl)
         });
 
         return promise;
@@ -123,8 +123,8 @@ angular.module('VirtualBookshelf')
         var mapUrl = path + 'map.jpg';
 
         var promise = $q.all({
-        	geometry: Data.loadGeometry(modelUrl),
-        	mapImage: Data.loadImage(mapUrl) 
+        	geometry: data.loadGeometry(modelUrl),
+        	mapImage: data.loadImage(mapUrl) 
         });
 
         return promise;

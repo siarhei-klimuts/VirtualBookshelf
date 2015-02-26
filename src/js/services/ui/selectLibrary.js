@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('selectLibrary', function (Data, environment) {
+.factory('selectLibrary', function (data, environment) {
 	var selectLibrary = {};
 
 	selectLibrary.list = [];
@@ -20,7 +20,7 @@ angular.module('VirtualBookshelf')
 	selectLibrary.updateList = function() {
 		var scope = this;
 
-	    var promise = Data.getLibraries().then(function (res) {
+	    var promise = data.getLibraries().then(function (res) {
             scope.list = res.data;
     	});
 

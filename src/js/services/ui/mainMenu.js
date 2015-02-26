@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('mainMenu', function ($log, Data, bookEdit, feedback, selectLibrary, createLibrary, createSection) {
+.factory('mainMenu', function ($log, data, bookEdit, feedback, selectLibrary, createLibrary, createSection) {
 	var mainMenu = {};
 	
 	var show = false;
@@ -72,7 +72,7 @@ angular.module('VirtualBookshelf')
 
 	var init = function() {
 		//TODO: move to menu models
-		Data.getUIData().then(function (res) {
+		data.getUIData().then(function (res) {
 			createLibrary.list = res.data.libraries;
 			createSection.list = res.data.bookshelves;
 			bookEdit.list = res.data.books;

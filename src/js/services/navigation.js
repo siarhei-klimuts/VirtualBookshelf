@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('navigation', function (Camera) {
+.factory('navigation', function (camera) {
 	var navigation = {};
 
 	navigation.BUTTONS_ROTATE_SPEED = 100;
@@ -37,13 +37,13 @@ angular.module('VirtualBookshelf')
 
 	navigation.update = function() {
 		if(state.forward) {
-			Camera.go(navigation.BUTTONS_GO_SPEED);
+			camera.go(navigation.BUTTONS_GO_SPEED);
 		} else if(state.backward) {
-			Camera.go(-navigation.BUTTONS_GO_SPEED);
+			camera.go(-navigation.BUTTONS_GO_SPEED);
 		} else if(state.left) {
-			Camera.rotate(navigation.BUTTONS_ROTATE_SPEED, 0);
+			camera.rotate(navigation.BUTTONS_ROTATE_SPEED, 0);
 		} else if(state.right) {
-			Camera.rotate(-navigation.BUTTONS_ROTATE_SPEED, 0);
+			camera.rotate(-navigation.BUTTONS_ROTATE_SPEED, 0);
 		}
 	};
 

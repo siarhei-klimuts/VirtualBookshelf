@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('inventory', function ($log, SelectorMeta, User, Data, bookEdit, selector, environment, dialog, locator, catalog, block) {
+.factory('inventory', function ($log, SelectorMeta, user, data, bookEdit, selector, environment, dialog, locator, catalog, block) {
 	var inventory = {};
 
 	inventory.search = null;
@@ -9,7 +9,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	inventory.isShow = function() {
-		return User.isAuthorized();
+		return user.isAuthorized();
 	};
 
 	inventory.isBookSelected = function(id) {
@@ -24,14 +24,14 @@ angular.module('VirtualBookshelf')
 	};
 
 	inventory.addBook = function() {
-		this.expand({userId: User.getId()});
+		this.expand({userId: user.getId()});
 	};
 
 	inventory.delete = function(book) {
 		dialog.openConfirm('Delete book?').then(function () {
 			block.inventory.start();
 
-			Data.deleteBook(book).then(function (res) {
+			data.deleteBook(book).then(function (res) {
 				if(selector.isBookSelected(book.id)) {
 					selector.unselect();
 				}

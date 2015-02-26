@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('locator', function ($q, $log, BaseObject, Data, selector, environment, cache) {
+.factory('locator', function ($q, $log, BaseObject, data, selector, environment, cache) {
 	var VISUAL_DEBUG = false;
 	var locator = {};
 
@@ -25,7 +25,7 @@ angular.module('VirtualBookshelf')
 		dto.pos_y = position.y;
 		dto.pos_z = position.z;
 
-		return Data.postSection(dto);
+		return data.postSection(dto);
 	};
 
 	locator.placeBook = function(bookDto) {
@@ -58,14 +58,14 @@ angular.module('VirtualBookshelf')
 		dto.pos_y = position.y;
 		dto.pos_z = position.z;
 
-		return Data.postBook(dto);
+		return data.postBook(dto);
 	};
 
 	locator.unplaceBook = function(bookDto) {
 		var promise;
 		bookDto.sectionId = null;
 
-		promise = Data.postBook(bookDto).then(function () {
+		promise = data.postBook(bookDto).then(function () {
 			return environment.updateBook(bookDto);
 		});
 

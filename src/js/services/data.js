@@ -1,12 +1,12 @@
 angular.module('VirtualBookshelf')
-.factory('Data', function ($http, $q) {
-	var Data = {};
+.factory('data', function ($http, $q) {
+	var data = {};
 
-	Data.TEXTURE_RESOLUTION = 512;
-	Data.COVER_MAX_Y = 394;
-	Data.COVER_FACE_X = 296;
+	data.TEXTURE_RESOLUTION = 512;
+	data.COVER_MAX_Y = 394;
+	data.COVER_FACE_X = 296;
 
-    Data.loadImage = function(url) {
+    data.loadImage = function(url) {
         var deffered = $q.defer();
         var img = new Image();
         
@@ -27,7 +27,7 @@ angular.module('VirtualBookshelf')
         return deffered.promise; 
     };
 
-    Data.postCover = function(externalURL, tags) {
+    data.postCover = function(externalURL, tags) {
     	var data = {
     		url: externalURL,
     		tags: tags
@@ -38,27 +38,27 @@ angular.module('VirtualBookshelf')
     	});
     };
 
-    Data.logout = function() {
+    data.logout = function() {
     	return $http.post('/auth/logout');
     };
 
-	Data.getUser = function() {
+	data.getUser = function() {
 		return $http.get('/user');
 	};
 
-	Data.getUserBooks = function(userId) {
+	data.getUserBooks = function(userId) {
 		return $http.get('/freeBooks/' + userId).then(function (res) {
 			return res.data;
 		});
 	};
 
-	Data.postBook = function(book) {
+	data.postBook = function(book) {
 		return $http.post('/book', book).then(function (res) {
 			return res.data;
 		});
 	};
 
-	Data.deleteBook = function(book) {
+	data.deleteBook = function(book) {
 		return $http({
 			method: 'DELETE',
 			url: '/book',
@@ -67,46 +67,46 @@ angular.module('VirtualBookshelf')
 		});
 	};
 
-	Data.getUIData = function() {
+	data.getUIData = function() {
 		return $http.get('/obj/data.json');
 	};
 
-	Data.getLibraries = function() {
+	data.getLibraries = function() {
 		return $http.get('/libraries');
 	};
 
-	Data.getLibrary = function(libraryId) {
+	data.getLibrary = function(libraryId) {
 		return $http.get('/library/' + libraryId).then(function (res) {
 			return res.data;
 		});
 	};
 
-	Data.postLibrary = function(libraryModel) {
+	data.postLibrary = function(libraryModel) {
         return $http.post('/library/' + libraryModel).then(function (res) {
             return res.data;
         });
 	};
 
-	Data.getSections = function(libraryId) {
+	data.getSections = function(libraryId) {
         return $http.get('/sections/' + libraryId).then(function (res) {
             return res.data;
         });
 	};
 
-	Data.postSection = function(sectionData) {
+	data.postSection = function(sectionData) {
         return $http.post('/section', sectionData).then(function (res) {
         	return res.data;
         });
 	};
 
-	Data.getBooks = function(sectionId) {
+	data.getBooks = function(sectionId) {
 		//TODO: userId
         return $http.get('/books/' + sectionId).then(function (res) {
             return res.data;
         });
 	};
 
-	Data.loadGeometry = function(link) {
+	data.loadGeometry = function(link) {
         var deffered = $q.defer();
 		var jsonLoader = new THREE.JSONLoader();
 
@@ -119,15 +119,15 @@ angular.module('VirtualBookshelf')
         return deffered.promise;
 	};
 
-	Data.getData = function(url) {
+	data.getData = function(url) {
         return $http.get(url).then(function (res) {
             return res.data;
         });
 	};
 
-	Data.postFeedback = function(dto) {
+	data.postFeedback = function(dto) {
         return $http.post('/feedback', dto);
 	};
 
-	return Data;
+	return data;
 });

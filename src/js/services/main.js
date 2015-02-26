@@ -1,11 +1,11 @@
 angular.module('VirtualBookshelf')
-.factory('Main', function ($log, Camera, Controls, User, environment, uiTools, navigation, authorization, block) {	
+.factory('main', function ($log, camera, controls, user, environment, tools, navigation, authorization, block) {	
 	var canvas;
 	var renderer;
 	
-	var Main = {};
+	var main = {};
 
-	Main.start = function() {
+	main.start = function() {
 		var winResize;
 		var width = window.innerWidth;
 		var height = window.innerHeight;
@@ -15,17 +15,17 @@ angular.module('VirtualBookshelf')
 		}
 
 		init(width, height);
-		Camera.init(width, height);
-		Controls.init();
+		camera.init(width, height);
+		controls.init();
 
-		winResize = new THREEx.WindowResize(renderer, Camera.camera);
+		winResize = new THREEx.WindowResize(renderer, camera.camera);
 
 		startRenderLoop();
 
 		block.global.start();
-		User.load().then(function () {
-			return environment.loadLibrary(User.getLibrary() || 1).then(function () {
-				//TODO: $q.all(environment.loadLibrary(User.getLibrary() || 1), authorization.loadUserData())
+		user.load().then(function () {
+			return environment.loadLibrary(user.getLibrary() || 1).then(function () {
+				//TODO: $q.all(environment.loadLibrary(user.getLibrary() || 1), authorization.loadUserData())
 				return authorization.loadUserData();
 			});
 		}).catch(function (error) {
@@ -48,12 +48,12 @@ angular.module('VirtualBookshelf')
 	var startRenderLoop = function() {
 		requestAnimationFrame(startRenderLoop);
 
-		Controls.update();
+		controls.update();
 		navigation.update();
-		uiTools.update();
+		tools.update();
 		
-		renderer.render(environment.scene, Camera.camera);
+		renderer.render(environment.scene, camera.camera);
 	};
 
-	return Main;
+	return main;
 });

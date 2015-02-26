@@ -6,6 +6,6 @@ angular
 			blockUIConfig.autoInjectBodyBlock = false;
 			paginationTemplateProvider.setPath('/js/angular/dirPagination/dirPagination.tpl.html');
     	})
-    	.run(function (Main) {
-			Main.start();
+    	.run(function (main) {
+			main.start();
     	});
