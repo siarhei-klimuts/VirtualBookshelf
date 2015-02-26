@@ -31,12 +31,12 @@ angular.module('VirtualBookshelf')
 		dialog.openConfirm('Delete book?').then(function () {
 			block.inventory.start();
 
-			data.deleteBook(book).then(function (res) {
+			data.deleteBook(book.id).then(function () {
 				if(selector.isBookSelected(book.id)) {
 					selector.unselect();
 				}
 
-				environment.removeBook(res.data);
+				environment.removeBook(book.id);
 				return catalog.loadBooks();
 			}).catch(function () {
 				dialog.openError('Delete book error.');

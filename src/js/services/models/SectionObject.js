@@ -31,5 +31,17 @@ angular.module('VirtualBookshelf')
 		});
 	};
 
+	SectionObject.prototype.setParent = function(parent) {
+		if(this.parent != parent) {
+			if(parent) {
+				parent.add(this);
+				this.dataObject.libraryId = parent.id;
+			} else {
+				this.parent.remove(this);
+				this.dataObject.libraryId = null;
+			}
+		}
+	};
+
 	return SectionObject;
 });

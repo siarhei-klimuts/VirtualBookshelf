@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
 	}, {
 		timestamps: false,
 		classMethods: {
-    		saveSection: saveSection
+    		saveSection: saveSection,
+    		deleteSection: deleteSection
 		},
 		instanceMethods: {
 			updateSection: updateSection
@@ -17,8 +18,6 @@ module.exports = function(sequelize, DataTypes) {
 };
 
 function saveSection(dataObject, done) {
-	var scope = this;
-
 	if(dataObject) {
 		this.findOrCreate({id: dataObject.id}, dataObject)
 		.success(function (result) {
@@ -35,7 +34,7 @@ function saveSection(dataObject, done) {
 			done(error, null);
 		});
 	}
-};
+}
 
 function updateSection(dataObject, done) {
 	for(var key in dataObject) {
@@ -49,4 +48,14 @@ function updateSection(dataObject, done) {
 	.failure(function (error) {
 		done(error, null);
 	});
-};
+}
+
+function deleteSection(id, userId) {
+	return this.find(id).then(function (section) {
+		if(section.userId !== userId) {
+			throw new Error('User ' + userId + ' is removing user\'s ' + section.userId + ' section');
+		}
+
+		return  section.destroy();
+	});
+}

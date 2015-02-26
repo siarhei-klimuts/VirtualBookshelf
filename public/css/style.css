@@ -93,10 +93,11 @@ table {
     bottom: 0;
 }
 .search { 
-	position: relative; 
+	position: relative;
 }
 .search input { 
 	text-indent: 25px;
+	margin-bottom: 5px; 
 }
 .search .fa-search { 
   position: absolute;

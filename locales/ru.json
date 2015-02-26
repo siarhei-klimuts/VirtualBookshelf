@@ -28,5 +28,7 @@
 	"ui.menuItem.createBook": "Создать книгу",
 	"ui.menuItem.selectLibrary": "Выбрать библиотеку",
 	"ui.menuItem.logout": "Выход",
-	"ui.menuItem.leaveFeedback": "Оставить отзыв"
+	"ui.menuItem.leaveFeedback": "Оставить отзыв",
+	"ui.tools.rotate": "Вращать",
+	"ui.tools.delete": "Удалить"
 }

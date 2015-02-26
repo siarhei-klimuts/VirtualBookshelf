@@ -58,12 +58,10 @@ angular.module('VirtualBookshelf')
 		});
 	};
 
-	data.deleteBook = function(book) {
+	data.deleteBook = function(id) {
 		return $http({
 			method: 'DELETE',
-			url: '/book',
-			data: book,
-			headers: {'Content-Type': 'application/json;charset=utf-8'}
+			url: '/book/' + id
 		});
 	};
 
@@ -97,6 +95,13 @@ angular.module('VirtualBookshelf')
         return $http.post('/section', sectionData).then(function (res) {
         	return res.data;
         });
+	};
+
+	data.deleteSection = function(id) {
+		return $http({
+			method: 'DELETE',
+			url: '/sections/' + id
+		});
 	};
 
 	data.getBooks = function(sectionId) {

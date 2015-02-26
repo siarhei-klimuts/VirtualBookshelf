@@ -34,10 +34,16 @@
 	<div ng-controller="ToolsCtrl as tools" ng-show="tools.isShow()" class="uiPanel tools" ng-mouseup="tools.stop()" ng-mouseleave="tools.stop()">
 		<table>
 			<tr ng-show="tools.isRotatable()">
-				<td><label><%=__('ui.section.rotate')%></label></td>
+				<td><label><%=__('ui.tools.rotate')%></label></td>
 				<td>
 					<span ng-mousedown="tools.rotateLeft()" class="fa fa-undo fa-2x"></span>
 					<span ng-mousedown="tools.rotateRight()" class="fa fa-repeat fa-2x"></span>
+				</td>
+			</tr>
+			<tr ng-show="tools.isDeletable()">
+				<td><label><%=__('ui.tools.delete')%></label></td>
+				<td>
+					<span ng-mousedown="tools.delete()" class="fa fa-trash fa-2x"></span>
 				</td>
 			</tr>
 		</table>

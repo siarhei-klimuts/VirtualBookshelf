@@ -63,10 +63,10 @@ angular.module('VirtualBookshelf')
 
 	environment.updateSection = function(dto) {
 		if(dto.libraryId == environment.library.id) {
-			removeObject(sections, dto.id);
+			environment.removeSection(dto.id);
 			createSection(dto);
 		} else {
-			removeObject(sections, dto.id);
+			environment.removeSection(dto.id);
 		}	
 	};
 
@@ -74,15 +74,19 @@ angular.module('VirtualBookshelf')
 		var shelf = getBookShelf(dto);
 
 		if(shelf) {
-			environment.removeBook(dto);
+			environment.removeBook(dto.id);
 			createBook(dto);
 		} else {
-			environment.removeBook(dto);
+			environment.removeBook(dto.id);
 		}
 	};
 
-	environment.removeBook = function(bookDto) {
-		removeObject(books, bookDto.id);
+	environment.removeBook = function(id) {
+		removeObject(books, id);
+	};
+
+	environment.removeSection = function(id) {
+		removeObject(sections, id);
 	};
 
 	var removeObject = function(dict, key) {

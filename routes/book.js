@@ -1,5 +1,4 @@
 var models = require('../models');
-var Sequelize = require('sequelize');
 
 exports.postBook = function(req, res) {
 	var book = req.body;
@@ -47,18 +46,12 @@ exports.getFreeBooks = function(req, res) {
 };
 
 exports.deleteBook = function(req, res) {
-	var book = req.body;
+	var bookId = req.params.id;
 
-	if(book && book.userId == req.user.id) {
-		models.Book.deleteBook(book.id)
-			.then(function () {
-				res.send(book);
-			})
-			.catch(function (err) {
-				res.send(500);
-				console.error('ROUTE deleteBook: ', err);
-			});
-	} else {
+	models.Book.deleteBook(bookId, req.user.id).then(function () {
+		res.send(200);
+	}).catch(function (err) {
+		console.error('ROUTE deleteBook: ', err);
 		res.send(500);
-	}
+	});
 };

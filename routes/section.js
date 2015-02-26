@@ -78,3 +78,14 @@ exports.putSections = function(req, res){
 		console.log('ROUTE putSections req.body: ', sections);
  	}
 };
+
+exports.deleteSection = function(req, res) {
+	var id = req.params.id;
+
+	models.Section.deleteSection(id, req.user.id).then(function () {
+		res.send(200);
+	}).catch(function (err) {
+		console.error('ROUTE deleteSection: ', err);
+		res.send(500);
+	});
+};

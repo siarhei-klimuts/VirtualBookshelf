@@ -68,11 +68,12 @@ app.post('/library/:libraryModel', isAuthorized, routes.library.postLibrary);
 app.post('/section', isAuthorized, routes.section.postSection);
 app.get('/sections/:libraryId', isAuthorized, routes.section.getSections);
 app.put('/sections', isAuthorized, routes.section.putSections);
+app.delete('/sections/:id', isAuthorized, routes.section.deleteSection);
 
 app.post('/book', isAuthorized, routes.book.postBook);
-app.delete('/book', isAuthorized, routes.book.deleteBook);
 app.get('/books/:sectionId', isAuthorized, routes.book.getBooks);
 app.get('/freeBooks/:userId', isAuthorized, routes.book.getFreeBooks);
+app.delete('/book/:id', isAuthorized, routes.book.deleteBook);
 
 app.post('/feedback', routes.feedback.postFeedback);
 

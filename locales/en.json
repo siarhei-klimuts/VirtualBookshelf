@@ -28,5 +28,7 @@
 	"ui.menuItem.createBook": "Create book",
 	"ui.menuItem.selectLibrary": "Select Library",
 	"ui.menuItem.logout": "Logout",
-	"ui.menuItem.leaveFeedback": "Leave feedback"
+	"ui.menuItem.leaveFeedback": "Leave feedback",
+	"ui.tools.rotate": "Rotate",
+	"ui.tools.delete": "Delete"
 }

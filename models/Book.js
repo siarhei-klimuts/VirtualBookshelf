@@ -69,10 +69,12 @@ function getFreeBooks(userId, done) {
 	});
 }
 
-function deleteBook(id) {
-	return this.find(id)
-		.then(function (book) {
-			//TODO: throw custom error
-			return book.destroy();
-		});
+function deleteBook(id, userId) {
+	return this.find(id).then(function (book) {
+		if(book.userId !== userId) {
+			throw new Error('User ' + userId + ' is removing user\'s ' + book.userId + ' book');
+		}
+
+		return  book.destroy();
+	});
 }
