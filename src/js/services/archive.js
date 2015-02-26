@@ -3,7 +3,7 @@ angular.module('VirtualBookshelf')
 	var archive = {};
 
 	archive.sendExternalURL = function(externalURL, tags) {
-		return Data.postArchiveImage(externalURL, tags);
+		return Data.postCover(externalURL, tags);
 	};
 
 	return archive;

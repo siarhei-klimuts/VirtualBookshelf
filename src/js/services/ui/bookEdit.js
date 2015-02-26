@@ -16,6 +16,7 @@ angular.module('VirtualBookshelf')
 			this.book.userId = book.userId;
 			this.book.model = book.model;
 			this.book.cover = book.cover;
+			this.book.coverId = book.coverId;
 			this.book.title = book.title;
 			this.book.author = book.author;
 
@@ -57,6 +58,7 @@ angular.module('VirtualBookshelf')
 				block.inventory.start();
 				archive.sendExternalURL(this.coverInputURL, [this.book.title, this.book.author]).then(function (result) {
 					bookEdit.book.cover = result.url;
+					bookEdit.book.coverId = result.id;
 				}).catch(function () {
 					bookEdit.book.cover = null;
 					dialog.openError('Can not apply this cover. Try another one, please.');

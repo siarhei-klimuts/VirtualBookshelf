@@ -1,5 +1,3 @@
-var Sequelize = require('sequelize');
-
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('book', {
 		pos_x: DataTypes.FLOAT,
@@ -28,8 +26,6 @@ module.exports = function(sequelize, DataTypes) {
 };
 
 function saveBook(dataObject, done) {
-	var scope = this;
-
 	if(dataObject) {
 		this.findOrCreate({id: dataObject.id}, dataObject)
 		.success(function (result) {

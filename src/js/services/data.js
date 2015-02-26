@@ -27,13 +27,13 @@ angular.module('VirtualBookshelf')
         return deffered.promise; 
     };
 
-    Data.postArchiveImage = function(externalURL, tags) {
+    Data.postCover = function(externalURL, tags) {
     	var data = {
     		url: externalURL,
     		tags: tags
     	};
 
-    	return $http.post('/archive', data).then(function (res) {
+    	return $http.post('/cover', data).then(function (res) {
     		return res.data;
     	});
     };

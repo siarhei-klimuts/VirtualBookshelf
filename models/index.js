@@ -7,25 +7,28 @@ var sequelize = new Sequelize(match[5], match[1], match[2], {
       host:     match[3],
       logging:  false
     });
-module.exports.sequelize = sequelize;
 
-module.exports.User = sequelize.import(__dirname + '/User');
-module.exports.Library = sequelize.import(__dirname + '/Library');
-module.exports.Section = sequelize.import(__dirname + '/Section');
-module.exports.Book = sequelize.import(__dirname + '/Book');
-module.exports.Feedback = sequelize.import(__dirname + '/Feedback');
+exports.sequelize = sequelize;
+
+exports.User = sequelize.import(__dirname + '/User');
+exports.Library = sequelize.import(__dirname + '/Library');
+exports.Section = sequelize.import(__dirname + '/Section');
+exports.Book = sequelize.import(__dirname + '/Book');
+exports.Feedback = sequelize.import(__dirname + '/Feedback');
+exports.Cover = sequelize.import(__dirname + '/Cover');
 
 // describe relationships
-module.exports.User.hasMany(module.exports.Library);
-module.exports.User.hasMany(module.exports.Feedback);
-module.exports.Library.hasMany(module.exports.Section);
-module.exports.Section.hasMany(module.exports.Book);
+exports.User.hasMany(exports.Library);
+exports.User.hasMany(exports.Feedback);
+exports.Library.hasMany(exports.Section);
+exports.Section.hasMany(exports.Book);
+exports.Cover.hasMany(exports.Book);
 
-module.exports.Book.belongsTo(module.exports.Section);
-module.exports.Book.belongsTo(module.exports.User);
-module.exports.Section.belongsTo(module.exports.Library);
-module.exports.Section.belongsTo(module.exports.User);
-module.exports.Library.belongsTo(module.exports.User);
+exports.Book.belongsTo(exports.Section);
+exports.Book.belongsTo(exports.User);
+exports.Section.belongsTo(exports.Library);
+exports.Section.belongsTo(exports.User);
+exports.Library.belongsTo(exports.User);
 
 exports.init = function(done) {
 	sequelize
@@ -39,7 +42,7 @@ exports.init = function(done) {
 	  		});
 	  	}
 	});
-}
+};
 
 function syncDatabase(done) {
 	sequelize

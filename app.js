@@ -60,7 +60,7 @@ app.get('/auth/google/return', passport.authenticate('google', {failureRedirect:
 app.post('/auth/logout', routes.logout);
 
 app.get('/outside', isAuthorized, routes.getOutside);
-app.post('/archive', isAuthorized, routes.postArchive);
+app.post('/cover', isAuthorized, routes.cover.postCover);
 
 app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);
 app.get('/libraries', isAuthorized, routes.library.getLibraries);
