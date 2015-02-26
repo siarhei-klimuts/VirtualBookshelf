@@ -59,7 +59,6 @@ app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/auth/close', successRedirect: '/auth/close'}));
 app.post('/auth/logout', routes.logout);
 
-app.get('/outside', isAuthorized, routes.getOutside);
 app.post('/cover', isAuthorized, routes.cover.postCover);
 
 app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);

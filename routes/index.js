@@ -1,5 +1,3 @@
-var request = require('request');
-
 exports.index = function(req, res) {
   	res.render('index');
 };
@@ -15,16 +13,6 @@ exports.page = function(req, res) {
 exports.logout = function(req, res) {
 	req.logout();
 	res.send(200);
-};
-
-exports.getOutside = function(req, res) {
-	try {
-		console.log('getOutside', req.query.link);
-		request(req.query.link).pipe(res);
-	} catch(exception) {
-		console.error('getOutside', exception);
-		res.send(404);
-	}
 };
 
 exports.library = require('./library');

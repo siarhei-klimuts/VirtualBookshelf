@@ -63,7 +63,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	var addImage = function(url) {
-		return commonAdder(images, '/outside?link=' + url, Data.loadImage, url).catch(function () {
+		return commonAdder(images, url, Data.loadImage).catch(function () {
 			$log.error('Error adding image:', url);
 			return null;
 		});
@@ -79,9 +79,9 @@ angular.module('VirtualBookshelf')
 		return $q.when(result);
 	};
 
-	var commonAdder = function(where, what, loader, key) {
+	var commonAdder = function(where, what, loader) {
 		var promise = loader(what).then(function (loadedCache) {
-			where[key || what] = loadedCache;
+			where[what] = loadedCache;
 
 			return loadedCache;
 		});
