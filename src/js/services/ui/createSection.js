@@ -1,6 +1,8 @@
 angular.module('VirtualBookshelf')
 .factory('createSection', function ($log, user, environment, locator) {
 	var createSection = {};
+	
+	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
 
 	createSection.list = [];
 	createSection.model = null;
@@ -19,7 +21,7 @@ angular.module('VirtualBookshelf')
 	};
 	
 	createSection.getImg = function() {
-		return this.model ? '/obj/sections/{model}/img.jpg'.replace('{model}', this.model) : null;
+		return this.model ? '/obj/sections/{model}/img.jpg'.replace('{model}', this.model) : EMPTY_IMAGE_URL;
 	};
 
 	createSection.create = function() {

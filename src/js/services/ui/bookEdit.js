@@ -25,7 +25,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	bookEdit.getImg = function() {
-		return this.book.model ? BOOK_IMAGE_URL.replace('{model}', this.book.model) : null;
+		return this.book.model ? BOOK_IMAGE_URL.replace('{model}', this.book.model) : EMPTY_IMAGE_URL;
 	};
 
 	bookEdit.getCoverImg = function() {

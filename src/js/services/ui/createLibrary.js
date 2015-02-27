@@ -2,6 +2,8 @@ angular.module('VirtualBookshelf')
 .factory('createLibrary', function (data, environment) {
 	var createLibrary = {};
 	
+	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
+	
 	createLibrary.list = [];
 	createLibrary.model = null;
 	createLibrary.visible = false;
@@ -19,7 +21,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	createLibrary.getImg = function() {
-		return this.model ? '/obj/libraries/{model}/img.jpg'.replace('{model}', this.model) : null;
+		return this.model ? '/obj/libraries/{model}/img.jpg'.replace('{model}', this.model) : EMPTY_IMAGE_URL;
 	};
 
 	createLibrary.create = function() {
