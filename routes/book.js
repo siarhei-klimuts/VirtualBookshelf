@@ -1,24 +1,21 @@
-var models = require('../models');
+var Book = require('../models').Book;
+var Cover = require('../models').Cover;
 
 exports.postBook = function(req, res) {
-	var book = req.body;
-	if(book.userId == req.user.id) {
-		models.Book.saveBook(book, function(err, result) {
-			if(!err && result) {
-				res.json(result);
-			} else {
-				res.send(500);	
-				console.log('ROUTE postBook: ', err);		
-			}
-		});
-	} else {
+	var dto = req.body;
+	var newTags = [dto.title, dto.author];
+
+	Book.saveBook(dto, req.user.id).then(function (result) {
+		res.json(result);
+		return Cover.updateTags(dto.coverId, newTags);
+	}).catch(function (err) {
 		res.send(500);	
-		console.log('ROUTE postBooks');
-	}
+		console.log('ROUTE postBook: ', err);		
+	});
 };
 
 exports.getBooks = function(req, res){
-	models.Book.findAll({
+	Book.findAll({
 		where: {sectionId: req.params.sectionId}
 	}, {raw: true})
 	.success(function (result) {
@@ -32,7 +29,7 @@ exports.getBooks = function(req, res){
 
 exports.getFreeBooks = function(req, res) {
 	if(req.params.userId == req.user.id) {
-		models.Book.getFreeBooks(req.params.userId, function(err, result) {
+		Book.getFreeBooks(req.params.userId, function(err, result) {
 			if(!err && result) {
 	  			res.json(result);
 			} else {
@@ -48,7 +45,7 @@ exports.getFreeBooks = function(req, res) {
 exports.deleteBook = function(req, res) {
 	var bookId = req.params.id;
 
-	models.Book.deleteBook(bookId, req.user.id).then(function () {
+	Book.deleteBook(bookId, req.user.id).then(function () {
 		res.send(200);
 	}).catch(function (err) {
 		console.error('ROUTE deleteBook: ', err);

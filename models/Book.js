@@ -25,36 +25,26 @@ module.exports = function(sequelize, DataTypes) {
 	});
 };
 
-function saveBook(dataObject, done) {
-	if(dataObject) {
-		this.findOrCreate({id: dataObject.id}, dataObject)
-		.success(function (result) {
-			if(!result.options.isNewRecord) {
-				result.updateBook(dataObject, function (err, result) {
-					done(err, result);
-				});
-			} else {
-				done(null, result);
-			}
-		})
-		.failure(function (error) {
-			done(error, null);
+function saveBook(dto, userId) {
+	var result;
+
+	if(dto && dto.userId === userId) {
+		result = this.findOrCreate({id: dto.id}, dto).then(function (result) {
+			return result.options.isNewRecord ? result : result.updateBook(dto);
 		});
+	} else {
+		result = Promise.reject('Error saving book.');
 	}
+
+	return result;
 }
 
-function updateBook(dataObject, done) {
-	for(var key in dataObject) {
-		this[key] = dataObject[key];
+function updateBook(dto) {
+	for(var key in dto) {
+		this[key] = dto[key];
 	}
 
-	this.save()
-	.success(function (result) {
-		done(null, result);
-	})
-	.failure(function (error) {
-		done(error, null);
-	});
+	return this.save();
 }
 
 function getFreeBooks(userId, done) {

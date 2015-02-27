@@ -4,6 +4,35 @@ module.exports = function(sequelize, DataTypes) {
 		tags: DataTypes.STRING,
 		color: DataTypes.STRING
 	}, {
-		timestamps: false
+		timestamps: false,
+		classMethods: {
+			updateTags: updateTags,
+			mergeTags: mergeTags
+		}
 	});
 };
+
+function updateTags(id, newTags) {
+	var mergedTags;
+	
+	return this.find(id).then(function (cover) {
+		mergedTags = mergeTags(cover.tags, newTags);
+
+		cover.tags = mergedTags;
+		cover.save();
+	});
+}
+
+function mergeTags(tags, newTags) {
+	var result = tags || '';
+
+	if(newTags) {
+		newTags.forEach(function (newTag) {
+			if(result.indexOf(newTag) === -1) {
+				result = result ? [result, newTag].join() : newTag;
+			}
+		});
+	}
+
+	return result;
+}

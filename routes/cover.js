@@ -32,7 +32,7 @@ function uploadCover(externalURL, tags) {
 function saveCover(uploadResult, tags) {
 	var cover = {
 		url: uploadResult.url,
-		tags: tags ? tags.join() : null,
+		tags: Cover.mergeTags(null, tags),
 		color: uploadResult.colors ? uploadResult.colors[0][0] : null
 	};
 

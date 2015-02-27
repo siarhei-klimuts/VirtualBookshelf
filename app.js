@@ -97,7 +97,7 @@ function requireRole(role) {
         } else {
             res.send(403);
         }
-    }
+    };
 }
 
 function isAuthorized(req, res, next) {
