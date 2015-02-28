@@ -26,6 +26,7 @@ exports.Cover.hasMany(exports.Book);
 
 exports.Book.belongsTo(exports.Section);
 exports.Book.belongsTo(exports.User);
+exports.Book.belongsTo(exports.Cover);
 exports.Section.belongsTo(exports.Library);
 exports.Section.belongsTo(exports.User);
 exports.Library.belongsTo(exports.User);

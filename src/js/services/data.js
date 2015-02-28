@@ -104,13 +104,6 @@ angular.module('VirtualBookshelf')
 		});
 	};
 
-	data.getBooks = function(sectionId) {
-		//TODO: userId
-        return $http.get('/books/' + sectionId).then(function (res) {
-            return res.data;
-        });
-	};
-
 	data.loadGeometry = function(link) {
         var deffered = $q.defer();
 		var jsonLoader = new THREE.JSONLoader();

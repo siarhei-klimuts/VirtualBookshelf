@@ -14,33 +14,25 @@ exports.postBook = function(req, res) {
 	});
 };
 
-exports.getBooks = function(req, res){
-	Book.findAll({
-		where: {sectionId: req.params.sectionId}
-	}, {raw: true})
-	.success(function (result) {
-  		res.json(result);
-	})
-	.failure(function (err){
-		res.send(500);
-		console.log('ROUTE getBooks: ', err);
-	});
-};
-
 exports.getFreeBooks = function(req, res) {
 	if(req.params.userId == req.user.id) {
-		Book.getFreeBooks(req.params.userId, function(err, result) {
-			if(!err && result) {
-	  			res.json(result);
-			} else {
-				res.send(500);
-				console.error('ROUTE getFreeBooks: ', result);
-			}
+		getFreeBooks(req.params.userId).then(function (books) {
+  			res.json(books);
+		}).catch(function (err) {
+			res.send(500);
+			console.error('ROUTE getFreeBooks: ', err);
 		});
 	} else {
 		res.send(500);
 	}
 };
+
+function getFreeBooks(userId) {
+	return Book.findAll({
+		where: {userId: userId}/*,
+		include: [Cover]*/
+	}, {raw: false});
+}
 
 exports.deleteBook = function(req, res) {
 	var bookId = req.params.id;

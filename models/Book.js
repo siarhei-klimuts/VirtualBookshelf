@@ -6,7 +6,6 @@ module.exports = function(sequelize, DataTypes) {
 		shelfId: DataTypes.INTEGER,
 		model: DataTypes.STRING,
 		texture: DataTypes.STRING,
-		cover: DataTypes.STRING,
 		coverPos: DataTypes.STRING,
 		author: DataTypes.STRING,
 		title: DataTypes.STRING,
@@ -16,7 +15,6 @@ module.exports = function(sequelize, DataTypes) {
 		timestamps: false,
 		classMethods: {
     		saveBook: saveBook,
-    		getFreeBooks: getFreeBooks,
     		deleteBook: deleteBook
 		},
 		instanceMethods: {
@@ -45,18 +43,6 @@ function updateBook(dto) {
 	}
 
 	return this.save();
-}
-
-function getFreeBooks(userId, done) {
-	this.findAll({
-		where: {userId: userId} 
-	}, {raw: true})
-	.success(function (result) {
-  		done(null, result);
-	})
-	.failure(function (err){
-  		done(err, null);
-	});
 }
 
 function deleteBook(id, userId) {

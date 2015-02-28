@@ -17,7 +17,10 @@ var classMethods = {
 			where: {id: libraryId},
 			include: [{
 				model: models.Section,
-				include: [models.Book]
+				include: [{
+					model:models.Book, 
+					include: models.Cover
+				}]
 			}]
 		}, {raw: false});
 

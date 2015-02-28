@@ -71,7 +71,6 @@ app.put('/sections', isAuthorized, routes.section.putSections);
 app.delete('/sections/:id', isAuthorized, routes.section.deleteSection);
 
 app.post('/book', isAuthorized, routes.book.postBook);
-app.get('/books/:sectionId', isAuthorized, routes.book.getBooks);
 app.get('/freeBooks/:userId', isAuthorized, routes.book.getFreeBooks);
 app.delete('/book/:id', isAuthorized, routes.book.deleteBook);
 
