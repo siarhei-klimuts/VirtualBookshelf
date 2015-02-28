@@ -142,11 +142,10 @@ angular.module('VirtualBookshelf')
 			z: (boundingBox.max.z - boundingBox.min.z) * 0.5
 		};
 
-		center = new THREE.Vector3(
-			radius.x + boundingBox.min.x,
-			radius.y + boundingBox.min.y,
-			radius.z + boundingBox.min.z
-		);
+
+		center = new THREE.Vector3();
+		center.addVectors(boundingBox.min, boundingBox.max);
+		center.multiplyScalar(0.5);
 
 		this.boundingBox = {
 			radius: radius,

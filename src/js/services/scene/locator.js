@@ -1,7 +1,8 @@
 angular.module('VirtualBookshelf')
 .factory('locator', function ($q, $log, BaseObject, data, selector, environment, cache) {
-	var VISUAL_DEBUG = false;
 	var locator = {};
+
+	var debugEnabled = false;
 
 	locator.placeSection = function(sectionDto) {
 		var promise = cache.getSection(sectionDto.model).then(function (sectionCache) {
@@ -73,11 +74,11 @@ angular.module('VirtualBookshelf')
 	};
 
 	var getFreePlace = function(objects, spaceBB, targetBB) {
-		var matrixPrecision = new THREE.Vector3(targetBB.max.x - targetBB.min.x, 0, targetBB.max.z - targetBB.min.z);
+		var matrixPrecision = new THREE.Vector3(targetBB.max.x - targetBB.min.x + 0.01, 0, targetBB.max.z - targetBB.min.z + 0.01);
 		var occupiedMatrix = getOccupiedMatrix(objects, matrixPrecision);
 		var freePosition = getFreeMatrixCells(occupiedMatrix, spaceBB, targetBB, matrixPrecision);
 		
-		if (VISUAL_DEBUG) {
+		if (debugEnabled) {
 			debugShowFree(freePosition, matrixPrecision, environment.library);
 		}
 
@@ -100,7 +101,7 @@ angular.module('VirtualBookshelf')
 		for (zIndex = minZCell; zIndex <= maxZCell; zIndex++) {
 			for (xIndex = minXCell; xIndex <= maxXCell; xIndex++) {
 				if (!occupiedMatrix[zIndex] || !occupiedMatrix[zIndex][xIndex]) {
-					freeCellsStart || (freeCellsStart = xIndex);
+					freeCellsStart = freeCellsStart || xIndex;
 					freeCellsCount++;
 
 					if (freeCellsCount === targetCellsSize) {
@@ -117,12 +118,14 @@ angular.module('VirtualBookshelf')
 	};
 
 	var getPositionFromCells = function(cells, zIndex, matrixPrecision, spaceBB, targetBB) {
-		var size = cells.length * matrixPrecision.x;
-		var x = cells[0] * matrixPrecision.x;
-		var z =	zIndex * matrixPrecision.z;
-		var y = getBottomY(spaceBB, targetBB);
+		var freeX = cells[0] * matrixPrecision.x;
+		var freeZ =	zIndex * matrixPrecision.z;
 
-		return new THREE.Vector3(x, y, z);
+		var offset = new THREE.Vector3();
+		offset.addVectors(targetBB.min, targetBB.max);
+		offset.multiplyScalar(-0.5);
+
+		return new THREE.Vector3(freeX + offset.x, getBottomY(spaceBB, targetBB), freeZ + offset.z);
 	};
 
 	var getBottomY = function(spaceBB, targetBB) {
@@ -139,7 +142,7 @@ angular.module('VirtualBookshelf')
 		var z;
 
 		objects.forEach(function (obj) {
-			if (obj instanceof BaseObject) {
+			if(obj instanceof BaseObject) {
 				objectBB = obj.boundingBox;
 
 				minKeyX = Math.round((objectBB.center.x - objectBB.radius.x) / matrixPrecision.x);
@@ -147,12 +150,12 @@ angular.module('VirtualBookshelf')
 				minKeyZ = Math.round((objectBB.center.z - objectBB.radius.z) / matrixPrecision.z);
 				maxKeyZ = Math.round((objectBB.center.z + objectBB.radius.z) / matrixPrecision.z);
 
-				for (z = minKeyZ; z <= maxKeyZ; z++) {
-					result[z] || (result[z] = {});
+				for(z = minKeyZ; z <= maxKeyZ; z++) {
+					result[z] = result[z] || {};
 					result[z][minKeyX] = true;
 					result[z][maxKeyX] = true;
 
-					if (VISUAL_DEBUG) {
+					if(debugEnabled) {
 						debugShowBB(obj);
 						debugAddOccupied([minKeyX, maxKeyX], matrixPrecision, obj, z);
 					}
@@ -161,6 +164,16 @@ angular.module('VirtualBookshelf')
 		});
 
 		return result;
+	};
+
+	locator.debug = function() {
+		cache.getSection('bookshelf_0001').then(function (sectionCache) {
+			debugEnabled = true;
+			var sectionBB = sectionCache.geometry.boundingBox;
+			var libraryBB = environment.library.geometry.boundingBox;
+			var freePlace = getFreePlace(environment.library.children, libraryBB, sectionBB);
+			debugEnabled = false;
+		});
 	};
 
 	var debugShowBB = function(obj) {
@@ -187,6 +200,7 @@ angular.module('VirtualBookshelf')
 
 	var debugAddOccupied = function(cells, matrixPrecision, obj, zKey) {
 		cells.forEach(function (cell) {
+			obj.geometry.computeBoundingBox();
 			var pos = getPositionFromCells([cell], zKey, matrixPrecision, obj.parent.geometry.boundingBox, obj.geometry.boundingBox);
 			var cellBox = new THREE.Mesh(new THREE.CubeGeometry(matrixPrecision.x - 0.01, 0.01, matrixPrecision.z - 0.01), new THREE.MeshLambertMaterial({color: 0xff0000}));
 			
