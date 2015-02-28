@@ -30,5 +30,7 @@
 	"ui.menuItem.logout": "Выход",
 	"ui.menuItem.leaveFeedback": "Оставить отзыв",
 	"ui.tools.rotate": "Вращать",
-	"ui.tools.delete": "Удалить"
+	"ui.tools.delete": "Удалить",
+	"ui.tools.watch": "Смотреть",
+	"ui.tools.unwatch": "Отмена"
 }

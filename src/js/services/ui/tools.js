@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('tools', function ($q, BookObject, SectionObject, data, selector, dialog, block, catalog, environment) {
+.factory('tools', function ($q, BookObject, SectionObject, data, selector, dialog, block, catalog, environment, preview) {
 	var tools = {};
 
 	var ROTATION_SCALE = 1;
@@ -72,8 +72,12 @@ angular.module('VirtualBookshelf')
 	};
 
 	var rotate = function(scale) {
-		var obj = selector.getSelectedObject();
-		obj.rotate(scale);
+		if(preview.isActive()) {
+			preview.rotate(scale);
+		} else {
+			var obj = selector.getSelectedObject();
+			obj.rotate(scale);
+		}
 	};
 
 	return tools;

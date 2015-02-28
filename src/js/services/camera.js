@@ -11,16 +11,19 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	camera.init = function(width, height) {
+	var init = function() {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		
 		camera.camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 50);
-		this.object.position = new THREE.Vector3(0, camera.HEIGTH, 0);
-		this.object.rotation.order = 'YXZ';
+		camera.object.position = new THREE.Vector3(0, camera.HEIGTH, 0);
+		camera.object.rotation.order = 'YXZ';
 
 		var candle = new THREE.PointLight(0x665555, 1.6, 10);
 		candle.position.set(0, 0, 0);
-		this.object.add(candle);
+		camera.object.add(candle);
 
-		this.object.add(camera.camera);
+		camera.object.add(camera.camera);
 	};
 
 	camera.rotate = function(x, y) {
@@ -47,6 +50,8 @@ angular.module('VirtualBookshelf')
 
 		return vector.applyEuler(this.object.rotation);
 	};
+
+	init();
 
 	return camera;
 });

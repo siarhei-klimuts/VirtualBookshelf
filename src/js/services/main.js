@@ -7,15 +7,12 @@ angular.module('VirtualBookshelf')
 
 	main.start = function() {
 		var winResize;
-		var width = window.innerWidth;
-		var height = window.innerHeight;
 
 		if(!Detector.webgl) {
 			Detector.addGetWebGLMessage();
 		}
 
-		init(width, height);
-		camera.init(width, height);
+		init();
 		controls.init();
 
 		winResize = new THREEx.WindowResize(renderer, camera.camera);
@@ -36,7 +33,10 @@ angular.module('VirtualBookshelf')
 		});		
 	};
 
-	var init = function(width, height) {
+	var init = function() {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+
 		canvas = document.getElementById(environment.LIBRARY_CANVAS_ID);
 		renderer = new THREE.WebGLRenderer({canvas: canvas});
 		renderer.setSize(width, height);

@@ -48,7 +48,11 @@ angular.module('VirtualBookshelf')
 		} else {
 			which.visible = false;
 		}
-	}
+	};
+
+	highlight.enable = function(enable) {
+		focus.visible = select.visible = enable;
+	};
 
 	highlight.focus = function(obj) {
 		commonHighlight(focus, obj);

@@ -22,8 +22,8 @@ function uploadCover(externalURL, tags) {
 	return cloudinary.uploader.upload(externalURL, {
 		tags: tags,
 		format: 'jpg',
-		width: 256,
-		height: 256,
+		width: 512,
+		height: 512,
 		colors: true,
 		folder: 'vb/books/covers'
 	});

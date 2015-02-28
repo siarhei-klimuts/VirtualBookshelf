@@ -6,7 +6,7 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, camera, navigation, environment, mouse, selector) {
+.factory('controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, camera, navigation, environment, mouse, selector, preview) {
 	var controls = {};
 
 	controls.init = function() {
@@ -21,18 +21,20 @@ angular.module('VirtualBookshelf')
 	};
 
 	controls.update = function() {
-		if(mouse[3]) {
-			camera.rotate(mouse.longX, mouse.longY);
-		}
-		if(mouse[1] && mouse[3]) {
-			camera.go(navigation.BUTTONS_GO_SPEED);
+		if(!preview.isActive()) {
+			if(mouse[3]) {
+				camera.rotate(mouse.longX, mouse.longY);
+			}
+			if(mouse[1] && mouse[3]) {
+				camera.go(navigation.BUTTONS_GO_SPEED);
+			}
 		}
 	};
 
 	controls.onMouseDown = function(event) {
 		mouse.down(event); 
 
-		if(mouse.isCanvas() && mouse[1] && !mouse[3]) {
+		if(mouse.isCanvas() && mouse[1] && !mouse[3] && !preview.isActive()) {
 			controls.selectObject();
 			selector.selectFocused();
 		}
@@ -41,7 +43,7 @@ angular.module('VirtualBookshelf')
 	controls.onMouseUp = function(event) {
 		mouse.up(event);
 		
-		if(event.which === 1) {
+		if(event.which === 1 && !preview.isActive()) {
 			if(selector.isSelectedEditable()) {
 				var obj = selector.getSelectedObject();
 
@@ -55,7 +57,7 @@ angular.module('VirtualBookshelf')
 	controls.onMouseMove = function(event) {
 		mouse.move(event);
 
-		if(mouse.isCanvas()) {
+		if(mouse.isCanvas() && !preview.isActive()) {
 			event.preventDefault();
 
 			if(mouse[1] && !mouse[3]) {		
