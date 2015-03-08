@@ -1,6 +1,15 @@
 var cloudinary = require('cloudinary').v2;
 var Cover = require('../models').Cover;
 
+exports.getCover = function(req, res) {
+	Cover.find(req.params.id).then(function (cover) {
+		res.send(cover);
+	}).catch(function (error) {
+		res.send(500);
+		console.error('getCover: ', error);
+	});
+};
+
 exports.postCover = function(req, res) {
 	var externalURL = req.body.url;
 	var tags = req.body.tags;

@@ -7,12 +7,12 @@ angular.module('VirtualBookshelf')
 	var books = {};
 	var images = {};
 
-	cache.init = function(libraryModel, sectionModels, bookModels, imageUrls) {
+	cache.init = function(libraryModel, sectionModels, bookModels, covers) {
 		var libraryLoad = loadLibraryData(libraryModel);
 		var sectionsLoad = [];
 		var booksLoad = [];
 		var imagesLoad = [];
-		var model, url; // iterators
+		var model, url, coverId; // iterators
 
 		for (model in sectionModels) {
 			sectionsLoad.push(addSection(model));
@@ -22,8 +22,8 @@ angular.module('VirtualBookshelf')
 			booksLoad.push(addBook(model));
 		}
 
-		for (url in imageUrls) {
-			imagesLoad.push(addImage(url));
+		for (coverId in covers) {
+			imagesLoad.push(addImageByDto(covers[coverId]));
 		}
 
 		var promise = $q.all({
@@ -50,8 +50,8 @@ angular.module('VirtualBookshelf')
 		return commonGetter(books, model, addBook);
 	};
 
-	cache.getImage = function(url) {
-		return commonGetter(images, url, addImage);
+	cache.getImage = function(id) {
+		return commonGetter(images, id, addImageById);
 	};
 
 	var addSection = function(model) {
@@ -62,11 +62,34 @@ angular.module('VirtualBookshelf')
 		return commonAdder(books, model, loadBookData);
 	};
 
-	var addImage = function(url) {
-		return commonAdder(images, url, data.loadImage).catch(function () {
-			$log.error('Error adding image:', url);
+	var addImageById = function(id) {
+		return data.getCover(id).then(function (coverDto) {
+			return data.loadImage(coverDto.url).then(function (image) {
+				return addImage(coverDto, image);
+			});
+		}).catch(function () {
+			$log.error('Error adding image by id:', id);
 			return null;
 		});
+	};
+
+	var addImageByDto = function(coverDto) {
+		return data.loadImage(coverDto.url).then(function (image) {
+			return addImage(coverDto, image);
+		}).catch(function () {
+			$log.error('Error adding image by dto:', coverDto.id);
+			return null;
+		});
+	};
+
+	var addImage = function(dto, image) {
+		var loadedCache = {
+			dto: dto,
+			image: image
+		};
+
+		images[dto.id] = loadedCache;
+		return loadedCache;
 	};
 
 	var commonGetter = function(from, key, addFunction) {

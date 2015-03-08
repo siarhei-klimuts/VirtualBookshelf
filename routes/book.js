@@ -29,8 +29,8 @@ exports.getFreeBooks = function(req, res) {
 
 function getFreeBooks(userId) {
 	return Book.findAll({
-		where: {userId: userId}/*,
-		include: [Cover]*/
+		where: {userId: userId},
+		include: [Cover]
 	}, {raw: false});
 }
 

@@ -6,7 +6,7 @@ angular.module('VirtualBookshelf')
 		this.model = this.dataObject.model;
 		this.canvas = material.map.image;
 		this.texture = new CanvasImage(null, null, mapImage);
-		this.cover = new CanvasImage(this.dataObject.coverPos, this.dataObject.cover, coverImage);
+		this.cover = new CanvasImage(this.dataObject.coverPos, null, coverImage);
 		this.author = new CanvasText(this.dataObject.author, this.dataObject.authorFont);
 		this.title = new CanvasText(this.dataObject.title, this.dataObject.titleFont);
 
@@ -36,19 +36,20 @@ angular.module('VirtualBookshelf')
 			context.drawImage(cover.image, 0, 0, cover.image.naturalWidth, cropHeight, cover.x, cover.y, cover.width, limitedHeight);
 		}
 
-		for(var i = this.textNodes.length - 1; i >= 0; i--) {
-			var textNode = this[this.textNodes[i]];
+		// for(var i = this.textNodes.length - 1; i >= 0; i--) {
+		// 	var textNode = this[this.textNodes[i]];
 
-			if(textNode.isValid()) {
+		// 	if(textNode.isValid()) {
 
-				context.font = textNode.getFont();
-				context.fillStyle = textNode.color;
-		    	context.fillText(textNode.text, textNode.x, textNode.y, textNode.width);
-		    }
-		}
+		// 		context.font = textNode.getFont();
+		// 		context.fillStyle = textNode.color;
+		//     	context.fillText(textNode.text, textNode.x, textNode.y, textNode.width);
+		//     }
+		// }
 
 		this.material.map.needsUpdate = true;
 	};
+	
 	BookObject.prototype.moveElement = function(dX, dY, element) {
 		var element = element && this[element];
 		
@@ -73,7 +74,6 @@ angular.module('VirtualBookshelf')
 
 		this.dataObject.model = this.model;
 		this.dataObject.texture = this.texture.toString();
-		this.dataObject.cover = this.cover.toString();
 		this.dataObject.coverPos = this.cover.serializeProperties();
 		this.dataObject.author = this.author.toString();
 		this.dataObject.authorFont = this.author.serializeFont();
@@ -90,22 +90,7 @@ angular.module('VirtualBookshelf')
 			$log.error('Error saving book');
 		});
 	};
-	BookObject.prototype.refresh = function() {
-		var scope = this;
-		//TODO: use in constructor instead of separate images loading
-		scope.texture.load(scope.dataObject.texture, false, function () {
-			scope.cover.load(scope.dataObject.cover, true, function() {
-				scope.model = scope.dataObject.model;
-				scope.cover.parseProperties(scope.dataObject.coverPos);
-				scope.author.setText(scope.dataObject.author);
-				scope.author.parseProperties(scope.dataObject.authorFont);
-				scope.title.setText(scope.dataObject.title);
-				scope.title.parseProperties(scope.dataObject.titleFont);
 
-				scope.updateTexture();
-			});
-		});
-	};
 	BookObject.prototype.copyState = function(book) {
 		if(book instanceof BookObject) {
 			var fields = ['dataObject', 'position', 'rotation', 'model', 'texture', 'cover', 'author', 'title'];

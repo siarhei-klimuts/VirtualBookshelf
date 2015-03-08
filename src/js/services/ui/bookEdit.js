@@ -29,7 +29,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	bookEdit.getCoverImg = function() {
-		return this.isCoverShow() ? this.book.cover : EMPTY_IMAGE_URL;
+		return this.isCoverShow() ? this.book.cover.url : EMPTY_IMAGE_URL;
 	};
 
 	bookEdit.isCoverDisabled = function() {
@@ -57,16 +57,19 @@ angular.module('VirtualBookshelf')
 			if(this.coverInputURL) {
 				block.inventory.start();
 				archive.sendExternalURL(this.coverInputURL, [this.book.title, this.book.author]).then(function (result) {
-					bookEdit.book.cover = result.url;
+					bookEdit.book.cover = result;
 					bookEdit.book.coverId = result.id;
 				}).catch(function () {
+					bookEdit.book.coverId = null;
 					bookEdit.book.cover = null;
+					
 					dialog.openError('Can not apply this cover. Try another one, please.');
 				}).finally(function () {
 					bookEdit.coverInputURL = null;
 					block.inventory.stop();
 				});
 			} else {
+				bookEdit.book.coverId = null;
 				bookEdit.book.cover = null;
 			}
 		} else {

@@ -27,6 +27,12 @@ angular.module('VirtualBookshelf')
         return deffered.promise; 
     };
 
+	data.getCover = function(id) {
+		return $http.get('/cover/' + id).then(function (res) {
+			return res.data;
+		});
+	};
+
     data.postCover = function(externalURL, tags) {
     	var data = {
     		url: externalURL,

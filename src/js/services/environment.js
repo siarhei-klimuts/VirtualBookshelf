@@ -116,7 +116,7 @@ angular.module('VirtualBookshelf')
 			bookModels[bookDto.model] = true;
 
 			if(bookDto.cover) {
-				imageUrls[bookDto.cover] = true;
+				imageUrls[bookDto.cover.id] = bookDto.cover;
 			}
 		}
 
@@ -219,13 +219,13 @@ angular.module('VirtualBookshelf')
 		var promise;
 
 		promises.bookCache = cache.getBook(bookDto.model);
-		if(bookDto.cover) {
-			promises.coverCache = cache.getImage(bookDto.cover);
+		if(bookDto.coverId) {
+			promises.coverCache = cache.getImage(bookDto.coverId);
 		}
 
 		promise = $q.all(promises).then(function (results) {
 			var bookCache = results.bookCache;
-			var coverImage = results.coverCache;
+			var coverImage = results.coverCache && results.coverCache.image;
 			var canvas = document.createElement('canvas');
 
 			canvas.width = canvas.height = data.TEXTURE_RESOLUTION;
