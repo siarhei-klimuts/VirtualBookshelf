@@ -7,6 +7,7 @@
 		{"model": "bookshelf_0001", "label": "Wooden simple"}
 	],
 	"books": [
+		{"model": "book_0001", "label": "White"},
 		{"model": "book_0002", "label": "New green"},
 		{"model": "book_0003", "label": "Old brown"}
 	],

@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('environment', function ($q, $log, $window, LibraryObject, SectionObject, BookObject, data, camera, cache) {
+.factory('environment', function ($q, $log, $window, LibraryObject, SectionObject, BookObject, BookMaterial, data, camera, cache) {
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;
@@ -174,11 +174,19 @@ angular.module('VirtualBookshelf')
 	};
 
 	var createSections = function(sectionsDict) {
+		return createObjects(sectionsDict, createSection);
+	};
+
+	var createBooks = function(booksDict) {
+		return createObjects(booksDict, createBook);
+	};
+
+	var createObjects = function(dict, factory) {
 		var results = [];
 		var key;
 
-		for(key in sectionsDict) {
-			results.push(createSection(sectionsDict[key].dto));		
+		for(key in dict) {
+			results.push(factory(dict[key].dto));
 		}
 
 		return $q.all(results);
@@ -202,18 +210,6 @@ angular.module('VirtualBookshelf')
 		return promise;
 	};
 
-	// TODO: merge with createSections
-	var createBooks = function(booksDict) {
-		var results = [];
-		var key;
-
-		for(key in booksDict) {
-			results.push(createBook(booksDict[key].dto));
-		}
-
-		return $q.all(results);
-	};
-
 	var createBook = function(bookDto) {
 		var promises = {};
 		var promise;
@@ -225,14 +221,9 @@ angular.module('VirtualBookshelf')
 
 		promise = $q.all(promises).then(function (results) {
 			var bookCache = results.bookCache;
-			var coverImage = results.coverCache && results.coverCache.image;
-			var canvas = document.createElement('canvas');
-
-			canvas.width = canvas.height = data.TEXTURE_RESOLUTION;
-			var texture = new THREE.Texture(canvas);
-		    var material = new THREE.MeshPhongMaterial({map: texture});
-
-			var book = new BookObject(bookDto, bookCache.geometry, material, bookCache.mapImage, coverImage);
+			var coverMapImage = results.coverCache && results.coverCache.image;
+			var material = new BookMaterial(bookCache.mapImage, bookCache.bumpMapImage, bookCache.specularMapImage, coverMapImage);
+			var book = new BookObject(bookDto, bookCache.geometry, material);
 
 			addToDict(books, book);
 			placeBookOnShelf(book);

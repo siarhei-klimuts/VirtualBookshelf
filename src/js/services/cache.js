@@ -12,7 +12,7 @@ angular.module('VirtualBookshelf')
 		var sectionsLoad = [];
 		var booksLoad = [];
 		var imagesLoad = [];
-		var model, url, coverId; // iterators
+		var model, coverId; // iterators
 
 		for (model in sectionModels) {
 			sectionsLoad.push(addSection(model));
@@ -144,10 +144,23 @@ angular.module('VirtualBookshelf')
 		var path = '/obj/books/{model}/'.replace('{model}', model);
         var modelUrl = path + 'model.js';
         var mapUrl = path + 'map.jpg';
+        var bumpMapUrl = path + 'bump_map.jpg';
+        var specularMapUrl = path + 'specular_map.jpg';
 
         var promise = $q.all({
         	geometry: data.loadGeometry(modelUrl),
-        	mapImage: data.loadImage(mapUrl) 
+        	mapImage: data.loadImage(mapUrl).catch(function () {
+        		$log.error('Cache: Error loading book map:', model);
+        		return null;
+        	}),
+        	bumpMapImage: data.loadImage(bumpMapUrl).catch(function () {
+        		$log.error('Cache: Error loading book bumpMap:', model);
+        		return null;
+        	}),
+        	specularMapImage: data.loadImage(specularMapUrl).catch(function () {
+        		$log.error('Cache: Error loading book specularMap:', model);
+        		return null;
+        	})
         });
 
         return promise;
