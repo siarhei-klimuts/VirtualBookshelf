@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('preview', function (camera, selector, highlight) {
+.factory('preview', function (camera, highlight) {
 	var preview = {};
 
 	var active = false;
@@ -21,13 +21,16 @@ angular.module('VirtualBookshelf')
 		return active;
 	};
 
-	preview.enable = function() {
-		var obj;
-		activate(true);
+	preview.enable = function(obj) {
+		var objClone;
 
-		obj = selector.getSelectedObject().clone();
-		obj.position.set(0, 0, 0);
-		container.add(obj);
+		if(obj) {
+			activate(true);
+
+			objClone = obj.clone();
+			objClone.position.set(0, 0, 0);
+			container.add(objClone);
+		}
 	};
 
 	preview.disable = function () {

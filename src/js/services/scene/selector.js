@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('selector', function ($rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, environment, highlight) {
+.factory('selector', function ($rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, environment, highlight, preview) {
 	var selector = {};
 	
 	var selected = new SelectorMeta();
@@ -43,6 +43,8 @@ angular.module('VirtualBookshelf')
 			highlight.select(null);
 			selected = new SelectorMeta();
 		}
+
+		preview.disable();
 	};
 
 	selector.getSelectedObject = function() {
