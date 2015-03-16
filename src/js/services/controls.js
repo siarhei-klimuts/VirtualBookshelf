@@ -6,7 +6,7 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, camera, navigation, environment, mouse, selector, preview) {
+.factory('controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, camera, navigation, environment, mouse, selector, preview, block) {
 	var controls = {};
 
 	controls.init = function() {
@@ -48,7 +48,12 @@ angular.module('VirtualBookshelf')
 				var obj = selector.getSelectedObject();
 
 				if(obj.changed) {
-					obj.save();
+					block.global.start();
+					obj.save().catch(function () {
+						obj.rollback();
+					}).finally(function () {
+						block.global.stop();
+					});
 				}
 			}
 		}

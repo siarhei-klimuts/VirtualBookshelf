@@ -102,10 +102,13 @@ angular.module('VirtualBookshelf')
 		THREE.ShaderChunk.specularmap_pars_fragment,
 
 		'void main() {',
+			'vec4 testcolor = vec4(1.0, 1.0, 1.0, 1.0);',
+			'float eps = 0.004;',
 			'vec4 baseColor  = texture2D(map, vUv);',
+
 			'#ifdef USE_COVER',
 		    	'vec4 coverColor = texture2D(coverMap, vUv * vec2(2.3, 1.3) + vec2(-1.3, -0.3));',
-			    'if(vUv.y > 0.23 && (vUv.x > 0.57 || baseColor == vec4(1.0, 1.0, 1.0, 1.0)))',
+			    'if(vUv.y > 0.23 && (vUv.x > 0.57 || (all(greaterThanEqual(baseColor,testcolor-eps)) && all(lessThanEqual(baseColor,testcolor+eps)))))',
 			    	'gl_FragColor = coverColor;',
 			    'else',
 			    	'gl_FragColor = baseColor;',

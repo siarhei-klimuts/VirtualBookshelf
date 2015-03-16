@@ -18,17 +18,29 @@ angular.module('VirtualBookshelf')
 
 	SectionObject.prototype.save = function() {
 		var scope = this;
+		var dto = {
+			id: this.dataObject.id,
+			userId: this.dataObject.userId,
+			pos_x: this.position.x,
+			pos_y: this.position.y,
+			pos_z: this.position.z,
+			rotation: [this.rotation.x, this.rotation.y, this.rotation.z]
+		};
 
-		this.dataObject.pos_x = this.position.x;
-		this.dataObject.pos_y = this.position.y;
-		this.dataObject.pos_z = this.position.z;
-
-		this.dataObject.rotation = [this.rotation.x, this.rotation.y, this.rotation.z];
-
-		return data.postSection(this.dataObject).then(function (dto) {
-			scope.dataObject = dto;
+		return data.postSection(dto).then(function (responseDto) {
+			scope.dataObject = responseDto;
 			scope.changed = false;
 		});
+	};
+
+	SectionObject.prototype.rollback = function() {
+		this.position.x = this.dataObject.pos_x;
+		this.position.y = this.dataObject.pos_y;
+		this.position.z = this.dataObject.pos_z;
+
+		this.rotation.x = this.dataObject.rotation[0];
+		this.rotation.y = this.dataObject.rotation[1];
+		this.rotation.z = this.dataObject.rotation[2];
 	};
 
 	SectionObject.prototype.setParent = function(parent) {

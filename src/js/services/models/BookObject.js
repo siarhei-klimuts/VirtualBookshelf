@@ -12,17 +12,24 @@ angular.module('VirtualBookshelf')
 
 	BookObject.prototype.save = function() {
 		var scope = this;
+		var dto = {
+			id: this.dataObject.id,
+			userId: this.dataObject.userId,
+			pos_x: this.position.x,
+			pos_y: this.position.y,
+			pos_z: this.position.z
+		};
 
-		this.dataObject.pos_x = this.position.x;
-		this.dataObject.pos_y = this.position.y;
-		this.dataObject.pos_z = this.position.z;
-
-		data.postBook(this.dataObject).then(function (dto) {
-			scope.dataObject = dto;
+		return data.postBook(dto).then(function (responseDto) {
+			scope.dataObject = responseDto;
 			scope.changed = false;
-		}).catch(function () {
-			$log.error('Error saving book');
 		});
+	};
+
+	BookObject.prototype.rollback = function() {
+		this.position.x = this.dataObject.pos_x;
+		this.position.y = this.dataObject.pos_y;
+		this.position.z = this.dataObject.pos_z;
 	};
 
 	BookObject.prototype.setParent = function(parent) {
