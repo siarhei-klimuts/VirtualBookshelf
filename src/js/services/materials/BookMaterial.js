@@ -107,7 +107,7 @@ angular.module('VirtualBookshelf')
 			'vec4 baseColor  = texture2D(map, vUv);',
 
 			'#ifdef USE_COVER',
-		    	'vec4 coverColor = texture2D(coverMap, vUv * vec2(2.3, 1.3) + vec2(-1.3, -0.3));',
+		    	'vec4 coverColor = texture2D(coverMap, vUv * vec2(2.3, 1.3) - vec2(1.3, 0.3));',
 			    'if(vUv.y > 0.23 && (vUv.x > 0.57 || (all(greaterThanEqual(baseColor,testcolor-eps)) && all(lessThanEqual(baseColor,testcolor+eps)))))',
 			    	'gl_FragColor = coverColor;',
 			    'else',
