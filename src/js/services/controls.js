@@ -100,37 +100,21 @@ angular.module('VirtualBookshelf')
 	controls.moveObject = function() {
 		var mouseVector;
 		var newPosition;
-		var intersected;
 		var parent;
-		var oldParent;
 		var selectedObject;
 
 		if(selector.isSelectedEditable()) {
 			selectedObject = selector.getSelectedObject();
 			mouseVector = camera.getVector();	
-
 			newPosition = selectedObject.position.clone();
-			oldParent = selectedObject.parent;
-
-			if(selector.isSelectedBook()) {
-				intersected = mouse.getIntersected(environment.library.children, true, [ShelfObject]);
-				selectedObject.setParent(intersected ? intersected.object : null);
-			}
-
 			parent = selectedObject.parent;
-			if(parent) {
-				parent.localToWorld(newPosition);
+			parent.localToWorld(newPosition);
 
-				newPosition.x -= (mouseVector.z * mouse.dX + mouseVector.x * mouse.dY) * 0.003;
-				newPosition.z -= (-mouseVector.x * mouse.dX + mouseVector.z * mouse.dY) * 0.003;
+			newPosition.x -= (mouseVector.z * mouse.dX + mouseVector.x * mouse.dY) * 0.003;
+			newPosition.z -= (-mouseVector.x * mouse.dX + mouseVector.z * mouse.dY) * 0.003;
 
-				parent.worldToLocal(newPosition);
-				if(!selectedObject.move(newPosition) && selector.isSelectedBook()) {
-					if(parent !== oldParent) {
-						selectedObject.setParent(oldParent);
-					}
-				}
-			}
+			parent.worldToLocal(newPosition);
+			selectedObject.move(newPosition);
 		}
 	};
 
