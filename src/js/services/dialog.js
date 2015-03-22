@@ -8,7 +8,7 @@ angular.module('VirtualBookshelf')
 	var INFO = 4;
 
 	var iconClassMap = {};
-	iconClassMap[ERROR] = 'fa-times-circle ';
+	iconClassMap[ERROR] = 'fa-times-circle';
 	iconClassMap[CONFIRM] = 'fa-question-circle';
 	iconClassMap[WARNING] = 'fa-exclamation-triangle';
 	iconClassMap[INFO] = 'fa-info-circle';
