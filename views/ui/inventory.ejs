@@ -30,6 +30,8 @@
 
 		<ng-include src="'/ui/book.ejs'"></ng-include>
 	</div>
+	
+	<ng-include src="'ui/tooltip.ejs'"></ng-include>
 
 	<div ng-controller="ToolsCtrl as tools" ng-show="tools.isShow()" class="uiPanel tools" ng-mouseup="tools.stop()" ng-mouseleave="tools.stop()">
 		<table>

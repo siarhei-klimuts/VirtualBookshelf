@@ -51,6 +51,12 @@ table {
 	float: left;
 	clear: left;
 }
+.tooltip p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 10pt;
+}
 .inventory {
 	position: absolute;
 	top: 0px;

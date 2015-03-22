@@ -1,22 +1,23 @@
 angular.module('VirtualBookshelf')
-.factory('selector', function ($rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, environment, highlight, preview) {
+.factory('selector', function ($rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, environment, highlight, preview, tooltip) {
 	var selector = {};
 	
 	var selected = new SelectorMeta();
 	var focused = new SelectorMeta();
 
 	selector.focus = function(meta) {
-		if(!meta.equals(focused)) {
-			if(!focused.equals(selected)) {
-				highlight.focus(null);
-			}
+		var obj;
 
+		if(!meta.equals(focused)) {
 			focused = meta;
 
-			if(!focused.isEmpty() && !focused.equals(selected)) {
-				var obj = getObject(focused);
+			if(!focused.isEmpty()) {
+				obj = getObject(focused);
 				highlight.focus(obj);
 			}
+
+			tooltip.set(obj);
+			$rootScope.$apply();
 		}
 	};
 
