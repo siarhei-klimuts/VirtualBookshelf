@@ -25,12 +25,6 @@ angular.module('VirtualBookshelf')
 		});
 	};
 
-	BookObject.prototype.rollback = function() {
-		this.position.x = this.dataObject.pos_x;
-		this.position.y = this.dataObject.pos_y;
-		this.position.z = this.dataObject.pos_z;
-	};
-
 	BookObject.prototype.setParent = function(parent) {
 		if(this.parent != parent) {
 			if(parent) {
