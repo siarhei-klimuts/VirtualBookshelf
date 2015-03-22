@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('BaseObject', function () {
+.factory('BaseObject', function (subclassOf) {
 	var BaseObject = function(dataObject, geometry, material) {
 		THREE.Mesh.call(this, geometry, material);
 
@@ -11,16 +11,10 @@ angular.module('VirtualBookshelf')
 		this.rotation.order = 'XYZ';
 		this.rotation.fromArray(this.dataObject.rotation.map(Number));
 
-		this.updateMatrix();
-
-		//TODO: research, after caching geometry this can be run once
-		this.geometry.computeBoundingBox();
-		
 		this.updateBoundingBox();		
 	};
 	
-	BaseObject.prototype = new THREE.Mesh();
-	BaseObject.prototype.constructor = BaseObject;
+	BaseObject.prototype = subclassOf(THREE.Mesh);
 
 	BaseObject.prototype.getType = function() {
 		return this.type;
@@ -28,7 +22,6 @@ angular.module('VirtualBookshelf')
 
 	BaseObject.prototype.isOutOfParrent = function() {
 		return Math.abs(this.boundingBox.center.x - this.parent.boundingBox.center.x) > (this.parent.boundingBox.radius.x - this.boundingBox.radius.x) ||
-				//Math.abs(this.boundingBox.center.y - this.parent.boundingBox.center.y) > (this.parent.boundingBox.radius.y - this.boundingBox.radius.y) ||
 				Math.abs(this.boundingBox.center.z - this.parent.boundingBox.center.z) > (this.parent.boundingBox.radius.z - this.boundingBox.radius.z);
 	};
 
@@ -142,7 +135,6 @@ angular.module('VirtualBookshelf')
 			z: (boundingBox.max.z - boundingBox.min.z) * 0.5
 		};
 
-
 		center = new THREE.Vector3();
 		center.addVectors(boundingBox.min, boundingBox.max);
 		center.multiplyScalar(0.5);
@@ -151,13 +143,6 @@ angular.module('VirtualBookshelf')
 			radius: radius,
 			center: center
 		};
-	};
-
-	BaseObject.prototype.reload = function() {
-		this.position.setX(this.dataObject.pos_x);
-		this.position.setY(this.dataObject.pos_y);
-		this.position.setZ(this.dataObject.pos_z);
-		this.rotation.set(0, 0, 0);
 	};
 
 	return BaseObject;	

@@ -1,16 +1,13 @@
 angular.module('VirtualBookshelf')
-.factory('CameraObject', function (BaseObject) {
+.factory('CameraObject', function (BaseObject, subclassOf) {
 	var CameraObject = function() {
 		BaseObject.call(this);
 	};
 
-	CameraObject.prototype = new BaseObject();
-	
-	CameraObject.prototype.constructor = CameraObject;
+	CameraObject.prototype = subclassOf(BaseObject);
 	
 	CameraObject.prototype.updateBoundingBox = function() {
 		var radius = {x: 0.1, y: 1, z: 0.1};
-		var center = new THREE.Vector3(0, 0, 0);
 
 		this.boundingBox = {
 			radius: radius,

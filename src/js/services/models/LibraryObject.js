@@ -1,11 +1,10 @@
 angular.module('VirtualBookshelf')
-.factory('LibraryObject', function (BaseObject) {
+.factory('LibraryObject', function (BaseObject, subclassOf) {
 	var LibraryObject = function(params, geometry, material) {
 		BaseObject.call(this, params, geometry, material);
-		this.libraryObject = params.libraryObject || {};//TODO: research
 	};
-	LibraryObject.prototype = new BaseObject();
-	LibraryObject.prototype.constructor = LibraryObject;
+
+	LibraryObject.prototype = subclassOf(BaseObject);
 
 	return LibraryObject;	
 });

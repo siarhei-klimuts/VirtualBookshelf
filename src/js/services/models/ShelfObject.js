@@ -1,9 +1,11 @@
 angular.module('VirtualBookshelf')
-.factory('ShelfObject', function (BaseObject) {
+.factory('ShelfObject', function (BaseObject, subclassOf) {
 	var ShelfObject = function(params) {
-		var size = params.size || [1,1,1];	
-		var material = new THREE.MeshLambertMaterial({color: 0x00ff00, transparent: true, opacity: 0.2});
-		BaseObject.call(this, params, new THREE.CubeGeometry(size[0], size[1], size[2]), material);
+		var size = params.size;	
+		var geometry = new THREE.CubeGeometry(size[0], size[1], size[2]);
+
+		geometry.computeBoundingBox();
+		BaseObject.call(this, params, geometry);
 
 		this.position = new THREE.Vector3(params.position[0], params.position[1], params.position[2]);
 		this.size = new THREE.Vector3(size[0], size[1], size[2]);
@@ -12,10 +14,8 @@ angular.module('VirtualBookshelf')
 
 	ShelfObject.TYPE = 'ShelfObject';
 
-	ShelfObject.prototype = new BaseObject();
-	ShelfObject.prototype.constructor = ShelfObject;
+	ShelfObject.prototype = subclassOf(BaseObject);
 	ShelfObject.prototype.type = ShelfObject.TYPE;
-
 
 	return ShelfObject;
 });

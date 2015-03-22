@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('SectionObject', function (BaseObject, ShelfObject, data) {
+.factory('SectionObject', function (BaseObject, ShelfObject, data, subclassOf) {
 	var SectionObject = function(params, geometry, material) {
 		BaseObject.call(this, params, geometry, material);
 
@@ -12,8 +12,7 @@ angular.module('VirtualBookshelf')
 
 	SectionObject.TYPE = 'SectionObject';
 
-	SectionObject.prototype = new BaseObject();
-	SectionObject.prototype.constructor = SectionObject;
+	SectionObject.prototype = subclassOf(BaseObject);
 	SectionObject.prototype.type = SectionObject.TYPE;
 
 	SectionObject.prototype.save = function() {
