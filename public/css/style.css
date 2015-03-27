@@ -47,10 +47,6 @@ table {
 	background-color: transparent;
 	font-size: 14px;
 }
-.left {
-	float: left;
-	clear: left;
-}
 .tooltip p {
 	white-space: nowrap;
 	overflow: hidden;
@@ -110,10 +106,26 @@ table {
   font-size: 20px;
   color: grey;
 }
-.login {
+.welcomePage {
 	position: absolute;
 	left: 0px;
 	top: 0px;
+	width: 50%;
+	margin-left: 25%;
+}
+.welcomePage > p {
+	text-align: justify;
+}
+.welcomeControl {
+	margin: 30px;
+	padding: 10px;
+	text-align: center;
+	background-color: rgba(20, 70, 20, 0.4); 
+	cursor: pointer;
+	border-radius: 8px;
+}
+.welcomeControl:hover {
+	background-color: rgba(20, 100, 20, 0.4);
 }
 span.fa {
 	color: lightgreen;

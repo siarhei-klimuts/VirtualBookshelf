@@ -1,8 +1,6 @@
 {
-	"menu.login.google": "Войти через Google",
-	"ui.login.text": "Вы не авторизованы.",
-	"ui.library.create.text": "У вас нет библиотек. Хотите создать?",
-	"ui.library.create.link": "Создать новую библиотеку.",
+	"ui.login.header": "Выберите способ авторизации",
+	"ui.library.create.text": "У вас нет библиотек, создайте одну.",
 	"ui.library.create.select.label": "Выберите модель окружения для библиотеки.",
 	"ui.library.select.text": "Выберите библиотеку в которую хотите войти.",
 	"ui.library.select.link": "Войти в выбранную библиотеку.",
@@ -27,10 +25,14 @@
 	"ui.menuItem.createSection": "Создать шкаф",
 	"ui.menuItem.createBook": "Создать книгу",
 	"ui.menuItem.selectLibrary": "Выбрать библиотеку",
+	"ui.menuItem.login": "Авторизация",
 	"ui.menuItem.logout": "Выход",
 	"ui.menuItem.leaveFeedback": "Оставить отзыв",
 	"ui.tools.rotate": "Вращать",
 	"ui.tools.delete": "Удалить",
 	"ui.tools.watch": "Смотреть",
-	"ui.tools.unwatch": "Отмена"
+	"ui.tools.unwatch": "Отмена",
+	"ui.welcome.header": "Добро пожаловать в The Library",
+	"ui.welcome.description": "The Library - это персональная 3D библиотека для ваших книжных коллекций. Здесь вы можете создать комнату, разместить в ней книжные шкафы и заполнить их своими книгами. Отличная возможность для тех, кто хочет показать свою личную коллекцию друзьям.",
+	"ui.welcome.login": "Для того, чтобы попасть в свою библиотеку или создать новую - авторизуйтесь."
 }

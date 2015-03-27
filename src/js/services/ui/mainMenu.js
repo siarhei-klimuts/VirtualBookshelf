@@ -34,9 +34,6 @@ angular.module('VirtualBookshelf')
 	mainMenu.hideAll = function() {
 		mainMenu.hide();
 		mainMenu.createListHide();
-
-		selectLibrary.hide();
-		createLibrary.hide();
 		createSection.hide();
 
 		feedback.hide();

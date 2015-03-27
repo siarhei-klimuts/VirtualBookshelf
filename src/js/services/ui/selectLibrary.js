@@ -1,20 +1,21 @@
 angular.module('VirtualBookshelf')
-.factory('selectLibrary', function (data, environment) {
+.factory('selectLibrary', function (data, environment, user, ngDialog) {
 	var selectLibrary = {};
 
 	selectLibrary.list = [];
-	selectLibrary.visible = false;
-
-	selectLibrary.isShow = function() {
-		return this.visible;
-	};
 
 	selectLibrary.show = function() {
-		this.visible = true;
+		ngDialog.openConfirm({
+			template: '/ui/selectLibrary'
+		});
 	};
 
-	selectLibrary.hide = function() {
-		this.visible = false;
+	selectLibrary.isAvailable = function() {
+		return selectLibrary.list.length > 0;
+	};
+
+	selectLibrary.isUserLibrary = function() {
+		return environment.library && environment.library.dataObject.userId === user.getId();
 	};
 
 	selectLibrary.updateList = function() {

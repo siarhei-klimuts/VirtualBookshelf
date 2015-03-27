@@ -8,6 +8,7 @@ angular.module('VirtualBookshelf')
 	var libraryDto = null;
 	var sections = null;
 	var books = null;
+	var loaded = false;
 
 	environment.scene = null;
 	environment.library = null;
@@ -37,6 +38,14 @@ angular.module('VirtualBookshelf')
 		if(id) {
 			$window.location = '/' + id;
 		}
+	};
+
+	environment.setLoaded = function(value) {
+		loaded = value;
+	};
+
+	environment.getLoaded = function() {
+		return loaded;
 	};
 
 	environment.getBook = function(bookId) {

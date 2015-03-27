@@ -1,8 +1,6 @@
 {
-	"menu.login.google": "Sign in with Google",
-	"ui.login.text": "You are not logged in. Please login.",
+	"ui.login.header": "Select how do you want to login",
 	"ui.library.create.text": "You have no libraries. Do you want to create one?",
-	"ui.library.create.link": "Create new library.",
 	"ui.library.create.select.label": "Select enviroment model for your library.",
 	"ui.library.select.text": "Select library which you want to go.",
 	"ui.library.select.link": "Go to selected library.",
@@ -27,10 +25,14 @@
 	"ui.menuItem.createSection": "Create shelf",
 	"ui.menuItem.createBook": "Create book",
 	"ui.menuItem.selectLibrary": "Select Library",
+	"ui.menuItem.login": "Login",
 	"ui.menuItem.logout": "Logout",
 	"ui.menuItem.leaveFeedback": "Leave feedback",
 	"ui.tools.rotate": "Rotate",
 	"ui.tools.delete": "Delete",
 	"ui.tools.watch": "Watch",
-	"ui.tools.unwatch": "Cancel"
+	"ui.tools.unwatch": "Cancel",
+	"ui.welcome.header": "Welcome to The Library",
+	"ui.welcome.description": "The Library is a personal 3D library for your book collections. Here you can create a room, place bookshelves and fill them with your books. This is a good possibility if you want to show your collections to friends.",
+	"ui.welcome.login": "You are not logged in. Please login."
 }

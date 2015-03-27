@@ -1,0 +1,8 @@
+<div ng-controller="SelectLibraryCtrl as selectLibrary" class="ngdialog-message">
+	<p><%= __('ui.library.select.text') %></p>
+	<ul class="select">
+		<li ng-repeat="item in selectLibrary.getList()" ng-click="selectLibrary.go(item.id); closeThisDialog();">
+			<i class="fa fa-home fa-2x"></i>{{item.id}}
+		</li>
+	</ul>
+</div>

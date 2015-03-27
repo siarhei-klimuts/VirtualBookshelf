@@ -1,0 +1,17 @@
+<div ng-controller="CreateLibraryCtrl as createLibrary" class="ngdialog-message">
+	<p><%= __('ui.library.create.select.label') %></p>
+	<table>
+		<tr>
+			<td>
+				<vb-select ng-model="createLibrary.model" options="createLibrary.list" value="model" label="label">
+					<i class="fa fa-home fa-2x"></i>
+				</vb-select>
+			</td>
+			<td>
+				<img ng-src="{{createLibrary.getImg()}}" class="previewImg">
+			</td>
+		</tr>
+	</table>
+
+	<span ng-click="createLibrary.create(); closeThisDialog();" class="fa fa-check fa-2x submitButton"></span>
+</div>	

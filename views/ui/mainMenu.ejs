@@ -2,8 +2,9 @@
 	<div ng-show="mainMenu.isShow()">
 		<ul class="select">
 			<li ng-click="mainMenu.createListShow()"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
-			<li ng-click="mainMenu.showSelectLibrary()"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
+			<li ng-click="mainMenu.showSelectLibrary()" ng-show="selectLibrary.isAvailable()"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
 			<li ng-click="mainMenu.showFeedback()"><i class="fa fa-comment-o fa-2x"></i><%=__('ui.menuItem.leaveFeedback')%></li>
+			<li ng-click="authorization.show()" ng-show="authorization.isShow()"><i class="fa fa-sign-in fa-2x"></i><%=__('ui.menuItem.login')%></li>
 			<li ng-click="authorization.logout()" ng-hide="authorization.isShow()"><i class="fa fa-sign-out fa-2x"></i><%=__('ui.menuItem.logout')%></li>
 		</ul>
 	</div>
@@ -13,25 +14,7 @@
 			<li ng-click="mainMenu.showCreateLibrary()"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.createLibrary')%></li>
 			<li ng-click="mainMenu.showCreateSection()"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
 		</ul>
-	</div>
-
-	<div ng-show="createLibrary.isShow()">
-		<p><%= __('ui.library.create.select.label') %></p>
-		<table>
-			<tr>
-				<td>
-					<vb-select ng-model="createLibrary.model" options="createLibrary.list" value="model" label="label">
-						<i class="fa fa-home fa-2x"></i>
-					</vb-select>
-				</td>
-				<td>
-    				<img ng-src="{{createLibrary.getImg()}}" class="previewImg">
-				</td>
-			</tr>
-		</table>
-
-		<span ng-click="createLibrary.create()" class="fa fa-check fa-2x submitButton"></span>
-	</div>		   
+	</div>	   
 
 	<div ng-show="createSection.isShow()">
 		<table>
@@ -49,15 +32,6 @@
 		
 		<span ng-click="createSection.create()" class="fa fa-check fa-2x submitButton"></span>
 	</div> 	
-
-	<div ng-show="selectLibrary.isShow()">
-		<p><%= __('ui.library.select.text') %></p>
-		<ul class="select">
-			<li ng-repeat="item in selectLibrary.list" ng-click="selectLibrary.go(item.id)">
-				<i class="fa fa-home fa-2x"></i>{{item.id}}
-			</li>
-		</ul>
-	</div>
 
 	<form name="feedback.form" ng-show="feedback.isShow()">
 		<div>

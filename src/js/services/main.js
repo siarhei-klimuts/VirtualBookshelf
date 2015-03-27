@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('main', function ($log, camera, controls, user, environment, tools, navigation, authorization, block) {	
+.factory('main', function ($log, $q, camera, controls, user, environment, tools, navigation, authorization, block) {	
 	var canvas;
 	var renderer;
 	
@@ -21,14 +21,12 @@ angular.module('VirtualBookshelf')
 
 		block.global.start();
 		user.load().then(function () {
-			return environment.loadLibrary(user.getLibrary() || 1).then(function () {
-				//TODO: $q.all(environment.loadLibrary(user.getLibrary() || 1), authorization.loadUserData())
-				return authorization.loadUserData();
-			});
+			return $q.all([environment.loadLibrary(user.getLibrary() || 1), authorization.loadUserData()]);
 		}).catch(function (error) {
 			$log.error(error);
 			//TODO: show error message  
 		}).finally(function () {
+			environment.setLoaded(true);
 			block.global.stop();
 		});		
 	};
