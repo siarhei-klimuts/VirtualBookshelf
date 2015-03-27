@@ -1,5 +1,7 @@
 angular.module('VirtualBookshelf')
 .controller('WelcomeCtrl', function (authorization, selectLibrary, createLibrary, environment) {
+	var closed = false;
+
 	this.isShowAuthorization = function() {
 		return authorization.isShow();
 	};
@@ -13,7 +15,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	this.isShow = function() {
-		return this.isShowAuthorization() || this.isShowCreateLibrary() || this.isShowSelectLibrary();
+		return !closed && (this.isShowAuthorization() || this.isShowCreateLibrary() || this.isShowSelectLibrary());
 	};
 
 	this.isLoaded = function() {
@@ -30,5 +32,9 @@ angular.module('VirtualBookshelf')
 
 	this.showCreateLibraryDialog = function() {
 		createLibrary.show();
+	};
+
+	this.close = function() {
+		closed = true;
 	};
 });
