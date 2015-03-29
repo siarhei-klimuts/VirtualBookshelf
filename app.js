@@ -55,8 +55,13 @@ if ('development' == app.get('env')) {
 app.get('/:libraryId([0-9]+)?', routes.index);
 app.get('/ui/:page', routes.ui);
 app.get('/auth/close', routes.page);
-app.get('/auth/google', passport.authenticate('google'));
-app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/auth/close', successRedirect: '/auth/close'}));
+app.get('/auth/google', passport.authenticate('google', { 
+    scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] 
+}));
+app.get('/auth/google/return', passport.authenticate('google', {
+    failureRedirect: '/auth/close', 
+    successRedirect: '/auth/close'
+}));
 app.post('/auth/logout', routes.logout);
 
 app.post('/cover', isAuthorized, routes.cover.postCover);
