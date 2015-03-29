@@ -11,7 +11,7 @@
     "express": "3.4.7",
     "i18n": "~0.4.1",
     "passport": "~0.1.18",
-    "passport-google": "~0.3.0",
+    "passport-google": "^0.3.0",
     "pg": "~2.11.1",
     "sequelize": "~1.7.0"
   },
