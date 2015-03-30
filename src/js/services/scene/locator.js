@@ -4,6 +4,18 @@ angular.module('VirtualBookshelf')
 
 	var debugEnabled = false;
 
+	locator.centerObject = function(obj) {
+		var targetBB = obj.geometry.boundingBox;
+		var spaceBB = environment.library.geometry.boundingBox;
+
+		var matrixPrecision = new THREE.Vector3(targetBB.max.x - targetBB.min.x + 0.01, 0, targetBB.max.z - targetBB.min.z + 0.01);
+		var occupiedMatrix = getOccupiedMatrix(environment.library.children, matrixPrecision, obj);
+		var freePosition = getFreeMatrix(occupiedMatrix, spaceBB, targetBB, matrixPrecision);		
+
+		obj.position.setX(freePosition.x);
+		obj.position.setZ(freePosition.z);
+	};
+
 	locator.placeSection = function(sectionDto) {
 		var promise = cache.getSection(sectionDto.model).then(function (sectionCache) {
 			var sectionBB = sectionCache.geometry.boundingBox;
@@ -85,6 +97,40 @@ angular.module('VirtualBookshelf')
 		return freePosition;
 	};
 
+	var getFreeMatrix = function(occupiedMatrix, spaceBB, targetBB, matrixPrecision) {
+		var DISTANCE = 1.3;
+
+		var xIndex;
+		var zIndex;
+		var position = {};
+		var minPosition = {};
+
+		var minXCell = Math.floor(spaceBB.min.x / matrixPrecision.x) + 1;
+		var maxXCell = Math.floor(spaceBB.max.x / matrixPrecision.x);
+		var minZCell = Math.floor(spaceBB.min.z / matrixPrecision.z) + 1;
+		var maxZCell = Math.floor(spaceBB.max.z / matrixPrecision.z);
+
+		for (zIndex = minZCell; zIndex <= maxZCell; zIndex++) {
+			for (xIndex = minXCell; xIndex <= maxXCell; xIndex++) {
+				if (!occupiedMatrix[zIndex] || !occupiedMatrix[zIndex][xIndex]) {
+					position.pos = getPositionFromCells([xIndex], zIndex, matrixPrecision, spaceBB, targetBB);
+					position.length = position.pos.length();
+
+					if(!minPosition.pos || position.length < minPosition.length) {
+						minPosition.pos = position.pos;
+						minPosition.length = position.length;
+					}
+
+					if(minPosition.pos && minPosition.length < DISTANCE) {
+						return minPosition.pos;
+					}
+				}
+			}
+		}
+
+		return minPosition.pos;
+	};
+
 	var getFreeMatrixCells = function(occupiedMatrix, spaceBB, targetBB, matrixPrecision) {
 		var targetCellsSize = 1;
 		var freeCellsCount = 0;
@@ -132,18 +178,18 @@ angular.module('VirtualBookshelf')
 		return spaceBB.min.y - targetBB.min.y + environment.CLEARANCE;
 	};
 
-	var getOccupiedMatrix = function(objects, matrixPrecision) {
+	var getOccupiedMatrix = function(objects, matrixPrecision, obj) {
 		var result = {};
 		var objectBB;
 		var minKeyX;
 		var maxKeyX;
 		var minKeyZ;
 		var maxKeyZ;		
-		var z;
+		var z, x;
 
-		objects.forEach(function (obj) {
-			if(obj instanceof BaseObject) {
-				objectBB = obj.boundingBox;
+		objects.forEach(function (child) {
+			if(child instanceof BaseObject && child !== obj) {
+				objectBB = child.boundingBox;
 
 				minKeyX = Math.round((objectBB.center.x - objectBB.radius.x) / matrixPrecision.x);
 				maxKeyX = Math.round((objectBB.center.x + objectBB.radius.x) / matrixPrecision.x);
@@ -152,12 +198,16 @@ angular.module('VirtualBookshelf')
 
 				for(z = minKeyZ; z <= maxKeyZ; z++) {
 					result[z] = result[z] || {};
-					result[z][minKeyX] = true;
-					result[z][maxKeyX] = true;
+					var debugCells = [];
+
+					for(x = minKeyX; x <= maxKeyX; x++) {
+						result[z][x] = true;
+						debugCells.push(x);
+					}
 
 					if(debugEnabled) {
-						debugShowBB(obj);
-						debugAddOccupied([minKeyX, maxKeyX], matrixPrecision, obj, z);
+						debugShowBB(child);
+						debugAddOccupied(debugCells, matrixPrecision, child, z);
 					}
 				}
 			}
@@ -171,7 +221,7 @@ angular.module('VirtualBookshelf')
 			debugEnabled = true;
 			var sectionBB = sectionCache.geometry.boundingBox;
 			var libraryBB = environment.library.geometry.boundingBox;
-			var freePlace = getFreePlace(environment.library.children, libraryBB, sectionBB);
+			getFreePlace(environment.library.children, libraryBB, sectionBB);
 			debugEnabled = false;
 		});
 	};
@@ -200,7 +250,6 @@ angular.module('VirtualBookshelf')
 
 	var debugAddOccupied = function(cells, matrixPrecision, obj, zKey) {
 		cells.forEach(function (cell) {
-			obj.geometry.computeBoundingBox();
 			var pos = getPositionFromCells([cell], zKey, matrixPrecision, obj.parent.geometry.boundingBox, obj.geometry.boundingBox);
 			var cellBox = new THREE.Mesh(new THREE.CubeGeometry(matrixPrecision.x - 0.01, 0.01, matrixPrecision.z - 0.01), new THREE.MeshLambertMaterial({color: 0xff0000}));
 			

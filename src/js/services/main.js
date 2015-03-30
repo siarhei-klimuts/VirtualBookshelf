@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('main', function ($log, $q, camera, controls, user, environment, tools, navigation, authorization, block) {	
+.factory('main', function ($log, $q, camera, controls, user, environment, tools, navigation, authorization, block, locator) {	
 	var canvas;
 	var renderer;
 	
@@ -26,6 +26,7 @@ angular.module('VirtualBookshelf')
 			$log.error(error);
 			//TODO: show error message  
 		}).finally(function () {
+			locator.centerObject(camera.object);
 			environment.setLoaded(true);
 			block.global.stop();
 		});		
