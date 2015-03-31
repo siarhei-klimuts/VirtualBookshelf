@@ -23,6 +23,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 passport.use(auth.authGoogle(app.get('host')));
+passport.use(auth.authTwitter(app.get('host')));
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
@@ -58,7 +59,12 @@ app.get('/auth/close', routes.page);
 app.get('/auth/google', passport.authenticate('google', { 
     scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] 
 }));
+app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/google/return', passport.authenticate('google', {
+    failureRedirect: '/auth/close', 
+    successRedirect: '/auth/close'
+}));
+app.get('/auth/twitter/return', passport.authenticate('twitter', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
 }));
@@ -106,6 +112,7 @@ function requireRole(role) {
 }
 
 function isAuthorized(req, res, next) {
+    //req.isAuthenticated()
     if(req.user) {
         next();
     } else {

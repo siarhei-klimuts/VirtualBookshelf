@@ -12,8 +12,8 @@ angular.module('VirtualBookshelf')
 		return !user.isAuthorized() && user.isLoaded();
 	};
 
-	authorization.google = function() {
-		var win = $window.open('/auth/google', '', 'width=800,height=600,modal=yes,alwaysRaised=yes');
+	var login = function(link) {
+		var win = $window.open(link, '', 'width=800,height=600,modal=yes,alwaysRaised=yes');
 	    var checkAuthWindow = $interval(function () {
 	        if (win && win.closed) {
 	        	$interval.cancel(checkAuthWindow);
@@ -29,6 +29,15 @@ angular.module('VirtualBookshelf')
 	        	});
 	        }
 	    }, 100);
+	};
+
+
+	authorization.google = function() {
+		login('/auth/google');
+	};
+
+	authorization.twitter = function() {
+		login('/auth/twitter');
 	};
 
 	authorization.logout = function() {

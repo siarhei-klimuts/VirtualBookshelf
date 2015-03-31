@@ -3,4 +3,8 @@ angular.module('VirtualBookshelf')
 	this.loginGoogle = function() {
 		authorization.google();
 	};
+
+	this.loginTwitter = function() {
+		authorization.twitter();
+	};
 });

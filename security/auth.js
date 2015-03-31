@@ -1,5 +1,7 @@
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
-var models = require('../models');
+var TwitterStrategy = require('passport-twitter').Strategy;
+
+var User = require('../models').User;
 
 exports.authGoogle = function(host) {
 	var result = new GoogleStrategy({
@@ -11,14 +13,25 @@ exports.authGoogle = function(host) {
 	return result;
 };
 
+exports.authTwitter = function(host) {
+	var result = new TwitterStrategy({
+	    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+	    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+	    callbackURL: host + '/auth/twitter/return'
+	}, authCallback);
+
+	return result;
+};
+
 function authCallback(accessToken, refreshToken, profile, done) {
+	console.log(profile);
     var email = profile && profile.emails[0] && profile.emails[0].value;
 
-	models.User.findOrCreate({email: email}, {}, {raw: true})
-	.success(function(result) {
+	User.findOrCreate({email: email}, {}, {raw: true}).then(function (result) {
+    process.nextTick(function () {
 		done(null, result);
-	})
-	.failure(function(err) {
-		done(err, null);
+	});
+	}).catch(function (error) {
+		done(error, null);
 	});
 }
