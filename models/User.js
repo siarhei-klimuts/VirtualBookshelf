@@ -1,14 +1,17 @@
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('user', {
 		email: DataTypes.STRING,
-		position: DataTypes.ARRAY(DataTypes.FLOAT)
+		name: DataTypes.STRING,
+		googleId: DataTypes.STRING,
+		twitterId: DataTypes.STRING,
+		temporary: DataTypes.BOOLEAN,
 	}, {
 		timestamps: false,
 		classMethods: {
     		getUser: function(id, done) {
 				this.find({
 					where: {id: id}, 
-					attributes: ['id', 'position']
+					attributes: ['id', 'name', 'email', 'temporary']
 				}, {raw: true})
 				.success(function (result) {
 			  		done(null, result);
@@ -17,21 +20,11 @@ module.exports = function(sequelize, DataTypes) {
 			  		done(err, null);
 				});
     		},
-    		saveUser: function(dataObject, done) {
-				this.find(dataObject.id)
-				.success(function (result) {
-					result.updateAttributes(dataObject, ['position'])
-					.success(function (result) {
-						done(null, result);
-					})
-					.failure(function (err) {
-						done(err, null);
-					});
-				})
-				.failure(function (err) {
-					done(err, null);
+    		saveUser: function(dto) {
+				return this.find(dto.id).then(function (user) {
+					return user.updateAttributes(dto, ['name', 'email', 'temporary']);
 				});
     		}
 		}
 	});
-} 
+};

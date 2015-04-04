@@ -1,12 +1,11 @@
 angular.module('VirtualBookshelf')
-.factory('catalog', function ($q, data, user, block) {
+.factory('catalog', function ($q, data, block) {
 	var catalog = {};
 
 	catalog.books = null;
 
-	catalog.loadBooks = function() {
+	catalog.loadBooks = function(userId) {
 		var promise;
-		var userId = user.getId();
 
 		if(userId) {
 			block.inventory.start();

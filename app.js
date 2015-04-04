@@ -24,13 +24,6 @@ app.set('view engine', 'ejs');
 
 passport.use(auth.authGoogle(app.get('host')));
 passport.use(auth.authTwitter(app.get('host')));
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function (id, done) {
-    done(null, {id: id});
-});
 
 app.disable('x-powered-by');
 app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
@@ -60,11 +53,11 @@ app.get('/auth/google', passport.authenticate('google', {
     scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] 
 }));
 app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get('/auth/google/return', passport.authenticate('google', {
+app.get(auth.CALLBACK_PATH_GOOGLE, passport.authenticate('google', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
 }));
-app.get('/auth/twitter/return', passport.authenticate('twitter', {
+app.get(auth.CALLBACK_PATH_TWITTER, passport.authenticate('twitter', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
 }));
@@ -89,7 +82,8 @@ app.delete('/book/:id', isAuthorized, routes.book.deleteBook);
 app.post('/feedback', routes.feedback.postFeedback);
 
 app.get('/user', isAuthorized, routes.user.getUser, respondJSON);
-app.put('/user', isAuthorized, routes.user.putUser, respondJSON);
+app.put('/user', auth.isAuthenticated(true), routes.user.putUser);
+app.delete('/user/:id', auth.isAuthenticated(true), routes.user.deleteUser);
 
 models.init(function(err) {
     if(!err) {
@@ -101,18 +95,7 @@ models.init(function(err) {
     }
 });
 
-function requireRole(role) {
-    return function(req, res, next) {
-        if(req.session.user && req.session.user.role === role) {
-            next();
-        } else {
-            res.send(403);
-        }
-    };
-}
-
 function isAuthorized(req, res, next) {
-    //req.isAuthenticated()
     if(req.user) {
         next();
     } else {

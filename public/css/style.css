@@ -11,18 +11,27 @@ canvas#LIBRARY {
 	display: block; 
 }
 p, label {
-	color: #C5DEBF;
 	font-size: 14pt;
 	margin: 0;
 	margin-bottom: 5px;
 }
+label, h1, h2, h3 {
+	color: mediumseagreen;
+}
+p {
+	color: #C5DEBF;
+}
 a {
 	color: #9582FF;
+	font-size: 14pt;
 	text-decoration: none;
 	cursor: pointer;
 }
 table {
 	width: 100%;
+}
+.header {
+	margin-top: 0px;
 }
 .uiPanel {
 	cursor: default;
@@ -39,6 +48,10 @@ table {
 	border-radius: 20px;
 	background: linear-gradient(to bottom, rgba(50,50,50,0.7) 0%,rgba(0,0,0,0.7) 100%);
 }
+.ngdialog-content {
+	background: linear-gradient(to bottom, rgba(50,50,50,0.9) 0%,rgba(0,0,0,0.9) 100%);
+}
+
 .uiPanel {
 	margin: 10px;
 	padding: 15px;
@@ -127,6 +140,15 @@ table {
 .welcomeControl:hover {
 	background-color: rgba(20, 100, 20, 0.4);
 }
+.loginPage {
+	text-align: center;
+}
+.loginPage .fa {
+	margin: 10px;
+}
+.registration > table {
+	margin: 10px 0px 10px 0px;
+}
 span.fa {
 	color: lightgreen;
 	cursor: default;
@@ -145,6 +167,7 @@ i.fa {
 .mainMenuButton {
 	float: left;
 }
+
 .submitButton {
 	float: right;
 	margin-left: 20px;
@@ -152,7 +175,20 @@ i.fa {
 .submitButton > span.fa {
 	margin-left: 10px; 
 }
-input[type="text"], textarea {
+
+.button {
+	display: inline-block;
+	padding: 6px 12px;
+	color: lightgreen;
+	background-color: rgba(20, 70, 20, 0.4); 
+	border-radius: 8px;
+	cursor: pointer;
+}
+.button:hover {
+	background-color: rgba(20, 100, 20, 0.4);
+}
+
+input[type="text"], input[type="email"], textarea {
 	display: block;
 	font-size: large;
 	width: 100%;
@@ -161,6 +197,7 @@ input[type="text"], textarea {
   	outline: none;
 	background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(50,50,50,0.5) 100%);
   	color: #C5DEBF;
+  	text-indent: 5px;
 }
 ul {
 	margin: 0;

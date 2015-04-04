@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('tools', function ($q, BookObject, SectionObject, data, selector, dialog, block, catalog, environment, preview) {
+.factory('tools', function ($q, BookObject, SectionObject, data, selector, dialog, block, catalog, environment, preview, user) {
 	var tools = {};
 
 	var ROTATION_SCALE = 1;
@@ -18,7 +18,7 @@ angular.module('VirtualBookshelf')
 
 				deleteObject(obj).then(function () {
 					selector.unselect();
-					return catalog.loadBooks();
+					return catalog.loadBooks(user.getId());
 				}).catch(function () {
 					dialog.openError('Error deleting object.');
 				}).finally(function () {

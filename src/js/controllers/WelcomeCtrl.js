@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.controller('WelcomeCtrl', function (authorization, selectLibrary, createLibrary, environment) {
+.controller('WelcomeCtrl', function (authorization, selectLibrary, createLibrary, environment, user) {
 	var closed = false;
 
 	this.isShowAuthorization = function() {
@@ -7,7 +7,7 @@ angular.module('VirtualBookshelf')
 	};
 	
 	this.isShowSelectLibrary = function() {
-		return selectLibrary.isAvailable() && !selectLibrary.isUserLibrary();
+		return selectLibrary.isAvailable() && !selectLibrary.isUserLibrary(user.getId());
 	};
 
 	this.isShowCreateLibrary = function() {

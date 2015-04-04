@@ -52,6 +52,14 @@ angular.module('VirtualBookshelf')
 		return $http.get('/user');
 	};
 
+	data.putUser = function(dto) {
+		return $http.put('/user', dto);
+	};
+
+	data.deleteUser = function(id) {
+		return $http.delete('/user/' + id);
+	};
+
 	data.getUserBooks = function(userId) {
 		return $http.get('/freeBooks/' + userId).then(function (res) {
 			return res.data;

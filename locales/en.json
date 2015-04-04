@@ -1,4 +1,6 @@
 {
+	"page.keywords": "personal library, books collection, 3d bookshelf, virtual library, 3d library, books, collect books, book collecting, virtual books, virtual bookshelf",
+	"page.description": "The Library is a personal 3D library for your book collections. Here you can create a room, place bookshelves and fill them with your books.",
 	"ui.login.header": "Select how do you want to login",
 	"ui.library.create.text": "You have no libraries. Do you want to create one?",
 	"ui.library.create.select.label": "Select enviroment model for your library.",
@@ -35,6 +37,10 @@
 	"ui.welcome.header": "Welcome to The Library",
 	"ui.welcome.description": "The Library is a personal 3D library for your book collections. Here you can create a room, place bookshelves and fill them with your books. This is a good possibility if you want to show your collections to friends.",
 	"ui.welcome.login": "You are not logged in. Please login.",
-	"page.keywords": "personal library, books collection, 3d bookshelf, virtual library, 3d library, books, collect books, book collecting, virtual books, virtual bookshelf",
-	"page.description": "The Library is a personal 3D library for your book collections. Here you can create a room, place bookshelves and fill them with your books."
+	"ui.registration.header": "Create new account",
+	"ui.registration.text": "You are creating a new account. Edit your data and click \"Save\". If you already have an account, then click \"Cancel\" and authorize using an existing account.",
+	"ui.registration.name": "Name:",
+	"ui.registration.email": "Email:",
+	"ui.registration.save": "Save",
+	"ui.registration.cancel": "Cancel"
 }

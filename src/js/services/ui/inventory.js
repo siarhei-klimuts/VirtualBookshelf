@@ -37,7 +37,7 @@ angular.module('VirtualBookshelf')
 				}
 
 				environment.removeBook(book.id);
-				return catalog.loadBooks();
+				return catalog.loadBooks(user.getId());
 			}).catch(function () {
 				dialog.openError('Delete book error.');
 			}).finally(function () {
@@ -55,7 +55,7 @@ angular.module('VirtualBookshelf')
 		block.inventory.start();
 		promise = isBookPlaced ? locator.unplaceBook(book) : locator.placeBook(book);
 		promise.then(function () {
-			return catalog.loadBooks();
+			return catalog.loadBooks(user.getId());
 		}).catch(function (error) {
 			//TODO: show an error
 			$log.error(error);

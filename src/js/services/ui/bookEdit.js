@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('bookEdit', function ($log, data, environment, block, dialog, archive, catalog, selector) {
+.factory('bookEdit', function ($log, data, environment, block, dialog, archive, catalog, selector, user) {
 	var bookEdit = {};
 
 	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
@@ -88,7 +88,7 @@ angular.module('VirtualBookshelf')
 
 			environment.updateBook(dto);
 			scope.cancel();
-			return catalog.loadBooks();
+			return catalog.loadBooks(user.getId());
 		}).catch(function () {
 			$log.error('Book save error');
 			//TODO: show error

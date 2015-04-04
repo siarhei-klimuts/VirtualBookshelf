@@ -1,5 +1,5 @@
-<div ng-controller="AuthCtrl as auth" class="ngdialog-message">
+<div ng-controller="AuthCtrl as auth" class="loginPage">
 	<p><%= __('ui.login.header') %></p>
-	<img src="/img/google.png" ng-click="auth.loginGoogle(); closeThisDialog();"/>
-	<img src="/img/google.png" ng-click="auth.loginTwitter(); closeThisDialog();"/>
+	<span ng-click="auth.loginGoogle(); closeThisDialog();" class="fa fa-google fa-2x"></span>
+	<span ng-click="auth.loginTwitter(); closeThisDialog();" class="fa fa-twitter fa-2x"></span>
 </div>

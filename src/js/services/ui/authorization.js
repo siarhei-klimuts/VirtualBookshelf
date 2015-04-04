@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('authorization', function ($log, $q, $window, $interval, user, selectLibrary, catalog, environment, ngDialog) {
+.factory('authorization', function ($log, $q, $window, $interval, user, environment, registration, userData, block, ngDialog) {
 	var authorization = {};
 
 	authorization.show = function() {
@@ -13,6 +13,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	var login = function(link) {
+		block.global.start();
 		var win = $window.open(link, '', 'width=800,height=600,modal=yes,alwaysRaised=yes');
 	    var checkAuthWindow = $interval(function () {
 	        if (win && win.closed) {
@@ -20,9 +21,10 @@ angular.module('VirtualBookshelf')
 
 	        	environment.setLoaded(false);
 	        	user.load().then(function () {
-	        		return authorization.loadUserData();
+	        		return user.isTemporary() ? registration.show() : userData.load();
 	        	}).finally(function () {
 	        		environment.setLoaded(true);
+	        		block.global.stop();
 	        	}).catch(function () {
 	        		$log.log('User loadind error');
 					//TODO: show error message  
@@ -30,7 +32,6 @@ angular.module('VirtualBookshelf')
 	        }
 	    }, 100);
 	};
-
 
 	authorization.google = function() {
 		login('/auth/google');
@@ -43,20 +44,13 @@ angular.module('VirtualBookshelf')
 	authorization.logout = function() {
     	environment.setLoaded(false);
 		user.logout().finally(function () {
-    		return authorization.loadUserData();
+    		return userData.load();
 		}).finally(function () {
         	environment.setLoaded(true);
 		}).catch(function () {
 			$log.error('Logout error');
 			//TODO: show an error
 		});
-	};
-
-	authorization.loadUserData = function() {
-		return $q.all([
-			selectLibrary.updateList(), 
-			catalog.loadBooks()
-		]);
 	};
 	
 	return authorization;
