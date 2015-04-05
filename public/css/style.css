@@ -107,11 +107,8 @@ table {
     right: 0;
     bottom: 0;
 }
-.search { 
-	position: relative;
-}
 .search input { 
-	text-indent: 25px;
+	text-indent: 25px!important;
 	margin-bottom: 5px; 
 }
 .search .fa-search { 
