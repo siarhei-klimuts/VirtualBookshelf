@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>The Library</title>
+		<title><%= __('page.title') %></title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="keywords" content="<%= __('page.keywords') %>">
@@ -17,9 +17,8 @@
 		<link rel="stylesheet" type="text/css" href="/js/angular/ngDialog/ngDialog.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/angular/ngDialog/ngDialog-theme-default.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/style.css">
-
-
 	</head>
+
 	<body ng-app="VirtualBookshelf" ng-controller="UiCtrl" block-ui="global" ng-cloak>
 		<canvas id="LIBRARY"></canvas>
 		

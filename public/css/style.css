@@ -140,12 +140,30 @@ table {
 .welcomeControl:hover {
 	background-color: rgba(20, 100, 20, 0.4);
 }
-.loginPage {
+
+ul.loginProviders {
 	text-align: center;
+	margin-bottom: 20px;
 }
-.loginPage .fa {
-	margin: 10px;
+ul.loginProviders > li {
+	display: inline-block;
+	cursor: pointer;
+	background-color: rgba(20, 70, 20, 0.4); 
 }
+ul.loginProviders > li:hover {
+	background-color: rgba(20, 100, 20, 0.4);
+}
+ul.loginProviders > li > .fa {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+    text-align: center;
+    vertical-align: bottom;
+	font-size: 40px;
+	margin: 0px;
+}
+
 .registration > table {
 	margin: 10px 0px 10px 0px;
 }

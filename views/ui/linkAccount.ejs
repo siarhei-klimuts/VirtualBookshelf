@@ -1,0 +1,14 @@
+<div ng-controller="LinkAccountCtrl as linkAccount">
+	<h2 class="header"><%= __('ui.linkAccount.header') %></h2>
+	<p ng-show="linkAccount.isAvailable()"><%= __('ui.linkAccount.text') %></p>
+	<p ng-hide="linkAccount.isAvailable()"><%= __('ui.linkAccount.unavailable') %></p>
+
+	<ul class="loginProviders">
+		<li ng-click="linkAccount.linkGoogle();" ng-show="linkAccount.isGoogleShow()"><i class="fa fa-google"></i></li>
+		<li ng-click="linkAccount.linkTwitter();" ng-show="linkAccount.isTwitterShow()"><i class="fa fa-twitter"></i></li>
+	</ul>
+
+	<a ng-click="closeThisDialog()" class="button submitButton">
+		<i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %>
+	</a>
+</div>

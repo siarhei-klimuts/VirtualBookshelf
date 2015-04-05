@@ -1,7 +1,10 @@
 {
+	"page.title": "The Library",
 	"page.keywords": "personal library, books collection, 3d bookshelf, virtual library, 3d library, books, collect books, book collecting, virtual books, virtual bookshelf",
 	"page.description": "The Library is a personal 3D library for your book collections. Here you can create a room, place bookshelves and fill them with your books.",
-	"ui.login.header": "Select how do you want to login",
+	"ui.dialog.close": "Close",
+	"ui.login.header": "Login",
+	"ui.login.text": "Select how do you want to login.",
 	"ui.library.create.text": "You have no libraries. Do you want to create one?",
 	"ui.library.create.select.label": "Select enviroment model for your library.",
 	"ui.library.select.text": "Select library which you want to go.",
@@ -30,6 +33,7 @@
 	"ui.menuItem.login": "Login",
 	"ui.menuItem.logout": "Logout",
 	"ui.menuItem.leaveFeedback": "Leave feedback",
+	"ui.menuItem.linkAccount": "Add a login",
 	"ui.tools.rotate": "Rotate",
 	"ui.tools.delete": "Delete",
 	"ui.tools.watch": "Watch",
@@ -38,9 +42,12 @@
 	"ui.welcome.description": "The Library is a personal 3D library for your book collections. Here you can create a room, place bookshelves and fill them with your books. This is a good possibility if you want to show your collections to friends.",
 	"ui.welcome.login": "You are not logged in. Please login.",
 	"ui.registration.header": "Create new account",
-	"ui.registration.text": "You are creating a new account. Edit your data and click \"Save\". If you already have an account, then click \"Cancel\" and authorize using an existing account.",
+	"ui.registration.text": "You are creating a new account. Edit your data and click \"Save\". If you already have an account, then click \"Cancel\" and authorize using an existing account. You can add this login to an existing account through menu \"Add a login\".",
 	"ui.registration.name": "Name:",
 	"ui.registration.email": "Email:",
 	"ui.registration.save": "Save",
-	"ui.registration.cancel": "Cancel"
+	"ui.registration.cancel": "Cancel",
+	"ui.linkAccount.header": "Add a login",
+	"ui.linkAccount.text": "Select a provider which you want to add to your current account.",
+	"ui.linkAccount.unavailable": "There is no available provider."
 }

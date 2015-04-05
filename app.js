@@ -53,11 +53,11 @@ app.get('/auth/google', passport.authenticate('google', {
     scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] 
 }));
 app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get(auth.CALLBACK_PATH_GOOGLE, passport.authenticate('google', {
+app.get(auth.PROVIDERS.google.callbackURL, passport.authenticate('google', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
 }));
-app.get(auth.CALLBACK_PATH_TWITTER, passport.authenticate('twitter', {
+app.get(auth.PROVIDERS.twitter.callbackURL, passport.authenticate('twitter', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
 }));

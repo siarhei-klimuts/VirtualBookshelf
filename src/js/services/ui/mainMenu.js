@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('mainMenu', function ($log, data, bookEdit, feedback, selectLibrary, createLibrary, createSection) {
+.factory('mainMenu', function ($log, data, bookEdit, feedback, selectLibrary, createLibrary, createSection, linkAccount, authorization) {
 	var mainMenu = {};
 	
 	var show = false;
@@ -65,6 +65,14 @@ angular.module('VirtualBookshelf')
 	mainMenu.showCreateSection = function() {
 		mainMenu.hideAll();
 		createSection.show();
+	};
+
+	mainMenu.showLinkAccount = function() {
+		linkAccount.show();
+	};
+
+	mainMenu.isLinkAccountAvailable = function() {
+		return !authorization.isShow() && linkAccount.isAvailable();
 	};
 
 	var init = function() {

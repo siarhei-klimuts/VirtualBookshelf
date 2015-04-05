@@ -5,11 +5,22 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var Sequelize = require('sequelize');
 var User = require('../models').User;
 
-var CALLBACK_PATH_GOOGLE = '/auth/google/return';
-var CALLBACK_PATH_TWITTER = '/auth/twitter/return';
+var PROVIDERS = {
+	google: {
+		field: 'googleId',
+		clientID: process.env.GOOGLE_CLIENT_ID,
+		clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+		callbackURL: '/auth/google/return'
+	},
+	twitter: {
+		field: 'twitterId',
+		clientID: process.env.TWITTER_CONSUMER_KEY,
+		clientSecret: process.env.TWITTER_CONSUMER_SECRET,
+		callbackURL: '/auth/twitter/return'
+	}
+};
 
-exports.CALLBACK_PATH_GOOGLE = CALLBACK_PATH_GOOGLE;
-exports.CALLBACK_PATH_TWITTER = CALLBACK_PATH_TWITTER;
+exports.PROVIDERS = PROVIDERS;
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
@@ -33,11 +44,17 @@ exports.isAuthenticated = function(allowTemporary) {
 
 exports.authGoogle = function(host) {
 	var result = new GoogleStrategy({
-	    clientID: process.env.GOOGLE_CLIENT_ID,
-	    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	    callbackURL: host + CALLBACK_PATH_GOOGLE
-	}, function (accessToken, refreshToken, profile, done) {
-		auth(profile.id, null, profile.displayName, profile.email, done);
+	    clientID: PROVIDERS.google.clientID,
+	    clientSecret: PROVIDERS.google.clientSecret,
+	    callbackURL: host + PROVIDERS.google.callbackURL,
+    	passReqToCallback: true
+	}, function (req, accessToken, refreshToken, profile, done) {
+		var params = {};
+		params.name = profile.displayName;
+		params.email = profile.email;
+		params[PROVIDERS.google.field] = profile.id;
+
+		auth(params, req, done);
 	});
 
 	return result;
@@ -45,44 +62,96 @@ exports.authGoogle = function(host) {
 
 exports.authTwitter = function(host) {
 	var result = new TwitterStrategy({
-	    consumerKey: process.env.TWITTER_CONSUMER_KEY,
-	    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-	    callbackURL: host + CALLBACK_PATH_TWITTER
-	}, function (accessToken, refreshToken, profile, done) {
-		auth(null, profile.id, profile.displayName, null, done);
+	    consumerKey: PROVIDERS.twitter.clientID,
+	    consumerSecret: PROVIDERS.twitter.clientSecret,
+	    callbackURL: host + PROVIDERS.twitter.callbackURL,
+    	passReqToCallback: true
+	}, function (req, accessToken, refreshToken, profile, done) {
+		var params = {};
+		params.name = profile.displayName;
+		params[PROVIDERS.twitter.field] = profile.id;
+
+		auth(params, req, done);
 	});
 
 	return result;
 };
 
-function auth(googleId, twitterId, name, email, done) {
-	var defaults = {
-		name: name,
-		email: email,
-		googleId: googleId,
-		twitterId: twitterId,
-		temporary: true
-	};
+function auth(params, req, done) {
+	if(!req.user || req.user.temporary) params.temporary = true;
+	
+	(!params.temporary ? link(req.user, params) : authorize(params)).then(function (user) {
+		done(null, user);
+	}).catch(function (error) {
+		done(error, null);
+	});
+}
 
-	var condition =	googleId ? 
+function getConditionFromParams(params) {
+	var result = {};
+	var key;
+	var field;
+
+	for(key in PROVIDERS) {
+		field = PROVIDERS[key].field;
+
+		if(params[field]) {
+			result[field] = params[field];
+			break;
+		}
+	}
+
+	return result;
+}
+
+function authorize(params) {
+	var condition =	params.googleId ? 
 		Sequelize.or(
-			{email: email},
-			{googleId: googleId}
-		) :	
-		{twitterId: twitterId};
+			{email: params.email},
+			{googleId: params.googleId}
+		) :	getConditionFromParams(params);
 
-	User.findOrCreate(condition, defaults).then(function (user) {
-		if(googleId && !user.googleId) {
-			user.googleId = googleId;
-			if(!user.name) user.name = name;
+	return User.findOrCreate(condition, params).then(function (user) {
+		if(params.googleId && !user.googleId) {
+			user.googleId = params.googleId;
+			if(!user.name) user.name = params.name;
 
 			return user.save(); 
 		} else {
 			return user;
 		}
-	}).then(function (user) {
-		done(null, user);
-	}).catch(function (error) {
-		done(error, null);
 	});
+}
+
+/*
+ * Links a provider from params to an already authorized user.
+ * To avoid dublication, method searches all accounts with
+ * provider id from params included account with authorized
+ * user id. And if it returns more than one user, then not
+ * link provider to account
+ */
+function link(sessionUser, params) {
+	var condition = {where: Sequelize.or(
+		{id: sessionUser.id},
+		getConditionFromParams(params)
+	)};
+
+	return User.findAll(condition).then(function (users) {
+		var user = users.length === 1 ? users[0] : null;
+
+		if(user && user.id === sessionUser.id) {
+			mergeUser(user, params);
+			return user.save();
+		} else {
+			return sessionUser;
+		}
+	});
+}
+
+function mergeUser(user, params) {
+	var field;
+
+	for(field in params) {
+		if(!user[field]) user[field] = params[field];
+	}
 }

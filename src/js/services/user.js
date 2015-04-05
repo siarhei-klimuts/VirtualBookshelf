@@ -58,5 +58,13 @@ angular.module('VirtualBookshelf')
 		return Boolean(_dataObject && _dataObject.temporary);
 	};
 
+	user.isGoogle = function() {
+		return Boolean(_dataObject && _dataObject.googleId);
+	};
+
+	user.isTwitter = function() {
+		return Boolean(_dataObject && _dataObject.twitterId);
+	};
+
 	return user;
 });

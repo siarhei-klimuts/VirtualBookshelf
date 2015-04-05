@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     		getUser: function(id, done) {
 				this.find({
 					where: {id: id}, 
-					attributes: ['id', 'name', 'email', 'temporary']
+					attributes: ['id', 'name', 'email', 'temporary', 'googleId', 'twitterId']
 				}, {raw: true})
 				.success(function (result) {
 			  		done(null, result);

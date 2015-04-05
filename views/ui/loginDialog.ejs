@@ -1,5 +1,13 @@
-<div ng-controller="AuthCtrl as auth" class="loginPage">
-	<p><%= __('ui.login.header') %></p>
-	<span ng-click="auth.loginGoogle(); closeThisDialog();" class="fa fa-google fa-2x"></span>
-	<span ng-click="auth.loginTwitter(); closeThisDialog();" class="fa fa-twitter fa-2x"></span>
+<div ng-controller="AuthCtrl as auth">
+	<h2 class="header"><%= __('ui.login.header') %></h2>
+	<p><%= __('ui.login.text') %></p>
+
+	<ul class="loginProviders">
+		<li ng-click="auth.loginGoogle(); closeThisDialog();"><i class="fa fa-google"></i></li>
+		<li ng-click="auth.loginTwitter(); closeThisDialog();"><i class="fa fa-twitter"></i></li>
+	</ul>
+
+	<a ng-click="closeThisDialog()" class="button submitButton">
+		<i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %>
+	</a>
 </div>
