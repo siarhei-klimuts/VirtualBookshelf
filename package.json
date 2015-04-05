@@ -1,6 +1,6 @@
 {
   "name": "VirtualBookshelf",
-  "version": "0.3.85",
+  "version": "0.3.86",
   "private": true,
   "scripts": {
     "start": "node app.js"
