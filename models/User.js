@@ -4,6 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 		name: DataTypes.STRING,
 		googleId: DataTypes.STRING,
 		twitterId: DataTypes.STRING,
+		facebookId: DataTypes.STRING,
 		temporary: DataTypes.BOOLEAN,
 	}, {
 		timestamps: false,
@@ -11,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     		getUser: function(id, done) {
 				this.find({
 					where: {id: id}, 
-					attributes: ['id', 'name', 'email', 'temporary', 'googleId', 'twitterId']
+					attributes: ['id', 'name', 'email', 'temporary', 'googleId', 'twitterId', 'facebookId']
 				}, {raw: true})
 				.success(function (result) {
 			  		done(null, result);

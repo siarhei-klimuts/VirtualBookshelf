@@ -1,6 +1,6 @@
 {
   "name": "VirtualBookshelf",
-  "version": "0.3.78",
+  "version": "0.3.83",
   "private": true,
   "scripts": {
     "start": "node app.js"
@@ -11,6 +11,7 @@
     "express": "3.4.7",
     "i18n": "~0.4.1",
     "passport": "~0.1.18",
+    "passport-facebook": "^2.0.0",
     "passport-google-oauth2": "^0.1.6",
     "passport-twitter": "^1.0.3",
     "pg": "~2.11.1",

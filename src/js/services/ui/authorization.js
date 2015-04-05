@@ -41,6 +41,10 @@ angular.module('VirtualBookshelf')
 		login('/auth/twitter');
 	};
 
+	authorization.facebook = function() {
+		login('/auth/facebook');
+	};
+
 	authorization.logout = function() {
     	environment.setLoaded(false);
 		user.logout().finally(function () {

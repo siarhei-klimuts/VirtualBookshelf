@@ -8,12 +8,20 @@ angular.module('VirtualBookshelf')
 		authorization.twitter();
 	};
 
+	this.linkFacebook = function() {
+		authorization.facebook();
+	};
+
 	this.isGoogleShow = function() {
 		return linkAccount.isGoogleShow();
 	};
 
 	this.isTwitterShow = function() {
 		return linkAccount.isTwitterShow();
+	};
+
+	this.isFacebookShow = function() {
+		return linkAccount.isFacebookShow();
 	};
 
 	this.isAvailable = function() {

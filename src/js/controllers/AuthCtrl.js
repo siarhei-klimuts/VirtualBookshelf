@@ -7,4 +7,8 @@ angular.module('VirtualBookshelf')
 	this.loginTwitter = function() {
 		authorization.twitter();
 	};
+
+	this.loginFacebook = function() {
+		authorization.facebook();
+	};
 });

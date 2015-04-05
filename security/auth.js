@@ -1,6 +1,7 @@
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 
 var Sequelize = require('sequelize');
 var User = require('../models').User;
@@ -17,6 +18,12 @@ var PROVIDERS = {
 		clientID: process.env.TWITTER_CONSUMER_KEY,
 		clientSecret: process.env.TWITTER_CONSUMER_SECRET,
 		callbackURL: '/auth/twitter/return'
+	},
+	facebook: {
+		field: 'facebookId',
+		clientID: process.env.FACEBOOK_APP_ID,
+		clientSecret: process.env.FACEBOOK_APP_SECRET,
+		callbackURL: '/auth/facebook/return'
 	}
 };
 
@@ -70,6 +77,23 @@ exports.authTwitter = function(host) {
 		var params = {};
 		params.name = profile.displayName;
 		params[PROVIDERS.twitter.field] = profile.id;
+
+		auth(params, req, done);
+	});
+
+	return result;
+};
+
+exports.authFacebook = function(host) {
+	var result = new FacebookStrategy({
+	    clientID: PROVIDERS.facebook.clientID,
+	    clientSecret: PROVIDERS.facebook.clientSecret,
+	    callbackURL: host + PROVIDERS.facebook.callbackURL,
+    	passReqToCallback: true
+	}, function (req, accessToken, refreshToken, profile, done) {
+		var params = {};
+		params.name = profile.displayName;
+		params[PROVIDERS.facebook.field] = profile.id;
 
 		auth(params, req, done);
 	});

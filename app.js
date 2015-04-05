@@ -24,6 +24,7 @@ app.set('view engine', 'ejs');
 
 passport.use(auth.authGoogle(app.get('host')));
 passport.use(auth.authTwitter(app.get('host')));
+passport.use(auth.authFacebook(app.get('host')));
 
 app.disable('x-powered-by');
 app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
@@ -53,11 +54,16 @@ app.get('/auth/google', passport.authenticate('google', {
     scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] 
 }));
 app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get(auth.PROVIDERS.google.callbackURL, passport.authenticate('google', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
 }));
 app.get(auth.PROVIDERS.twitter.callbackURL, passport.authenticate('twitter', {
+    failureRedirect: '/auth/close', 
+    successRedirect: '/auth/close'
+}));
+app.get(auth.PROVIDERS.facebook.callbackURL, passport.authenticate('facebook', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
 }));
