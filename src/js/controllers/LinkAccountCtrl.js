@@ -12,6 +12,10 @@ angular.module('VirtualBookshelf')
 		authorization.facebook();
 	};
 
+	this.linkVkontakte = function() {
+		authorization.vkontakte();
+	};
+
 	this.isGoogleShow = function() {
 		return linkAccount.isGoogleShow();
 	};
@@ -22,6 +26,10 @@ angular.module('VirtualBookshelf')
 
 	this.isFacebookShow = function() {
 		return linkAccount.isFacebookShow();
+	};
+
+	this.isVkontakteShow = function() {
+		return linkAccount.isVkontakteShow();
 	};
 
 	this.isAvailable = function() {

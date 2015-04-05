@@ -45,6 +45,10 @@ angular.module('VirtualBookshelf')
 		login('/auth/facebook');
 	};
 
+	authorization.vkontakte = function() {
+		login('/auth/vkontakte');
+	};
+
 	authorization.logout = function() {
     	environment.setLoaded(false);
 		user.logout().finally(function () {

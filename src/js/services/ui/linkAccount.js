@@ -20,8 +20,15 @@ angular.module('VirtualBookshelf')
 		return !user.isFacebook();
 	};
 
+	linkAccount.isVkontakteShow = function() {
+		return !user.isVkontakte();
+	};
+
 	linkAccount.isAvailable = function() {
-		return this.isGoogleShow() || this.isTwitterShow() || this.isFacebookShow();
+		return this.isGoogleShow() || 
+			this.isTwitterShow() || 
+			this.isFacebookShow() || 
+			this.isVkontakteShow();
 	};
 
 	return linkAccount;

@@ -2,6 +2,7 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var VkontakteStrategy = require('passport-vkontakte').Strategy;
 
 var Sequelize = require('sequelize');
 var User = require('../models').User;
@@ -24,6 +25,12 @@ var PROVIDERS = {
 		clientID: process.env.FACEBOOK_APP_ID,
 		clientSecret: process.env.FACEBOOK_APP_SECRET,
 		callbackURL: '/auth/facebook/return'
+	},
+	vkontakte: {
+		field: 'vkontakteId',
+		clientID: process.env.VKONTAKTE_APP_ID,
+		clientSecret: process.env.VKONTAKTE_APP_SECRET,
+		callbackURL: '/auth/vkontakte/return'
 	}
 };
 
@@ -94,6 +101,23 @@ exports.authFacebook = function(host) {
 		var params = {};
 		params.name = profile.displayName;
 		params[PROVIDERS.facebook.field] = profile.id;
+
+		auth(params, req, done);
+	});
+
+	return result;
+};
+
+exports.authVkontakte = function(host) {
+	var result = new VkontakteStrategy({
+	    clientID: PROVIDERS.vkontakte.clientID,
+	    clientSecret: PROVIDERS.vkontakte.clientSecret,
+	    callbackURL: host + PROVIDERS.vkontakte.callbackURL,
+    	passReqToCallback: true
+	}, function (req, accessToken, refreshToken, profile, done) {
+		var params = {};
+		params.name = profile.displayName;
+		params[PROVIDERS.vkontakte.field] = String(profile.id);
 
 		auth(params, req, done);
 	});

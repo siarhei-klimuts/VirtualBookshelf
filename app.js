@@ -25,6 +25,7 @@ app.set('view engine', 'ejs');
 passport.use(auth.authGoogle(app.get('host')));
 passport.use(auth.authTwitter(app.get('host')));
 passport.use(auth.authFacebook(app.get('host')));
+passport.use(auth.authVkontakte(app.get('host')));
 
 app.disable('x-powered-by');
 app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
@@ -55,6 +56,7 @@ app.get('/auth/google', passport.authenticate('google', {
 }));
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/vkontakte', passport.authenticate('vkontakte'));
 app.get(auth.PROVIDERS.google.callbackURL, passport.authenticate('google', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
@@ -64,6 +66,10 @@ app.get(auth.PROVIDERS.twitter.callbackURL, passport.authenticate('twitter', {
     successRedirect: '/auth/close'
 }));
 app.get(auth.PROVIDERS.facebook.callbackURL, passport.authenticate('facebook', {
+    failureRedirect: '/auth/close', 
+    successRedirect: '/auth/close'
+}));
+app.get(auth.PROVIDERS.vkontakte.callbackURL, passport.authenticate('vkontakte', {
     failureRedirect: '/auth/close', 
     successRedirect: '/auth/close'
 }));

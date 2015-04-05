@@ -11,4 +11,8 @@ angular.module('VirtualBookshelf')
 	this.loginFacebook = function() {
 		authorization.facebook();
 	};
+
+	this.loginVkontakte = function() {
+		authorization.vkontakte();
+	};
 });

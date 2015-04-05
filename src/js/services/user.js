@@ -70,5 +70,9 @@ angular.module('VirtualBookshelf')
 		return Boolean(_dataObject && _dataObject.facebookId);
 	};
 
+	user.isVkontakte = function() {
+		return Boolean(_dataObject && _dataObject.vkontakteId);
+	};
+
 	return user;
 });
