@@ -1,10 +1,11 @@
 var User = require('../models').User;
 
-exports.getUser = function(req, res, next) {
-	User.getUser(req.user.id, function(err, result) {
-		res.result = result;
-		next(err);
-	});
+exports.getUser = function(req, res) {
+	if(req.user) {
+		res.send(req.user);
+	} else {
+		res.send(403);
+	}
 };
 
 exports.putUser = function(req, res) {

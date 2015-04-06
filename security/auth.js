@@ -41,8 +41,10 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    User.getUser(id, function (error, user) {
-    	done(error, user);
+    User.find(id).then(function (user) {
+    	done(null, user);
+    }, function (error) {
+    	done(error, null);
     });
 });
 

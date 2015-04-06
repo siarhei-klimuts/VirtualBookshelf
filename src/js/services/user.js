@@ -9,8 +9,8 @@ angular.module('VirtualBookshelf')
 	user.load = function() {
 		var scope = this;
 
-		return data.getUser().then(function (res) {
-			scope.setDataObject(res.data);
+		return data.getUser().then(function (dto) {
+			scope.setDataObject(dto);
 			scope.setLibrary();
 			loaded = true;
 		});

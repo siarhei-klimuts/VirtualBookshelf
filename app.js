@@ -93,7 +93,7 @@ app.delete('/book/:id', isAuthorized, routes.book.deleteBook);
 
 app.post('/feedback', routes.feedback.postFeedback);
 
-app.get('/user', isAuthorized, routes.user.getUser, respondJSON);
+app.get('/user', auth.isAuthenticated(false), routes.user.getUser);
 app.put('/user', auth.isAuthenticated(true), routes.user.putUser);
 app.delete('/user/:id', auth.isAuthenticated(true), routes.user.deleteUser);
 

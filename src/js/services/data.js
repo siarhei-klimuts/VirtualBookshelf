@@ -49,7 +49,11 @@ angular.module('VirtualBookshelf')
     };
 
 	data.getUser = function() {
-		return $http.get('/user');
+		return $http.get('/user').then(function (res) {
+			return res.data;
+		}).catch(function () {
+			return null;
+		});
 	};
 
 	data.putUser = function(dto) {
