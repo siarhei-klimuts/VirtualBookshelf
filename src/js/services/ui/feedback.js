@@ -1,42 +1,22 @@
 angular.module('VirtualBookshelf')
-.factory('feedback', function (user, data, dialog) {
+.factory('feedback', function (data, dialog, ngDialog) {
 	var feedback = {};
-	var show = false;
+	var feedbackDialog;
 
-	feedback.message = null;
-
-	feedback.isShow = function() {
-		return show;
-	};
+	var PAGE_PATH = '/ui/feedback';
 
 	feedback.show = function() {
-		show = true;
+		feedbackDialog = ngDialog.open({template: PAGE_PATH});
 	};
 
-	feedback.hide = function() {
-		show = false;
-	};
-
-	feedback.submit = function() {
-		var dataObject;
-		
-		if(this.form.message.$valid) {
-			dialog.openConfirm('Send feedback?').then(function () {
-				dataObject = {
-					message: this.message,
-					userId: user.getId()
-				};
-
-				return data.postFeedback(dataObject).then(function () {
-					this.message = null;
-					feedback.hide();
-				}, function () {
-					dialog.openError('Can not send feedback because of an error.');
-				});
+	feedback.send = function(dto) {
+		dialog.openConfirm('Send feedback?').then(function () {
+			return data.postFeedback(dto).then(function () {
+				feedbackDialog.close();
+			}, function () {
+				dialog.openError('Can not send feedback because of an error.');
 			});
-		} else {
-			dialog.openError('Feedback field is required.');
-		}
+		});
 	};
 
 	return feedback;

@@ -30,9 +30,6 @@ a {
 table {
 	width: 100%;
 }
-.header {
-	margin-top: 0px;
-}
 .uiPanel {
 	cursor: default;
 	/*Text selection*/
@@ -179,9 +176,6 @@ i.fa {
 	left: 0;
 	bottom: 0;
 }
-.mainMenuButton {
-	float: left;
-}
 
 .submitButton {
 	float: right;
@@ -244,4 +238,12 @@ ul.pagination > li {
 }
 input.ng-invalid, textarea.ng-invalid, vb-select.ng-invalid ul {
 	border: solid red thin;
+}
+
+.ngdialog h2 {
+	margin-top: 0px;
+}
+.ngdialog .buttons {
+	float: right;
+	margin-top: 15px;
 }

@@ -35,8 +35,6 @@ angular.module('VirtualBookshelf')
 		mainMenu.hide();
 		mainMenu.createListHide();
 		createSection.hide();
-
-		feedback.hide();
 	};
 
 	mainMenu.trigger = function() {
@@ -68,6 +66,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	mainMenu.showLinkAccount = function() {
+		mainMenu.hideAll();
 		linkAccount.show();
 	};
 

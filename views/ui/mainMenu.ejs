@@ -32,15 +32,7 @@
 		</table>
 		
 		<span ng-click="createSection.create()" class="fa fa-check fa-2x submitButton"></span>
-	</div> 	
+	</div>
 
-	<form name="feedback.form" ng-show="feedback.isShow()">
-		<div>
-    		<p><%= __('ui.feedback.message') %></p>
-			<textarea name="message" ng-model="feedback.message" required></textarea>
-		</div>
-		<span ng-click="feedback.submit()" class="fa fa-check fa-2x submitButton"></span>
-	</form>
-
-	<span ng-click="mainMenu.trigger()" class="fa fa-sliders fa-2x mainMenuButton"></span>
+	<a ng-click="mainMenu.trigger()" class="button"><i class="fa fa-sliders fa-lg"></i><%= __('ui.menuItem.mainButton') %></a>
 </div>
