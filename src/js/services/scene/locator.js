@@ -43,7 +43,7 @@ angular.module('VirtualBookshelf')
 
 	locator.placeBook = function(bookDto) {
 		var promise;
-		var shelf = selector.isSelectedShelf() && selector.getSelectedObject();
+		var shelf = selector.isSelectedShelf() ? selector.getSelectedObject() : null;
 
 		if(shelf) {
 			promise = cache.getBook(bookDto.model).then(function (bookCache) {
@@ -79,6 +79,7 @@ angular.module('VirtualBookshelf')
 		bookDto.sectionId = null;
 
 		promise = data.postBook(bookDto).then(function () {
+			selector.unselect();
 			return environment.updateBook(bookDto);
 		});
 

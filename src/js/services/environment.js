@@ -35,9 +35,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	environment.goToLibrary = function(id) {
-		if(id) {
-			$window.location = '/' + id;
-		}
+		if(id) $window.location = '/' + id;
 	};
 
 	environment.setLoaded = function(value) {

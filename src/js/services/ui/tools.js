@@ -72,11 +72,13 @@ angular.module('VirtualBookshelf')
 	};
 
 	var rotate = function(scale) {
+		var obj;
+
 		if(preview.isActive()) {
 			preview.rotate(scale);
 		} else {
-			var obj = selector.getSelectedObject();
-			obj.rotate(scale);
+			obj = selector.getSelectedObject();
+			if(obj) obj.rotate(scale);
 		}
 	};
 

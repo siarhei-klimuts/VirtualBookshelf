@@ -47,7 +47,7 @@ angular.module('VirtualBookshelf')
 			if(selector.isSelectedEditable()) {
 				var obj = selector.getSelectedObject();
 
-				if(obj.changed) {
+				if(obj && obj.changed) {
 					block.global.start();
 					obj.save().catch(function () {
 						obj.rollback();
@@ -105,16 +105,19 @@ angular.module('VirtualBookshelf')
 
 		if(selector.isSelectedEditable()) {
 			selectedObject = selector.getSelectedObject();
-			mouseVector = camera.getVector();	
-			newPosition = selectedObject.position.clone();
-			parent = selectedObject.parent;
-			parent.localToWorld(newPosition);
 
-			newPosition.x -= (mouseVector.z * mouse.dX + mouseVector.x * mouse.dY) * 0.003;
-			newPosition.z -= (-mouseVector.x * mouse.dX + mouseVector.z * mouse.dY) * 0.003;
+			if(selectedObject) {
+				mouseVector = camera.getVector();	
+				newPosition = selectedObject.position.clone();
+				parent = selectedObject.parent;
+				parent.localToWorld(newPosition);
 
-			parent.worldToLocal(newPosition);
-			selectedObject.move(newPosition);
+				newPosition.x -= (mouseVector.z * mouse.dX + mouseVector.x * mouse.dY) * 0.003;
+				newPosition.z -= (-mouseVector.x * mouse.dX + mouseVector.z * mouse.dY) * 0.003;
+
+				parent.worldToLocal(newPosition);
+				selectedObject.move(newPosition);
+			}
 		}
 	};
 
