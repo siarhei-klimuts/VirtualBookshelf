@@ -4,20 +4,24 @@ angular.module('VirtualBookshelf')
 		THREE.Mesh.call(this, geometry, material);
 
 		this.dataObject = dataObject || {};
-		this.dataObject.rotation = this.dataObject.rotation || [0, 0, 0];
 		
 		this.id = this.dataObject.id;
-		this.position = new THREE.Vector3(this.dataObject.pos_x, this.dataObject.pos_y, this.dataObject.pos_z);
 		this.rotation.order = 'XYZ';
-		this.rotation.fromArray(this.dataObject.rotation.map(Number));
 
-		this.updateBoundingBox();		
+		this.setDtoTransformations();
 	};
 	
 	BaseObject.prototype = subclassOf(THREE.Mesh);
 
 	BaseObject.prototype.getType = function() {
 		return this.type;
+	};
+
+	BaseObject.prototype.setDtoTransformations = function() {
+		this.position = new THREE.Vector3(this.dataObject.pos_x, this.dataObject.pos_y, this.dataObject.pos_z);
+		if(this.dataObject.rotation) this.rotation.fromArray(this.dataObject.rotation.map(Number));
+
+		this.updateBoundingBox();		
 	};
 
 	BaseObject.prototype.isOutOfParrent = function() {
@@ -146,15 +150,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	BaseObject.prototype.rollback = function() {
-		this.position.x = this.dataObject.pos_x;
-		this.position.y = this.dataObject.pos_y;
-		this.position.z = this.dataObject.pos_z;
-
-		this.rotation.x = this.dataObject.rotation[0];
-		this.rotation.y = this.dataObject.rotation[1];
-		this.rotation.z = this.dataObject.rotation[2];
-		
-		this.updateBoundingBox();
+		this.setDtoTransformations();
 	};
 
 	return BaseObject;	
