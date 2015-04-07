@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('data', function ($http, $q) {
+.factory('data', function ($http, $q, $log) {
 	var data = {};
 
 	data.TEXTURE_RESOLUTION = 512;
@@ -144,6 +144,12 @@ angular.module('VirtualBookshelf')
 	data.postFeedback = function(dto) {
         return $http.post('/feedback', dto);
 	};
+
+	data.common = data.getUIData().then(function (res) {
+		return res.data;
+	}).catch(function () {
+		$log.error('data: loading common error');
+	});
 
 	return data;
 });

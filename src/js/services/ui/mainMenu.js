@@ -74,19 +74,5 @@ angular.module('VirtualBookshelf')
 		return !authorization.isShow() && linkAccount.isAvailable();
 	};
 
-	var init = function() {
-		//TODO: move to menu models
-		data.getUIData().then(function (res) {
-			createLibrary.list = res.data.libraries;
-			createSection.list = res.data.bookshelves;
-			bookEdit.list = res.data.books;
-		}).catch(function () {
-			$log.log('UI init error');
-			//TODO: show an error
-		});
-	};
-
-	init();
-
 	return mainMenu;
 });

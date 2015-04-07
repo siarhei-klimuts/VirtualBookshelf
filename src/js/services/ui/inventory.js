@@ -5,7 +5,7 @@ angular.module('VirtualBookshelf')
 	inventory.search = null;
 
 	inventory.expand = function(book) {
-		bookEdit.setBook(book);
+		bookEdit.show(book);
 	};
 
 	inventory.isShow = function() {

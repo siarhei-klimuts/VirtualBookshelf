@@ -4,7 +4,7 @@ angular.module('VirtualBookshelf')
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
 	
-	createLibrary.list = [];
+	createLibrary.list = null;
 	createLibrary.model = null;
 
 	createLibrary.show = function() {
@@ -26,6 +26,10 @@ angular.module('VirtualBookshelf')
 			});
 		}
 	};
+
+	data.common.then(function (commonData) {
+		createLibrary.list = commonData.libraries;
+	});
 
 	return createLibrary;
 });

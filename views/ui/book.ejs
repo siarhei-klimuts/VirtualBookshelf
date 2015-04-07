@@ -1,4 +1,5 @@
-<form name="bookEdit.form" ng-show="bookEdit.isShow()">
+<form ng-controller="BookEditCtrl as bookEdit" name="bookEdit.form">
+	<h2><%= __('ui.bookEdit.header') %></h2>
 	<table>
 		<tr>
 			<td colspan="2">
@@ -39,8 +40,8 @@
 		</tr>
 	</table>
 	
-	<div class="submitButton"> 
-		<span ng-click="bookEdit.cancel()" class="fa fa-times fa-2x"></span>
-		<span ng-click="bookEdit.submit()" class="fa fa-check fa-2x"></span>
+	<div class="buttons">
+		<a ng-click="bookEdit.cancel()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.cancel') %></a>
+		<a ng-click="bookEdit.submit()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.dialog.save') %></a>
 	</div>
 </form>	

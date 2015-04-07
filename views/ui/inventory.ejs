@@ -1,34 +1,29 @@
 <div class="inventory">
 	<div ng-show="inventory.isShow()" class="uiPanel" block-ui="inventory">
-		<div ng-hide="bookEdit.isShow()">
-			<div class="search">
-				<span class="fa fa-search"></span>
-				<input ng-model="inventory.search" type="text"></input>
-			</div>
-			
-			<ul>
-				<li dir-paginate="item in catalog.books | filter:inventory.search | orderBy:'title' | itemsPerPage:5">
-					<div class="inventoryItem" ng-class="{selected: inventory.isBookSelected(item.id)}" ng-click="inventory.select(item)">
-						<i class="fa fa-book"></i>
-						<span ng-bind="item.title"></span>
-
-		    			<div class="inventoryControls">
-			    			<span class="fa fa-exchange inventoryItemButton" ng-click="inventory.place(item, $event)"></span>
-			    			<span class="fa fa-trash inventoryItemButton" ng-click="inventory.delete(item)"></span>
-			    			<span class="fa fa-sliders inventoryItemButton" ng-click="inventory.expand(item)"></span>
-		    			</div>
-					</div>
-				</li>	
-			</ul>
-
-			<center>
-				<dir-pagination-controls></dir-pagination-controls>
-			</center>
-			<span ng-click="inventory.addBook()" class="fa fa-plus fa-2x submitButton"></span>
+		<div class="search">
+			<span class="fa fa-search"></span>
+			<input ng-model="inventory.search" type="text"></input>
 		</div>
+		
+		<ul>
+			<li dir-paginate="item in catalog.books | filter:inventory.search | orderBy:'title' | itemsPerPage:5">
+				<div class="inventoryItem" ng-class="{selected: inventory.isBookSelected(item.id)}" ng-click="inventory.select(item)">
+					<i class="fa fa-book"></i>
+					<span ng-bind="item.title"></span>
 
+	    			<div class="inventoryControls">
+		    			<span class="fa fa-exchange inventoryItemButton" ng-click="inventory.place(item, $event)"></span>
+		    			<span class="fa fa-trash inventoryItemButton" ng-click="inventory.delete(item)"></span>
+		    			<span class="fa fa-sliders inventoryItemButton" ng-click="inventory.expand(item)"></span>
+	    			</div>
+				</div>
+			</li>	
+		</ul>
 
-		<ng-include src="'/ui/book.ejs'"></ng-include>
+		<center>
+			<dir-pagination-controls></dir-pagination-controls>
+		</center>
+		<span ng-click="inventory.addBook()" class="fa fa-plus fa-2x submitButton"></span>
 	</div>
 	
 	<ng-include src="'ui/tooltip.ejs'"></ng-include>

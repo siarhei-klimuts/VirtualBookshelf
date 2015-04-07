@@ -1,10 +1,10 @@
 angular.module('VirtualBookshelf')
-.factory('createSection', function ($log, user, environment, locator) {
+.factory('createSection', function ($log, user, environment, locator, data) {
 	var createSection = {};
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
 
-	createSection.list = [];
+	createSection.list = null;
 	createSection.model = null;
 	createSection.visible = false;
 
@@ -43,6 +43,10 @@ angular.module('VirtualBookshelf')
 			$log.error(error);
 		});	
 	};
+
+	data.common.then(function (commonData) {
+		createSection.list = commonData.bookshelves;
+	});
 
 	return createSection;
 });
