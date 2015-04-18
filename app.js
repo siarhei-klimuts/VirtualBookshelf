@@ -93,7 +93,7 @@ app.delete('/book/:id', isAuthorized, routes.book.deleteBook);
 
 app.post('/feedback', routes.feedback.postFeedback);
 
-app.get('/user', auth.isAuthenticated(false), routes.user.getUser);
+app.get('/user', auth.isAuthenticated(true), routes.user.getUser);
 app.put('/user', auth.isAuthenticated(true), routes.user.putUser);
 app.delete('/user/:id', auth.isAuthenticated(true), routes.user.deleteUser);
 
@@ -103,7 +103,7 @@ models.init(function(err) {
             console.log('Express server listening on port ' + app.get('port'));
         });
     } else {
-        console.log('DAO init error: ', err);        
+        console.log('DAO init error: ', err);
     }
 });
 
@@ -111,11 +111,7 @@ function isAuthorized(req, res, next) {
     if(req.user) {
         next();
     } else {
-        req.user = {};//galiaf by default
+        req.user = {};
         next();
     }
-}
-
-function respondJSON(req, res) {
-    res.json(res.result);
 }
