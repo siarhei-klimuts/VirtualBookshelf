@@ -1,4 +1,5 @@
-<div ng-controller="CreateLibraryCtrl as createLibrary" class="ngdialog-message">
+<form ng-controller="CreateLibraryCtrl as createLibrary" name="createLibrary.form">
+	<h2><%= __('ui.library.create.header') %></h2>
 	<p><%= __('ui.library.create.select.label') %></p>
 	<table>
 		<tr>
@@ -13,5 +14,8 @@
 		</tr>
 	</table>
 
-	<span ng-click="createLibrary.create(); closeThisDialog();" class="fa fa-check fa-2x submitButton"></span>
-</div>	
+	<div class="buttons">
+		<a ng-click="closeThisDialog()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %></a>
+		<a ng-click="createLibrary.create()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.dialog.create') %></a>
+	</div>
+</form>	
