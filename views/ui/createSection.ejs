@@ -1,0 +1,21 @@
+<div ng-controller="CreateSectionCtrl as createSection">
+	<h2><%= __('ui.createSection.header') %></h2>
+	<p><%= __('ui.createSection.text') %></p>
+	<table>
+		<tr>
+			<td>
+				<vb-select ng-model="createSection.model" options="createSection.list" value="model" label="label">
+					<i class="fa fa-bars fa-2x"></i>
+				</vb-select>
+			</td>
+			<td>
+				<img ng-src="{{createSection.getImg()}}" class="previewImg">
+			</td>
+		</tr>
+	</table>
+
+	<div class="buttons">
+		<a ng-click="closeThisDialog()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %></a>
+		<a ng-click="createSection.create()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.dialog.create') %></a>
+	</div>
+</div>

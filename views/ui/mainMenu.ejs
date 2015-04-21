@@ -15,23 +15,6 @@
 			<li ng-click="mainMenu.showCreateLibrary()"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.createLibrary')%></li>
 			<li ng-click="mainMenu.showCreateSection()"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
 		</ul>
-	</div>	   
-
-	<div ng-show="createSection.isShow()">
-		<table>
-			<tr>
-				<td>
-					<vb-select ng-model="createSection.model" options="createSection.list" value="model" label="label">
-						<i class="fa fa-bars fa-2x"></i>
-					</vb-select>
-				</td>
-				<td>
-    				<img ng-src="{{createSection.getImg()}}" class="previewImg">
-				</td>
-			</tr>
-		</table>
-		
-		<span ng-click="createSection.create()" class="fa fa-check fa-2x submitButton"></span>
 	</div>
 
 	<a ng-click="mainMenu.trigger()" class="button"><i class="fa fa-sliders fa-lg"></i><%= __('ui.menuItem.mainButton') %></a>

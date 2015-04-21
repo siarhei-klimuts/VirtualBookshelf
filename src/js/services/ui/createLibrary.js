@@ -1,12 +1,10 @@
 angular.module('VirtualBookshelf')
 .factory('createLibrary', function (data, environment, dialog, block, ngDialog) {
 	var createLibrary = {};
-	var createLibraryDialog;
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
 	
-	createLibrary.list = null;
-	createLibrary.model = null;
+	var createLibraryDialog;
 
 	createLibrary.show = function() {
 		createLibraryDialog = ngDialog.open({
@@ -14,14 +12,14 @@ angular.module('VirtualBookshelf')
 		});
 	};
 
-	createLibrary.getImg = function() {
-		return this.model ? '/obj/libraries/{model}/img.jpg'.replace('{model}', this.model) : EMPTY_IMAGE_URL;
+	createLibrary.getImg = function(model) {
+		return model ? '/obj/libraries/{model}/img.jpg'.replace('{model}', model) : EMPTY_IMAGE_URL;
 	};
 
-	createLibrary.create = function() {
-		if(this.model) {
+	createLibrary.create = function(model) {
+		if(model) {
 			block.global.start();
-			data.postLibrary(this.model).then(function (result) {
+			data.postLibrary(model).then(function (result) {
 				environment.goToLibrary(result.id);
 			}).catch(function () {
 				dialog.openError('Can not create library because of an error.');
@@ -33,12 +31,7 @@ angular.module('VirtualBookshelf')
 		} else {
 			dialog.openWarning('Select library, please.');
 		}
-
 	};
-
-	data.common.then(function (commonData) {
-		createLibrary.list = commonData.libraries;
-	});
 
 	return createLibrary;
 });

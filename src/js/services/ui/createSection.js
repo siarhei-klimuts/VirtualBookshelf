@@ -1,52 +1,45 @@
 angular.module('VirtualBookshelf')
-.factory('createSection', function ($log, user, environment, locator, data) {
+.factory('createSection', function ($log, user, environment, locator, dialog, block, ngDialog) {
 	var createSection = {};
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
+	var PAGE_PATH = '/ui/createSection';
 
-	createSection.list = null;
-	createSection.model = null;
-	createSection.visible = false;
-
-	createSection.isShow = function() {
-		return this.visible;
-	};
+	var createSectionDialog;
 
 	createSection.show = function() {
-		this.visible = true;
+		createSectionDialog = ngDialog.open({template: PAGE_PATH});
 	};
 
-	createSection.hide = function() {
-		this.visible = false;
-	};
-	
-	createSection.getImg = function() {
-		return this.model ? '/obj/sections/{model}/img.jpg'.replace('{model}', this.model) : EMPTY_IMAGE_URL;
+	createSection.getImg = function(model) {
+		return model ? '/obj/sections/{model}/img.jpg'.replace('{model}', model) : EMPTY_IMAGE_URL;
 	};
 
-	createSection.create = function() {
-		if(this.model) {
+	createSection.create = function(model) {
+		if(model) {
 			var sectionData = {
-				model: this.model,
+				model: model,
 				libraryId: environment.library.id,
 				userId: user.getId()
 			};
 
-			this.place(sectionData);
-		}
+			place(sectionData);
+		} else {
+			dialog.openWarning('Select model, please.');
+		}	
 	};
 
-	createSection.place = function(dto) {
-		//TODO: block
+	var place = function(dto) {
+		block.global.start();
 		locator.placeSection(dto).catch(function (error) {
-			//TODO: show an error
+			dialog.openError('Can not create section because of an error.');
 			$log.error(error);
+		}).finally(function () {
+			block.global.stop();
 		});	
-	};
 
-	data.common.then(function (commonData) {
-		createSection.list = commonData.bookshelves;
-	});
+		createSectionDialog.close();
+	};
 
 	return createSection;
 });
