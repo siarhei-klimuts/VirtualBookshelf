@@ -1,5 +1,4 @@
-<div class="uiPanel mainMenu" block-ui="main_menu">
-	<div ng-show="mainMenu.isShow()">
+<div>
 		<ul class="select">
 			<li ng-click="mainMenu.createListShow()"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
 			<li ng-click="mainMenu.showSelectLibrary()" ng-show="selectLibrary.isAvailable()"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
@@ -8,6 +7,7 @@
 			<li ng-click="mainMenu.showLinkAccount()" ng-show="mainMenu.isLinkAccountAvailable()"><i class="fa fa-plug fa-2x"></i><%=__('ui.menuItem.linkAccount')%></li>
 			<li ng-click="authorization.logout()" ng-hide="authorization.isShow()"><i class="fa fa-sign-out fa-2x"></i><%=__('ui.menuItem.logout')%></li>
 		</ul>
+	<div ng-show="mainMenu.isShow()">
 	</div>
 
 	<div ng-show="mainMenu.isCreateListShow()">
@@ -16,6 +16,4 @@
 			<li ng-click="mainMenu.showCreateSection()"><i class="fa fa-bars fa-2x"></i><%=__('ui.menuItem.createSection')%></li>
 		</ul>
 	</div>
-
-	<a ng-click="mainMenu.trigger()" class="button"><i class="fa fa-sliders fa-lg"></i><%= __('ui.menuItem.mainButton') %></a>
 </div>
