@@ -1,3 +1,4 @@
+[ ![Codeship Status for Galiaf47/VirtualBookshelf](https://codeship.com/projects/8e298e00-caed-0132-e435-4a3e524f24ba/status?branch=master)](https://codeship.com/projects/75618)
 [![Stories in Ready](https://badge.waffle.io/galiaf47/virtualbookshelf.png?label=ready&title=Ready)](https://waffle.io/galiaf47/virtualbookshelf)
 Virtual Bookshelf
 =

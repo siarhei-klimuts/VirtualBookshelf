@@ -37,7 +37,7 @@ angular.module('VirtualBookshelf')
 		var height = window.innerHeight;
 
 		canvas = document.getElementById(environment.LIBRARY_CANVAS_ID);
-		renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
+		renderer = new THREE.WebGLRenderer({canvas: canvas ? canvas : undefined, antialias: true});
 		renderer.setSize(width, height);
 
 		environment.scene = new THREE.Scene();

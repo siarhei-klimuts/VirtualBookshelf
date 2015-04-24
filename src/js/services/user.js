@@ -31,11 +31,11 @@ angular.module('VirtualBookshelf')
 	};
 
 	user.getName = function() {
-		return _dataObject.name;
+		return _dataObject && _dataObject.name;
 	};
 
 	user.getEmail = function() {
-		return _dataObject.email;
+		return _dataObject && _dataObject.email;
 	};
 
 	user.setLibrary = function(libraryId) {
