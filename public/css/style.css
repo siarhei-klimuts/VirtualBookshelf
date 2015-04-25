@@ -92,9 +92,6 @@ table {
 .inventoryControls {
 	float: right;
 }
-.tools {
-	float: right;
-}
 .tools td {
 	text-align: center;
 }
