@@ -88,7 +88,9 @@ angular.module('VirtualBookshelf')
 	};
 
 	data.getLibraries = function() {
-		return $http.get('/libraries');
+		return $http.get('/libraries').then(function (res) {
+			return res.data;
+		});
 	};
 
 	data.getLibrary = function(libraryId) {

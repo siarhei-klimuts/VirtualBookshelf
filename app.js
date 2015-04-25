@@ -79,7 +79,7 @@ app.post('/cover', isAuthorized, routes.cover.postCover);
 app.get('/cover/:id', routes.cover.getCover);
 
 app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);
-app.get('/libraries', isAuthorized, routes.library.getLibraries);
+app.get('/libraries', auth.isAuthenticated(false), routes.library.getLibraries);
 app.post('/library/:libraryModel', isAuthorized, routes.library.postLibrary);
 
 app.post('/section', isAuthorized, routes.section.postSection);

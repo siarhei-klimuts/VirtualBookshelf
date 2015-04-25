@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('selectLibrary', function (data, environment, user, ngDialog) {
+.factory('selectLibrary', function ($q, data, environment, user, ngDialog) {
 	var selectLibrary = {};
 
 	var TEMPLATE = 'selectLibraryDialog';
@@ -20,10 +20,16 @@ angular.module('VirtualBookshelf')
 
 	selectLibrary.updateList = function() {
 		var scope = this;
+		var promise;
 
-	    var promise = data.getLibraries().then(function (res) {
-            scope.list = res.data;
-    	});
+		if(user.isAuthorized()) {
+		    promise = data.getLibraries().then(function (libraries) {
+	            scope.list = libraries;
+	    	});
+		} else {
+			scope.list = [];
+			promise = $q.when(scope.list);
+		}
 
     	return promise;
 	};
