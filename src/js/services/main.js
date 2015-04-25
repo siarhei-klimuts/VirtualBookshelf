@@ -6,39 +6,37 @@ angular.module('VirtualBookshelf')
 	var main = {};
 
 	main.start = function() {
-		var winResize;
+		if(Detector.webgl) {
+			init();
+			controls.init();
 
-		if(!Detector.webgl) {
-			Detector.addGetWebGLMessage();
+			startRenderLoop();
+
+			block.global.start();
+			user.load().then(function () {
+				return $q.all([environment.loadLibrary(user.getLibrary() || 1), userData.load()]);
+			}).catch(function (error) {
+				$log.error(error);
+				//TODO: show error message  
+			}).finally(function () {
+				locator.centerObject(camera.object);
+				environment.setLoaded(true);
+				block.global.stop();
+			});		
+		} else {
+			// Detector.addGetWebGLMessage();
 		}
-
-		init();
-		controls.init();
-
-		winResize = new THREEx.WindowResize(renderer, camera.camera);
-
-		startRenderLoop();
-
-		block.global.start();
-		user.load().then(function () {
-			return $q.all([environment.loadLibrary(user.getLibrary() || 1), userData.load()]);
-		}).catch(function (error) {
-			$log.error(error);
-			//TODO: show error message  
-		}).finally(function () {
-			locator.centerObject(camera.object);
-			environment.setLoaded(true);
-			block.global.stop();
-		});		
 	};
 
 	var init = function() {
+		var winResize;
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
 		canvas = document.getElementById(environment.LIBRARY_CANVAS_ID);
 		renderer = new THREE.WebGLRenderer({canvas: canvas ? canvas : undefined, antialias: true});
 		renderer.setSize(width, height);
+		winResize = new THREEx.WindowResize(renderer, camera.camera);
 
 		environment.scene = new THREE.Scene();
 		environment.scene.fog = new THREE.Fog(0x000000, 4, 7);
