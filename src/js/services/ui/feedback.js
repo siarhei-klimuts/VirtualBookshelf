@@ -3,10 +3,10 @@ angular.module('VirtualBookshelf')
 	var feedback = {};
 	var feedbackDialog;
 
-	var PAGE_PATH = '/ui/feedback';
+	var TEMPLATE = 'feedbackDialog';
 
 	feedback.show = function() {
-		feedbackDialog = ngDialog.open({template: PAGE_PATH});
+		feedbackDialog = ngDialog.open({template: TEMPLATE});
 	};
 
 	feedback.send = function(dto) {

@@ -1,34 +1,36 @@
-<form ng-controller="RegistrationCtrl as registration" name="registration.form" class="registration">
-	<h2 class="header"><%= __('ui.registration.header') %></h2>
-	<p><%= __('ui.registration.text') %></p>
+<script type="text/ng-template" id="registrationDialog">
+	<form ng-controller="RegistrationCtrl as registration" name="registration.form" class="registration">
+		<h2 class="header"><%= __('ui.registration.header') %></h2>
+		<p><%= __('ui.registration.text') %></p>
 
-	<table>
-		<tr>
-			<td>
-				<label><%= __('ui.registration.name') %></label>
-			</td>
-			<td>
-				<input type="text" ng-model="registration.user.name" required></input>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label><%= __('ui.registration.email') %></label>
-			</td>
-			<td>
-				<input type="email" ng-model="registration.user.email" required></input>
-			</td>
-		</tr>
-	</table>
+		<table>
+			<tr>
+				<td>
+					<label><%= __('ui.registration.name') %></label>
+				</td>
+				<td>
+					<input type="text" ng-model="registration.user.name" required></input>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label><%= __('ui.registration.email') %></label>
+				</td>
+				<td>
+					<input type="email" ng-model="registration.user.email" required></input>
+				</td>
+			</tr>
+		</table>
 
-	<div class="submitButton">
-		<a ng-click="closeThisDialog()" class="button">
-			<i class="fa fa-times fa-lg"></i>
-			<%= __('ui.registration.cancel') %>
-		</a>
-		<a ng-click="registration.form.$valid ? confirm() : registration.showValidationError()" class="button">
-			<i class="fa fa-check fa-lg"></i>
-			<%= __('ui.registration.save') %>
-		</a>
-	</div>
-</form>	
+		<div class="submitButton">
+			<a ng-click="closeThisDialog()" class="button">
+				<i class="fa fa-times fa-lg"></i>
+				<%= __('ui.registration.cancel') %>
+			</a>
+			<a ng-click="registration.form.$valid ? confirm() : registration.showValidationError()" class="button">
+				<i class="fa fa-check fa-lg"></i>
+				<%= __('ui.registration.save') %>
+			</a>
+		</div>
+	</form>
+</script>

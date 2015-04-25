@@ -1,47 +1,49 @@
-<form ng-controller="BookEditCtrl as bookEdit" name="bookEdit.form">
-	<h2><%= __('ui.bookEdit.header') %></h2>
-	<table>
-		<tr>
-			<td colspan="2">
-	    		<table>
-					<tr>
-						<td><label><%= __('ui.create_book.title') %></label></td>
-						<td><input name="title" ng-model="bookEdit.book.title" type="text" required></input></td>
-					</tr>
-					<tr>
-						<td><label><%= __('ui.create_book.author') %></label></td>
-						<td><input name="author" ng-model="bookEdit.book.author" type="text" required></input></td>
-					</tr>
-	    		</table>
-			</td>
-		</tr>
+<script type="text/ng-template" id="editBookDialog">
+	<form ng-controller="BookEditCtrl as bookEdit" name="bookEdit.form">
+		<h2><%= __('ui.bookEdit.header') %></h2>
+		<table>
+			<tr>
+				<td colspan="2">
+		    		<table>
+						<tr>
+							<td><label><%= __('ui.create_book.title') %></label></td>
+							<td><input name="title" ng-model="bookEdit.book.title" type="text" required></input></td>
+						</tr>
+						<tr>
+							<td><label><%= __('ui.create_book.author') %></label></td>
+							<td><input name="author" ng-model="bookEdit.book.author" type="text" required></input></td>
+						</tr>
+		    		</table>
+				</td>
+			</tr>
 
-		<tr class="cover">
-			<td>
-				<label><%= __('ui.create_book.cover') %></label>
-				<input ng-model="bookEdit.coverInputURL" type="text"></input>
-				<span ng-click="bookEdit.applyCover()" class="fa fa-cloud-upload fa-2x"></span>
-			</td>
-			<td>
-				<img ng-src="{{bookEdit.getCoverImg()}}" class="previewImg"/>
-			</td>
-		</tr>
+			<tr class="cover">
+				<td>
+					<label><%= __('ui.create_book.cover') %></label>
+					<input ng-model="bookEdit.coverInputURL" type="text"></input>
+					<span ng-click="bookEdit.applyCover()" class="fa fa-cloud-upload fa-2x"></span>
+				</td>
+				<td>
+					<img ng-src="{{bookEdit.getCoverImg()}}" class="previewImg"/>
+				</td>
+			</tr>
 
-		<tr>
-			<td>
-				<label><%= __('ui.create_book.object') %></label>
-				<vb-select ng-model="bookEdit.book.model" options="bookEdit.list" value="model" label="label" required>
-					<i class="fa fa-book fa-2x"></i>
-				</vb-select>
-			</td>
-			<td>
-				<img ng-src="{{bookEdit.getImg()}}" class="previewImg"/>
-			</td>
-		</tr>
-	</table>
-	
-	<div class="buttons">
-		<a ng-click="bookEdit.cancel()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.cancel') %></a>
-		<a ng-click="bookEdit.submit()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.dialog.save') %></a>
-	</div>
-</form>	
+			<tr>
+				<td>
+					<label><%= __('ui.create_book.object') %></label>
+					<vb-select ng-model="bookEdit.book.model" options="bookEdit.list" value="model" label="label" required>
+						<i class="fa fa-book fa-2x"></i>
+					</vb-select>
+				</td>
+				<td>
+					<img ng-src="{{bookEdit.getImg()}}" class="previewImg"/>
+				</td>
+			</tr>
+		</table>
+		
+		<div class="buttons">
+			<a ng-click="bookEdit.cancel()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.cancel') %></a>
+			<a ng-click="bookEdit.submit()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.dialog.save') %></a>
+		</div>
+	</form>
+</script>

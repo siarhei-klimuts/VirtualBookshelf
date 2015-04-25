@@ -1,13 +1,15 @@
-<form ng-controller="FeedbackCtrl as feedback" name="feedback.form">
-	<h2><%= __('ui.feedback.header') %></h2>
-	
-	<div>
-		<p><%= __('ui.feedback.message') %></p>
-		<textarea name="message" ng-model="feedback.message" required></textarea>
-	</div>
+<script type="text/ng-template" id="feedbackDialog">
+	<form ng-controller="FeedbackCtrl as feedback" name="feedback.form">
+		<h2><%= __('ui.feedback.header') %></h2>
+		
+		<div>
+			<p><%= __('ui.feedback.message') %></p>
+			<textarea name="message" ng-model="feedback.message" required></textarea>
+		</div>
 
-	<div class="buttons">
-		<a ng-click="closeThisDialog()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %></a>
-		<a ng-click="feedback.submit()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.feedback.submit') %></a>
-	</div>
-</form>
+		<div class="buttons">
+			<a ng-click="closeThisDialog()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %></a>
+			<a ng-click="feedback.submit()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.feedback.submit') %></a>
+		</div>
+	</form>
+</script>

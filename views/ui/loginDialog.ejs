@@ -1,15 +1,17 @@
-<div ng-controller="AuthCtrl as auth">
-	<h2 class="header"><%= __('ui.login.header') %></h2>
-	<p><%= __('ui.login.text') %></p>
+<script type="text/ng-template" id="loginDialog">
+	<div ng-controller="AuthCtrl as auth">
+		<h2 class="header"><%= __('ui.login.header') %></h2>
+		<p><%= __('ui.login.text') %></p>
 
-	<ul class="loginProviders">
-		<li ng-click="auth.loginGoogle(); closeThisDialog();"><i class="fa fa-google"></i></li>
-		<li ng-click="auth.loginTwitter(); closeThisDialog();"><i class="fa fa-twitter"></i></li>
-		<li ng-click="auth.loginFacebook(); closeThisDialog();"><i class="fa fa-facebook"></i></li>
-		<li ng-click="auth.loginVkontakte(); closeThisDialog();"><i class="fa fa-vk"></i></li>
-	</ul>
+		<ul class="loginProviders">
+			<li ng-click="auth.loginGoogle(); closeThisDialog();"><i class="fa fa-google"></i></li>
+			<li ng-click="auth.loginTwitter(); closeThisDialog();"><i class="fa fa-twitter"></i></li>
+			<li ng-click="auth.loginFacebook(); closeThisDialog();"><i class="fa fa-facebook"></i></li>
+			<li ng-click="auth.loginVkontakte(); closeThisDialog();"><i class="fa fa-vk"></i></li>
+		</ul>
 
-	<a ng-click="closeThisDialog()" class="button submitButton">
-		<i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %>
-	</a>
-</div>
+		<a ng-click="closeThisDialog()" class="button submitButton">
+			<i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %>
+		</a>
+	</div>
+</script>

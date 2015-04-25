@@ -3,12 +3,13 @@ angular.module('VirtualBookshelf')
 	var createLibrary = {};
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
+	var TEMPLATE_ID = 'createLibraryDialog';
 	
 	var createLibraryDialog;
 
 	createLibrary.show = function() {
 		createLibraryDialog = ngDialog.open({
-			template: '/ui/createLibrary'
+			template: TEMPLATE_ID
 		});
 	};
 

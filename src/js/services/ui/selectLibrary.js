@@ -2,12 +2,12 @@ angular.module('VirtualBookshelf')
 .factory('selectLibrary', function (data, environment, user, ngDialog) {
 	var selectLibrary = {};
 
+	var TEMPLATE = 'selectLibraryDialog';
+
 	selectLibrary.list = [];
 
 	selectLibrary.show = function() {
-		ngDialog.openConfirm({
-			template: '/ui/selectLibrary'
-		});
+		ngDialog.openConfirm({template: TEMPLATE});
 	};
 
 	selectLibrary.isAvailable = function() {

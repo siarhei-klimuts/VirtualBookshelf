@@ -2,6 +2,7 @@ angular.module('VirtualBookshelf')
 .factory('dialog', function (ngDialog) {
 	var dialog = {};
 
+	var TEMPLATE = 'confirmDialog';
 	var ERROR = 1;
 	var CONFIRM = 2;
 	var WARNING = 3;
@@ -31,7 +32,7 @@ angular.module('VirtualBookshelf')
 
 	var openDialog = function(msg, type, cancelButton) {
 		return ngDialog.openConfirm({
-			template: '/ui/confirmDialog',
+			template: TEMPLATE,
 			data: {
 				msg: msg,
 				iconClass: getIconClass(type),

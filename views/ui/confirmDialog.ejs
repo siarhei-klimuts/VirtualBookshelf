@@ -1,8 +1,10 @@
-<div class="ngdialog-message">
-	<i class="fa fa-3x {{ngDialogData.iconClass}}"></i>
-	{{ngDialogData.msg}}
-</div>
-<div class="ngdialog-buttons submitButton"> 
-	<span ng-click="closeThisDialog()" ng-show="ngDialogData.cancelButton" class="fa fa-times fa-2x"></span>
-	<span ng-click="confirm()" class="fa fa-check fa-2x"></span>
-</div>
+<script type="text/ng-template" id="confirmDialog">
+	<div class="ngdialog-message">
+		<i class="fa fa-3x {{ngDialogData.iconClass}}"></i>
+		{{ngDialogData.msg}}
+	</div>
+	<div class="ngdialog-buttons submitButton"> 
+		<span ng-click="closeThisDialog()" ng-show="ngDialogData.cancelButton" class="fa fa-times fa-2x"></span>
+		<span ng-click="confirm()" class="fa fa-check fa-2x"></span>
+	</div>
+</script>

@@ -3,12 +3,12 @@ angular.module('VirtualBookshelf')
 	var createSection = {};
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
-	var PAGE_PATH = '/ui/createSection';
+	var TEMPLATE = 'createSectionDialog';
 
 	var createSectionDialog;
 
 	createSection.show = function() {
-		createSectionDialog = ngDialog.open({template: PAGE_PATH});
+		createSectionDialog = ngDialog.open({template: TEMPLATE});
 	};
 
 	createSection.getImg = function(model) {

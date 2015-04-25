@@ -2,10 +2,10 @@ angular.module('VirtualBookshelf')
 .factory('authorization', function ($log, $q, $window, $interval, user, environment, registration, userData, block, ngDialog) {
 	var authorization = {};
 
+	var TEMPLATE = 'loginDialog';
+
 	authorization.show = function() {
-		ngDialog.openConfirm({
-			template: '/ui/loginDialog'
-		});
+		ngDialog.open({template: TEMPLATE});
 	};
 
 	authorization.isShow = function() {

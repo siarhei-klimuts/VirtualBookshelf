@@ -2,10 +2,10 @@ angular.module('VirtualBookshelf')
 .factory('linkAccount', function (user, ngDialog) {
 	var linkAccount = {};
 
-	var PAGE_PATH = '/ui/linkAccount';
+	var TEMPLATE = 'linkAccountDialog';
 
 	linkAccount.show = function() {
-		ngDialog.open({template: PAGE_PATH});
+		ngDialog.open({template: TEMPLATE});
 	};
 
 	linkAccount.isGoogleShow = function() {

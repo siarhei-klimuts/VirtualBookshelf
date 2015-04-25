@@ -4,7 +4,7 @@ angular.module('VirtualBookshelf')
 
 	var FORM_VALIDATION_ERROR = 'Enter a valid data, please.';
 	var SAVE_USER_ERROR = 'Error saving user. Try again, please.';
-	var PAGE_PATH = '/ui/registrationDialog';
+	var TEMPLATE = 'registrationDialog';
 
 	registration.user = {
 		id: null,
@@ -18,7 +18,7 @@ angular.module('VirtualBookshelf')
 		registration.user.name = user.getName();
 		registration.user.email = user.getEmail();
 
-		return ngDialog.openConfirm({template: PAGE_PATH}).then(function () {
+		return ngDialog.openConfirm({template: TEMPLATE}).then(function () {
 			return saveUser();
 		}, function () {
 			return deleteUser();

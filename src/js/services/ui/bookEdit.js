@@ -5,13 +5,13 @@ angular.module('VirtualBookshelf')
 
 	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
-	var PAGE_PATH = 'ui/book';
+	var TEMPLATE = 'editBookDialog';
 	
 	bookEdit.book = {};
 
 	bookEdit.show = function(book) {
 		setBook(book);
-		bookDialog = ngDialog.open({template: PAGE_PATH});
+		bookDialog = ngDialog.open({template: TEMPLATE});
 	};
 
 	var setBook = function(book) {
