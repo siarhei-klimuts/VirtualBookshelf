@@ -3,11 +3,15 @@ var Cover = require('../models').Cover;
 
 exports.postBook = function(req, res) {
 	var dto = req.body;
-	var newTags = [dto.title, dto.author];
+	var newTags = [];
 
 	Book.saveBook(dto, req.user.id).then(function (result) {
 		res.json(result);
-		return Cover.updateTags(dto.coverId, newTags);
+
+		if(dto.title) newTags.push(dto.title);
+		if(dto.author) newTags.push(dto.author);
+		
+		return newTags.length > 0 ? Cover.updateTags(result.coverId, newTags) : null;
 	}).catch(function (err) {
 		res.send(500);	
 		console.log('ROUTE postBook: ', err);		

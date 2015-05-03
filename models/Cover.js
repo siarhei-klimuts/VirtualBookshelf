@@ -26,13 +26,11 @@ function updateTags(id, newTags) {
 function mergeTags(tags, newTags) {
 	var result = tags || '';
 
-	if(newTags) {
-		newTags.forEach(function (newTag) {
-			if(result.indexOf(newTag) === -1) {
-				result = result ? [result, newTag].join() : newTag;
-			}
-		});
-	}
+	newTags.forEach(function (newTag) {
+		if(result.indexOf(newTag) === -1) {
+			result = result ? [result, newTag].join() : newTag;
+		}
+	});
 
 	return result;
 }

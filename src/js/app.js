@@ -1,11 +1,14 @@
-angular
-    .module('VirtualBookshelf', ['blockUI', 'ngDialog', 'angularUtils.directives.dirPagination'])
-    	.config(function (blockUIConfig, paginationTemplateProvider) {
-    		blockUIConfig.delay = 0;
-    		blockUIConfig.autoBlock = false;
-			blockUIConfig.autoInjectBodyBlock = false;
-			paginationTemplateProvider.setPath('/js/angular/dirPagination/dirPagination.tpl.html');
-    	})
-    	.run(function (main) {
-			main.start();
-    	});
+angular.module('VirtualBookshelf', ['angular-growl', 'blockUI', 'ngDialog', 'angularUtils.directives.dirPagination'])
+.config(function (growlProvider, blockUIConfig, paginationTemplateProvider) {
+    growlProvider.globalTimeToLive(2000);
+    growlProvider.globalPosition('top-left');
+    growlProvider.globalDisableCountDown(true);
+
+	blockUIConfig.delay = 0;
+	blockUIConfig.autoBlock = false;
+	blockUIConfig.autoInjectBodyBlock = false;
+	
+    paginationTemplateProvider.setPath('/js/angular/dirPagination/dirPagination.tpl.html');
+}).run(function (main) {
+	main.start();
+});

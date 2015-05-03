@@ -11,16 +11,19 @@
 		<script src="/js/angular/block-ui/angular-block-ui.min.js"></script>
 		<script src="/js/angular/dirPagination/dirPagination.js"></script>
 		<script src="/js/angular/ngDialog/ngDialog.min.js"></script>
+		<script src="/js/angular/angular-growl/angular-growl.min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/angular/block-ui/angular-block-ui.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/angular/ngDialog/ngDialog.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/angular/ngDialog/ngDialog-theme-default.min.css">
+		<link rel="stylesheet" type="text/css" href="/js/angular/angular-growl/angular-growl.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/style.css">
 	</head>
 
 	<body ng-app="VirtualBookshelf" ng-controller="UiCtrl" block-ui="global" ng-cloak>
 		<canvas id="LIBRARY"></canvas>
+		<div growl></div>
 		
 		<div class="uiPanel navigation" ng-mouseup="navigation.stop()" ng-mouseleave="navigation.stop()">
 			<span ng-mousedown="navigation.left()" class="fa fa-chevron-left fa-2x"></span>
