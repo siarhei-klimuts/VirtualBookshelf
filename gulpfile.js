@@ -4,7 +4,47 @@ var nodemon = require('gulp-nodemon');
 var sourcemaps = require('gulp-sourcemaps');
 var env = require('gulp-env');
 var karma = require('gulp-karma');
- 
+
+var dest = {
+	js: './public/js',
+	css: './public/css'
+};
+
+var source = {
+	bower: {
+		js: [
+			'./bower_components/**/*.min.js',
+			'./bower_components/angular-utils-pagination/*.js',
+			'./src/js/libs/**/*.js'
+		],
+		css: [
+			'./bower_components/**/*.min.css',
+			'!./bower_components/**/ngDialog-theme-*.min.css'
+		]
+	},
+	app: {
+		js: [
+			'./src/js/app.js', 
+			'./src/js/**/*.js',
+			'!./src/js/libs/**/*.js'
+		]
+	}
+};
+
+gulp.task('bowerjs', function() {
+	return gulp.src(source.bower.js)
+		.pipe(sourcemaps.init({loadMaps: true}))
+		.pipe(concat('vendor.js'))
+    	.pipe(sourcemaps.write())
+		.pipe(gulp.dest(dest.js));
+});
+
+gulp.task('bowercss', function() {
+	return gulp.src(source.bower.css)
+		.pipe(concat('vendor.css'))
+		.pipe(gulp.dest(dest.css));
+});
+
 gulp.task('test', function() {
   	return gulp.src('./fooBar').pipe(karma({
 		configFile: 'karma.conf.js',
@@ -22,11 +62,11 @@ gulp.task('testWatch', function() {
 });
 
 gulp.task('js', function() {
-    gulp.src(['./src/js/app.js', './src/js/**/*.js'])
+    gulp.src(source.app.js)
 	.pipe(sourcemaps.init())
     .pipe(concat('index.js'))
 	.pipe(sourcemaps.write())
-    .pipe(gulp.dest('./public/js'));
+    .pipe(gulp.dest(dest.js));
 });
 
 gulp.task('watch', function () {
@@ -45,4 +85,4 @@ gulp.task('set-env', function () {
     env({file: '.env.json'});
 });
 
-gulp.task('default', ['js', 'set-env', 'watch', 'demon', 'testWatch']);
+gulp.task('default', ['bowerjs', 'bowercss', 'js', 'set-env', 'watch', 'demon', 'testWatch']);

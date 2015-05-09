@@ -8,7 +8,7 @@ angular.module('VirtualBookshelf', ['angular-growl', 'blockUI', 'ngDialog', 'ang
 	blockUIConfig.autoBlock = false;
 	blockUIConfig.autoInjectBodyBlock = false;
 	
-    paginationTemplateProvider.setPath('/js/angular/dirPagination/dirPagination.tpl.html');
+    paginationTemplateProvider.setPath('/ui/dirPagination');
 }).run(function (main) {
 	main.start();
 });

@@ -1,0 +1,27 @@
+{
+  "name": "Virtual Bookshelf",
+  "version": "0.3.91",
+  "homepage": "https://github.com/Galiaf47/VirtualBookshelf",
+  "authors": [
+    "Siarhei Klimuts <galiaf47@gmail.com>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "GPLv2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.3.1",
+    "angular-block-ui": "~0.2.0",
+    "ngDialog": "~0.3.12",
+    "angular-growl-2": "~0.7.3",
+    "angular-utils-pagination": "~0.7.0",
+    "lodash": "~3.8.0"
+  }
+}
