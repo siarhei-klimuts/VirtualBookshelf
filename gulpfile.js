@@ -15,7 +15,7 @@ var source = {
 		js: [
 			'./bower_components/**/*.min.js',
 			'./bower_components/angular-utils-pagination/*.js',
-			'./src/js/libs/**/*.js'
+			'./src/libs/**/*.js'
 		],
 		css: [
 			'./bower_components/**/*.min.css',
@@ -25,8 +25,7 @@ var source = {
 	app: {
 		js: [
 			'./src/js/app.js', 
-			'./src/js/**/*.js',
-			'!./src/js/libs/**/*.js'
+			'./src/js/**/*.js'
 		]
 	}
 };
