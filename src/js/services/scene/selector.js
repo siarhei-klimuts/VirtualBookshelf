@@ -1,9 +1,11 @@
 angular.module('VirtualBookshelf')
-.factory('selector', function ($rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, environment, highlight, preview, tooltip) {
+.factory('selector', function (SelectorMeta, BookObject, ShelfObject, SectionObject, environment, highlight, preview, tooltip, catalog) {
 	var selector = {};
 	
 	var selected = new SelectorMeta();
 	var focused = new SelectorMeta();
+
+	selector.placing = false;
 
 	selector.focus = function(meta) {
 		var obj;
@@ -12,31 +14,28 @@ angular.module('VirtualBookshelf')
 			focused = meta;
 
 			if(!focused.isEmpty()) {
-				obj = getObject(focused);
+				obj = selector.getFocusedObject();
 				highlight.focus(obj);
 			}
 
 			tooltip.set(obj);
-			$rootScope.$apply();
 		}
 	};
 
 	selector.selectFocused = function() {
-		var meta = focused;
-
-		selector.select(meta);
-		$rootScope.$apply();
+		selector.select(focused);
 	};
 
 	selector.select = function(meta) {
-		if(!meta.equals(selected)) {
-			selector.unselect();
-			selected = meta;
+		var obj = getObject(meta);
+		
+		selector.unselect();
+		selected = meta;
 
-			var obj = getObject(selected);
-			highlight.select(obj);
-			highlight.focus(null);
-		}
+		highlight.select(obj);
+		highlight.focus(null);
+
+		selector.placing = false;
 	};
 
 	selector.unselect = function() {
@@ -48,8 +47,18 @@ angular.module('VirtualBookshelf')
 		preview.disable();
 	};
 
+	selector.getSelectedDto = function() {
+		return selector.isSelectedBook() ? catalog.getBook(selected.id) : 
+			selector.isSelectedSection() ? environment.getSection(selected.id) :
+			null;
+	};
+
 	selector.getSelectedObject = function() {
 		return getObject(selected);
+	};
+
+	selector.getFocusedObject = function() {
+		return getObject(focused);
 	};
 
 	var getObject = function(meta) {

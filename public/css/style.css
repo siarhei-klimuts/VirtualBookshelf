@@ -86,25 +86,14 @@ table {
 	white-space: nowrap;
 	overflow: hidden;
 }
-.inventoryItem.selected {
+.selected {
 	background: linear-gradient(to bottom, rgba(14, 179, 35, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
-}
-.inventoryControls {
-	float: right;
-}
-.tools td {
-	text-align: center;
-}
-.tools span.fa {
-	margin-left: 10px;
 }
 .cover span.fa {
 	float: right;
 }
 .navigation {
-    position: absolute;
-    right: 0;
-    bottom: 0;
+    text-align: center;
 }
 .search input { 
 	text-indent: 25px!important;
@@ -221,11 +210,36 @@ ul li {
 	list-style: none;
 	border-radius: 5px;
 }
+ul.select li {
+	cursor: pointer;
+}
 ul.select li:hover:not(.selectedItem) {
 	background-color: rgba(20, 50, 20, 0.4);
 }
 ul.select li.selectedItem {
 	background-color: rgba(0, 100, 0, 0.4);
+}
+.tools {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	text-align: center;
+}
+.tools ul {
+	margin-bottom: 10px
+}
+.tools h3, .tools h4 {
+	margin: auto;
+}
+.tools h4 {
+	width: 200px;
+	word-wrap: break-word;
+}
+.tools .sub {
+	display: block;
+	color: lime;
+	font-size: small;
+	font-weight: bold;
 }
 .previewImg {
 	width: 128px;

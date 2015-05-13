@@ -69,23 +69,32 @@ angular.module('VirtualBookshelf')
 	};
 
 	environment.updateSection = function(dto) {
+		var promise;
+
 		if(dto.libraryId == environment.library.id) {
 			environment.removeSection(dto.id);
-			createSection(dto);
+			promise = createSection(dto);
 		} else {
 			environment.removeSection(dto.id);
-		}	
+			promise = $q.when(true);
+		}
+
+		return promise;	
 	};
 
 	environment.updateBook = function(dto) {
+		var promise;
 		var shelf = getBookShelf(dto);
 
 		if(shelf) {
 			environment.removeBook(dto.id);
-			createBook(dto);
+			promise = createBook(dto);
 		} else {
 			environment.removeBook(dto.id);
+			promise = $q.when(true);
 		}
+
+		return promise;
 	};
 
 	environment.removeBook = function(id) {

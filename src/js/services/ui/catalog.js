@@ -19,5 +19,9 @@ angular.module('VirtualBookshelf')
 		return promise;
 	};
 
+	catalog.getBook = function(id) {
+		return _.find(catalog.books, {id: id});
+	};
+
 	return catalog;
 });

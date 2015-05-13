@@ -19,18 +19,12 @@
 		<canvas id="LIBRARY"></canvas>
 		<div growl></div>
 		
-		<div class="uiPanel navigation" ng-mouseup="navigation.stop()" ng-mouseleave="navigation.stop()">
-			<span ng-mousedown="navigation.left()" class="fa fa-chevron-left fa-2x"></span>
-			<span ng-mousedown="navigation.right()" class="fa fa-chevron-right fa-2x"></span>
-			<span ng-mousedown="navigation.backward()" class="fa fa-chevron-down fa-2x"></span>
-			<span ng-mousedown="navigation.forward()" class="fa fa-chevron-up fa-2x"></span>
-		</div>
-
 		<!-- UI -->
 		<ng-include src="'ui/mainMenu.ejs'"></ng-include>
     	<ng-include src="'ui/inventory.ejs'"></ng-include>
     	<ng-include src="'ui/welcome.ejs'"></ng-include>
 		<ng-include src="'ui/tooltip.ejs'"></ng-include>
+		<ng-include src="'ui/tools.ejs'"></ng-include>
 
 		<!-- dialogs -->
     	<ng-include src="'ui/createLibrary.ejs'"></ng-include>

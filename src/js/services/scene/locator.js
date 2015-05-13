@@ -41,25 +41,18 @@ angular.module('VirtualBookshelf')
 		return data.postSection(dto);
 	};
 
-	locator.placeBook = function(bookDto) {
-		var promise;
-		var shelf = selector.isSelectedShelf() ? selector.getSelectedObject() : null;
+	locator.placeBook = function(bookDto, shelf) {
+		var promise = cache.getBook(bookDto.model).then(function (bookCache) {
+			var shelfBB = shelf.geometry.boundingBox;
+			var bookBB = bookCache.geometry.boundingBox;
+			var freePlace = getFreePlace(shelf.children, shelfBB, bookBB);
 
-		if(shelf) {
-			promise = cache.getBook(bookDto.model).then(function (bookCache) {
-				var shelfBB = shelf.geometry.boundingBox;
-				var bookBB = bookCache.geometry.boundingBox;
-				var freePlace = getFreePlace(shelf.children, shelfBB, bookBB);
-
-				return freePlace ? 
-					saveBook(bookDto, freePlace, shelf) : 
-					$q.reject('there is no free space');
-			}).then(function (newDto) {
-				return environment.updateBook(newDto);
-			});
-		} else {
-			promise = $q.reject('shelf is not selected');
-		}
+			return freePlace ? 
+				saveBook(bookDto, freePlace, shelf) : 
+				$q.reject('there is no free space');
+		}).then(function (newDto) {
+			return environment.updateBook(newDto);
+		});
 
 		return promise;
 	};
@@ -79,7 +72,6 @@ angular.module('VirtualBookshelf')
 		bookDto.sectionId = null;
 
 		promise = data.postBook(bookDto).then(function () {
-			selector.unselect();
 			return environment.updateBook(bookDto);
 		});
 

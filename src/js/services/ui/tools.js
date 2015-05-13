@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('tools', function ($q, BookObject, SectionObject, data, selector, dialog, block, catalog, environment, preview, user) {
+.factory('tools', function ($q, $log, BookObject, SectionObject, ShelfObject, SelectorMetaDto, data, selector, dialog, block, catalog, environment, preview, user, locator, growl) {
 	var tools = {};
 
 	var ROTATION_SCALE = 1;
@@ -9,43 +9,58 @@ angular.module('VirtualBookshelf')
 		rotateRight: false
 	};
 
-	tools.delete = function() {
-		var obj = selector.getSelectedObject();
+	tools.place = function() {
+		var selectedDto;
+		var focusedObject = selector.getFocusedObject();
 
-		if(obj && selector.isSelectedEditable()) {
-			dialog.openConfirm('Delete selected object?').then(function () {
-				block.global.start();
+		if(focusedObject instanceof ShelfObject) {
+			selector.placing = false;
+			selectedDto = selector.getSelectedDto();
 
-				deleteObject(obj).then(function () {
-					selector.unselect();
-					return catalog.loadBooks(user.getId());
-				}).catch(function () {
-					dialog.openError('Error deleting object.');
-				}).finally(function () {
-					block.global.stop();
-				});
-			});			
+			block.global.start();
+			locator.placeBook(selectedDto, focusedObject).then(function () {
+				var bookDto = catalog.getBook(selectedDto.id);
+				selector.select(new SelectorMetaDto(BookObject.TYPE, bookDto.id, bookDto.shelfId));
+				growl.success('Book placed');
+			}).catch(function (error) {
+				growl.error(error);
+				$log.error(error);
+			}).finally(function () {
+				block.global.stop();
+			});
+		} else {
+			growl.error('Shelf is not selected');
 		}
 	};
 
-	var deleteObject = function(obj) {
-		return $q.when(
-			obj instanceof BookObject ? 
-				deleteBook(obj.id) :
-				obj instanceof SectionObject ?
-					deleteSection(obj.id) :
-					$q.reject('Can not delete selected object.')//TODO: test
-		);
+	tools.unplace = function() {
+		var bookDto = selector.isSelectedBook() ? selector.getSelectedDto() : null;
+
+		if(bookDto) {
+			block.global.start();
+			locator.unplaceBook(bookDto).then(function () {
+				growl.success('Book unplaced');
+				return catalog.loadBooks(user.getId());		
+			}).catch(function (error) {
+				growl.error(error);
+				$log.error(error);
+			}).finally(function () {
+				block.global.stop();
+			});
+		}
 	};
 
-	var deleteBook = function(id) {
+	tools.deleteBook = function(id) {
 		return data.deleteBook(id).then(function () {
+			selector.unselect();
 			environment.removeBook(id);
+			return catalog.loadBooks(user.getId());
 		});
 	};
 
-	var deleteSection = function(id) {
+	tools.deleteSection = function(id) {
 		return data.deleteSection(id).then(function () {
+			selector.unselect();
 			environment.removeSection(id);
 		});
 	};

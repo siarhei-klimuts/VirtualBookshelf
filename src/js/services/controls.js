@@ -6,7 +6,7 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('controls', function ($q, $log, SelectorMeta, BookObject, ShelfObject, SectionObject, camera, navigation, environment, mouse, selector, preview, block) {
+.factory('controls', function ($q, $log, $rootScope, SelectorMeta, BookObject, ShelfObject, SectionObject, camera, navigation, environment, mouse, selector, preview, block, tools) {
 	var controls = {};
 
 	controls.init = function() {
@@ -36,7 +36,14 @@ angular.module('VirtualBookshelf')
 
 		if(mouse.isCanvas() && mouse[1] && !mouse[3] && !preview.isActive()) {
 			controls.selectObject();
-			selector.selectFocused();
+
+			if(selector.placing) {
+				tools.place();
+			} else {
+				selector.selectFocused();
+			}
+
+			$rootScope.$apply();
 		}
 	};
 
@@ -69,6 +76,7 @@ angular.module('VirtualBookshelf')
 				controls.moveObject();
 			} else {
 				controls.selectObject();
+				$rootScope.$apply();
 			}
 		}
 	};

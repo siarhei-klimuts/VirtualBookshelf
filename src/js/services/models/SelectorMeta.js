@@ -13,10 +13,10 @@ angular.module('VirtualBookshelf')
 	};
 
 	SelectorMeta.prototype.equals = function(meta) {
-		return !(!meta
-				|| meta.id !== this.id
-				|| meta.parentId !== this.parentId
-				|| meta.type !== this.type);
+		return !(!meta || 
+				meta.id !== this.id || 
+				meta.parentId !== this.parentId || 
+				meta.type !== this.type);
 	};
 	
 	return SelectorMeta;
