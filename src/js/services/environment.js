@@ -76,7 +76,7 @@ angular.module('VirtualBookshelf')
 			promise = createSection(dto);
 		} else {
 			environment.removeSection(dto.id);
-			promise = $q.when(true);
+			promise = $q.when(dto);
 		}
 
 		return promise;	
@@ -221,6 +221,8 @@ angular.module('VirtualBookshelf')
 
 			environment.library.add(section);
 			addToDict(sections, section);
+
+			return sectionDto;
 		});
 
 		return promise;

@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('locator', function ($q, $log, BaseObject, data, selector, environment, cache) {
+.factory('locator', function ($q, $log, BaseObject, data, selector, environment, cache, gridCalculator) {
 	var locator = {};
 
 	var debugEnabled = false;
@@ -97,14 +97,10 @@ angular.module('VirtualBookshelf')
 		var zIndex;
 		var position = {};
 		var minPosition = {};
+		var edges = gridCalculator.getEdges(spaceBB, matrixPrecision);
 
-		var minXCell = Math.floor(spaceBB.min.x / matrixPrecision.x) + 1;
-		var maxXCell = Math.floor(spaceBB.max.x / matrixPrecision.x);
-		var minZCell = Math.floor(spaceBB.min.z / matrixPrecision.z) + 1;
-		var maxZCell = Math.floor(spaceBB.max.z / matrixPrecision.z);
-
-		for (zIndex = minZCell; zIndex <= maxZCell; zIndex++) {
-			for (xIndex = minXCell; xIndex <= maxXCell; xIndex++) {
+		for (zIndex = edges.minZCell; zIndex <= edges.maxZCell; zIndex++) {
+			for (xIndex = edges.minXCell; xIndex <= edges.maxXCell; xIndex++) {
 				if (!occupiedMatrix[zIndex] || !occupiedMatrix[zIndex][xIndex]) {
 					position.pos = getPositionFromCells([xIndex], zIndex, matrixPrecision, spaceBB, targetBB);
 					position.length = position.pos.length();
@@ -131,14 +127,10 @@ angular.module('VirtualBookshelf')
 		var xIndex;
 		var zIndex;
 		var cells;
+		var edges = gridCalculator.getEdges(spaceBB, matrixPrecision);
 
-		var minXCell = Math.floor(spaceBB.min.x / matrixPrecision.x) + 1;
-		var maxXCell = Math.floor(spaceBB.max.x / matrixPrecision.x);
-		var minZCell = Math.floor(spaceBB.min.z / matrixPrecision.z) + 1;
-		var maxZCell = Math.floor(spaceBB.max.z / matrixPrecision.z);
-
-		for (zIndex = minZCell; zIndex <= maxZCell; zIndex++) {
-			for (xIndex = minXCell; xIndex <= maxXCell; xIndex++) {
+		for (zIndex = edges.minZCell; zIndex <= edges.maxZCell; zIndex++) {
+			for (xIndex = edges.minXCell; xIndex <= edges.maxXCell; xIndex++) {
 				if (!occupiedMatrix[zIndex] || !occupiedMatrix[zIndex][xIndex]) {
 					freeCellsStart = freeCellsStart || xIndex;
 					freeCellsCount++;
@@ -157,14 +149,13 @@ angular.module('VirtualBookshelf')
 	};
 
 	var getPositionFromCells = function(cells, zIndex, matrixPrecision, spaceBB, targetBB) {
-		var freeX = cells[0] * matrixPrecision.x;
-		var freeZ =	zIndex * matrixPrecision.z;
+		var center = gridCalculator.cellToPos(new THREE.Vector3(cells[0], 0, zIndex), matrixPrecision);
 
 		var offset = new THREE.Vector3();
 		offset.addVectors(targetBB.min, targetBB.max);
 		offset.multiplyScalar(-0.5);
 
-		return new THREE.Vector3(freeX + offset.x, getBottomY(spaceBB, targetBB), freeZ + offset.z);
+		return center.add(offset).setY(getBottomY(spaceBB, targetBB));
 	};
 
 	var getBottomY = function(spaceBB, targetBB) {

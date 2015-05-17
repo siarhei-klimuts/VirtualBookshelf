@@ -4,7 +4,7 @@ angular.module('VirtualBookshelf')
 
 	var loaded = false;
 	var _dataObject = null;
-	var _library = null;
+	var library = null;
 
 	user.load = function() {
 		var scope = this;
@@ -27,7 +27,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	user.getLibrary = function() {
-		return _library;
+		return library;
 	};
 
 	user.getName = function() {
@@ -39,7 +39,8 @@ angular.module('VirtualBookshelf')
 	};
 
 	user.setLibrary = function(libraryId) {
-		_library = libraryId || window.location.pathname.substring(1);
+		libraryId = libraryId || window.location.pathname.substring(1);
+		library = Number(libraryId);
 	};
 
 	user.getId = function() {
