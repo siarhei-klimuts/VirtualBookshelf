@@ -6,8 +6,8 @@ angular.module('VirtualBookshelf')
 	environment.LIBRARY_CANVAS_ID = 'LIBRARY';
 	 
 	var libraryDto = null;
-	var sections = null;
-	var books = null;
+	var sections = {};
+	var books = {};
 	var loaded = false;
 
 	environment.scene = null;
