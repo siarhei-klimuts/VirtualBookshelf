@@ -1,3 +1,4 @@
+[![GitHub version](https://badge.fury.io/gh/Galiaf47%2FVirtualBookshelf.svg)](http://badge.fury.io/gh/Galiaf47%2FVirtualBookshelf)
 [ ![Codeship Status for Galiaf47/VirtualBookshelf](https://img.shields.io/codeship/8e298e00-caed-0132-e435-4a3e524f24ba/master.svg)](https://codeship.com/projects/75618)
 [![Stories in Ready](https://badge.waffle.io/galiaf47/virtualbookshelf.png?label=ready&title=Ready)](https://waffle.io/galiaf47/virtualbookshelf)
 Virtual Bookshelf
