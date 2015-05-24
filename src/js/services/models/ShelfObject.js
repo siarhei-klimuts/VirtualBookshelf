@@ -2,7 +2,7 @@ angular.module('VirtualBookshelf')
 .factory('ShelfObject', function (BaseObject, subclassOf) {
 	var ShelfObject = function(params) {
 		var size = params.size;	
-		var geometry = new THREE.CubeGeometry(size[0], size[1], size[2]);
+		var geometry = new THREE.BoxGeometry(size[0], size[1], size[2]);
 
 		geometry.computeBoundingBox();
 		BaseObject.call(this, params, geometry);

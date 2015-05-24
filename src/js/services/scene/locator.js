@@ -213,7 +213,7 @@ angular.module('VirtualBookshelf')
 	var debugShowBB = function(obj) {
 		var objectBB = obj.boundingBox;
 		var objBox = new THREE.Mesh(
-			new THREE.CubeGeometry(
+			new THREE.BoxGeometry(
 				objectBB.radius.x * 2, 
 				objectBB.radius.y * 2 + 0.1, 
 				objectBB.radius.z * 2
@@ -235,7 +235,7 @@ angular.module('VirtualBookshelf')
 	var debugAddOccupied = function(cells, matrixPrecision, obj, zKey) {
 		cells.forEach(function (cell) {
 			var pos = getPositionFromCells([cell], zKey, matrixPrecision, obj.parent.geometry.boundingBox, obj.geometry.boundingBox);
-			var cellBox = new THREE.Mesh(new THREE.CubeGeometry(matrixPrecision.x - 0.01, 0.01, matrixPrecision.z - 0.01), new THREE.MeshLambertMaterial({color: 0xff0000}));
+			var cellBox = new THREE.Mesh(new THREE.BoxGeometry(matrixPrecision.x - 0.01, 0.01, matrixPrecision.z - 0.01), new THREE.MeshLambertMaterial({color: 0xff0000}));
 			
 			cellBox.position = pos;
 			obj.parent.add(cellBox);
@@ -244,7 +244,7 @@ angular.module('VirtualBookshelf')
 
 	var debugShowFree = function(position, matrixPrecision, obj) {
 		if (position) {
-			var cellBox = new THREE.Mesh(new THREE.CubeGeometry(matrixPrecision.x, 0.5, matrixPrecision.z), new THREE.MeshLambertMaterial({color: 0x00ff00}));
+			var cellBox = new THREE.Mesh(new THREE.BoxGeometry(matrixPrecision.x, 0.5, matrixPrecision.z), new THREE.MeshLambertMaterial({color: 0x00ff00}));
 			cellBox.position = position;
 			obj.parent.add(cellBox);
 		}

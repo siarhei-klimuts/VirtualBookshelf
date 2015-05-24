@@ -14,7 +14,7 @@ describe('locator.js', function () {
 	};
 
 	var sectionCache = {
-		geometry: new THREE.CubeGeometry(0.774968 * 2, 2.24895 + 0.0449831, 0.309278 + 0.18316),
+		geometry: new THREE.BoxGeometry(0.774968 * 2, 2.24895 + 0.0449831, 0.309278 + 0.18316),
 		data: readJSON('public/obj/sections/bookshelf_0001/data.json')
 	};
 
@@ -35,7 +35,7 @@ describe('locator.js', function () {
 		$httpBackend.when('GET', '/library/1').respond(libraryDto);
 		$httpBackend.flush();
 
-		var libraryGeometry = new THREE.CubeGeometry(4.15864 * 2, 2.33378 + 1.8178, 4.15864 * 2);
+		var libraryGeometry = new THREE.BoxGeometry(4.15864 * 2, 2.33378 + 1.8178, 4.15864 * 2);
 		libraryGeometry.computeBoundingBox();
 		sectionCache.geometry.computeBoundingBox();
 		
