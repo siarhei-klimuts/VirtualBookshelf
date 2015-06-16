@@ -13,12 +13,12 @@ angular.module('VirtualBookshelf')
 	SectionObject.TYPE = 'SectionObject';
 
 	SectionObject.prototype = subclassOf(BaseObject);
-	SectionObject.prototype.type = SectionObject.TYPE;
+	SectionObject.prototype.vbType = SectionObject.TYPE;
 
 	SectionObject.prototype.save = function() {
 		var scope = this;
 		var dto = {
-			id: this.dataObject.id,
+			id: this.getId(),
 			userId: this.dataObject.userId,
 			pos_x: this.position.x,
 			pos_y: this.position.y,
@@ -36,7 +36,7 @@ angular.module('VirtualBookshelf')
 		if(this.parent != parent) {
 			if(parent) {
 				parent.add(this);
-				this.dataObject.libraryId = parent.id;
+				this.dataObject.libraryId = parent.getId();
 			} else {
 				this.parent.remove(this);
 				this.dataObject.libraryId = null;

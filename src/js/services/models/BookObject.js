@@ -7,12 +7,12 @@ angular.module('VirtualBookshelf')
 	BookObject.TYPE = 'BookObject';
 
 	BookObject.prototype = subclassOf(BaseObject);
-	BookObject.prototype.type = BookObject.TYPE;
+	BookObject.prototype.vbType = BookObject.TYPE;
 
 	BookObject.prototype.save = function() {
 		var scope = this;
 		var dto = {
-			id: this.dataObject.id,
+			id: this.getId(),
 			userId: this.dataObject.userId,
 			pos_x: this.position.x,
 			pos_y: this.position.y,
@@ -29,8 +29,8 @@ angular.module('VirtualBookshelf')
 		if(this.parent != parent) {
 			if(parent) {
 				parent.add(this);
-				this.dataObject.shelfId = parent.id;
-				this.dataObject.sectionId = parent.parent.id;
+				this.dataObject.shelfId = parent.getId();
+				this.dataObject.sectionId = parent.parent.getId();
 			} else {
 				this.parent.remove(this);
 				this.dataObject.shelfId = null;

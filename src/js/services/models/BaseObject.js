@@ -4,21 +4,25 @@ angular.module('VirtualBookshelf')
 		THREE.Mesh.call(this, geometry, material);
 
 		this.dataObject = dataObject || {};
-		
-		this.id = this.dataObject.id;
 		this.rotation.order = 'XYZ';
-
 		this.setDtoTransformations();
 	};
 	
 	BaseObject.prototype = subclassOf(THREE.Mesh);
 
 	BaseObject.prototype.getType = function() {
-		return this.type;
+		return this.vbType;
+	};
+
+	BaseObject.prototype.getId = function() {
+		return this.dataObject && this.dataObject.id;
 	};
 
 	BaseObject.prototype.setDtoTransformations = function() {
-		this.position = new THREE.Vector3(this.dataObject.pos_x, this.dataObject.pos_y, this.dataObject.pos_z);
+		this.position.setX(this.dataObject.pos_x || 0);
+		this.position.setY(this.dataObject.pos_y || 0);
+		this.position.setZ(this.dataObject.pos_z || 0);
+
 		if(this.dataObject.rotation) this.rotation.fromArray(this.dataObject.rotation.map(Number));
 
 		this.updateBoundingBox();		

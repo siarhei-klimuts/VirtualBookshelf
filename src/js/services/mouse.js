@@ -58,11 +58,6 @@ angular.module('VirtualBookshelf')
 		return this.target.id === environment.LIBRARY_CANVAS_ID;
 	};
 
-	mouse.isPocketBook = function() {
-		return false; //TODO: stub
-		// return !!(this.target && this.target.parentNode == UI.menu.inventory.books);
-	};
-
 	mouse.getIntersected = function(objects, recursive, searchFor) {
 		var
 			vector,
@@ -74,7 +69,8 @@ angular.module('VirtualBookshelf')
 
 		result = null;
 		vector = getVector();
-		raycaster = new THREE.Raycaster(camera.getPosition(), vector);
+		raycaster = new THREE.Raycaster();
+		raycaster.set(camera.getPosition(), vector);
 		intersects = raycaster.intersectObjects(objects, recursive);
 
 		if(searchFor) {
@@ -102,9 +98,8 @@ angular.module('VirtualBookshelf')
 	};
 
 	var getVector = function() {
-		var projector = new THREE.Projector();
 		var vector = new THREE.Vector3((x / getWidth()) * 2 - 1, - (y / getHeight()) * 2 + 1, 0.5);
-		projector.unprojectVector(vector, camera.camera);
+		vector.unproject(camera.camera);
 	
 		return vector.sub(camera.getPosition()).normalize();
 	};

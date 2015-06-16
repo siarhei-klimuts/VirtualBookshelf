@@ -33,7 +33,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	var saveSection = function(dto, position) {
-		dto.libraryId = environment.library.id;
+		dto.libraryId = environment.library.getId();
 		dto.pos_x = position.x;
 		dto.pos_y = position.y;
 		dto.pos_z = position.z;
@@ -58,8 +58,8 @@ angular.module('VirtualBookshelf')
 	};
 
 	var saveBook = function(dto, position, shelf) {
-		dto.shelfId = shelf.id;
-		dto.sectionId = shelf.parent.id;
+		dto.shelfId = shelf.getId();
+		dto.sectionId = shelf.parent.getId();
 		dto.pos_x = position.x;
 		dto.pos_y = position.y;
 		dto.pos_z = position.z;
@@ -237,7 +237,7 @@ angular.module('VirtualBookshelf')
 			var pos = getPositionFromCells([cell], zKey, matrixPrecision, obj.parent.geometry.boundingBox, obj.geometry.boundingBox);
 			var cellBox = new THREE.Mesh(new THREE.BoxGeometry(matrixPrecision.x - 0.01, 0.01, matrixPrecision.z - 0.01), new THREE.MeshLambertMaterial({color: 0xff0000}));
 			
-			cellBox.position = pos;
+			cellBox.position.set(pos.x, pos.y, pos.z);
 			obj.parent.add(cellBox);
 		});
 	};
@@ -245,7 +245,7 @@ angular.module('VirtualBookshelf')
 	var debugShowFree = function(position, matrixPrecision, obj) {
 		if (position) {
 			var cellBox = new THREE.Mesh(new THREE.BoxGeometry(matrixPrecision.x, 0.5, matrixPrecision.z), new THREE.MeshLambertMaterial({color: 0x00ff00}));
-			cellBox.position = position;
+			cellBox.position.set(position.x, position.y, position.z);
 			obj.parent.add(cellBox);
 		}
 	};

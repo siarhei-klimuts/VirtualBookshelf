@@ -2,8 +2,8 @@ angular.module('VirtualBookshelf')
 .factory('SelectorMeta', function () {
 	var SelectorMeta = function(selectedObject) {
 		if(selectedObject) {
-			this.id = selectedObject.id;
-			this.parentId = selectedObject.parent.id;
+			this.id = selectedObject.getId();
+			this.parentId = selectedObject.parent.getId();
 			this.type = selectedObject.getType();
 		}
 	};

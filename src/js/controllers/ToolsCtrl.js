@@ -63,7 +63,7 @@ angular.module('VirtualBookshelf')
 
     this.getTitle = function() {
         return  this.isBook() ? selector.getSelectedDto().title :
-                this.isSection() ? selector.getSelectedObject().id :
+                this.isSection() ? selector.getSelectedObject().getId() :
                 null;
     };
 

@@ -71,7 +71,7 @@ angular.module('VirtualBookshelf')
 	environment.updateSection = function(dto) {
 		var promise;
 
-		if(dto.libraryId == environment.library.id) {
+		if(dto.libraryId == environment.library.getId()) {
 			environment.removeSection(dto.id);
 			promise = createSection(dto);
 		} else {
@@ -256,7 +256,7 @@ angular.module('VirtualBookshelf')
 			obj: obj
 		};
 
-		dict[obj.id] = dictItem;
+		dict[obj.getId()] = dictItem;
 	};
 
 	var getBookShelf = function(bookDto) {

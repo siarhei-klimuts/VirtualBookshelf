@@ -7,15 +7,17 @@ angular.module('VirtualBookshelf')
 		geometry.computeBoundingBox();
 		BaseObject.call(this, params, geometry);
 
-		this.position = new THREE.Vector3(params.position[0], params.position[1], params.position[2]);
+		this.position.set(params.position[0], params.position[1], params.position[2]);
 		this.size = new THREE.Vector3(size[0], size[1], size[2]);
-		this.visible = false;
+		
+		this.material.transparent = true;
+		this.material.opacity = 0;
 	};
 
 	ShelfObject.TYPE = 'ShelfObject';
 
 	ShelfObject.prototype = subclassOf(BaseObject);
-	ShelfObject.prototype.type = ShelfObject.TYPE;
+	ShelfObject.prototype.vbType = ShelfObject.TYPE;
 
 	return ShelfObject;
 });

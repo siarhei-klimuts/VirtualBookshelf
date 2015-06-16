@@ -25,7 +25,7 @@ angular.module('VirtualBookshelf')
 		materialProperties.color = COLOR_FOCUS;
 		var materialFocus = new THREE.MeshBasicMaterial(materialProperties);
 
-		var geometry = new THREE.PlaneGeometry(1, 1, 1);
+		var geometry = new THREE.PlaneBufferGeometry(1, 1, 1);
 
 		select = new THREE.Mesh(geometry, materialSelect);
 		select.rotation.x = PLANE_ROTATION;

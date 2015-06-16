@@ -16,7 +16,7 @@ angular.module('VirtualBookshelf')
 		var height = window.innerHeight;
 		
 		camera.camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 50);
-		camera.object.position = new THREE.Vector3(0, camera.HEIGTH, 0);
+		camera.object.position.set(0, camera.HEIGTH, 0);
 		camera.object.rotation.order = 'YXZ';
 
 		var candle = new THREE.PointLight(0x665555, 1.6, 10);

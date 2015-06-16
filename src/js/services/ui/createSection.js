@@ -19,7 +19,7 @@ angular.module('VirtualBookshelf')
 		if(model) {
 			var sectionData = {
 				model: model,
-				libraryId: environment.library.id,
+				libraryId: environment.library.getId(),
 				userId: user.getId()
 			};
 
