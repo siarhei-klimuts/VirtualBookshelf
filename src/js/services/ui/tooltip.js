@@ -6,7 +6,7 @@ angular.module('VirtualBookshelf')
 
 	tooltip.set = function(obj) {
 		if(obj) {
-			this.obj.type = obj.type;
+			this.obj.type = obj.getType();
 			this.obj.title = obj.dataObject.title;
 			this.obj.author = obj.dataObject.author;
 		} else {
