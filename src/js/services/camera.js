@@ -21,8 +21,8 @@ angular.module('VirtualBookshelf')
 
 		var candle = new THREE.PointLight(0x665555, 1.6, 10);
 		candle.position.set(0, 0, 0);
-		camera.object.add(candle);
 
+		camera.object.add(candle);
 		camera.object.add(camera.camera);
 	};
 

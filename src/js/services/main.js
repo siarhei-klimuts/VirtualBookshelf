@@ -10,8 +10,6 @@ angular.module('VirtualBookshelf')
 			init();
 			controls.init();
 
-			startRenderLoop();
-
 			block.global.start();
 			user.load().then(function () {
 				return $q.all([environment.loadLibrary(user.getLibrary() || 1), userData.load()]);
@@ -21,6 +19,7 @@ angular.module('VirtualBookshelf')
 			}).finally(function () {
 				locator.centerObject(camera.object);
 				environment.setLoaded(true);
+				startRenderLoop();
 				block.global.stop();
 			});		
 		} else {

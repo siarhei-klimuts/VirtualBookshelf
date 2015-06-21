@@ -1,7 +1,6 @@
 <script type="x-shader/x-fragment" id="BookMaterialFragmentShader">
 	uniform vec3 diffuse;
 	uniform float opacity;
-	uniform vec3 ambient;
 	uniform vec3 emissive;
 	uniform vec3 specular;
 	uniform float shininess;
@@ -312,9 +311,9 @@
 		#endif
 
 		#ifdef METAL
-			gl_FragColor.xyz = gl_FragColor.xyz * ( emissive + totalDiffuse + ambientLightColor * ambient + totalSpecular );
+			gl_FragColor.xyz = gl_FragColor.xyz * ( emissive + totalDiffuse + ambientLightColor + totalSpecular );
 		#else
-			gl_FragColor.xyz = gl_FragColor.xyz * ( emissive + totalDiffuse + ambientLightColor * ambient ) + totalSpecular;
+			gl_FragColor.xyz = gl_FragColor.xyz * ( emissive + totalDiffuse + ambientLightColor ) + totalSpecular;
 		#endif
 
 		#ifdef USE_COLOR

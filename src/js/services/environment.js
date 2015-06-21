@@ -183,8 +183,10 @@ angular.module('VirtualBookshelf')
 
         texture.needsUpdate = true;
 		library = new LibraryObject(libraryDto, libraryCache.geometry, material);
-		camera.setParent(library);
 
+		library.add(new THREE.AmbientLight(0x333333));
+		camera.setParent(library);
+		
 		environment.scene.add(library);
 		environment.library = library;
 	};
