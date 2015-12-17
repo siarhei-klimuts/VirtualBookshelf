@@ -4,14 +4,6 @@
 	</center>
 
 	<p><%= __('ui.welcome.description') %></p>
-	<br>
-	<p>
-		<%= __('ui.welcome.indiegogo.text') %>
-		<a href="https://www.indiegogo.com/projects/1312535" target="blank">
-			<%= __('ui.welcome.indiegogo.link') %>
-		</a>
-		<div class="fb-share-button" data-href="https://www.indiegogo.com/projects/1312535" data-layout="button_count"></div>
-	</p>
 
 	<div ng-show="welcome.isLoaded()">
 		<div ng-show="welcome.isShowAuthorization()" ng-click="welcome.showLoginDialog()" class="welcomeControl">

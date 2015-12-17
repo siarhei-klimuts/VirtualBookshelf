@@ -53,8 +53,6 @@
 	"ui.tools.header.section": "Section:",
 	"ui.welcome.header": "Welcome to The Library",
 	"ui.welcome.description": "The Library is a personal 3D library for your book collections. Here you can create a room, place bookshelves and fill them with your books. This is a good possibility if you want to show your collections to friends.",
-	"ui.welcome.indiegogo.text": "The Library started crowdfunding campaign at  indiegogo. We need it because of expensive bills for cloud services The Library uses. If you want to help, support this campaign using link below or share this post with friends. And don't forget to leave feedback, The Library really needs it.",
-	"ui.welcome.indiegogo.link": "Support The Library",
 	"ui.welcome.login": "You are not logged in. Please login.",
 	"ui.registration.header": "Create new account",
 	"ui.registration.text": "You are creating a new account. Edit your data and click \"Save\". If you already have an account, then click \"Cancel\" and authorize using an existing account. You can add this login to an existing account through menu \"Add a login\".",
