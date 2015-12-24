@@ -3,7 +3,8 @@
   "version": "0.3.95",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "gulp"
   },
   "dependencies": {
     "cloudinary": "^1.1.1",
