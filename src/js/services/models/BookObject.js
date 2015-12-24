@@ -1,3 +1,7 @@
+import './BaseObject';
+import './subclassOf';
+import '../data';
+
 angular.module('VirtualBookshelf')
 .factory('BookObject', function ($log, BaseObject, data, subclassOf) {	
 	var BookObject = function(dataObject, geometry, material) {

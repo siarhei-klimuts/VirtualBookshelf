@@ -10,13 +10,11 @@
 	
 		<script src="/js/vendor.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/vendor.css">
 		<link rel="stylesheet" type="text/css" href="/css/ngDialog-theme-default.min.css">
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
 	</head>
 
-	<body ng-app="VirtualBookshelf" ng-controller="UiCtrl" block-ui="global" ng-cloak>
+	<body block-ui="global" ng-cloak>
 		<div id="fb-root"></div>
 		
 		<canvas id="LIBRARY"></canvas>
@@ -44,6 +42,6 @@
     	<ng-include src="'ui/BookMaterialVertexShader.ejs'"></ng-include>
     	<ng-include src="'ui/BookMaterialFragmentShader.ejs'"></ng-include>
 
-		<script src="/js/index.js"></script>
+		<script src="/js/bundle.js"></script>
 	</body>
 </html>

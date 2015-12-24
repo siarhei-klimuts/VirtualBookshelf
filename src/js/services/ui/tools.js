@@ -1,3 +1,17 @@
+import '../models/BookObject';
+import '../models/SectionObject';
+import '../models/ShelfObject';
+import '../models/SelectorMetaDto';
+import '../data';
+import '../scene/selector';
+import '../dialog';
+import '../ui/block';
+import '../ui/catalog';
+import '../environment';
+import '../scene/preview';
+import '../user';
+import '../scene/locator';
+
 angular.module('VirtualBookshelf')
 .factory('tools', function ($q, $log, BookObject, SectionObject, ShelfObject, SelectorMetaDto, data, selector, dialog, block, catalog, environment, preview, user, locator, growl) {
 	var tools = {};

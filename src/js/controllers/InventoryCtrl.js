@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.controller('InventoryCtrl', function (SelectorMetaDto, BookObject, user, bookEdit, selector) {
+.controller('InventoryCtrl', function (SelectorMetaDto, BookObject, user, bookEdit, selector, catalog) {
 	this.isShow = function() {
 		return user.isAuthorized();
 	};
@@ -16,4 +16,6 @@ angular.module('VirtualBookshelf')
 	this.addBook = function() {
 		bookEdit.show({userId: user.getId()});
 	};
+
+	this.catalog = catalog;
 });

@@ -1,12 +1,12 @@
-<div class="uiPanel mainMenu" block-ui="main_menu">
+<div class="uiPanel mainMenu" ng-controller="MainMenuCtrl as mainMenu" block-ui="main_menu">
 	<div ng-show="mainMenu.isShow()">
 		<ul class="select">
 			<li ng-click="mainMenu.createListShow()"><i class="fa fa-plus fa-2x"></i><%=__('ui.menuItem.create')%></li>
-			<li ng-click="mainMenu.showSelectLibrary()" ng-show="selectLibrary.isAvailable()"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
+			<li ng-click="mainMenu.showSelectLibrary()" ng-show="mainMenu.selectLibrary.isAvailable()"><i class="fa fa-home fa-2x"></i><%=__('ui.menuItem.selectLibrary')%></li>
 			<li ng-click="mainMenu.showFeedback()"><i class="fa fa-comment-o fa-2x"></i><%=__('ui.menuItem.leaveFeedback')%></li>
-			<li ng-click="authorization.show()" ng-show="authorization.isShow()"><i class="fa fa-sign-in fa-2x"></i><%=__('ui.menuItem.login')%></li>
+			<li ng-click="mainMenu.authorization.show()" ng-show="mainMenu.authorization.isShow()"><i class="fa fa-sign-in fa-2x"></i><%=__('ui.menuItem.login')%></li>
 			<li ng-click="mainMenu.showLinkAccount()" ng-show="mainMenu.isLinkAccountAvailable()"><i class="fa fa-plug fa-2x"></i><%=__('ui.menuItem.linkAccount')%></li>
-			<li ng-click="authorization.logout()" ng-hide="authorization.isShow()"><i class="fa fa-sign-out fa-2x"></i><%=__('ui.menuItem.logout')%></li>
+			<li ng-click="mainMenu.authorization.logout()" ng-hide="mainMenu.authorization.isShow()"><i class="fa fa-sign-out fa-2x"></i><%=__('ui.menuItem.logout')%></li>
 		</ul>
 	</div>
 

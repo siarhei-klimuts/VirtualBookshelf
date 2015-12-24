@@ -1,3 +1,7 @@
+import '../ui/selectLibrary';
+import '../ui/catalog';
+import '../user';
+
 angular.module('VirtualBookshelf')
 .factory('userData', function ($q, selectLibrary, catalog, user) {
 	var userData = {};

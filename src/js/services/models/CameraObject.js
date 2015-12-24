@@ -1,3 +1,6 @@
+import './BaseObject';
+import './subclassOf';
+
 angular.module('VirtualBookshelf')
 .factory('CameraObject', function (BaseObject, subclassOf) {
 	var CameraObject = function() {

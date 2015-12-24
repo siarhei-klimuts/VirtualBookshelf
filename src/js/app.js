@@ -1,4 +1,4 @@
-angular.module('VirtualBookshelf', ['angular-growl', 'blockUI', 'ngDialog', 'angularUtils.directives.dirPagination'])
+export default angular.module('VirtualBookshelf', ['angular-growl', 'blockUI', 'ngDialog', 'angularUtils.directives.dirPagination'])
 .config(function (growlProvider, blockUIConfig, paginationTemplateProvider) {
     growlProvider.globalTimeToLive(2000);
     growlProvider.globalPosition('top-left');

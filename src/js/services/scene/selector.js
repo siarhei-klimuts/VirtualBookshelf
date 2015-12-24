@@ -1,3 +1,13 @@
+import '../models/SelectorMeta';
+import '../models/BookObject';
+import '../models/ShelfObject';
+import '../models/SectionObject';
+import '../environment';
+import '../scene/highlight';
+import '../scene/preview';
+import '../ui/tooltip';
+import '../ui/catalog';
+
 angular.module('VirtualBookshelf')
 .factory('selector', function (SelectorMeta, BookObject, ShelfObject, SectionObject, environment, highlight, preview, tooltip, catalog) {
 	var selector = {};

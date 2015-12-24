@@ -1,3 +1,10 @@
+import '../models/BaseObject';
+import '../data';
+import '../scene/selector';
+import '../environment';
+import '../cache';
+import '../scene/gridCalculator';
+
 angular.module('VirtualBookshelf')
 .factory('locator', function ($q, $log, BaseObject, data, selector, environment, cache, gridCalculator) {
 	var locator = {};

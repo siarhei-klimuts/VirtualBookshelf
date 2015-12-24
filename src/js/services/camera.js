@@ -1,3 +1,5 @@
+import './models/CameraObject';
+
 angular.module('VirtualBookshelf')
 .factory('camera', function (CameraObject) {
 	var camera = {

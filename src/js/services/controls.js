@@ -1,3 +1,16 @@
+import './models/SelectorMeta';
+import './models/BookObject';
+import './models/ShelfObject';
+import './models/SectionObject';
+import './camera';
+import './navigation';
+import './environment';
+import './mouse';
+import './scene/selector';
+import './scene/preview';
+import './ui/block';
+import './ui/tools';
+
 angular.module('VirtualBookshelf')
 /* 
  * controls.js is a service for processing not UI(menus) events 

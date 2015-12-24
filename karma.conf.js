@@ -17,8 +17,7 @@ module.exports = function(config) {
     files: [
         {pattern: 'public/obj/**/*.json', included: false},
         'public/js/vendor.js',
-        'src/js/app.js', 
-        'src/js/**/*.js',
+        'public/js/bundle.js',
         'test/lib/angular-mocks.js',
         'test/lib/karma-read-json.js',
         'test/client/**/*.js'

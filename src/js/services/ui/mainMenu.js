@@ -1,3 +1,12 @@
+import '../data';
+import './bookEdit';
+import './feedback';
+import './selectLibrary';
+import './createLibrary';
+import './createSection';
+import './linkAccount';
+import './authorization';
+
 angular.module('VirtualBookshelf')
 .factory('mainMenu', function ($log, data, bookEdit, feedback, selectLibrary, createLibrary, createSection, linkAccount, authorization) {
 	var mainMenu = {};

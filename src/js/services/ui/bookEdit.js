@@ -1,3 +1,12 @@
+import '../data';
+import '../environment';
+import '../ui/block';
+import '../dialog';
+import '../archive';
+import '../ui/catalog';
+import '../scene/selector';
+import '../user';
+
 angular.module('VirtualBookshelf')
 .factory('bookEdit', function ($log, data, environment, block, dialog, archive, catalog, selector, user, ngDialog) {
 	var bookEdit = {};

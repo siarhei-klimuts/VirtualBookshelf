@@ -1,3 +1,11 @@
+import './models/LibraryObject';
+import './models/SectionObject';
+import './models/BookObject';
+import './materials/BookMaterial';
+import './data';
+import './camera';
+import './cache';
+
 angular.module('VirtualBookshelf')
 .factory('environment', function ($q, $log, $window, LibraryObject, SectionObject, BookObject, BookMaterial, data, camera, cache) {
 	var environment = {};

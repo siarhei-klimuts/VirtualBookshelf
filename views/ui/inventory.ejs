@@ -6,7 +6,7 @@
 		</div>
 		
 		<ul>
-			<li dir-paginate="item in catalog.books | filter:inventory.search | orderBy:'title' | itemsPerPage:5">
+			<li dir-paginate="item in inventory.catalog.books | filter:inventory.search | orderBy:'title' | itemsPerPage:5">
 				<div class="inventoryItem" ng-class="{selected: inventory.isBookSelected(item.id)}" ng-click="inventory.select(item)">
 					<i class="fa fa-book"></i>
 					<span ng-bind="item.title"></span>

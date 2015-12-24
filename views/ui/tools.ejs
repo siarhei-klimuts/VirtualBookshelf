@@ -22,7 +22,7 @@
 		<hr/>
 	</div>
 
-	<div class="navigation" ng-mouseup="navigation.stop()" ng-mouseleave="navigation.stop()">
+	<div class="navigation" ng-controller="NavigationCtrl as navigation" ng-mouseup="navigation.stop()" ng-mouseleave="navigation.stop()">
 		<span ng-mousedown="navigation.left()" class="fa fa-chevron-left fa-2x"></span>
 		<span ng-mousedown="navigation.right()" class="fa fa-chevron-right fa-2x"></span>
 		<span ng-mousedown="navigation.backward()" class="fa fa-chevron-down fa-2x"></span>

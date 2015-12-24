@@ -1,3 +1,15 @@
+import '../app';
+
+import './camera';
+import './controls';
+import './user';
+import './environment';
+import './navigation';
+import './ui/tools';
+import './ui/userData';
+import './ui/block';
+import './scene/locator';
+
 angular.module('VirtualBookshelf')
 .factory('main', function ($log, $q, camera, controls, user, environment, tools, navigation, userData, block, locator) {	
 	var canvas;
