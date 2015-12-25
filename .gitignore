@@ -1,4 +1,3 @@
-/run
 lib-cov
 *.todo
 *.seed
@@ -16,5 +15,8 @@ results
 
 npm-debug.log
 node_modules
-/.env.json
+bower_components
+.env.json
 *.sublime-*
+public/js
+public/fonts

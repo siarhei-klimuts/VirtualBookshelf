@@ -114,6 +114,7 @@ gulp.task('set-env', function () {
     env({file: '.env.json'});
 });
 
+gulp.task('build', ['bowerjs', 'bowercss', 'webpack:build-dev']);
 gulp.task('default', ['bowerjs', 'bowercss', 'set-env', 'webpack:build-dev', 'server', 'watchServer', 'watch']);
 
 // clean up if an error goes unhandled.
