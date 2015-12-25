@@ -1,4 +1,6 @@
 require('font-awesome/css/font-awesome.min.css');
+
+require('../css/ngDialog-theme-default.min.css');
 require('../css/style.css');
 
 import './services/main';

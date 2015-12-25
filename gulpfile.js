@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var sourcemaps = require('gulp-sourcemaps');
 var env = require('gulp-env');
-var karma = require('gulp-karma');
+var karma = require('karma');
 var gutil = require('gulp-util');
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
@@ -24,12 +24,6 @@ var source = {
 		css: [
 			'./bower_components/**/*.min.css',
 			'!./bower_components/**/ngDialog-theme-*.min.css'
-		]
-	},
-	app: {
-		js: [
-			'./src/js/app.js', 
-			'./src/js/**/*.js'
 		]
 	},
 	server: [
@@ -54,32 +48,18 @@ gulp.task('bowercss', function() {
 		.pipe(gulp.dest(dest.css));
 });
 
-gulp.task('test', function() {
-  	return gulp.src('./fooBar')
-    .pipe(karma({
-		configFile: 'karma.conf.js',
-		action: 'run'
-	}))
-    .on('error', function(err) {
-		throw err;
-	});
+gulp.task('test', function(done) {
+	new karma.Server({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: true
+	}, done).start();
 });
  
 gulp.task('testWatch', function() {
-  	gulp.src('./fooBar')
-    .pipe(karma({
-		configFile: 'karma.conf.js',
-		action: 'watch'
-    }));
-});
-
-// TODO: remove as replaced by webpack
-gulp.task('js', function() {
-    gulp.src(source.app.js)
-	.pipe(sourcemaps.init())
-    .pipe(concat('index.js'))
-	.pipe(sourcemaps.write())
-    .pipe(gulp.dest(dest.js));
+	new karma.Server({
+		configFile: __dirname + '/karma.conf.js',
+		autoWatch: true
+	}, done).start();
 });
 
 gulp.task('webpack:build-dev', function (callback) {
