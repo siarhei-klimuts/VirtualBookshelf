@@ -5,6 +5,8 @@ require('../css/style.css');
 
 import './services/main';
 
+import './directives/select';
+
 import './controllers/AuthCtrl';
 import './controllers/BookEditCtrl';
 import './controllers/CreateLibraryCtrl';
