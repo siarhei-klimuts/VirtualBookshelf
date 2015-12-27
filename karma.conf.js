@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
         {pattern: 'public/obj/**/*.json', included: false},
-        'public/js/vendor.js',
+        'public/js/vendors.js',
         'public/js/bundle.js',
         'test/lib/angular-mocks.js',
         'test/lib/karma-read-json.js',
@@ -32,8 +32,8 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        'test/client/**/*.js': ['webpack']
     },
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

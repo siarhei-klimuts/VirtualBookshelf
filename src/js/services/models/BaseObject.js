@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 angular.module('VirtualBookshelf')
 .factory('BaseObject', function (subclassOf) {
 	var BaseObject = function(dataObject, geometry, material) {

@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 angular.module('VirtualBookshelf')
 .factory('data', function ($http, $q, $log) {
 	var data = {};

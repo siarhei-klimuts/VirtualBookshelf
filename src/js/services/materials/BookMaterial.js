@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 angular.module('VirtualBookshelf')
 .factory('BookMaterial', function () {
 	var BookMaterial = function(mapImage, bumpMapImage, specularMapImage, coverMapImage) {

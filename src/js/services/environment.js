@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 import './models/LibraryObject';
 import './models/SectionObject';
 import './models/BookObject';

@@ -1,7 +1,10 @@
+var THREE = require('three');
+require('angular-mocks');
+
 describe('gridCalculator.js', function () {
 	var gridCalculator;
 
-	beforeEach(module('VirtualBookshelf'));
+	beforeEach(angular.mock.module('VirtualBookshelf'));
 	
 	beforeEach(function () {
 		inject(function (_gridCalculator_) {

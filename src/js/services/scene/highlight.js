@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 angular.module('VirtualBookshelf')
 .factory('highlight', function (environment) {
 	var highlight = {};

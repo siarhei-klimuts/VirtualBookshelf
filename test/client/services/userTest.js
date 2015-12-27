@@ -1,3 +1,5 @@
+require('angular-mocks');
+
 describe('user.js', function() {
 	var $httpBackend;
 	var $q;
@@ -16,7 +18,7 @@ describe('user.js', function() {
 		vkontakteId: 'Test User vkontakteId'
 	};
 
-	beforeEach(module('VirtualBookshelf'));
+	beforeEach(angular.mock.module('VirtualBookshelf'));
 	
 	beforeEach(function () {
 		inject(function (_$httpBackend_, _$q_, _$rootScope_, _user_, _data_) {

@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 import '../models/BaseObject';
 import '../data';
 import '../scene/selector';

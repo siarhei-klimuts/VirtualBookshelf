@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 angular.module('VirtualBookshelf')
 .factory('mouse', function (camera, environment) {
 	var mouse = {};

@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 import './BaseObject';
 import './subclassOf';
 

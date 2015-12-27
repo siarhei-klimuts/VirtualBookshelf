@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 import './models/CameraObject';
 
 angular.module('VirtualBookshelf')

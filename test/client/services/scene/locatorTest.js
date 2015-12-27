@@ -1,3 +1,6 @@
+var THREE = require('three');
+require('angular-mocks');
+
 describe('locator.js', function () {
 	var $httpBackend;
 	var $q;
@@ -18,7 +21,7 @@ describe('locator.js', function () {
 		data: readJSON('public/obj/sections/bookshelf_0001/data.json')
 	};
 
-	beforeEach(module('VirtualBookshelf'));
+	beforeEach(angular.mock.module('VirtualBookshelf'));
 	
 	beforeEach(function () {
 		inject(function (_$httpBackend_, _$q_, _$rootScope_, _locator_, _cache_, _environment_, _LibraryObject_) {

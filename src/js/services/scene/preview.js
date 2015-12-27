@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 angular.module('VirtualBookshelf')
 .factory('preview', function (camera, highlight) {
 	var preview = {};
