@@ -1,5 +1,4 @@
 var THREE = require('three');
-require('angular-mocks');
 
 describe('locator.js', function () {
 	var $httpBackend;

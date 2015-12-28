@@ -18,7 +18,7 @@ module.exports = function(config) {
         {pattern: 'public/obj/**/*.json', included: false},
         'public/js/vendors.js',
         'public/js/bundle.js',
-        'test/lib/angular-mocks.js',
+        'node_modules/angular-mocks/angular-mocks.js',
         'test/lib/karma-read-json.js',
         'test/client/**/*.js'
     ],

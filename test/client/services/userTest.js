@@ -1,5 +1,3 @@
-require('angular-mocks');
-
 describe('user.js', function() {
 	var $httpBackend;
 	var $q;

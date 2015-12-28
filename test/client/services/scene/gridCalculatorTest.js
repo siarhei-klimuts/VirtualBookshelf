@@ -1,5 +1,4 @@
 var THREE = require('three');
-require('angular-mocks');
 
 describe('gridCalculator.js', function () {
 	var gridCalculator;

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "postinstall": "bower install; gulp build",
+    "postinstall": "bower install && webpack",
     "test": "karma start --single-run",
     "testWatch": "karma start",
     "dev": "gulp",
