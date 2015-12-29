@@ -6,9 +6,10 @@
     "start": "node app.js",
     "postinstall": "bower install && webpack",
     "test": "karma start --single-run",
-    "testWatch": "karma start",
-    "dev": "gulp",
-    "build": "webpack --progress --colors --watch"
+    "test-watch": "karma start",
+    "server": "gulp",
+    "dev-server": "webpack-dev-server",
+    "build": "webpack --progress --colors"
   },
   "dependencies": {
     "cloudinary": "^1.1.1",
@@ -51,6 +52,7 @@
     "ng-dialog": "^0.5.6",
     "style-loader": "^0.13.0",
     "three": "^0.71.0",
-    "webpack": "^1.12.9"
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0"
   }
 }

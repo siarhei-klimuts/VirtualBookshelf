@@ -9,28 +9,47 @@ var isProd = process.env.NODE_ENV === 'production';
 var config = {
     watch: false,
     entry: {
-        app: ['./src/js/index.js'],
+        app: [
+            "webpack/hot/dev-server",
+            './src/js/index.js'
+        ],
         vendors: []
     },
     output: {
         pathinfo: true,
         path: __dirname + '/public',
+        publicPath: 'http://localhost:8080/',
         filename: '/js/bundle.js'
     },
     module: {
         loaders: [
             {test: /\.js/, exclude: /(node_modules|bower_components|libs)/, loader: "ng-annotate!babel!jshint"},
-            {test: /\.css$/, loader: "style!css"},
+            {test: /\.css$/, loader: "style!css?sourceMap"},
             {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'}
         ],
         noParse: [],
     },
     plugins: [],
     resolve: {
-        root: __dirname + "/src",
+        root: __dirname + '/src',
         alias: {}
     },
     devtool: isProd ? 'source-map' : 'eval',
+
+    devServer: {
+        publicPath: '/',
+        contentBase: 'http://localhost:3000',
+        historyApiFallback: false,
+        hot: true,
+        inline: true,
+        progress: true,
+        stats: 'errors-only',
+        host: 'localhost',
+        port: '8080',
+        proxy: {
+            "*": "http://localhost:3000"
+        }
+    },
 
     addVendor: function (name, path) {
         if (path) {
@@ -48,6 +67,8 @@ var config = {
 config.addPlugin(new webpack.optimize.CommonsChunkPlugin('vendors', '/js/vendors.js'));
 if (isProd) {
     config.addPlugin(new webpack.optimize.UglifyJsPlugin({minimize: true}));
+} else {
+    config.addPlugin(new webpack.HotModuleReplacementPlugin());
 }
 
 config.addVendor('angular');
