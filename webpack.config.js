@@ -1,16 +1,19 @@
-var webpack = require("webpack");
+require('dotenv').load();
+var webpack = require('webpack');
+var url = require('url');
 
 var NODE_MODULES = __dirname + '/node_modules/';
 var BOWER_COMPONENTS = __dirname + '/bower_components/';
 var LIBS_PATH = __dirname + '/src/libs/';
 
 var isProd = process.env.NODE_ENV === 'production';
+var NODE_HOST = process.env.NODE_HOST;
+var HOST_DEV = url.parse(process.env.HOST_DEV);
 
 var config = {
     watch: false,
     entry: {
         app: [
-            "webpack/hot/dev-server",
             './src/js/index.js'
         ],
         vendors: []
@@ -18,37 +21,22 @@ var config = {
     output: {
         pathinfo: true,
         path: __dirname + '/public',
-        publicPath: 'http://localhost:8080/',
         filename: '/js/bundle.js'
     },
     module: {
         loaders: [
-            {test: /\.js/, exclude: /(node_modules|bower_components|libs)/, loader: "ng-annotate!babel!jshint"},
-            {test: /\.css$/, loader: "style!css?sourceMap"},
+            {test: /\.js/, exclude: /(node_modules|bower_components|libs)/, loader: 'ng-annotate!babel!jshint'},
+            {test: /\.css$/, loader: 'style!css'},
             {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'}
         ],
         noParse: [],
     },
-    plugins: [],
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('vendors', '/js/vendors.js')
+    ],
     resolve: {
         root: __dirname + '/src',
         alias: {}
-    },
-    devtool: isProd ? 'source-map' : 'eval',
-
-    devServer: {
-        publicPath: '/',
-        contentBase: 'http://localhost:3000',
-        historyApiFallback: false,
-        hot: true,
-        inline: true,
-        progress: true,
-        stats: 'errors-only',
-        host: 'localhost',
-        port: '8080',
-        proxy: {
-            "*": "http://localhost:3000"
-        }
     },
 
     addVendor: function (name, path) {
@@ -58,17 +46,31 @@ var config = {
 
         this.module.noParse.push(new RegExp('^' + name + '$'));
         this.entry.vendors.push(name);
-    },
-    addPlugin: function(plugin) {
-        this.plugins.push(plugin)
     }
 };
 
-config.addPlugin(new webpack.optimize.CommonsChunkPlugin('vendors', '/js/vendors.js'));
 if (isProd) {
-    config.addPlugin(new webpack.optimize.UglifyJsPlugin({minimize: true}));
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin({minimize: true}));
+    config.devtool = 'source-map';
 } else {
-    config.addPlugin(new webpack.HotModuleReplacementPlugin());
+    config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    config.entry.app.push('webpack/hot/dev-server');
+    config.output.publicPath = HOST_DEV.href;
+    config.devtool = 'eval';
+    config.devServer = {
+        publicPath: '/',
+        contentBase: NODE_HOST,
+        historyApiFallback: false,
+        hot: true,
+        inline: true,
+        progress: true,
+        stats: 'errors-only',
+        host: HOST_DEV.hostname,
+        port: HOST_DEV.port,
+        proxy: {
+            '*': NODE_HOST
+        }
+    };
 }
 
 config.addVendor('angular');

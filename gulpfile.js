@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var env = require('gulp-env');
 var spawn = require('child_process').spawn;
 var node;
 
@@ -26,13 +25,9 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('set-env', function () {
-    env({file: '.env.json'});
-});
-
-gulp.task('default', ['set-env', 'server', 'watchServer']);
+gulp.task('default', ['server', 'watchServer']);
 
 // clean up if an error goes unhandled.
 process.on('exit', function() {
-    if (node) node.kill()
-})
+    if (node) node.kill();
+});
