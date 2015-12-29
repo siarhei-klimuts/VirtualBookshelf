@@ -1,4 +1,5 @@
 require('dotenv').load();
+
 var webpack = require('webpack');
 var url = require('url');
 
@@ -7,8 +8,8 @@ var BOWER_COMPONENTS = __dirname + '/bower_components/';
 var LIBS_PATH = __dirname + '/src/libs/';
 
 var isProd = process.env.NODE_ENV === 'production';
-var NODE_HOST = process.env.NODE_HOST;
-var HOST_DEV = url.parse(process.env.HOST_DEV);
+var NODE_HOST = process.env.NODE_HOST || 'http://127.0.0.1:3000';
+var HOST_DEV = url.parse(process.env.HOST_DEV || 'http://127.0.0.1:8080');
 
 var config = {
     watch: false,
