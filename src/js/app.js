@@ -1,5 +1,3 @@
-import GridCalculator from './services/scene/gridCalculator';
-
 export default angular.module('VirtualBookshelf', ['angular-growl', 'blockUI', 'ngDialog', 'angularUtils.directives.dirPagination'])
 .config(function (growlProvider, blockUIConfig, paginationTemplateProvider) {
     growlProvider.globalTimeToLive(2000);
@@ -12,7 +10,6 @@ export default angular.module('VirtualBookshelf', ['angular-growl', 'blockUI', '
 	
     paginationTemplateProvider.setPath('/ui/dirPagination');
 })
-.service('gridCalculator', GridCalculator)
 .run(function (main) {
 	main.start();
 });

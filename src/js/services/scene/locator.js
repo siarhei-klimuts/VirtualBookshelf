@@ -1,4 +1,5 @@
 import THREE from 'three';
+import GridCalculator from './gridCalculator';
 
 import '../models/BaseObject';
 import '../data';
@@ -7,7 +8,7 @@ import '../environment';
 import '../cache';
 
 angular.module('VirtualBookshelf')
-.factory('locator', function ($q, $log, BaseObject, data, selector, environment, cache, gridCalculator) {
+.factory('locator', function ($q, $log, BaseObject, data, selector, environment, cache) {
 	var locator = {};
 
 	var debugEnabled = false;
@@ -105,7 +106,7 @@ angular.module('VirtualBookshelf')
 		var zIndex;
 		var position = {};
 		var minPosition = {};
-		var edges = gridCalculator.getEdges(spaceBB, matrixPrecision);
+		var edges = GridCalculator.getEdges(spaceBB, matrixPrecision);
 
 		for (zIndex = edges.minZCell; zIndex <= edges.maxZCell; zIndex++) {
 			for (xIndex = edges.minXCell; xIndex <= edges.maxXCell; xIndex++) {
@@ -135,7 +136,7 @@ angular.module('VirtualBookshelf')
 		var xIndex;
 		var zIndex;
 		var cells;
-		var edges = gridCalculator.getEdges(spaceBB, matrixPrecision);
+		var edges = GridCalculator.getEdges(spaceBB, matrixPrecision);
 
 		for (zIndex = edges.minZCell; zIndex <= edges.maxZCell; zIndex++) {
 			for (xIndex = edges.minXCell; xIndex <= edges.maxXCell; xIndex++) {
@@ -157,7 +158,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	var getPositionFromCells = function(cells, zIndex, matrixPrecision, spaceBB, targetBB) {
-		var center = gridCalculator.cellToPos(new THREE.Vector3(cells[0], 0, zIndex), matrixPrecision);
+		var center = GridCalculator.cellToPos(new THREE.Vector3(cells[0], 0, zIndex), matrixPrecision);
 
 		var offset = new THREE.Vector3();
 		offset.addVectors(targetBB.min, targetBB.max);
