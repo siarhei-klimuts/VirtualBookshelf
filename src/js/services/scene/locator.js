@@ -1,14 +1,14 @@
 import THREE from 'three';
 import GridCalculator from './gridCalculator';
+import BaseObject from '../models/BaseObject';
 
-import '../models/BaseObject';
 import '../data';
 import '../scene/selector';
 import '../environment';
 import '../cache';
 
 angular.module('VirtualBookshelf')
-.factory('locator', function ($q, $log, BaseObject, data, selector, environment, cache) {
+.factory('locator', function ($q, $log, data, selector, environment, cache) {
 	var locator = {};
 
 	var debugEnabled = false;

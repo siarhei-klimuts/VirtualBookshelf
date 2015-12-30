@@ -1,7 +1,8 @@
+import SelectorMetaDto from '../models/SelectorMetaDto';
+
 import '../models/BookObject';
 import '../models/SectionObject';
 import '../models/ShelfObject';
-import '../models/SelectorMetaDto';
 import '../data';
 import '../scene/selector';
 import '../dialog';
@@ -13,7 +14,7 @@ import '../user';
 import '../scene/locator';
 
 angular.module('VirtualBookshelf')
-.factory('tools', function ($q, $log, BookObject, SectionObject, ShelfObject, SelectorMetaDto, data, selector, dialog, block, catalog, environment, preview, user, locator, growl) {
+.factory('tools', function ($q, $log, BookObject, SectionObject, ShelfObject, data, selector, dialog, block, catalog, environment, preview, user, locator, growl) {
 	var tools = {};
 
 	var ROTATION_SCALE = 1;

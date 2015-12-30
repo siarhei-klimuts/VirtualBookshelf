@@ -1,14 +1,11 @@
 import SelectorMeta from './SelectorMeta';
 
-angular.module('VirtualBookshelf')
-.factory('SelectorMetaDto', function (subclassOf) {
-	var SelectorMetaDto = function(type, id, parentId) {
+export default class SelectorMetaDto extends SelectorMeta {
+	constructor(type, id, parentId) {
+		super();
+		
 		this.type = type;
 		this.id = id;
 		this.parentId = parentId;
-	};
-	
-	SelectorMetaDto.prototype = subclassOf(SelectorMeta);
-
-	return SelectorMetaDto;
-});
+	}
+}

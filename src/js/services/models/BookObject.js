@@ -1,9 +1,10 @@
-import './BaseObject';
+import BaseObject from './BaseObject';
+
 import './subclassOf';
 import '../data';
 
 angular.module('VirtualBookshelf')
-.factory('BookObject', function ($log, BaseObject, data, subclassOf) {	
+.factory('BookObject', function ($log, data, subclassOf) {	
 	var BookObject = function(dataObject, geometry, material) {
 		BaseObject.call(this, dataObject, geometry, material);
 	};

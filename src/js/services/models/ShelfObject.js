@@ -1,7 +1,8 @@
 import THREE from 'three';
+import BaseObject from './BaseObject';
 
 angular.module('VirtualBookshelf')
-.factory('ShelfObject', function (BaseObject, subclassOf) {
+.factory('ShelfObject', function (subclassOf) {
 	var ShelfObject = function(params) {
 		var size = params.size;	
 		var geometry = new THREE.BoxGeometry(size[0], size[1], size[2]);

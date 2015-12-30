@@ -1,5 +1,7 @@
+import BaseObject from './BaseObject';
+
 angular.module('VirtualBookshelf')
-.factory('LibraryObject', function (BaseObject, subclassOf) {
+.factory('LibraryObject', function (subclassOf) {
 	var LibraryObject = function(params, geometry, material) {
 		BaseObject.call(this, params, geometry, material);
 	};

@@ -1,26 +1,23 @@
 import THREE from 'three';
 
-angular.module('VirtualBookshelf')
-.factory('BaseObject', function (subclassOf) {
-	var BaseObject = function(dataObject, geometry, material) {
-		THREE.Mesh.call(this, geometry, material);
+export default class BaseObject extends THREE.Mesh {
+	constructor(dataObject, geometry, material) {
+		super(geometry, material);
 
 		this.dataObject = dataObject || {};
 		this.rotation.order = 'XYZ';
 		this.setDtoTransformations();
-	};
+	}
 	
-	BaseObject.prototype = subclassOf(THREE.Mesh);
-
-	BaseObject.prototype.getType = function() {
+	getType() {
 		return this.vbType;
-	};
+	}
 
-	BaseObject.prototype.getId = function() {
+	getId() {
 		return this.dataObject && this.dataObject.id;
-	};
+	}
 
-	BaseObject.prototype.setDtoTransformations = function() {
+	setDtoTransformations() {
 		this.position.setX(this.dataObject.pos_x || 0);
 		this.position.setY(this.dataObject.pos_y || 0);
 		this.position.setZ(this.dataObject.pos_z || 0);
@@ -28,14 +25,14 @@ angular.module('VirtualBookshelf')
 		if(this.dataObject.rotation) this.rotation.fromArray(this.dataObject.rotation.map(Number));
 
 		this.updateBoundingBox();		
-	};
+	}
 
-	BaseObject.prototype.isOutOfParrent = function() {
+	isOutOfParrent() {
 		return Math.abs(this.boundingBox.center.x - this.parent.boundingBox.center.x) > (this.parent.boundingBox.radius.x - this.boundingBox.radius.x) ||
 				Math.abs(this.boundingBox.center.z - this.parent.boundingBox.center.z) > (this.parent.boundingBox.radius.z - this.boundingBox.radius.z);
-	};
+	}
 
-	BaseObject.prototype.isCollided = function() {
+	isCollided() {
 		var
 			result,
 			targets,
@@ -65,9 +62,9 @@ angular.module('VirtualBookshelf')
 		}
 
 		return result;
-	};
+	}
 
-	BaseObject.prototype.move = function(newPosition) {
+	move(newPosition) {
 		var 
 			currentPosition,
 			result;
@@ -99,9 +96,9 @@ angular.module('VirtualBookshelf')
 		this.updateBoundingBox();
 
 		return result;
-	};
+	}
 
-	BaseObject.prototype.rotate = function(dX, dY, isDemo) {
+	rotate(dX, dY, isDemo) {
 		var 
 			currentRotation = this.rotation.clone(),
 			result = false; 
@@ -128,9 +125,9 @@ angular.module('VirtualBookshelf')
 
 		this.changed = this.changed || (!isDemo && result);
 		this.updateBoundingBox();
-	};
+	}
 
-	BaseObject.prototype.updateBoundingBox = function() {
+	updateBoundingBox() {
 		var
 			boundingBox,
 			radius,
@@ -153,11 +150,9 @@ angular.module('VirtualBookshelf')
 			radius: radius,
 			center: center
 		};
-	};
+	}
 
-	BaseObject.prototype.rollback = function() {
+	rollback() {
 		this.setDtoTransformations();
-	};
-
-	return BaseObject;	
-});
+	}
+}

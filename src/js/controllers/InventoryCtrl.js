@@ -1,5 +1,7 @@
+import SelectorMetaDto from '../services/models/SelectorMetaDto';
+
 angular.module('VirtualBookshelf')
-.controller('InventoryCtrl', function (SelectorMetaDto, BookObject, user, bookEdit, selector, catalog) {
+.controller('InventoryCtrl', function (BookObject, user, bookEdit, selector, catalog) {
 	this.isShow = function() {
 		return user.isAuthorized();
 	};

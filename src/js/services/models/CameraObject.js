@@ -1,10 +1,10 @@
 import THREE from 'three';
+import BaseObject from './BaseObject';
 
-import './BaseObject';
 import './subclassOf';
 
 angular.module('VirtualBookshelf')
-.factory('CameraObject', function (BaseObject, subclassOf) {
+.factory('CameraObject', function (subclassOf) {
 	var CameraObject = function() {
 		var geometry = new THREE.Geometry();
 		geometry.boundingBox = new THREE.Box3(new THREE.Vector3(-0.1, -1, -0.1), new THREE.Vector3(0.1, 1, 0.1));
