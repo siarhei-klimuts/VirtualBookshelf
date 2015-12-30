@@ -1,4 +1,5 @@
-import '../models/SelectorMeta';
+import SelectorMeta from '../models/SelectorMeta';
+
 import '../models/BookObject';
 import '../models/ShelfObject';
 import '../models/SectionObject';
@@ -9,7 +10,7 @@ import '../ui/tooltip';
 import '../ui/catalog';
 
 angular.module('VirtualBookshelf')
-.factory('selector', function (SelectorMeta, BookObject, ShelfObject, SectionObject, environment, highlight, preview, tooltip, catalog) {
+.factory('selector', function (BookObject, ShelfObject, SectionObject, environment, highlight, preview, tooltip, catalog) {
 	var selector = {};
 	
 	var selected = new SelectorMeta();

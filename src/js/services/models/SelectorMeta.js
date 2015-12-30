@@ -1,23 +1,20 @@
-angular.module('VirtualBookshelf')
-.factory('SelectorMeta', function () {
-	var SelectorMeta = function(selectedObject) {
+export default class SelectorMeta {
+	constructor(selectedObject) {
 		if(selectedObject) {
 			this.id = selectedObject.getId();
 			this.parentId = selectedObject.parent.getId();
 			this.type = selectedObject.getType();
 		}
-	};
+	}
 
-	SelectorMeta.prototype.isEmpty = function() {
+	isEmpty() {
 		return !this.id;
-	};
+	}
 
-	SelectorMeta.prototype.equals = function(meta) {
+	equals(meta) {
 		return !(!meta || 
 				meta.id !== this.id || 
 				meta.parentId !== this.parentId || 
 				meta.type !== this.type);
-	};
-	
-	return SelectorMeta;
-});
+	}
+}

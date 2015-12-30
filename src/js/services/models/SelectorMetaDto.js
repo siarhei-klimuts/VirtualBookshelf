@@ -1,5 +1,7 @@
+import SelectorMeta from './SelectorMeta';
+
 angular.module('VirtualBookshelf')
-.factory('SelectorMetaDto', function (SelectorMeta, subclassOf) {
+.factory('SelectorMetaDto', function (subclassOf) {
 	var SelectorMetaDto = function(type, id, parentId) {
 		this.type = type;
 		this.id = id;
