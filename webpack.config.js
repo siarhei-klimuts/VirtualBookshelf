@@ -7,16 +7,14 @@ var NODE_MODULES = __dirname + '/node_modules/';
 var BOWER_COMPONENTS = __dirname + '/bower_components/';
 var LIBS_PATH = __dirname + '/src/libs/';
 
-var isProd = process.env.NODE_ENV === 'production';
+var isProd = process.env.NODE_ENV !== 'development';
 var NODE_HOST = process.env.NODE_HOST || 'http://127.0.0.1:3000';
 var HOST_DEV = url.parse(process.env.HOST_DEV || 'http://127.0.0.1:8080');
 
 var config = {
     watch: false,
     entry: {
-        app: [
-            './src/js/index.js'
-        ],
+        app: ['./src/js/index.js'],
         vendors: []
     },
     output: {
@@ -27,6 +25,8 @@ var config = {
     module: {
         loaders: [
             {test: /\.js/, exclude: /(node_modules|bower_components|libs)/, loader: 'ng-annotate!babel!jshint'},
+            {test: /Detector.js/, loader: 'exports?Detector'},
+            {test: /threex.*.js/, loader: 'exports?THREEx'},
             {test: /\.css$/, loader: 'style!css'},
             {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'}
         ],

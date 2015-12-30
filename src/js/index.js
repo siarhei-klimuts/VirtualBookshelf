@@ -1,5 +1,5 @@
-require('../css/ngDialog-theme-default.min.css');
-require('../css/style.css');
+import '../css/ngDialog-theme-default.min.css';
+import '../css/style.css';
 
 import './services/main';
 
@@ -23,7 +23,5 @@ import './controllers/WelcomeCtrl';
 import appModule from './app';
 
 angular.element(document).ready(function () {
-  angular.bootstrap(document, [appModule.name], {
-    //strictDi: true
-  });
+	angular.bootstrap(document, [appModule.name]);
 });

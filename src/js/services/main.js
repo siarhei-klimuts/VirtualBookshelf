@@ -12,9 +12,8 @@ import './ui/userData';
 import './ui/block';
 import './scene/locator';
 
-import Detector from 'exports?Detector!Detector';
-
-var THREEx = require('exports?THREEx!THREEx.WindowResize');
+import Detector from 'Detector';
+import THREEx from 'THREEx.WindowResize';
 
 angular.module('VirtualBookshelf')
 .factory('main', function ($log, $q, camera, controls, user, environment, tools, navigation, userData, block, locator) {	
