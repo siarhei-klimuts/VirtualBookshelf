@@ -49,6 +49,7 @@
     "karma-webpack": "^1.7.0",
     "ng-annotate-loader": "0.0.10",
     "ng-dialog": "^0.5.6",
+    "nodemon": "^1.8.1",
     "parallelshell": "^2.0.0",
     "style-loader": "^0.13.0",
     "three": "^0.71.0",
