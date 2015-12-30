@@ -1,8 +1,5 @@
-angular.module('VirtualBookshelf')
-.factory('gridCalculator', function () {
-	var gridCalculator = {};
-
-	gridCalculator.getEdges = function(spaceBB, precision) {
+export default class GridCalculator {
+	getEdges(spaceBB, precision) {
 		var posMin = this.posToCell(spaceBB.min, precision);
 		var posMax = this.posToCell(spaceBB.max, precision);
 		
@@ -12,15 +9,13 @@ angular.module('VirtualBookshelf')
 			minZCell: posMin.z + 1,
 			maxZCell: posMax.z - 1
 		};
-	};
+	}
 
-	gridCalculator.posToCell = function(pos, precision) {
+	posToCell(pos, precision) {
 		return pos.clone().divide(precision).round();
-	};
+	}
 
-	gridCalculator.cellToPos = function(cell, precision) {
+	cellToPos(cell, precision) {
 		return cell.clone().multiply(precision);
-	};
-
-	return gridCalculator;
-});
+	}
+}
