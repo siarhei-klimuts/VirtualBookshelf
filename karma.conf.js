@@ -1,3 +1,7 @@
+var webpackConfig = require('./webpack.config.js');
+webpackConfig.entry = {};
+webpackConfig.plugins = [];
+
 // Karma configuration
 // Generated on Fri Apr 24 2015 20:07:23 GMT+0300 (MSK)
 
@@ -17,7 +21,7 @@ module.exports = function(config) {
     files: [
         {pattern: 'public/obj/**/*.json', included: false},
         'public/js/vendors.js',
-        'public/js/bundle.js',
+        'src/js/index.js',
         'node_modules/angular-mocks/angular-mocks.js',
         'test/lib/karma-read-json.js',
         'test/client/**/*.js'
@@ -32,7 +36,14 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        'src/js/index.js': ['webpack'],
         'test/client/**/*.js': ['webpack']
+    },
+
+    webpack: {
+      devtool: 'inline-source-map',
+      module: webpackConfig.module,
+      resolve: webpackConfig.resolve
     },
 
     // test results reporter to use
