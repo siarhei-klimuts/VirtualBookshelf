@@ -7,10 +7,10 @@
     "postinstall": "bower install && npm run build",
     "test": "karma start --single-run",
     "test-watch": "karma start",
-    "server": "gulp",
+    "server": "nodemon app.js",
     "dev-server": "webpack-dev-server",
     "dev": "parallelshell \"npm run server\" \"npm run dev-server\"",
-    "build": "webpack --progress --colors"
+    "build": "webpack --progress --colors -p"
   },
   "dependencies": {
     "cloudinary": "^1.1.1",
@@ -40,8 +40,6 @@
     "exports-loader": "^0.6.2",
     "file-loader": "^0.8.5",
     "font-awesome": "^4.5.0",
-    "gulp": "^3.8.11",
-    "gulp-util": "^3.0.7",
     "jasmine-core": "^2.2.0",
     "jshint": "^2.8.0",
     "jshint-loader": "^0.8.3",
