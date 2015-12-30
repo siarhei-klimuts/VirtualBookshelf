@@ -1,9 +1,8 @@
 import THREE from 'three';
-
-import './models/CameraObject';
+import CameraObject from './models/CameraObject';
 
 angular.module('VirtualBookshelf')
-.factory('camera', function (CameraObject) {
+.factory('camera', function () {
 	var camera = {
 		HEIGTH: 1.5,
 		object: new CameraObject(),

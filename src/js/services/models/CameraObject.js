@@ -1,20 +1,18 @@
 import THREE from 'three';
 import BaseObject from './BaseObject';
 
-import './subclassOf';
-
-angular.module('VirtualBookshelf')
-.factory('CameraObject', function (subclassOf) {
-	var CameraObject = function() {
+export default class CameraObject extends BaseObject {
+	constructor() {
 		var geometry = new THREE.Geometry();
-		geometry.boundingBox = new THREE.Box3(new THREE.Vector3(-0.1, -1, -0.1), new THREE.Vector3(0.1, 1, 0.1));
+		geometry.boundingBox = new THREE.Box3(
+			new THREE.Vector3(-0.1, -1, -0.1), 
+			new THREE.Vector3(0.1, 1, 0.1)
+		);
 
-		BaseObject.call(this, null, geometry);
-	};
-
-	CameraObject.prototype = subclassOf(BaseObject);
+		super(null, geometry);
+	}
 	
-	CameraObject.prototype.updateBoundingBox = function() {
+	updateBoundingBox() {
 		var radius = {
 			x: this.geometry.boundingBox.max.x, 
 			y: this.geometry.boundingBox.max.y, 
@@ -25,7 +23,5 @@ angular.module('VirtualBookshelf')
 			radius: radius,
 			center: this.position //TODO: needs center of section in parent or world coordinates
 		};
-	};
-
-	return CameraObject;
-});
+	}
+}
