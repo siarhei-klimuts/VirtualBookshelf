@@ -1,25 +1,28 @@
 import BaseObject from './BaseObject';
 import ShelfObject from './ShelfObject';
-import './subclassOf';
 
-angular.module('VirtualBookshelf')
-.factory('SectionObject', function (subclassOf) {
-	var SectionObject = function(params, geometry, material) {
-		BaseObject.call(this, params, geometry, material);
+const TYPE = 'SectionObject';
+
+export default class SectionObject extends BaseObject {
+	constructor(params, geometry, material) {
+		super(params, geometry, material);
 
 		this.shelves = {};
 		for(var key in params.data.shelves) {
 			this.shelves[key] = new ShelfObject(params.data.shelves[key]); 
 			this.add(this.shelves[key]);
 		}
-	};
+	}
 
-	SectionObject.TYPE = 'SectionObject';
+	static get TYPE() {
+		return TYPE;
+	}
 
-	SectionObject.prototype = subclassOf(BaseObject);
-	SectionObject.prototype.vbType = SectionObject.TYPE;
+	get vbType() {
+		return TYPE;
+	}
 
-	SectionObject.prototype.getDto = function() {
+	getDto() {
 		return {
 			id: this.getId(),
 			userId: this.dataObject.userId,
@@ -28,9 +31,9 @@ angular.module('VirtualBookshelf')
 			pos_z: this.position.z,
 			rotation: [this.rotation.x, this.rotation.y, this.rotation.z]
 		};
-	};
+	}
 
-	SectionObject.prototype.setParent = function(parent) {
+	setParent(parent) {
 		if(this.parent != parent) {
 			if(parent) {
 				parent.add(this);
@@ -40,7 +43,5 @@ angular.module('VirtualBookshelf')
 				this.dataObject.libraryId = null;
 			}
 		}
-	};
-
-	return SectionObject;
-});
+	}
+}
