@@ -1,3 +1,5 @@
+import * as repository from './scene/repository';
+
 angular.module('VirtualBookshelf')
 .factory('cache', function ($q, $log, data) {
 	var cache = {};
@@ -7,7 +9,7 @@ angular.module('VirtualBookshelf')
 	var books = {};
 
 	cache.init = function(libraryModel, sectionModels, bookModels) {
-		var libraryLoad = loadLibraryData(libraryModel);
+		var libraryLoad = repository.loadLibraryData(libraryModel);
 		var sectionsLoad = [];
 		var booksLoad = [];
 		var model; // iterators
@@ -25,7 +27,10 @@ angular.module('VirtualBookshelf')
 			sectionsLoad: $q.all(sectionsLoad), 
 			booksLoad: $q.all(booksLoad)
 		}).then(function (results) {
-			library = results.libraryCache;
+			library = {
+				geometry: results.libraryCache[0],
+				mapImage: results.libraryCache[1]
+			};
 		});
 
 		return promise;
@@ -69,19 +74,6 @@ angular.module('VirtualBookshelf')
 		});
 
 		return promise;
-	};
-
-	var loadLibraryData = function(model) {
-		var path = '/obj/libraries/{model}/'.replace('{model}', model);
-        var modelUrl = path + 'model.json';
-        var mapUrl = path + 'map.jpg';
-
-        var promise = $q.all({
-        	geometry: data.loadGeometry(modelUrl), 
-        	mapImage: data.loadImage(mapUrl)
-        });
-
-        return promise;
 	};
 
 	var loadSectionData = function(model) {

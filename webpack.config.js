@@ -74,6 +74,7 @@ if (isProd) {
     };
 }
 
+config.addVendor('babel-polyfill');
 config.addVendor('angular');
 config.addVendor('angular-block-ui', BOWER_COMPONENTS + 'angular-block-ui/dist/angular-block-ui.js');
 config.addVendor('angular-block-ui.css', BOWER_COMPONENTS + 'angular-block-ui/dist/angular-block-ui.css');
