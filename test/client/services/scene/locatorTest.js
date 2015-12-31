@@ -1,4 +1,5 @@
-var THREE = require('three');
+import THREE from 'three';
+// import LibraryObject from 'js/services/models/LibraryObject';
 
 describe('locator.js', function () {
 	var $httpBackend;
