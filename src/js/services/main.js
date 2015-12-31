@@ -3,20 +3,20 @@ import THREEx from 'THREEx.WindowResize';
 import Detector from 'Detector';
 
 import camera from './camera';
+import navigation from './navigation';
 
 import '../app';
 
 import './controls';
 import './user';
 import './environment';
-import './navigation';
 import './ui/tools';
 import './ui/userData';
 import './ui/block';
 import './scene/locator';
 
 angular.module('VirtualBookshelf')
-.factory('main', function ($log, $q, controls, user, environment, tools, navigation, userData, block, locator) {	
+.factory('main', function ($log, $q, controls, user, environment, tools, userData, block, locator) {	
 	var canvas;
 	var renderer;
 	
