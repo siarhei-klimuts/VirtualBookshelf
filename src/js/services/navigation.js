@@ -1,5 +1,7 @@
+import camera from './camera';
+
 angular.module('VirtualBookshelf')
-.factory('navigation', function (camera) {
+.factory('navigation', function () {
 	var navigation = {};
 
 	navigation.BUTTONS_ROTATE_SPEED = 100;

@@ -1,7 +1,8 @@
 import THREE from 'three';
+import camera from './camera';
 
 angular.module('VirtualBookshelf')
-.factory('mouse', function (camera, environment) {
+.factory('mouse', function (environment) {
 	var mouse = {};
 
 	var getWidth = function() {
