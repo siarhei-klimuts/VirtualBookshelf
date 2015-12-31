@@ -1,10 +1,9 @@
 import BaseObject from './BaseObject';
 
 import './subclassOf';
-import '../data';
 
 angular.module('VirtualBookshelf')
-.factory('BookObject', function ($log, data, subclassOf) {	
+.factory('BookObject', function (subclassOf) {	
 	var BookObject = function(dataObject, geometry, material) {
 		BaseObject.call(this, dataObject, geometry, material);
 	};
@@ -14,20 +13,14 @@ angular.module('VirtualBookshelf')
 	BookObject.prototype = subclassOf(BaseObject);
 	BookObject.prototype.vbType = BookObject.TYPE;
 
-	BookObject.prototype.save = function() {
-		var scope = this;
-		var dto = {
+	BookObject.prototype.getDto = function() {
+		return {
 			id: this.getId(),
 			userId: this.dataObject.userId,
 			pos_x: this.position.x,
 			pos_y: this.position.y,
 			pos_z: this.position.z
 		};
-
-		return data.postBook(dto).then(function (responseDto) {
-			scope.dataObject = responseDto;
-			scope.changed = false;
-		});
 	};
 
 	BookObject.prototype.setParent = function(parent) {

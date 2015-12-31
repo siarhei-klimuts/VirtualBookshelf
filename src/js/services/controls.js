@@ -20,7 +20,7 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('controls', function ($q, $log, $rootScope, BookObject, SectionObject, environment, mouse, selector, preview, block, tools) {
+.factory('controls', function ($q, $log, $rootScope, BookObject, SectionObject, environment, mouse, selector, preview, block, tools, data) {
 	var controls = {};
 
 	controls.init = function() {
@@ -66,17 +66,36 @@ angular.module('VirtualBookshelf')
 		
 		if(event.which === 1 && !preview.isActive()) {
 			if(selector.isSelectedEditable()) {
-				var obj = selector.getSelectedObject();
-
-				if(obj && obj.changed) {
-					block.global.start();
-					obj.save().catch(function () {
-						obj.rollback();
-					}).finally(function () {
-						block.global.stop();
-					});
-				}
+				controls.saveObject(
+					selector.getSelectedObject()
+				);
 			}
+		}
+	};
+
+	controls.saveObject = function(obj) {
+		if (obj && obj.changed) {
+			block.global.start();
+
+			controls.postObject(obj)
+			.then(function (newDto) {
+				obj.dataObject = newDto;
+				obj.changed = false;
+			})
+			.catch(function () {
+				obj.rollback();
+			})
+			.finally(function () {
+				block.global.stop();
+			});
+		}
+	};
+
+	controls.postObject = function(obj) {
+		if (obj instanceof BookObject) {
+			return data.postBook(obj.getDto());
+		} else if (obj instanceof SectionObject) {
+			return data.postSection(obj.getDto());
 		}
 	};
 

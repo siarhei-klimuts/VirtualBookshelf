@@ -2,7 +2,7 @@ import BaseObject from './BaseObject';
 import ShelfObject from './ShelfObject';
 
 angular.module('VirtualBookshelf')
-.factory('SectionObject', function (data, subclassOf) {
+.factory('SectionObject', function (subclassOf) {
 	var SectionObject = function(params, geometry, material) {
 		BaseObject.call(this, params, geometry, material);
 
@@ -18,9 +18,8 @@ angular.module('VirtualBookshelf')
 	SectionObject.prototype = subclassOf(BaseObject);
 	SectionObject.prototype.vbType = SectionObject.TYPE;
 
-	SectionObject.prototype.save = function() {
-		var scope = this;
-		var dto = {
+	SectionObject.prototype.getDto = function() {
+		return {
 			id: this.getId(),
 			userId: this.dataObject.userId,
 			pos_x: this.position.x,
@@ -28,11 +27,6 @@ angular.module('VirtualBookshelf')
 			pos_z: this.position.z,
 			rotation: [this.rotation.x, this.rotation.y, this.rotation.z]
 		};
-
-		return data.postSection(dto).then(function (responseDto) {
-			scope.dataObject = responseDto;
-			scope.changed = false;
-		});
 	};
 
 	SectionObject.prototype.setParent = function(parent) {
