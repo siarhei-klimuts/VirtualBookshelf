@@ -16,7 +16,7 @@
     "nonew": true,
     "plusplus": false,
     "quotmark": "single",
-    // "undef": true,
+    "undef": true,
     "unused": false,
     "strict": false,
     // "maxparams": 10,
@@ -57,6 +57,6 @@
     "globals": {
         "THREE": true,
         "angular": true,
-        "$": false
+        "_": true
     }
 }

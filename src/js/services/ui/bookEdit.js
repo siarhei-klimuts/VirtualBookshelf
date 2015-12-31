@@ -73,6 +73,9 @@ angular.module('VirtualBookshelf')
 				selector.unselect();
 			}
 
+			//TODO: instead this hack make server always return book dto with cover dto
+			dto.cover = scope.book.cover;
+			
 			environment.updateBook(dto);
 			scope.cancel();
 			return catalog.loadBooks(user.getId());

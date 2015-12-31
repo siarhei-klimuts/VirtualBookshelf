@@ -5,14 +5,12 @@ angular.module('VirtualBookshelf')
 	var library = null;
 	var sections = {};
 	var books = {};
-	var images = {};
 
-	cache.init = function(libraryModel, sectionModels, bookModels, covers) {
+	cache.init = function(libraryModel, sectionModels, bookModels) {
 		var libraryLoad = loadLibraryData(libraryModel);
 		var sectionsLoad = [];
 		var booksLoad = [];
-		var imagesLoad = [];
-		var model, coverId; // iterators
+		var model; // iterators
 
 		for (model in sectionModels) {
 			sectionsLoad.push(addSection(model));
@@ -22,15 +20,10 @@ angular.module('VirtualBookshelf')
 			booksLoad.push(addBook(model));
 		}
 
-		for (coverId in covers) {
-			imagesLoad.push(addImageByDto(covers[coverId]));
-		}
-
 		var promise = $q.all({
 			libraryCache: libraryLoad, 
 			sectionsLoad: $q.all(sectionsLoad), 
-			booksLoad: $q.all(booksLoad),
-			imagesLoad: $q.all(imagesLoad)
+			booksLoad: $q.all(booksLoad)
 		}).then(function (results) {
 			library = results.libraryCache;
 		});
@@ -50,46 +43,12 @@ angular.module('VirtualBookshelf')
 		return commonGetter(books, model, addBook);
 	};
 
-	cache.getImage = function(id) {
-		return commonGetter(images, id, addImageById);
-	};
-
 	var addSection = function(model) {
 		return commonAdder(sections, model, loadSectionData);
 	};
 
 	var addBook = function(model) {
 		return commonAdder(books, model, loadBookData);
-	};
-
-	var addImageById = function(id) {
-		return data.getCover(id).then(function (coverDto) {
-			return data.loadImage(coverDto.url).then(function (image) {
-				return addImage(coverDto, image);
-			});
-		}).catch(function () {
-			$log.error('Error adding image by id:', id);
-			return null;
-		});
-	};
-
-	var addImageByDto = function(coverDto) {
-		return data.loadImage(coverDto.url).then(function (image) {
-			return addImage(coverDto, image);
-		}).catch(function () {
-			$log.error('Error adding image by dto:', coverDto.id);
-			return null;
-		});
-	};
-
-	var addImage = function(dto, image) {
-		var loadedCache = {
-			dto: dto,
-			image: image
-		};
-
-		images[dto.id] = loadedCache;
-		return loadedCache;
 	};
 
 	var commonGetter = function(from, key, addFunction) {

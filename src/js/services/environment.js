@@ -132,7 +132,6 @@ angular.module('VirtualBookshelf')
 		var libraryModel = libraryDto.model;
 		var sectionModels = {};
 		var bookModels = {};
-		var imageUrls = {};
 
 		for (var sectionId in sectionsDict) {
 			var sectionDto = sectionsDict[sectionId].dto;
@@ -142,13 +141,9 @@ angular.module('VirtualBookshelf')
 		for (var bookId in booksDict) {
 			var bookDto = booksDict[bookId].dto;
 			bookModels[bookDto.model] = true;
-
-			if(bookDto.cover) {
-				imageUrls[bookDto.cover.id] = bookDto.cover;
-			}
 		}
 
-		return cache.init(libraryModel, sectionModels, bookModels, imageUrls);
+		return cache.init(libraryModel, sectionModels, bookModels);
 	};
 
 	var clearScene = function() {
@@ -247,13 +242,13 @@ angular.module('VirtualBookshelf')
 		var promise;
 
 		promises.bookCache = cache.getBook(bookDto.model);
-		if(bookDto.coverId) {
-			promises.coverCache = cache.getImage(bookDto.coverId);
+		if(bookDto.cover) {
+			promises.coverImage = data.loadImage(bookDto.cover.url);
 		}
 
 		promise = $q.all(promises).then(function (results) {
 			var bookCache = results.bookCache;
-			var coverMapImage = results.coverCache && results.coverCache.image;
+			var coverMapImage = results.coverImage;
 			var material = new BookMaterial(bookCache.mapImage, bookCache.bumpMapImage, bookCache.specularMapImage, coverMapImage);
 			var book = new BookObject(bookDto, bookCache.geometry, material);
 
