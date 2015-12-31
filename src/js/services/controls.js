@@ -1,9 +1,10 @@
 import SelectorMeta from './models/SelectorMeta';
 import ShelfObject from './models/ShelfObject';
+import BookObject from './models/BookObject';
+
 import camera from './camera';
 import navigation from './navigation';
 
-import './models/BookObject';
 import './models/SectionObject';
 import './environment';
 import './mouse';
@@ -20,7 +21,7 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('controls', function ($q, $log, $rootScope, BookObject, SectionObject, environment, mouse, selector, preview, block, tools, data) {
+.factory('controls', function ($q, $log, $rootScope, SectionObject, environment, mouse, selector, preview, block, tools, data) {
 	var controls = {};
 
 	controls.init = function() {

@@ -1,19 +1,21 @@
 import BaseObject from './BaseObject';
 
-import './subclassOf';
+const TYPE = 'BookObject';
 
-angular.module('VirtualBookshelf')
-.factory('BookObject', function (subclassOf) {	
-	var BookObject = function(dataObject, geometry, material) {
-		BaseObject.call(this, dataObject, geometry, material);
-	};
+export default class BookObject extends BaseObject {	
+	constructor(dataObject, geometry, material) {
+		super(dataObject, geometry, material);
+	}
 
-	BookObject.TYPE = 'BookObject';
+	static get TYPE() {
+		return TYPE;
+	}
+	
+	get vbType() {
+		return TYPE;
+	}
 
-	BookObject.prototype = subclassOf(BaseObject);
-	BookObject.prototype.vbType = BookObject.TYPE;
-
-	BookObject.prototype.getDto = function() {
+	getDto() {
 		return {
 			id: this.getId(),
 			userId: this.dataObject.userId,
@@ -21,9 +23,9 @@ angular.module('VirtualBookshelf')
 			pos_y: this.position.y,
 			pos_z: this.position.z
 		};
-	};
+	}
 
-	BookObject.prototype.setParent = function(parent) {
+	setParent(parent) {
 		if(this.parent != parent) {
 			if(parent) {
 				parent.add(this);
@@ -35,7 +37,5 @@ angular.module('VirtualBookshelf')
 				this.dataObject.sectionId = null;
 			}
 		}
-	};
-
-	return BookObject;
-});
+	}
+}

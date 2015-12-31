@@ -1,5 +1,6 @@
 import BaseObject from './BaseObject';
 import ShelfObject from './ShelfObject';
+import './subclassOf';
 
 angular.module('VirtualBookshelf')
 .factory('SectionObject', function (subclassOf) {

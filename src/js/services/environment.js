@@ -2,15 +2,16 @@ import THREE from 'three';
 
 import BookMaterial from './materials/BookMaterial';
 import LibraryObject from './models/LibraryObject';
+import BookObject from './models/BookObject';
+
 import camera from './camera';
 
 import './models/SectionObject';
-import './models/BookObject';
 import './data';
 import './cache';
 
 angular.module('VirtualBookshelf')
-.factory('environment', function ($q, $log, $window, SectionObject, BookObject, data, cache) {
+.factory('environment', function ($q, $log, $window, SectionObject, data, cache) {
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;
