@@ -34,7 +34,7 @@ angular.module('VirtualBookshelf')
     	return promise;
 	};
 
-	selectLibrary.go = environment.goToLibrary;
+	selectLibrary.go = data.goToLibrary;
 
 	return selectLibrary;
 });

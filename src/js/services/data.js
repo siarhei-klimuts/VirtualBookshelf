@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('data', function ($http, $log) {
+.factory('data', function ($http, $log, $window) {
 	var data = {};
 
 	data.TEXTURE_RESOLUTION = 512;
@@ -106,6 +106,11 @@ angular.module('VirtualBookshelf')
 	}).catch(function () {
 		$log.error('data: loading common error');
 	});
+
+	//TODO: replace by SPA implementation
+	data.goToLibrary = function(id) {
+		if(id) $window.location = '/' + id;
+	};
 
 	return data;
 });

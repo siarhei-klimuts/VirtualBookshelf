@@ -10,7 +10,7 @@ import * as cache from './cache';
 import * as repository from './scene/repository';
 
 angular.module('VirtualBookshelf')
-.factory('environment', function ($q, $log, $window) {
+.factory('environment', function ($q) {
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;
@@ -41,10 +41,6 @@ angular.module('VirtualBookshelf')
 		.then(function () {
 			return createBooks(books);
 		});
-	};
-
-	environment.goToLibrary = function(id) {
-		if(id) $window.location = '/' + id;
 	};
 
 	environment.setLoaded = function(value) {

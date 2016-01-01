@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('createLibrary', function (data, environment, dialog, block, ngDialog) {
+.factory('createLibrary', function (data, dialog, block, ngDialog) {
 	var createLibrary = {};
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
@@ -21,7 +21,7 @@ angular.module('VirtualBookshelf')
 		if(model) {
 			block.global.start();
 			data.postLibrary(model).then(function (result) {
-				environment.goToLibrary(result.id);
+				data.goToLibrary(result.id);
 			}).catch(function () {
 				dialog.openError('Can not create library because of an error.');
 			}).finally(function () {
