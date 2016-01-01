@@ -1,7 +1,7 @@
 import * as repository from './scene/repository';
 
 angular.module('VirtualBookshelf')
-.factory('cache', function ($q, $log, data) {
+.factory('cache', function ($q) {
 	var cache = {};
 
 	var library = null;
@@ -53,7 +53,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	var addBook = function(model) {
-		return commonAdder(books, model, loadBookData);
+		return commonAdder(books, model, repository.loadBookData);
 	};
 
 	var commonGetter = function(from, key, addFunction) {
@@ -74,32 +74,6 @@ angular.module('VirtualBookshelf')
 		});
 
 		return promise;
-	};
-
-	var loadBookData = function(model) {
-		var path = '/obj/books/{model}/'.replace('{model}', model);
-        var modelUrl = path + 'model.js';
-        var mapUrl = path + 'map.jpg';
-        var bumpMapUrl = path + 'bump_map.jpg';
-        var specularMapUrl = path + 'specular_map.jpg';
-
-        var promise = $q.all({
-        	geometry: data.loadGeometry(modelUrl),
-        	mapImage: data.loadImage(mapUrl).catch(function () {
-        		$log.error('Cache: Error loading book map:', model);
-        		return null;
-        	}),
-        	bumpMapImage: data.loadImage(bumpMapUrl).catch(function () {
-        		$log.error('Cache: Error loading book bumpMap:', model);
-        		return null;
-        	}),
-        	specularMapImage: data.loadImage(specularMapUrl).catch(function () {
-        		$log.error('Cache: Error loading book specularMap:', model);
-        		return null;
-        	})
-        });
-
-        return promise;
 	};
 
 	return cache;
