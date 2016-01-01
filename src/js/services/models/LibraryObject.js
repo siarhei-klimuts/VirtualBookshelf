@@ -5,9 +5,3 @@ export default class LibraryObject extends BaseObject {
 		super(params, geometry, material);
 	}
 }
-
-//TODO: for test, remove after test repaired
-angular.module('VirtualBookshelf')
-.factory('LibraryObject', function () {
-	return LibraryObject;	
-});

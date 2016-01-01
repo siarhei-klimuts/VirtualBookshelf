@@ -66,11 +66,3 @@ function commonAdder(where, what, loader) {
 
 	return promise;
 }
-
-angular.module('VirtualBookshelf')
-.factory('cache', () => ({
-	init,
-	getBook,
-	getSection,
-	getLibrary
-}));
