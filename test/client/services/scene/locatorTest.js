@@ -2,12 +2,12 @@ import THREE from 'three';
 
 import LibraryObject from 'js/services/models/LibraryObject';
 import * as cache from 'js/services/cache';
+import environment from 'js/services/scene/environment';
 
 describe('locator.js', function () {
 	var $httpBackend;
 	var $q;
 	var locator;
-	var environment;
 
 	var libraryDto = {
 		id: 1,
@@ -24,11 +24,10 @@ describe('locator.js', function () {
 	beforeEach(angular.mock.module('VirtualBookshelf'));
 	
 	beforeEach(function () {
-		inject(function (_$httpBackend_, _$q_, _$rootScope_, _locator_, _environment_) {
+		inject(function (_$httpBackend_, _$q_, _$rootScope_, _locator_) {
 			$httpBackend = _$httpBackend_;
 			$q = _$q_;
 			locator = _locator_;
-			environment = _environment_;
 		});
 
 		$httpBackend.when('GET', '/obj/data.json').respond();

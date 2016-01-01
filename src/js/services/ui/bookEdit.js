@@ -1,5 +1,6 @@
+import environment from '../scene/environment';
+
 import '../data';
-import '../environment';
 import '../ui/block';
 import '../dialog';
 import '../archive';
@@ -8,7 +9,7 @@ import '../scene/selector';
 import '../user';
 
 angular.module('VirtualBookshelf')
-.factory('bookEdit', function ($log, data, environment, block, dialog, archive, catalog, selector, user, ngDialog) {
+.factory('bookEdit', function ($log, data, block, dialog, archive, catalog, selector, user, ngDialog) {
 	var bookEdit = {};
 	var bookDialog;
 

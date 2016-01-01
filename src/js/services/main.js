@@ -4,20 +4,20 @@ import Detector from 'Detector';
 
 import camera from './camera';
 import navigation from './navigation';
+import environment from './scene/environment';
 
 import '../app';
 
 import './data';
 import './controls';
 import './user';
-import './environment';
 import './ui/tools';
 import './ui/userData';
 import './ui/block';
 import './scene/locator';
 
 angular.module('VirtualBookshelf')
-.factory('main', function ($log, $q, controls, user, environment, tools, userData, block, locator, data) {	
+.factory('main', function ($log, $q, controls, user, tools, userData, block, locator, data) {	
 	var canvas;
 	var renderer;
 	

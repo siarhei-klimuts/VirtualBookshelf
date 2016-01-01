@@ -1,11 +1,12 @@
+import environment from '../scene/environment';
+
 import '../user';
-import '../environment';
 import './registration';
 import './userData';
 import './block';
 
 angular.module('VirtualBookshelf')
-.factory('authorization', function ($log, $q, $window, $interval, user, environment, registration, userData, block, ngDialog) {
+.factory('authorization', function ($log, $q, $window, $interval, user, registration, userData, block, ngDialog) {
 	var authorization = {};
 
 	var TEMPLATE = 'loginDialog';

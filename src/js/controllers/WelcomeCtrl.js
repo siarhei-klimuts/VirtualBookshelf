@@ -1,5 +1,7 @@
+import environment from '../services/scene/environment';
+
 angular.module('VirtualBookshelf')
-.controller('WelcomeCtrl', function (authorization, selectLibrary, createLibrary, environment, user) {
+.controller('WelcomeCtrl', function (authorization, selectLibrary, createLibrary, user) {
 	var closed = false;
 
 	this.isShowAuthorization = function() {

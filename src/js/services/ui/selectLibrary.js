@@ -1,5 +1,7 @@
+import environment from '../scene/environment';
+
 angular.module('VirtualBookshelf')
-.factory('selectLibrary', function ($q, data, environment, user, ngDialog) {
+.factory('selectLibrary', function ($q, data, user, ngDialog) {
 	var selectLibrary = {};
 
 	var TEMPLATE = 'selectLibraryDialog';

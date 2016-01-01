@@ -1,7 +1,9 @@
 import THREE from 'three';
 
+import environment from './environment';
+
 angular.module('VirtualBookshelf')
-.factory('highlight', function (environment) {
+.factory('highlight', function () {
 	var highlight = {};
 
 	var PLANE_ROTATION = Math.PI * 0.5;
