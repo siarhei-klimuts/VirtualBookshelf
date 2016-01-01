@@ -1,7 +1,7 @@
 import * as repository from './scene/repository';
 
 angular.module('VirtualBookshelf')
-.factory('cache', function ($q) {
+.factory('cache', function () {
 	var cache = {};
 
 	var library = null;
@@ -22,18 +22,13 @@ angular.module('VirtualBookshelf')
 			booksLoad.push(addBook(model));
 		}
 
-		var promise = $q.all({
-			libraryCache: libraryLoad, 
-			sectionsLoad: $q.all(sectionsLoad), 
-			booksLoad: $q.all(booksLoad)
-		}).then(function (results) {
-			library = {
-				geometry: results.libraryCache[0],
-				mapImage: results.libraryCache[1]
-			};
+		return Promise.all([
+			libraryLoad, 
+			Promise.all(sectionsLoad), 
+			Promise.all(booksLoad)
+		]).then(results => {
+			library = results[0];
 		});
-
-		return promise;
 	};
 
 	cache.getLibrary = function() {
@@ -63,7 +58,7 @@ angular.module('VirtualBookshelf')
 			result = addFunction(key);
 		}
 
-		return $q.when(result);
+		return Promise.resolve(result);
 	};
 
 	var commonAdder = function(where, what, loader) {

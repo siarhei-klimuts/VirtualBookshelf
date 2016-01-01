@@ -12,7 +12,10 @@ export function loadLibraryData(model) {
     return Promise.all([
     	loadGeometry(modelUrl),
     	loadImage(mapUrl)
-    ]);
+    ]).then(results => ({
+    	geometry: results[0],
+    	mapImage: results[1]
+    }));
 }
 
 export function loadSectionData(model) {
