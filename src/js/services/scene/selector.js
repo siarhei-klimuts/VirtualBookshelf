@@ -5,13 +5,13 @@ import SectionObject from '../models/SectionObject';
 
 import environment from '../scene/environment';
 import highlight from '../scene/highlight';
+import preview from '../scene/preview';
 
-import '../scene/preview';
 import '../ui/tooltip';
 import '../ui/catalog';
 
 angular.module('VirtualBookshelf')
-.factory('selector', function (preview, tooltip, catalog) {
+.factory('selector', function (tooltip, catalog) {
 	var selector = {};
 	
 	var selected = new SelectorMeta();
