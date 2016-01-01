@@ -8,16 +8,19 @@ import highlight from '../scene/highlight';
 import preview from '../scene/preview';
 
 import '../ui/tooltip';
-import '../ui/catalog';
 
 angular.module('VirtualBookshelf')
-.factory('selector', function (tooltip, catalog) {
+.factory('selector', function (tooltip) {
 	var selector = {};
 	
 	var selected = new SelectorMeta();
 	var focused = new SelectorMeta();
 
 	selector.placing = false;
+
+	selector.getSelectedId = function() {
+		return selected.id;
+	};
 
 	selector.focus = function(meta) {
 		var obj;
@@ -57,12 +60,6 @@ angular.module('VirtualBookshelf')
 		}
 
 		preview.disable();
-	};
-
-	selector.getSelectedDto = function() {
-		return selector.isSelectedBook() ? catalog.getBook(selected.id) : 
-			selector.isSelectedSection() ? environment.getSection(selected.id) :
-			null;
 	};
 
 	selector.getSelectedObject = function() {

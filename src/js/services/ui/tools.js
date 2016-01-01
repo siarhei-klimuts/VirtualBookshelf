@@ -24,13 +24,23 @@ angular.module('VirtualBookshelf')
 		rotateRight: false
 	};
 
+	tools.getSelectedDto = function() {
+		if (selector.isSelectedBook()) {
+			return catalog.getBook(selector.getSelectedId());
+		} else if (selector.isSelectedSection()) {
+			return environment.getSection(selector.getSelectedId());
+		}
+
+		return null;
+	};
+
 	tools.place = function() {
 		var selectedDto;
 		var focusedObject = selector.getFocusedObject();
 
 		if(focusedObject instanceof ShelfObject) {
 			selector.placing = false;
-			selectedDto = selector.getSelectedDto();
+			selectedDto = tools.getSelectedDto();
 
 			block.global.start();
 			$q.when(locator.placeBook(selectedDto, focusedObject)).then(function () {
@@ -49,7 +59,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	tools.unplace = function() {
-		var bookDto = selector.isSelectedBook() ? selector.getSelectedDto() : null;
+		var bookDto = selector.isSelectedBook() ? tools.getSelectedDto() : null;
 
 		if(bookDto) {
 			block.global.start();

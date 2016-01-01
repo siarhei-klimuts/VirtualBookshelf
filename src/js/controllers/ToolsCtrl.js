@@ -64,17 +64,17 @@ angular.module('VirtualBookshelf')
     };
 
     this.getTitle = function() {
-        return  this.isBook() ? selector.getSelectedDto().title :
+        return  this.isBook() ? tools.getSelectedDto().title :
                 this.isSection() ? selector.getSelectedObject().getId() :
                 null;
     };
 
     this.edit = function() {
-        bookEdit.show(selector.getSelectedDto());
+        bookEdit.show(tools.getSelectedDto());
     };
 
     this.delete = function() {
-        var dto = selector.getSelectedDto();
+        var dto = tools.getSelectedDto();
         var confirmMsg;
         var successMsg;
         var errorMsg;
