@@ -5,12 +5,12 @@ import BaseObject from '../models/BaseObject';
 
 import * as cache from '../cache';
 import environment from '../scene/environment';
+import selector from '../scene/selector';
 
 import '../data';
-import '../scene/selector';
 
 angular.module('VirtualBookshelf')
-.factory('locator', function ($q, $log, data, selector) {
+.factory('locator', function ($q, $log, data) {
 	var locator = {};
 
 	var debugEnabled = false;

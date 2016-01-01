@@ -1,7 +1,8 @@
 import preview from '../services/scene/preview';
+import selector from '../services/scene/selector';
 
 angular.module('VirtualBookshelf')
-.controller('ToolsCtrl', function (user, selector, tools, bookEdit, dialog, block, growl) {
+.controller('ToolsCtrl', function (user, tools, bookEdit, dialog, block, growl) {
     var DELETE_CONFIRM = 'Delete {0}: {1}?';
     var DELETE_SUCCESS = '{0}: {1} deleted.';
     var DELETE_ERROR = 'Can not delete {0}: {1}.';

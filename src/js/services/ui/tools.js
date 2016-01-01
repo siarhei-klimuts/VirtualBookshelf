@@ -4,9 +4,9 @@ import BookObject from '../models/BookObject';
 
 import environment from '../scene/environment';
 import preview from '../scene/preview';
+import selector from '../scene/selector';
 
 import '../data';
-import '../scene/selector';
 import '../dialog';
 import '../ui/block';
 import '../ui/catalog';
@@ -14,7 +14,7 @@ import '../user';
 import '../scene/locator';
 
 angular.module('VirtualBookshelf')
-.factory('tools', function ($q, $log, data, selector, dialog, block, catalog, user, locator, growl) {
+.factory('tools', function ($q, $log, data, dialog, block, catalog, user, locator, growl) {
 	var tools = {};
 
 	var ROTATION_SCALE = 1;

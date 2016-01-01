@@ -7,109 +7,106 @@ import environment from '../scene/environment';
 import highlight from '../scene/highlight';
 import preview from '../scene/preview';
 
-angular.module('VirtualBookshelf')
-.factory('selector', function () {
-	var selector = {};
+var selector = {};
+
+var selected = new SelectorMeta();
+var focused = new SelectorMeta();
+
+selector.placing = false;
+
+selector.getSelectedId = function() {
+	return selected.id;
+};
+
+selector.focus = function(meta) {
+	var obj;
+
+	if(!meta.equals(focused)) {
+		focused = meta;
+
+		if(!focused.isEmpty()) {
+			obj = selector.getFocusedObject();
+			highlight.focus(obj);
+		}
+	}
+};
+
+selector.selectFocused = function() {
+	selector.select(focused);
+};
+
+selector.select = function(meta) {
+	var obj = getObject(meta);
 	
-	var selected = new SelectorMeta();
-	var focused = new SelectorMeta();
+	selector.unselect();
+	selected = meta;
+
+	highlight.select(obj);
+	highlight.focus(null);
 
 	selector.placing = false;
+};
 
-	selector.getSelectedId = function() {
-		return selected.id;
-	};
+selector.unselect = function() {
+	if(!selected.isEmpty()) {
+		highlight.select(null);
+		selected = new SelectorMeta();
+	}
 
-	selector.focus = function(meta) {
-		var obj;
+	preview.disable();
+};
 
-		if(!meta.equals(focused)) {
-			focused = meta;
+selector.getSelectedObject = function() {
+	return getObject(selected);
+};
 
-			if(!focused.isEmpty()) {
-				obj = selector.getFocusedObject();
-				highlight.focus(obj);
-			}
-		}
-	};
+selector.getFocusedObject = function() {
+	return getObject(focused);
+};
 
-	selector.selectFocused = function() {
-		selector.select(focused);
-	};
+function getObject(meta) {
+	var object;
 
-	selector.select = function(meta) {
-		var obj = getObject(meta);
-		
-		selector.unselect();
-		selected = meta;
+	if(!meta.isEmpty()) {
+		object = isShelf(meta) ? environment.getShelf(meta.parentId, meta.id)
+			: isBook(meta) ? environment.getBook(meta.id)
+			: isSection(meta) ? environment.getSection(meta.id)
+			: null;
+	}
 
-		highlight.select(obj);
-		highlight.focus(null);
+	return object;	
+}
 
-		selector.placing = false;
-	};
+selector.isSelectedEditable = function() {
+	return selector.isSelectedBook() || selector.isSelectedSection();
+};
 
-	selector.unselect = function() {
-		if(!selected.isEmpty()) {
-			highlight.select(null);
-			selected = new SelectorMeta();
-		}
+selector.isBookSelected = function(id) {
+	return isBook(selected) && selected.id === id;
+};
 
-		preview.disable();
-	};
+selector.isSelectedShelf = function() {
+	return isShelf(selected);
+};
 
-	selector.getSelectedObject = function() {
-		return getObject(selected);
-	};
+selector.isSelectedBook = function() {
+	return isBook(selected);
+};
 
-	selector.getFocusedObject = function() {
-		return getObject(focused);
-	};
+selector.isSelectedSection = function() {
+	return isSection(selected);
+};
 
-	var getObject = function(meta) {
-		var object;
+function isShelf(meta) {
+	return meta.type === ShelfObject.TYPE;
+}
 
-		if(!meta.isEmpty()) {
-			object = isShelf(meta) ? environment.getShelf(meta.parentId, meta.id)
-				: isBook(meta) ? environment.getBook(meta.id)
-				: isSection(meta) ? environment.getSection(meta.id)
-				: null;
-		}
+function isBook(meta) {
+	return meta.type === BookObject.TYPE;
+}
 
-		return object;	
-	};
+function isSection(meta) {
+	return meta.type === SectionObject.TYPE;
+}
 
-	selector.isSelectedEditable = function() {
-		return selector.isSelectedBook() || selector.isSelectedSection();
-	};
-
-	selector.isBookSelected = function(id) {
-		return isBook(selected) && selected.id === id;
-	};
-
-	selector.isSelectedShelf = function() {
-		return isShelf(selected);
-	};
-
-	selector.isSelectedBook = function() {
-		return isBook(selected);
-	};
-
-	selector.isSelectedSection = function() {
-		return isSection(selected);
-	};
-
-	var isShelf = function(meta) {
-		return meta.type === ShelfObject.TYPE;
-	};
-
-	var isBook = function(meta) {
-		return meta.type === BookObject.TYPE;
-	};
-
-	var isSection = function(meta) {
-		return meta.type === SectionObject.TYPE;
-	};
-
-	return selector;
-});
+export default selector;
