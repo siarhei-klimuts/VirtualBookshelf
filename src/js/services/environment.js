@@ -7,6 +7,7 @@ import SectionObject from './models/SectionObject';
 
 import camera from './camera';
 import * as cache from './cache';
+import * as repository from './scene/repository';
 
 import './data';
 
@@ -243,7 +244,7 @@ angular.module('VirtualBookshelf')
 
 		promises.bookCache = cache.getBook(bookDto.model);
 		if(bookDto.cover) {
-			promises.coverImage = data.loadImage(bookDto.cover.url);
+			promises.coverImage = repository.loadImage(bookDto.cover.url);
 		}
 
 		promise = $q.all(promises).then(function (results) {

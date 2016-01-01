@@ -73,7 +73,7 @@ function loadGeometry(url) {
 	});
 }
 
-function loadImage(url) {
+export function loadImage(url) {
     var img = new Image();
         
     img.crossOrigin = ''; 
