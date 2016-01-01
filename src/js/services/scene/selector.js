@@ -7,10 +7,8 @@ import environment from '../scene/environment';
 import highlight from '../scene/highlight';
 import preview from '../scene/preview';
 
-import '../ui/tooltip';
-
 angular.module('VirtualBookshelf')
-.factory('selector', function (tooltip) {
+.factory('selector', function () {
 	var selector = {};
 	
 	var selected = new SelectorMeta();
@@ -32,8 +30,6 @@ angular.module('VirtualBookshelf')
 				obj = selector.getFocusedObject();
 				highlight.focus(obj);
 			}
-
-			tooltip.set(obj);
 		}
 	};
 
