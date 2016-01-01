@@ -7,6 +7,7 @@ import navigation from './navigation';
 
 import '../app';
 
+import './data';
 import './controls';
 import './user';
 import './environment';
@@ -16,7 +17,7 @@ import './ui/block';
 import './scene/locator';
 
 angular.module('VirtualBookshelf')
-.factory('main', function ($log, $q, controls, user, environment, tools, userData, block, locator) {	
+.factory('main', function ($log, $q, controls, user, environment, tools, userData, block, locator, data) {	
 	var canvas;
 	var renderer;
 	
@@ -29,7 +30,7 @@ angular.module('VirtualBookshelf')
 
 			block.global.start();
 			user.load().then(function () {
-				return $q.all([environment.loadLibrary(user.getLibrary() || 1), userData.load()]);
+				return loadLibrary(user.getLibrary() || 1);
 			}).catch(function (error) {
 				$log.error(error);
 				//TODO: show error message  
@@ -42,6 +43,15 @@ angular.module('VirtualBookshelf')
 		} else {
 			// Detector.addGetWebGLMessage();
 		}
+	};
+
+	var loadLibrary = function(libraryId) {
+		return data.getLibrary(libraryId).then(function (dto) {
+			return $q.all([
+				environment.loadLibrary(dto), 
+				userData.load()
+			]);
+		});
 	};
 
 	var init = function() {

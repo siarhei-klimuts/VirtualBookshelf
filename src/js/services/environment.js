@@ -9,10 +9,8 @@ import camera from './camera';
 import * as cache from './cache';
 import * as repository from './scene/repository';
 
-import './data';
-
 angular.module('VirtualBookshelf')
-.factory('environment', function ($q, $log, $window, data) {
+.factory('environment', function ($q, $log, $window) {
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;
@@ -26,25 +24,23 @@ angular.module('VirtualBookshelf')
 	environment.scene = null;
 	environment.library = null;
 
-	environment.loadLibrary = function(libraryId) {
+	environment.loadLibrary = function(dto) {
 		clearScene(); // inits some fields
 
-		var promise = data.getLibrary(libraryId).then(function (dto) {
-			var dict = parseLibraryDto(dto);
+		var dict = parseLibraryDto(dto);
 			
-			sections = dict.sections;
-			books = dict.books;
-			libraryDto = dto;
+		sections = dict.sections;
+		books = dict.books;
+		libraryDto = dto;
 
-			return initCache(libraryDto, dict.sections, dict.books);
-		}).then(function () {
+		return initCache(libraryDto, dict.sections, dict.books)
+		.then(function () {
 			createLibrary(libraryDto);
 			return createSections(sections);
-		}).then(function () {
+		})
+		.then(function () {
 			return createBooks(books);
 		});
-
-		return promise;
 	};
 
 	environment.goToLibrary = function(id) {
