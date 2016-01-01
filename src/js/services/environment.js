@@ -10,7 +10,7 @@ import * as cache from './cache';
 import * as repository from './scene/repository';
 
 angular.module('VirtualBookshelf')
-.factory('environment', function ($q) {
+.factory('environment', function () {
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;
@@ -74,32 +74,23 @@ angular.module('VirtualBookshelf')
 	};
 
 	environment.updateSection = function(dto) {
-		var promise;
-
 		if(dto.libraryId == environment.library.getId()) {
 			environment.removeSection(dto.id);
-			promise = createSection(dto);
+			return createSection(dto);
 		} else {
 			environment.removeSection(dto.id);
-			promise = $q.when(dto);
+			return Promise.resolve(dto);
 		}
-
-		return promise;	
 	};
 
 	environment.updateBook = function(dto) {
-		var promise;
-		var shelf = getBookShelf(dto);
-
-		if(shelf) {
+		if(getBookShelf(dto)) {
 			environment.removeBook(dto.id);
-			promise = createBook(dto);
+			return createBook(dto);
 		} else {
 			environment.removeBook(dto.id);
-			promise = $q.when(true);
+			return Promise.resolve(true);
 		}
-
-		return promise;
 	};
 
 	environment.removeBook = function(id) {
@@ -207,7 +198,7 @@ angular.module('VirtualBookshelf')
 			results.push(factory(dict[key].dto));
 		}
 
-		return $q.all(results);
+		return Promise.all(results);
 	};
 
 	var createSection = function(sectionDto) {
@@ -231,25 +222,18 @@ angular.module('VirtualBookshelf')
 	};
 
 	var createBook = function(bookDto) {
-		var promises = {};
-		var promise;
-
-		promises.bookCache = cache.getBook(bookDto.model);
-		if(bookDto.cover) {
-			promises.coverImage = repository.loadImage(bookDto.cover.url);
-		}
-
-		promise = $q.all(promises).then(function (results) {
-			var bookCache = results.bookCache;
-			var coverMapImage = results.coverImage;
+		return Promise.all([
+			cache.getBook(bookDto.model),
+			bookDto.cover ? repository.loadImage(bookDto.cover.url) : Promise.resolve(null)
+		]).then(function (results) {
+			var bookCache = results[0];
+			var coverMapImage = results[1];
 			var material = new BookMaterial(bookCache.mapImage, bookCache.bumpMapImage, bookCache.specularMapImage, coverMapImage);
 			var book = new BookObject(bookDto, bookCache.geometry, material);
 
 			addToDict(books, book);
 			placeBookOnShelf(book);
 		});
-
-		return promise;
 	};
 
 	var addToDict = function(dict, obj) {
