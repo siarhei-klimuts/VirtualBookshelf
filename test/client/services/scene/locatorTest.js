@@ -1,5 +1,6 @@
 import THREE from 'three';
 // import LibraryObject from 'js/services/models/LibraryObject';
+// import * as cache from 'js/services/cache';
 
 describe('locator.js', function () {
 	var $httpBackend;

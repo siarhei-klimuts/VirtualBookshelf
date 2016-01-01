@@ -53,10 +53,13 @@
 
     "browser": true,
     "node": true,
+    "jasmine": true,
 
     "globals": {
         "THREE": true,
         "angular": true,
-        "_": true
+        "_": true,
+        "inject": true,
+        "readJSON": true
     }
 }

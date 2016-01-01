@@ -6,12 +6,12 @@ import BookObject from './models/BookObject';
 import SectionObject from './models/SectionObject';
 
 import camera from './camera';
+import * as cache from './cache';
 
 import './data';
-import './cache';
 
 angular.module('VirtualBookshelf')
-.factory('environment', function ($q, $log, $window, data, cache) {
+.factory('environment', function ($q, $log, $window, data) {
 	var environment = {};
 
 	environment.CLEARANCE = 0.001;

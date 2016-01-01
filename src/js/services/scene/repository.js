@@ -28,13 +28,11 @@ export function loadSectionData(model) {
     	loadGeometry(modelUrl), 
     	loadImage(mapUrl), 
     	loadData(dataUrl)
-    ]).then(sectionData => (
-    	{
-    		geometry: sectionData[0],
-    		mapImage: sectionData[1],
-    		data: sectionData[2]
-    	}
-    ));
+    ]).then(sectionData => ({
+		geometry: sectionData[0],
+		mapImage: sectionData[1],
+		data: sectionData[2]
+    }));
 }
 
 export function loadBookData(model) {
@@ -47,15 +45,15 @@ export function loadBookData(model) {
     return  Promise.all([
     	loadGeometry(modelUrl),
     	loadImage(mapUrl).catch(() => {
-    		console.error('Cache: Error loading book map:', model);
+    		console.error('repository: Error loading book map:', model);
     		return null;
     	}),
     	loadImage(bumpMapUrl).catch(() => {
-    		console.error('Cache: Error loading book bumpMap:', model);
+    		console.error('repository: Error loading book bumpMap:', model);
     		return null;
     	}),
     	loadImage(specularMapUrl).catch(() => {
-    		console.error('Cache: Error loading book specularMap:', model);
+    		console.error('repository: Error loading book specularMap:', model);
     		return null;
     	})
     ]).then(results => ({

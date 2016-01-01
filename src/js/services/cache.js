@@ -1,75 +1,76 @@
 import * as repository from './scene/repository';
 
+var library = null;
+var sections = {};
+var books = {};
+
+export function init(libraryModel, sectionModels, bookModels) {
+	var libraryLoad = repository.loadLibraryData(libraryModel);
+	var sectionsLoad = [];
+	var booksLoad = [];
+	var model; // iterators
+
+	for (model in sectionModels) {
+		sectionsLoad.push(addSection(model));
+	}
+
+	for (model in bookModels) {
+		booksLoad.push(addBook(model));
+	}
+
+	return Promise.all([
+		libraryLoad, 
+		Promise.all(sectionsLoad), 
+		Promise.all(booksLoad)
+	]).then(results => {
+		library = results[0];
+	});
+}
+
+export function getLibrary() {
+	return library;
+}
+
+export function getSection(model) {
+	return commonGetter(sections, model, addSection);
+}
+
+export function getBook(model) {
+	return commonGetter(books, model, addBook);
+}
+
+function addSection(model) {
+	return commonAdder(sections, model, repository.loadSectionData);
+}
+
+function addBook(model) {
+	return commonAdder(books, model, repository.loadBookData);
+}
+
+function commonGetter(from, key, addFunction) {
+	var result = from[key];
+
+	if(!result) {
+		result = addFunction(key);
+	}
+
+	return Promise.resolve(result);
+}
+
+function commonAdder(where, what, loader) {
+	var promise = loader(what).then(function (loadedCache) {
+		where[what] = loadedCache;
+
+		return loadedCache;
+	});
+
+	return promise;
+}
+
 angular.module('VirtualBookshelf')
-.factory('cache', function () {
-	var cache = {};
-
-	var library = null;
-	var sections = {};
-	var books = {};
-
-	cache.init = function(libraryModel, sectionModels, bookModels) {
-		var libraryLoad = repository.loadLibraryData(libraryModel);
-		var sectionsLoad = [];
-		var booksLoad = [];
-		var model; // iterators
-
-		for (model in sectionModels) {
-			sectionsLoad.push(addSection(model));
-		}
-
-		for (model in bookModels) {
-			booksLoad.push(addBook(model));
-		}
-
-		return Promise.all([
-			libraryLoad, 
-			Promise.all(sectionsLoad), 
-			Promise.all(booksLoad)
-		]).then(results => {
-			library = results[0];
-		});
-	};
-
-	cache.getLibrary = function() {
-		return library;
-	};
-
-	cache.getSection = function(model) {
-		return commonGetter(sections, model, addSection);
-	};
-
-	cache.getBook = function(model) {
-		return commonGetter(books, model, addBook);
-	};
-
-	var addSection = function(model) {
-		return commonAdder(sections, model, repository.loadSectionData);
-	};
-
-	var addBook = function(model) {
-		return commonAdder(books, model, repository.loadBookData);
-	};
-
-	var commonGetter = function(from, key, addFunction) {
-		var result = from[key];
-
-		if(!result) {
-			result = addFunction(key);
-		}
-
-		return Promise.resolve(result);
-	};
-
-	var commonAdder = function(where, what, loader) {
-		var promise = loader(what).then(function (loadedCache) {
-			where[what] = loadedCache;
-
-			return loadedCache;
-		});
-
-		return promise;
-	};
-
-	return cache;
-});
+.factory('cache', () => ({
+	init,
+	getBook,
+	getSection,
+	getLibrary
+}));

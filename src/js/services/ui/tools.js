@@ -32,7 +32,7 @@ angular.module('VirtualBookshelf')
 			selectedDto = selector.getSelectedDto();
 
 			block.global.start();
-			locator.placeBook(selectedDto, focusedObject).then(function () {
+			$q.when(locator.placeBook(selectedDto, focusedObject)).then(function () {
 				var bookDto = catalog.getBook(selectedDto.id);
 				selector.select(new SelectorMetaDto(BookObject.TYPE, bookDto.id, bookDto.shelfId));
 				growl.success('Book placed');

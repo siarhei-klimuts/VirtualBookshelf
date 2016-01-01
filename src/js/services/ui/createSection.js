@@ -1,5 +1,5 @@
 angular.module('VirtualBookshelf')
-.factory('createSection', function ($log, user, environment, locator, dialog, block, ngDialog) {
+.factory('createSection', function ($q, $log, user, environment, locator, dialog, block, ngDialog) {
 	var createSection = {};
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
@@ -31,7 +31,7 @@ angular.module('VirtualBookshelf')
 
 	var place = function(dto) {
 		block.global.start();
-		locator.placeSection(dto).catch(function (error) {
+		$q.when(locator.placeSection(dto)).catch(function (error) {
 			dialog.openError('Can not create section because of an error.');
 			$log.error(error);
 		}).finally(function () {
