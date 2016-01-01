@@ -1,6 +1,8 @@
 import THREE from 'three';
 
 var jsonLoader = new THREE.JSONLoader();
+var dataLoader = new THREE.XHRLoader();
+dataLoader.setResponseType('json');
 
 export function loadLibraryData(model) {
 	var path = `/obj/libraries/${model}`;
@@ -13,12 +15,31 @@ export function loadLibraryData(model) {
     ]);
 }
 
+export function loadSectionData(model) {
+	var path = `/obj/sections/${model}`;
+    var modelUrl = `${path}/model.js`;
+    var mapUrl = `${path}/map.jpg`;
+    var dataUrl = `${path}/data.json`;
+
+    return Promise.all([
+    	loadGeometry(modelUrl), 
+    	loadImage(mapUrl), 
+    	loadData(dataUrl)
+    ]).then(sectionData => (
+    	{
+    		geometry: sectionData[0],
+    		mapImage: sectionData[1],
+    		data: sectionData[2]
+    	}
+    ));
+}
+
 function loadGeometry(url) {
 	return new Promise((resolve, reject) => {
-		jsonLoader.load(url, function (geometry) {
+		jsonLoader.load(url, geometry => {
 			geometry.computeBoundingBox();
 			resolve(geometry);
-		}, function () {}, reject);
+		}, () => {}, reject);
 	});
 }
 
@@ -37,4 +58,10 @@ function loadImage(url) {
     		reject(err);
     	};
     });
+}
+
+function loadData(url) {
+	return new Promise((resolve, reject) => {
+		dataLoader.load(url, resolve, () => {}, reject);
+	});
 }

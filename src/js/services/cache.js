@@ -49,7 +49,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	var addSection = function(model) {
-		return commonAdder(sections, model, loadSectionData);
+		return commonAdder(sections, model, repository.loadSectionData);
 	};
 
 	var addBook = function(model) {
@@ -74,21 +74,6 @@ angular.module('VirtualBookshelf')
 		});
 
 		return promise;
-	};
-
-	var loadSectionData = function(model) {
-		var path = '/obj/sections/{model}/'.replace('{model}', model);
-        var modelUrl = path + 'model.js';
-        var mapUrl = path + 'map.jpg';
-        var dataUrl = path + 'data.json';
-
-        var promise = $q.all({
-        	geometry: data.loadGeometry(modelUrl), 
-        	mapImage: data.loadImage(mapUrl), 
-        	data: data.getData(dataUrl)
-        });
-
-        return promise;
 	};
 
 	var loadBookData = function(model) {
