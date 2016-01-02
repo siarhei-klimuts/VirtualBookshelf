@@ -5,6 +5,7 @@ angular.module('VirtualBookshelf')
 	data.TEXTURE_RESOLUTION = 512;
 	data.COVER_MAX_Y = 394;
 	data.COVER_FACE_X = 296;
+	data.LIBRARY_CANVAS_ID = 'LIBRARY';
 
     data.postCover = function(externalURL, tags) {
     	var data = {
@@ -110,6 +111,10 @@ angular.module('VirtualBookshelf')
 	//TODO: replace by SPA implementation
 	data.goToLibrary = function(id) {
 		if(id) $window.location = '/' + id;
+	};
+
+	data.getCanvas = function() {
+		return document.getElementById(data.LIBRARY_CANVAS_ID);
 	};
 
 	return data;

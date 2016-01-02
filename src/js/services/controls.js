@@ -50,7 +50,7 @@ angular.module('VirtualBookshelf')
 	controls.onMouseDown = function(event) {
 		mouse.down(event); 
 
-		if(mouse.isCanvas() && mouse[1] && !mouse[3] && !preview.isActive()) {
+		if(isCanvas() && mouse[1] && !mouse[3] && !preview.isActive()) {
 			controls.selectObject();
 
 			if(selector.placing) {
@@ -104,7 +104,7 @@ angular.module('VirtualBookshelf')
 	controls.onMouseMove = function(event) {
 		mouse.move(event);
 
-		if(mouse.isCanvas() && !preview.isActive()) {
+		if(isCanvas() && !preview.isActive()) {
 			event.preventDefault();
 
 			if(mouse[1] && !mouse[3]) {		
@@ -123,7 +123,7 @@ angular.module('VirtualBookshelf')
 			intersected,
 			object;
 
-		if(mouse.isCanvas() && environment.library) {
+		if(isCanvas() && environment.library) {
 			//TODO: optimize
 			intersected = mouse.getIntersected(environment.library.children, true, [BookObject]);
 			if(!intersected) {
@@ -166,6 +166,10 @@ angular.module('VirtualBookshelf')
 				selectedObject.move(newPosition);
 			}
 		}
+	};
+
+	var isCanvas = function() {
+		return mouse.getTarget().id === data.LIBRARY_CANVAS_ID;
 	};
 
 	return controls;	

@@ -13,7 +13,6 @@ import * as repository from './repository';
 var environment = {};
 
 environment.CLEARANCE = 0.001;
-environment.LIBRARY_CANVAS_ID = 'LIBRARY';
  
 var libraryDto = null;
 var sections = {};

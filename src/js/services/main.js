@@ -47,7 +47,7 @@ angular.module('VirtualBookshelf')
 		var winResize;
 		var width = window.innerWidth;
 		var height = window.innerHeight;
-		var canvas = document.getElementById(lib3d.environment.LIBRARY_CANVAS_ID);
+		var canvas = data.getCanvas();
 
 		lib3d.init(width, height, canvas);
 		lib3d.addLoop(controls.update);

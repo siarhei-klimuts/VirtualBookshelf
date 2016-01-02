@@ -35,6 +35,5 @@ function startRenderLoop() {
 }
 
 export {
-	camera,
-	environment
+	camera
 };

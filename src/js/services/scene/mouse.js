@@ -1,7 +1,6 @@
 import THREE from 'three';
 
 import camera from '../camera';
-import environment from './environment';
 
 var mouse = {};
 
@@ -55,10 +54,6 @@ mouse.move = function(event) {
 		x = event.clientX;
 		y = event.clientY;
 	}
-};
-
-mouse.isCanvas = function() {
-	return this.target.id === environment.LIBRARY_CANVAS_ID;
 };
 
 mouse.getIntersected = function(objects, recursive, searchFor) {
