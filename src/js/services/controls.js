@@ -8,8 +8,8 @@ import navigation from './navigation';
 import environment from './scene/environment';
 import preview from './scene/preview';
 import selector from './scene/selector';
+import mouse from './scene/mouse';
 
-import './mouse';
 import './ui/block';
 import './ui/tools';
 import './ui/tooltip';
@@ -22,7 +22,7 @@ angular.module('VirtualBookshelf')
  * TODO: remove all busines logic from there and leave only
  * events functionality to make it more similar to usual controller
  */
-.factory('controls', function ($q, $log, $rootScope, mouse, block, tools, data, tooltip) {
+.factory('controls', function ($q, $log, $rootScope, block, tools, data, tooltip) {
 	var controls = {};
 
 	controls.init = function() {
