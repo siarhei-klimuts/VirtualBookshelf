@@ -1,11 +1,6 @@
-import THREE from 'three';
 import THREEx from 'THREEx.WindowResize';
 import Detector from 'Detector';
-
-import camera from './camera';
-import navigation from './navigation';
-import environment from './scene/environment';
-import locator from './scene/locator';
+import * as lib3d from './scene';
 
 import '../app';
 
@@ -18,9 +13,6 @@ import './ui/block';
 
 angular.module('VirtualBookshelf')
 .factory('main', function ($log, $q, controls, user, tools, userData, block, data) {	
-	var canvas;
-	var renderer;
-	
 	var main = {};
 
 	main.start = function() {
@@ -35,9 +27,6 @@ angular.module('VirtualBookshelf')
 				$log.error(error);
 				//TODO: show error message  
 			}).finally(function () {
-				locator.centerObject(camera.object);
-				environment.setLoaded(true);
-				startRenderLoop();
 				block.global.stop();
 			});		
 		} else {
@@ -48,7 +37,7 @@ angular.module('VirtualBookshelf')
 	var loadLibrary = function(libraryId) {
 		return data.getLibrary(libraryId).then(function (dto) {
 			return $q.all([
-				environment.loadLibrary(dto), 
+				lib3d.load(dto), 
 				userData.load()
 			]);
 		});
@@ -58,24 +47,13 @@ angular.module('VirtualBookshelf')
 		var winResize;
 		var width = window.innerWidth;
 		var height = window.innerHeight;
+		var canvas = document.getElementById(lib3d.environment.LIBRARY_CANVAS_ID);
 
-		canvas = document.getElementById(environment.LIBRARY_CANVAS_ID);
-		renderer = new THREE.WebGLRenderer({canvas: canvas ? canvas : undefined, antialias: true});
-		renderer.setSize(width, height);
-		winResize = new THREEx.WindowResize(renderer, camera.camera);
+		lib3d.init(width, height, canvas);
+		lib3d.addLoop(controls.update);
+		lib3d.addLoop(tools.update);
 
-		environment.scene = new THREE.Scene();
-		environment.scene.fog = new THREE.Fog(0x000000, 4, 7);
-	};
-
-	var startRenderLoop = function() {
-		requestAnimationFrame(startRenderLoop);
-
-		controls.update();
-		navigation.update();
-		tools.update();
-		
-		renderer.render(environment.scene, camera.camera);
+		winResize = new THREEx.WindowResize(lib3d.renderer, lib3d.camera.camera);
 	};
 
 	return main;

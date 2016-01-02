@@ -6,8 +6,9 @@ import BookObject from '../models/BookObject';
 import SectionObject from '../models/SectionObject';
 
 import camera from '../camera';
+import locator from './locator';
 import * as cache from '../cache';
-import * as repository from '../scene/repository';
+import * as repository from './repository';
 
 var environment = {};
 
@@ -37,7 +38,14 @@ environment.loadLibrary = function(dto) {
 		return createSections(sections);
 	})
 	.then(function () {
+		return locator.centerObject(camera.object);
+	})
+	.then(function () {
 		return createBooks(books);
+	}).then(function () {
+		environment.setLoaded(true);
+	}, function () {
+		environment.setLoaded(true);
 	});
 };
 

@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import CameraObject from './models/CameraObject';
 
 var camera = {
