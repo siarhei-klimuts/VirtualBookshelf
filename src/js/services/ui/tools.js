@@ -43,7 +43,11 @@ angular.module('VirtualBookshelf')
 			selectedDto = tools.getSelectedDto();
 
 			block.global.start();
-			$q.when(locator.placeBook(selectedDto, focusedObject)).then(function () {
+			$q.when(locator.placeBook(selectedDto, focusedObject)).then(function (position) {
+				return saveBook(selectedDto, position, focusedObject);
+			}).then(function (newDto) {
+				return environment.updateBook(newDto);
+			}).then(function () {
 				var bookDto = catalog.getBook(selectedDto.id);
 				selector.select(new SelectorMetaDto(BookObject.TYPE, bookDto.id, bookDto.shelfId));
 				growl.success('Book placed');
@@ -58,12 +62,22 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
+	var saveBook = function(dto, position, shelf) {
+		dto.shelfId = shelf.getId();
+		dto.sectionId = shelf.parent.getId();
+		dto.pos_x = position.x;
+		dto.pos_y = position.y;
+		dto.pos_z = position.z;
+
+		return data.postBook(dto);
+	};
+
 	tools.unplace = function() {
 		var bookDto = selector.isSelectedBook() ? tools.getSelectedDto() : null;
 
 		if(bookDto) {
 			block.global.start();
-			locator.unplaceBook(bookDto).then(function () {
+			unplaceBook(bookDto).then(function () {
 				growl.success('Book unplaced');
 				return catalog.loadBooks(user.getId());		
 			}).catch(function (error) {
@@ -73,6 +87,14 @@ angular.module('VirtualBookshelf')
 				block.global.stop();
 			});
 		}
+	};
+
+	var unplaceBook = function(bookDto) {
+		bookDto.sectionId = null;
+
+		return data.postBook(bookDto).then(function () {
+			return environment.updateBook(bookDto);
+		});
 	};
 
 	tools.deleteBook = function(id) {

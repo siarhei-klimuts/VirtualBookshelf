@@ -5,12 +5,9 @@ import BaseObject from '../models/BaseObject';
 
 import * as cache from '../cache';
 import environment from '../scene/environment';
-import selector from '../scene/selector';
-
-import '../data';
 
 angular.module('VirtualBookshelf')
-.factory('locator', function ($q, $log, data) {
+.factory('locator', function () {
 	var locator = {};
 
 	var debugEnabled = false;
@@ -28,65 +25,29 @@ angular.module('VirtualBookshelf')
 	};
 
 	locator.placeSection = function(sectionDto) {
-		var promise = cache.getSection(sectionDto.model).then(function (sectionCache) {
+		return cache.getSection(sectionDto.model).then(function (sectionCache) {
 			var sectionBB = sectionCache.geometry.boundingBox;
 			var libraryBB = environment.library.geometry.boundingBox;
 			var freePlace = getFreePlace(environment.library.children, libraryBB, sectionBB);
 
-			return freePlace ?
-				saveSection(sectionDto, freePlace) :
-				$q.reject('there is no free space');
-		}).then(function (newDto) {
-			return environment.updateSection(newDto);
+			if (freePlace) {
+				return Promise.resolve(freePlace);
+			} else {
+				return Promise.reject('there is no free space');
+			}
 		});
-
-		return promise;
-	};
-
-	var saveSection = function(dto, position) {
-		dto.libraryId = environment.library.getId();
-		dto.pos_x = position.x;
-		dto.pos_y = position.y;
-		dto.pos_z = position.z;
-
-		return data.postSection(dto);
 	};
 
 	locator.placeBook = function(bookDto, shelf) {
-		var promise = cache.getBook(bookDto.model).then(function (bookCache) {
+		return cache.getBook(bookDto.model).then(function (bookCache) {
 			var shelfBB = shelf.geometry.boundingBox;
 			var bookBB = bookCache.geometry.boundingBox;
 			var freePlace = getFreePlace(shelf.children, shelfBB, bookBB);
 
-			return freePlace ? 
-				saveBook(bookDto, freePlace, shelf) : 
-				$q.reject('there is no free space');
-		}).then(function (newDto) {
-			return environment.updateBook(newDto);
+			return freePlace ?
+				Promise.resolve(freePlace) :
+				Promise.reject('there is no free space');
 		});
-
-		return promise;
-	};
-
-	var saveBook = function(dto, position, shelf) {
-		dto.shelfId = shelf.getId();
-		dto.sectionId = shelf.parent.getId();
-		dto.pos_x = position.x;
-		dto.pos_y = position.y;
-		dto.pos_z = position.z;
-
-		return data.postBook(dto);
-	};
-
-	locator.unplaceBook = function(bookDto) {
-		var promise;
-		bookDto.sectionId = null;
-
-		promise = data.postBook(bookDto).then(function () {
-			return environment.updateBook(bookDto);
-		});
-
-		return promise;
 	};
 
 	var getFreePlace = function(objects, spaceBB, targetBB) {
