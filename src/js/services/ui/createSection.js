@@ -1,7 +1,8 @@
 import environment from '../scene/environment';
+import locator from '../scene/locator';
 
 angular.module('VirtualBookshelf')
-.factory('createSection', function ($q, $log, user, locator, dialog, block, ngDialog, data) {
+.factory('createSection', function ($q, $log, user, dialog, block, ngDialog, data) {
 	var createSection = {};
 	
 	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
