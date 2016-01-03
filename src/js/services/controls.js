@@ -3,7 +3,7 @@ import ShelfObject from './models/ShelfObject';
 import BookObject from './models/BookObject';
 import SectionObject from './models/SectionObject';
 
-import camera from './camera';
+import {camera} from './scene';
 import navigation from './navigation';
 import environment from './scene/environment';
 import preview from './scene/preview';
