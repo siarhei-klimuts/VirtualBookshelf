@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import camera from '../camera';
+import camera from './camera';
 import navigation from '../navigation';
 import environment from './environment';
 

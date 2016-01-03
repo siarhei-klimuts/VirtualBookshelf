@@ -1,4 +1,4 @@
-import camera from './camera';
+import camera from './scene/camera';
 
 var navigation = {};
 

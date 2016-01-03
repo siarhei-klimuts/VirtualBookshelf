@@ -5,7 +5,7 @@ import LibraryObject from '../models/LibraryObject';
 import BookObject from '../models/BookObject';
 import SectionObject from '../models/SectionObject';
 
-import camera from '../camera';
+import camera from './camera';
 import locator from './locator';
 import * as cache from './cache';
 import * as repository from './repository';

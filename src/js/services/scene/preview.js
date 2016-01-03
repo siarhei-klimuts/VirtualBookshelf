@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import camera from '../camera';
+import camera from './camera';
 import highlight from '../scene/highlight';
 
 var preview = {};
