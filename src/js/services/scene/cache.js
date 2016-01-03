@@ -1,4 +1,4 @@
-import * as repository from './scene/repository';
+import * as repository from './repository';
 
 var library = null;
 var sections = {};

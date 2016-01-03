@@ -7,7 +7,7 @@ import SectionObject from '../models/SectionObject';
 
 import camera from '../camera';
 import locator from './locator';
-import * as cache from '../cache';
+import * as cache from './cache';
 import * as repository from './repository';
 
 var environment = {};

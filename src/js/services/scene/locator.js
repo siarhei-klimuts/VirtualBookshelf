@@ -3,7 +3,7 @@ import THREE from 'three';
 import GridCalculator from './gridCalculator';
 import BaseObject from '../models/BaseObject';
 
-import * as cache from '../cache';
+import * as cache from '../scene/cache';
 import environment from '../scene/environment';
 
 var locator = {};

@@ -23,7 +23,7 @@ export function addLoop(func) {
 
 //TODO: replace by export environment.loadLibrary as load
 export function load(dto) {
-	environment.loadLibrary(dto);
+	return environment.loadLibrary(dto);
 }
 
 function startRenderLoop() {
