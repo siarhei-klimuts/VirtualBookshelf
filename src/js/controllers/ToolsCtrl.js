@@ -1,4 +1,4 @@
-import preview from '../services/scene/preview';
+import {preview} from '../services/scene';
 import selector from '../services/scene/selector';
 
 angular.module('VirtualBookshelf')

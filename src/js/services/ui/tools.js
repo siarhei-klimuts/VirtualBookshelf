@@ -4,7 +4,7 @@ import BookObject from '../models/BookObject';
 
 import {environment} from '../scene';
 import {locator} from '../scene';
-import preview from '../scene/preview';
+import {preview} from '../scene';
 import selector from '../scene/selector';
 
 import '../data';

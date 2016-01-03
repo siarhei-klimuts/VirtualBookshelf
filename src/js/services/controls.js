@@ -6,8 +6,8 @@ import SectionObject from './models/SectionObject';
 import {camera} from './scene';
 import {environment} from './scene';
 import {mouse} from './scene';
+import {preview} from './scene';
 import navigation from './navigation';
-import preview from './scene/preview';
 import selector from './scene/selector';
 
 import './ui/block';

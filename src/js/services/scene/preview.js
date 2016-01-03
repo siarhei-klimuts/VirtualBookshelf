@@ -3,7 +3,7 @@ import THREE from 'three';
 import camera from './camera';
 import highlight from '../scene/highlight';
 
-var preview = {};
+export var preview = {};
 
 var active = false;
 var container;
@@ -52,5 +52,3 @@ preview.rotate = function(dX) {
 };
 
 init();
-
-export default preview;

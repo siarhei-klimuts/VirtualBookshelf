@@ -5,7 +5,7 @@ import SectionObject from '../models/SectionObject';
 
 import environment from '../scene/environment';
 import highlight from '../scene/highlight';
-import preview from '../scene/preview';
+import {preview} from '../scene/preview';
 
 var selector = {};
 
