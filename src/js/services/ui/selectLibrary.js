@@ -1,4 +1,4 @@
-import environment from '../scene/environment';
+import {environment} from '../scene';
 
 angular.module('VirtualBookshelf')
 .factory('selectLibrary', function ($q, data, user, ngDialog) {

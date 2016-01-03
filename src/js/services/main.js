@@ -27,6 +27,7 @@ angular.module('VirtualBookshelf')
 				$log.error(error);
 				//TODO: show error message  
 			}).finally(function () {
+				user.setLibraryLoaded(true);
 				block.global.stop();
 			});		
 		} else {

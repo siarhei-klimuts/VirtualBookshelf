@@ -4,8 +4,8 @@ import BookObject from './models/BookObject';
 import SectionObject from './models/SectionObject';
 
 import {camera} from './scene';
+import {environment} from './scene';
 import navigation from './navigation';
-import environment from './scene/environment';
 import preview from './scene/preview';
 import selector from './scene/selector';
 import mouse from './scene/mouse';

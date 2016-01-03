@@ -1,4 +1,4 @@
-import environment from '../scene/environment';
+import {environment} from '../scene';
 import locator from '../scene/locator';
 
 angular.module('VirtualBookshelf')

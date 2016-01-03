@@ -1,5 +1,3 @@
-import environment from '../scene/environment';
-
 import '../user';
 import './registration';
 import './userData';
@@ -26,11 +24,11 @@ angular.module('VirtualBookshelf')
 	        if (win && win.closed) {
 	        	$interval.cancel(checkAuthWindow);
 
-	        	environment.setLoaded(false);
+	        	user.setLibraryLoaded(false);
 	        	user.load().then(function () {
 	        		return user.isTemporary() ? registration.show() : userData.load();
 	        	}).finally(function () {
-	        		environment.setLoaded(true);
+	        		user.setLibraryLoaded(true);
 	        		block.global.stop();
 	        	}).catch(function () {
 	        		$log.log('User loadind error');
@@ -57,11 +55,11 @@ angular.module('VirtualBookshelf')
 	};
 
 	authorization.logout = function() {
-    	environment.setLoaded(false);
+    	user.setLibraryLoaded(false);
 		user.logout().finally(function () {
     		return userData.load();
 		}).finally(function () {
-        	environment.setLoaded(true);
+        	user.setLibraryLoaded(true);
 		}).catch(function () {
 			$log.error('Logout error');
 			//TODO: show an error

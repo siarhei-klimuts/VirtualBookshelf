@@ -1,4 +1,4 @@
-import environment from '../scene/environment';
+import {environment} from '../scene';
 import selector from '../scene/selector';
 
 import '../data';

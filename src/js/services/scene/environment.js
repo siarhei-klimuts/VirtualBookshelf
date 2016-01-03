@@ -17,7 +17,6 @@ environment.CLEARANCE = 0.001;
 var libraryDto = null;
 var sections = {};
 var books = {};
-var loaded = false;
 
 environment.scene = null;
 environment.library = null;
@@ -41,19 +40,7 @@ environment.loadLibrary = function(dto) {
 	})
 	.then(function () {
 		return createBooks(books);
-	}).then(function () {
-		environment.setLoaded(true);
-	}, function () {
-		environment.setLoaded(true);
 	});
-};
-
-environment.setLoaded = function(value) {
-	loaded = value;
-};
-
-environment.getLoaded = function() {
-	return loaded;
 };
 
 environment.getBook = function(bookId) {

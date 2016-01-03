@@ -3,6 +3,7 @@ angular.module('VirtualBookshelf')
 	var user = {};
 
 	var loaded = false;
+	var libraryLoaded = false;
 	var _dataObject = null;
 	var library = null;
 
@@ -53,6 +54,14 @@ angular.module('VirtualBookshelf')
 
 	user.isLoaded = function() {
 		return loaded;
+	};
+
+	user.setLibraryLoaded = function(value) {
+		libraryLoaded = value;
+	};
+
+	user.getLibraryLoaded = function() {
+		return libraryLoaded;
 	};
 
 	user.isTemporary = function() {

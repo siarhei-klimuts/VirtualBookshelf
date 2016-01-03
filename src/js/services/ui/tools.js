@@ -2,7 +2,7 @@ import SelectorMetaDto from '../models/SelectorMetaDto';
 import ShelfObject from '../models/ShelfObject';
 import BookObject from '../models/BookObject';
 
-import environment from '../scene/environment';
+import {environment} from '../scene';
 import preview from '../scene/preview';
 import selector from '../scene/selector';
 import locator from '../scene/locator';

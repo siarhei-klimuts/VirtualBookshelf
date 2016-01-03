@@ -1,5 +1,3 @@
-import environment from '../services/scene/environment';
-
 angular.module('VirtualBookshelf')
 .controller('WelcomeCtrl', function (authorization, selectLibrary, createLibrary, user) {
 	var closed = false;
@@ -21,7 +19,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	this.isLoaded = function() {
-		return environment.getLoaded();
+		return user.getLibraryLoaded();
 	};
 
 	this.showLoginDialog = function() {
