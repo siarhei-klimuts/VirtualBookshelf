@@ -1,5 +1,5 @@
 import {environment} from '../scene';
-import locator from '../scene/locator';
+import {locator} from '../scene/locator';
 
 angular.module('VirtualBookshelf')
 .factory('createSection', function ($q, $log, user, dialog, block, ngDialog, data) {

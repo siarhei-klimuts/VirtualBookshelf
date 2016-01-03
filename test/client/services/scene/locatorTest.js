@@ -3,7 +3,7 @@ import THREE from 'three';
 import LibraryObject from 'js/services/models/LibraryObject';
 import * as cache from 'js/services/scene/cache';
 import environment from 'js/services/scene/environment';
-import locator from 'js/services/scene/locator';
+import {locator} from 'js/services/scene/locator';
 
 describe('locator.js', function () {
 	var $httpBackend;

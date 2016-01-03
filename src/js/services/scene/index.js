@@ -4,6 +4,8 @@ import camera from './camera';
 import navigation from '../navigation';
 import environment from './environment';
 
+export {locator} from './locator';
+
 var loops = [];
 export var renderer;
 

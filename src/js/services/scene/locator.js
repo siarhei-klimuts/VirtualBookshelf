@@ -6,7 +6,7 @@ import BaseObject from '../models/BaseObject';
 import * as cache from '../scene/cache';
 import environment from '../scene/environment';
 
-var locator = {};
+export var locator = {};
 
 var debugEnabled = false;
 
@@ -219,5 +219,3 @@ function debugShowFree(position, matrixPrecision, obj) {
 		obj.parent.add(cellBox);
 	}
 }
-
-export default locator;
