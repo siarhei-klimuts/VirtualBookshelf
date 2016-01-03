@@ -7,6 +7,7 @@ import environment from './environment';
 export {locator} from './locator';
 export {mouse} from './mouse';
 export {preview} from './preview';
+export {selector} from './selector';
 
 var loops = [];
 export var renderer;

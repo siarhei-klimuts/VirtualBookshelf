@@ -1,5 +1,5 @@
 import {environment} from '../scene';
-import selector from '../scene/selector';
+import {selector} from '../scene';
 
 import '../data';
 import '../ui/block';

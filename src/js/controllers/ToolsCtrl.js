@@ -1,5 +1,5 @@
 import {preview} from '../services/scene';
-import selector from '../services/scene/selector';
+import {selector} from '../services/scene';
 
 angular.module('VirtualBookshelf')
 .controller('ToolsCtrl', function (user, tools, bookEdit, dialog, block, growl) {

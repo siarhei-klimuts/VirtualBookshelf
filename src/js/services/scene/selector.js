@@ -7,7 +7,7 @@ import environment from '../scene/environment';
 import highlight from '../scene/highlight';
 import {preview} from '../scene/preview';
 
-var selector = {};
+export var selector = {};
 
 var selected = new SelectorMeta();
 var focused = new SelectorMeta();
@@ -108,5 +108,3 @@ function isBook(meta) {
 function isSection(meta) {
 	return meta.type === SectionObject.TYPE;
 }
-
-export default selector;

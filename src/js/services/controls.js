@@ -7,8 +7,8 @@ import {camera} from './scene';
 import {environment} from './scene';
 import {mouse} from './scene';
 import {preview} from './scene';
+import {selector} from './scene';
 import navigation from './navigation';
-import selector from './scene/selector';
 
 import './ui/block';
 import './ui/tools';
