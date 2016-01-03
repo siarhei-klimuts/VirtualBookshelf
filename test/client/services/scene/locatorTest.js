@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import LibraryObject from 'js/services/models/LibraryObject';
+import LibraryObject from 'js/services/scene/models/LibraryObject';
 import * as cache from 'js/services/scene/cache';
 import environment from 'js/services/scene/environment';
 import {locator} from 'js/services/scene/locator';
