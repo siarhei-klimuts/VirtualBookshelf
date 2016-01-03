@@ -1,13 +1,13 @@
 import THREE from 'three';
 
 import camera from './camera';
-import navigation from '../navigation';
 import environment from './environment';
 
 export {locator} from './locator';
 export {mouse} from './mouse';
 export {preview} from './preview';
 export {selector} from './selector';
+export {navigation} from './navigation';
 
 var loops = [];
 export var renderer;

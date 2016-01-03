@@ -1,6 +1,6 @@
-import camera from './scene/camera';
+import camera from './camera';
 
-var navigation = {};
+export var navigation = {};
 
 navigation.BUTTONS_ROTATE_SPEED = 100;
 navigation.BUTTONS_GO_SPEED = 0.02;
@@ -46,5 +46,3 @@ navigation.update = function() {
 		camera.rotate(-navigation.BUTTONS_ROTATE_SPEED, 0);
 	}
 };
-
-export default navigation;

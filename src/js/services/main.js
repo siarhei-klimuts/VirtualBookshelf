@@ -53,6 +53,7 @@ angular.module('VirtualBookshelf')
 		lib3d.init(width, height, canvas);
 		lib3d.addLoop(controls.update);
 		lib3d.addLoop(tools.update);
+		lib3d.addLoop(lib3d.navigation.update);
 
 		winResize = new THREEx.WindowResize(lib3d.renderer, lib3d.camera.camera);
 	};

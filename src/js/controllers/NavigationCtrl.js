@@ -1,4 +1,4 @@
-import navigation from 'js/services/navigation';
+import {navigation} from 'js/services/scene';
 
 angular.module('VirtualBookshelf')
 .controller('NavigationCtrl', function () {
