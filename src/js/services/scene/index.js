@@ -5,6 +5,7 @@ import navigation from '../navigation';
 import environment from './environment';
 
 export {locator} from './locator';
+export {mouse} from './mouse';
 
 var loops = [];
 export var renderer;

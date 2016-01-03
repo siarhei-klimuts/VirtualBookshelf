@@ -2,7 +2,7 @@ import THREE from 'three';
 
 import camera from './camera';
 
-var mouse = {};
+export var mouse = {};
 
 function getWidth() {
 	return window.innerWidth;
@@ -101,5 +101,3 @@ function getVector() {
 
 	return vector.sub(camera.getPosition()).normalize();
 }
-
-export default mouse;

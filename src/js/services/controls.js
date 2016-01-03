@@ -5,10 +5,10 @@ import SectionObject from './models/SectionObject';
 
 import {camera} from './scene';
 import {environment} from './scene';
+import {mouse} from './scene';
 import navigation from './navigation';
 import preview from './scene/preview';
 import selector from './scene/selector';
-import mouse from './scene/mouse';
 
 import './ui/block';
 import './ui/tools';
