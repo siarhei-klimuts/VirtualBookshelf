@@ -1,8 +1,7 @@
-import SelectorMeta from './models/SelectorMeta';
-import ShelfObject from './models/ShelfObject';
-import BookObject from './models/BookObject';
-import SectionObject from './models/SectionObject';
-
+import {ShelfObject} from './scene';
+import {BookObject} from './scene';
+import {SectionObject} from './scene';
+import {SelectorMeta} from './scene';
 import {camera} from './scene';
 import {environment} from './scene';
 import {mouse} from './scene';

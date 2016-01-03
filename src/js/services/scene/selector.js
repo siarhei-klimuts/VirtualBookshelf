@@ -1,11 +1,11 @@
-import SelectorMeta from '../models/SelectorMeta';
-import ShelfObject from '../models/ShelfObject';
-import BookObject from '../models/BookObject';
-import SectionObject from '../models/SectionObject';
+import SelectorMeta from './models/SelectorMeta';
+import ShelfObject from './models/ShelfObject';
+import BookObject from './models/BookObject';
+import SectionObject from './models/SectionObject';
 
-import environment from '../scene/environment';
-import highlight from '../scene/highlight';
-import {preview} from '../scene/preview';
+import environment from './environment';
+import highlight from './highlight';
+import {preview} from './preview';
 
 export var selector = {};
 

@@ -9,6 +9,12 @@ export {preview} from './preview';
 export {selector} from './selector';
 export {navigation} from './navigation';
 
+export {default as ShelfObject} from './models/ShelfObject';
+export {default as BookObject} from './models/BookObject';
+export {default as SectionObject} from './models/SectionObject';
+export {default as SelectorMeta} from './models/SelectorMeta';
+export {default as SelectorMetaDto} from './models/SelectorMetaDto';
+
 var loops = [];
 export var renderer;
 

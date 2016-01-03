@@ -1,9 +1,9 @@
 import THREE from 'three';
 
-import BookMaterial from '../materials/BookMaterial';
-import LibraryObject from '../models/LibraryObject';
-import BookObject from '../models/BookObject';
-import SectionObject from '../models/SectionObject';
+import BookMaterial from './materials/BookMaterial';
+import LibraryObject from './models/LibraryObject';
+import BookObject from './models/BookObject';
+import SectionObject from './models/SectionObject';
 
 import camera from './camera';
 import {locator} from './locator';

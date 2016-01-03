@@ -1,4 +1,4 @@
-import BookObject from 'js/services/models/BookObject';
+import {BookObject} from 'js/services/scene';
 
 angular.module('VirtualBookshelf')
 .controller('TooltipCtrl', function (tooltip) {

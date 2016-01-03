@@ -1,7 +1,6 @@
-import SelectorMetaDto from '../models/SelectorMetaDto';
-import ShelfObject from '../models/ShelfObject';
-import BookObject from '../models/BookObject';
-
+import {ShelfObject} from '../scene';
+import {BookObject} from '../scene';
+import {SelectorMetaDto} from '../scene';
 import {environment} from '../scene';
 import {locator} from '../scene';
 import {preview} from '../scene';

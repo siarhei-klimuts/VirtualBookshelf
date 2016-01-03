@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import CameraObject from '../models/CameraObject';
+import CameraObject from './models/CameraObject';
 
 var camera = {
 	HEIGTH: 1.5,

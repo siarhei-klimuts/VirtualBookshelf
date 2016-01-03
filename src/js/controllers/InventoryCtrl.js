@@ -1,6 +1,5 @@
-import SelectorMetaDto from 'js/services/models/SelectorMetaDto';
-import BookObject from 'js/services/models/BookObject';
-
+import {BookObject} from 'js/services/scene';
+import {SelectorMetaDto} from '../services/scene';
 import {selector} from '../services/scene';
 
 angular.module('VirtualBookshelf')
