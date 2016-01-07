@@ -1,6 +1,6 @@
-import {BookObject} from 'js/services/scene';
-import {SelectorMetaDto} from '../services/scene';
-import {selector} from '../services/scene';
+import {BookObject} from 'lib3d';
+import {SelectorMetaDto} from 'lib3d';
+import {selector} from 'lib3d';
 
 angular.module('VirtualBookshelf')
 .controller('InventoryCtrl', function (user, bookEdit, catalog) {

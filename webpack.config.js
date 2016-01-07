@@ -24,7 +24,7 @@ var config = {
     },
     module: {
         loaders: [
-            {test: /\.js/, exclude: /(node_modules|bower_components|libs)/, loader: 'ng-annotate!babel!jshint'},
+            {test: /\.js/, exclude: /(node_modules|bower_components|libs|lib3d)/, loader: 'ng-annotate!babel!jshint'},
             {test: /Detector.js/, loader: 'exports?Detector'},
             {test: /threex.*.js/, loader: 'exports?THREEx'},
             {test: /\.css$/, loader: 'style!css'},
@@ -74,7 +74,6 @@ if (isProd) {
     };
 }
 
-config.addVendor('babel-polyfill');
 config.addVendor('angular');
 config.addVendor('angular-block-ui', BOWER_COMPONENTS + 'angular-block-ui/dist/angular-block-ui.js');
 config.addVendor('angular-block-ui.css', BOWER_COMPONENTS + 'angular-block-ui/dist/angular-block-ui.css');
@@ -90,6 +89,7 @@ config.addVendor('googleAnalytics', LIBS_PATH + 'googleAnalytics.js');
 config.addVendor('three');
 config.addVendor('THREEx.WindowResize', LIBS_PATH + 'three.js/threex.windowresize.js');
 config.addVendor('Detector', LIBS_PATH + 'three.js/Detector.js');
+config.addVendor('lib3d', __dirname + '/../lib3d/dist/bundle.js');
 
 config.addVendor('font-awesome', NODE_MODULES + 'font-awesome/css/font-awesome.css');
 

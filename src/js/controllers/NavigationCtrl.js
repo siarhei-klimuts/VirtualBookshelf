@@ -1,4 +1,4 @@
-import {navigation} from 'js/services/scene';
+import {navigation} from 'lib3d';
 
 angular.module('VirtualBookshelf')
 .controller('NavigationCtrl', function () {

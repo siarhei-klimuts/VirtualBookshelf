@@ -1,6 +1,6 @@
 import THREEx from 'THREEx.WindowResize';
 import Detector from 'Detector';
-import * as lib3d from './scene';
+import * as lib3d from 'lib3d';
 
 import '../app';
 
@@ -50,7 +50,7 @@ angular.module('VirtualBookshelf')
 		var height = window.innerHeight;
 		var canvas = data.getCanvas();
 
-		lib3d.init(width, height, canvas);
+		lib3d.init(canvas, width, height);
 		lib3d.addLoop(controls.update);
 		lib3d.addLoop(tools.update);
 		lib3d.addLoop(lib3d.navigation.update);

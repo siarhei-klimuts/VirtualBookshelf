@@ -1,5 +1,5 @@
-import {environment} from '../scene';
-import {selector} from '../scene';
+import {environment} from 'lib3d';
+import {selector} from 'lib3d';
 
 import '../data';
 import '../ui/block';

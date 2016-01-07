@@ -1,5 +1,5 @@
-import {preview} from '../services/scene';
-import {selector} from '../services/scene';
+import {preview} from 'lib3d';
+import {selector} from 'lib3d';
 
 angular.module('VirtualBookshelf')
 .controller('ToolsCtrl', function (user, tools, bookEdit, dialog, block, growl) {

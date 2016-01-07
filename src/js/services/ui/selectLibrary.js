@@ -1,4 +1,4 @@
-import {environment} from '../scene';
+import {environment} from 'lib3d';
 
 angular.module('VirtualBookshelf')
 .factory('selectLibrary', function ($q, data, user, ngDialog) {

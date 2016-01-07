@@ -1,10 +1,10 @@
-import {ShelfObject} from '../scene';
-import {BookObject} from '../scene';
-import {SelectorMetaDto} from '../scene';
-import {environment} from '../scene';
-import {locator} from '../scene';
-import {preview} from '../scene';
-import {selector} from '../scene';
+import {ShelfObject} from 'lib3d';
+import {BookObject} from 'lib3d';
+import {SelectorMetaDto} from 'lib3d';
+import {environment} from 'lib3d';
+import {locator} from 'lib3d';
+import {preview} from 'lib3d';
+import {selector} from 'lib3d';
 
 import '../data';
 import '../dialog';

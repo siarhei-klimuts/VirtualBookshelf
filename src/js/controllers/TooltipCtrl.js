@@ -1,4 +1,4 @@
-import {BookObject} from 'js/services/scene';
+import {BookObject} from 'lib3d';
 
 angular.module('VirtualBookshelf')
 .controller('TooltipCtrl', function (tooltip) {

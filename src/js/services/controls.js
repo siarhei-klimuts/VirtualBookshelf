@@ -1,13 +1,13 @@
-import {ShelfObject} from './scene';
-import {BookObject} from './scene';
-import {SectionObject} from './scene';
-import {SelectorMeta} from './scene';
-import {camera} from './scene';
-import {environment} from './scene';
-import {mouse} from './scene';
-import {preview} from './scene';
-import {selector} from './scene';
-import {navigation} from './scene';
+import {ShelfObject} from 'lib3d';
+import {BookObject} from 'lib3d';
+import {SectionObject} from 'lib3d';
+import {SelectorMeta} from 'lib3d';
+import {camera} from 'lib3d';
+import {environment} from 'lib3d';
+import {mouse} from 'lib3d';
+import {preview} from 'lib3d';
+import {selector} from 'lib3d';
+import {navigation} from 'lib3d';
 
 import './ui/block';
 import './ui/tools';
