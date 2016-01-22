@@ -37,10 +37,10 @@ angular.module('VirtualBookshelf')
 
 	controls.update = function() {
 		if(!preview.isActive()) {
-			if(mouse[3]) {
+			if(mouse.keys[3]) {
 				camera.rotate(mouse.longX, mouse.longY);
 			}
-			if(mouse[1] && mouse[3]) {
+			if(mouse.keys[1] && mouse.keys[3]) {
 				camera.go(navigation.BUTTONS_GO_SPEED);
 			}
 		}
@@ -49,7 +49,7 @@ angular.module('VirtualBookshelf')
 	controls.onMouseDown = function(event) {
 		mouse.down(event); 
 
-		if(isCanvas() && mouse[1] && !mouse[3] && !preview.isActive()) {
+		if(isCanvas() && mouse.keys[1] && !mouse.keys[3] && !preview.isActive()) {
 			controls.selectObject();
 
 			if(selector.placing) {
@@ -106,7 +106,7 @@ angular.module('VirtualBookshelf')
 		if(isCanvas() && !preview.isActive()) {
 			event.preventDefault();
 
-			if(mouse[1] && !mouse[3]) {		
+			if(mouse.keys[1] && !mouse.keys[3]) {		
 				controls.moveObject();
 			} else {
 				controls.selectObject();
