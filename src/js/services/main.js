@@ -38,10 +38,11 @@ angular.module('VirtualBookshelf')
 	var loadLibrary = function(libraryId) {
 		return data.getLibrary(libraryId).then(function (dto) {
 			return $q.all([
-				lib3d.load(dto), 
+				lib3d.loadLibrary(dto), 
 				userData.load()
 			]);
-		});
+		})
+		.then(results => lib3d.setLibrary(results[0]));
 	};
 
 	var init = function() {
