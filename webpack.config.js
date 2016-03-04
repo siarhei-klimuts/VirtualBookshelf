@@ -26,7 +26,6 @@ var config = {
         loaders: [
             {test: /\.js/, exclude: /(node_modules|bower_components|libs|lib3d)/, loader: 'ng-annotate!babel!jshint'},
             {test: /Detector.js/, loader: 'exports?Detector'},
-            {test: /threex.*.js/, loader: 'exports?THREEx'},
             {test: /\.css$/, loader: 'style!css'},
             {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'}
         ],
@@ -87,7 +86,6 @@ config.addVendor('lodash', BOWER_COMPONENTS + 'lodash/lodash.js');
 config.addVendor('facebookSdk', LIBS_PATH + 'facebookSdk.js');
 config.addVendor('googleAnalytics', LIBS_PATH + 'googleAnalytics.js');
 config.addVendor('three');
-config.addVendor('THREEx.WindowResize', LIBS_PATH + 'three.js/threex.windowresize.js');
 config.addVendor('Detector', LIBS_PATH + 'three.js/Detector.js');
 config.addVendor('lib3d', __dirname + '/../lib3d/dist/bundle.js');
 

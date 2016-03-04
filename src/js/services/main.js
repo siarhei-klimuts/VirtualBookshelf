@@ -1,4 +1,3 @@
-import THREEx from 'THREEx.WindowResize';
 import Detector from 'Detector';
 import * as lib3d from 'lib3d';
 
@@ -46,7 +45,6 @@ angular.module('VirtualBookshelf')
 	};
 
 	var init = function() {
-		var winResize;
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 		var canvas = data.getCanvas();
@@ -56,7 +54,9 @@ angular.module('VirtualBookshelf')
 		lib3d.addLoop(tools.update);
 		lib3d.addLoop(lib3d.navigation.update);
 
-		winResize = new THREEx.WindowResize(lib3d.renderer, lib3d.camera.camera);
+		window.addEventListener('resize', function () {
+			lib3d.setSize(window.innerWidth, window.innerHeight);
+		}, false);
 	};
 
 	return main;
