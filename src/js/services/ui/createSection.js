@@ -1,5 +1,4 @@
-import {environment} from 'lib3d';
-import {locator} from 'lib3d';
+import * as lib3d from 'lib3d';
 
 angular.module('VirtualBookshelf')
 .factory('createSection', function ($q, $log, user, dialog, block, ngDialog, data) {
@@ -22,7 +21,7 @@ angular.module('VirtualBookshelf')
 		if(model) {
 			var sectionData = {
 				model: model,
-				libraryId: environment.library.getId(),
+				libraryId: lib3d.getLibrary().getId(),
 				userId: user.getId()
 			};
 
@@ -35,7 +34,7 @@ angular.module('VirtualBookshelf')
 	var place = function(dto) {
 		block.global.start();
 
-		$q.when(locator.placeSection(dto)).then(function (position) {
+		$q.when(lib3d.locator.placeSection(dto)).then(function (position) {
 			return saveSection(dto, position);
 		}).then(function (newDto) {
 			return environment.updateSection(newDto);
@@ -50,7 +49,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	var saveSection = function(dto, position) {
-		dto.libraryId = environment.library.getId();
+		dto.libraryId = lib3d.getLibrary().getId();
 		dto.pos_x = position.x;
 		dto.pos_y = position.y;
 		dto.pos_z = position.z;

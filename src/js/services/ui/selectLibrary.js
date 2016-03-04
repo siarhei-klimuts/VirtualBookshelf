@@ -1,4 +1,4 @@
-import {environment} from 'lib3d';
+import * as lib3d from 'lib3d';
 
 angular.module('VirtualBookshelf')
 .factory('selectLibrary', function ($q, data, user, ngDialog) {
@@ -17,7 +17,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	selectLibrary.isUserLibrary = function() {
-		return environment.library && environment.library.dataObject.userId === user.getId();
+		return lib3d.getLibrary() && lib3d.getLibrary().dataObject.userId === user.getId();
 	};
 
 	selectLibrary.updateList = function() {

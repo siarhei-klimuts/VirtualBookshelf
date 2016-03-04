@@ -3,11 +3,12 @@ import {BookObject} from 'lib3d';
 import {SectionObject} from 'lib3d';
 import {SelectorMeta} from 'lib3d';
 import {camera} from 'lib3d';
-import {environment} from 'lib3d';
 import {mouse} from 'lib3d';
 import {preview} from 'lib3d';
 import {selector} from 'lib3d';
 import {navigation} from 'lib3d';
+
+import * as lib3d from 'lib3d';
 
 import './ui/block';
 import './ui/tools';
@@ -122,14 +123,14 @@ angular.module('VirtualBookshelf')
 			intersected,
 			object;
 
-		if(isCanvas() && environment.library) {
+		if(isCanvas() && lib3d.getLibrary()) {
 			//TODO: optimize
-			intersected = mouse.getIntersected(environment.library.children, true, [BookObject]);
+			intersected = mouse.getIntersected(lib3d.getLibrary().children, true, [BookObject]);
 			if(!intersected) {
-				intersected = mouse.getIntersected(environment.library.children, true, [ShelfObject]);
+				intersected = mouse.getIntersected(lib3d.getLibrary().children, true, [ShelfObject]);
 			}
 			if(!intersected) {
-				intersected = mouse.getIntersected(environment.library.children, true, [SectionObject]);
+				intersected = mouse.getIntersected(lib3d.getLibrary().children, true, [SectionObject]);
 			}
 			if(intersected) {
 				object = intersected.object;
