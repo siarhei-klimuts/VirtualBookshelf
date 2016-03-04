@@ -37,7 +37,7 @@ angular.module('VirtualBookshelf')
 		$q.when(lib3d.locator.placeSection(dto)).then(function (position) {
 			return saveSection(dto, position);
 		}).then(function (newDto) {
-			return environment.updateSection(newDto);
+			return updateSection(newDto);
 		}).catch(function (error) {
 			dialog.openError('Can not create section because of an error.');
 			$log.error(error);
@@ -55,6 +55,19 @@ angular.module('VirtualBookshelf')
 		dto.pos_z = position.z;
 
 		return data.postSection(dto);
+	};
+
+	var updateSection = function(dto) {
+		var library = lib3d.getLibrary();
+
+	    if(dto.libraryId == library.getId()) {
+	        library.removeSection(dto.id);
+	        return lib3d.factory.createSection(dto)
+	        	.then(section => library.addSection(section));
+	    } else {
+	        library.removeSection(dto.id);
+	        return Promise.resolve(dto);
+	    }
 	};
 
 	return createSection;
