@@ -6,6 +6,8 @@ import {locator} from 'lib3d';
 import {preview} from 'lib3d';
 import {selector} from 'lib3d';
 
+import * as lib3d from 'lib3d';
+
 import '../data';
 import '../dialog';
 import '../ui/block';
@@ -45,7 +47,7 @@ angular.module('VirtualBookshelf')
 			$q.when(locator.placeBook(selectedDto, focusedObject)).then(function (position) {
 				return saveBook(selectedDto, position, focusedObject);
 			}).then(function (newDto) {
-				return environment.updateBook(newDto);
+				return tools.updateBook(newDto);
 			}).then(function () {
 				var bookDto = catalog.getBook(selectedDto.id);
 				selector.select(new SelectorMetaDto(BookObject.TYPE, bookDto.id, bookDto.shelfId));
@@ -92,7 +94,7 @@ angular.module('VirtualBookshelf')
 		bookDto.sectionId = null;
 
 		return data.postBook(bookDto).then(function () {
-			return environment.updateBook(bookDto);
+			return tools.updateBook(bookDto);
 		});
 	};
 
@@ -130,6 +132,19 @@ angular.module('VirtualBookshelf')
 		} else if(states.rotateRight) {
 			rotate(-ROTATION_SCALE);
 		}
+	};
+
+	tools.updateBook = function(dto) {
+		var library = lib3d.getLibrary();
+
+	    if(library.getBookShelf(dto)) {
+	        library.removeBook(dto.id);
+	        return lib3d.factory.createBook(dto)
+	        	.then(book => library.addBook(book));
+	    } else {
+	        library.removeBook(dto.id);
+	        return Promise.resolve(true);
+	    }
 	};
 
 	var rotate = function(scale) {

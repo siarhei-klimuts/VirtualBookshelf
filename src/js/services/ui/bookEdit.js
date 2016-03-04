@@ -1,4 +1,3 @@
-import {environment} from 'lib3d';
 import {selector} from 'lib3d';
 
 import '../data';
@@ -9,7 +8,7 @@ import '../ui/catalog';
 import '../user';
 
 angular.module('VirtualBookshelf')
-.factory('bookEdit', function ($log, data, block, dialog, archive, catalog, user, ngDialog) {
+.factory('bookEdit', function ($log, tools, data, block, dialog, archive, catalog, user, ngDialog) {
 	var bookEdit = {};
 	var bookDialog;
 
@@ -77,7 +76,7 @@ angular.module('VirtualBookshelf')
 			//TODO: instead this hack make server always return book dto with cover dto
 			dto.cover = scope.book.cover;
 			
-			environment.updateBook(dto);
+			tools.updateBook(dto);
 			scope.cancel();
 			return catalog.loadBooks(user.getId());
 		}).catch(function () {
