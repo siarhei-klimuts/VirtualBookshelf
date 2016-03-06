@@ -1,7 +1,6 @@
 import {ShelfObject} from 'lib3d';
 import {BookObject} from 'lib3d';
 import {SelectorMetaDto} from 'lib3d';
-import {environment} from 'lib3d';
 import {locator} from 'lib3d';
 import {preview} from 'lib3d';
 import {selector} from 'lib3d';
@@ -29,7 +28,7 @@ angular.module('VirtualBookshelf')
 		if (selector.isSelectedBook()) {
 			return catalog.getBook(selector.getSelectedId());
 		} else if (selector.isSelectedSection()) {
-			return environment.getSection(selector.getSelectedId());
+			return lib3d.getLibrary().getSection(selector.getSelectedId());
 		}
 
 		return null;
@@ -101,7 +100,7 @@ angular.module('VirtualBookshelf')
 	tools.deleteBook = function(id) {
 		return data.deleteBook(id).then(function () {
 			selector.unselect();
-			environment.removeBook(id);
+			lib3d.getLibrary().removeBook(id);
 			return catalog.loadBooks(user.getId());
 		});
 	};
@@ -109,7 +108,7 @@ angular.module('VirtualBookshelf')
 	tools.deleteSection = function(id) {
 		return data.deleteSection(id).then(function () {
 			selector.unselect();
-			environment.removeSection(id);
+			lib3d.getLibrary().removeSection(id);
 		});
 	};
 
