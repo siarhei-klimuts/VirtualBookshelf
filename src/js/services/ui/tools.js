@@ -35,17 +35,22 @@ angular.module('VirtualBookshelf')
 	};
 
 	tools.place = function() {
+		var freePlace;
 		var selectedDto;
 		var focusedObject = selector.getFocusedObject();
 
 		if(focusedObject instanceof ShelfObject) {
 			selector.placing = false;
 			selectedDto = tools.getSelectedDto();
+			freePlace = locator.placeBook(selectedDto, focusedObject);
+
+			if (!freePlace) {
+				growl.error('There is no free space');
+				return;
+			}
 
 			block.global.start();
-			$q.when(locator.placeBook(selectedDto, focusedObject)).then(function (position) {
-				return saveBook(selectedDto, position, focusedObject);
-			}).then(function (newDto) {
+			saveBook(selectedDto, freePlace, focusedObject).then(function (newDto) {
 				return tools.updateBook(newDto);
 			}).then(function () {
 				var bookDto = catalog.getBook(selectedDto.id);
@@ -138,8 +143,10 @@ angular.module('VirtualBookshelf')
 
 	    if(library.getBookShelf(dto)) {
 	        library.removeBook(dto.id);
-	        return lib3d.factory.createBook(dto)
-	        	.then(book => library.addBook(book));
+	        var book = lib3d.factory.createBook(dto);
+	        library.addBook(book);
+
+	        return Promise.resolve(true);
 	    } else {
 	        library.removeBook(dto.id);
 	        return Promise.resolve(true);
