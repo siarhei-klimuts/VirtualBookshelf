@@ -32,11 +32,15 @@ angular.module('VirtualBookshelf')
 	};
 
 	var place = function(dto) {
-		block.global.start();
+		var position = lib3d.locator.placeSection(dto);
 
-		$q.when(lib3d.locator.placeSection(dto)).then(function (position) {
-			return saveSection(dto, position);
-		}).then(function (newDto) {
+		if (!position) {
+			dialog.openError('There is no free space.');
+			return;
+		}
+		
+		block.global.start();
+		saveSection(dto, position).then(function (newDto) {
 			return updateSection(newDto);
 		}).catch(function (error) {
 			dialog.openError('Can not create section because of an error.');
@@ -60,13 +64,10 @@ angular.module('VirtualBookshelf')
 	var updateSection = function(dto) {
 		var library = lib3d.getLibrary();
 
+        library.removeSection(dto.id);
 	    if(dto.libraryId == library.getId()) {
-	        library.removeSection(dto.id);
-	        return lib3d.factory.createSection(dto)
-	        	.then(section => library.addSection(section));
-	    } else {
-	        library.removeSection(dto.id);
-	        return Promise.resolve(dto);
+	    	let section = lib3d.factory.createSection(dto);
+			library.addSection(section);
 	    }
 	};
 
