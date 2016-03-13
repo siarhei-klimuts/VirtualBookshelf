@@ -24,6 +24,8 @@ angular.module('VirtualBookshelf')
 		rotateRight: false
 	};
 
+	tools.placing = false;
+
 	tools.getSelectedDto = function() {
 		if (selector.isSelectedBook()) {
 			return catalog.getBook(selector.getSelectedId());
@@ -40,7 +42,7 @@ angular.module('VirtualBookshelf')
 		var focusedObject = selector.getFocusedObject();
 
 		if(focusedObject instanceof ShelfObject) {
-			selector.placing = false;
+			tools.placing = false;
 			selectedDto = tools.getSelectedDto();
 			freePlace = locator.placeBook(selectedDto, focusedObject);
 
@@ -55,6 +57,8 @@ angular.module('VirtualBookshelf')
 			}).then(function () {
 				var bookDto = catalog.getBook(selectedDto.id);
 				selector.select(new SelectorMetaDto(BookObject.TYPE, bookDto.id, bookDto.shelfId));
+				tools.placing = false;
+
 				growl.success('Book placed');
 			}).catch(function (error) {
 				growl.error(error);

@@ -48,11 +48,11 @@ angular.module('VirtualBookshelf')
     };
 
     this.isPlacing = function() {
-        return selector.placing;
+        return tools.placing;
     };
 
     this.place = function() {
-        selector.placing = !selector.placing;
+        tools.placing = !tools.placing;
     };
 
     this.unplace = function() {

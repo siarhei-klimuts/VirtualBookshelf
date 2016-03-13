@@ -34,6 +34,8 @@ angular.module('VirtualBookshelf')
 		document.addEventListener('mouseup', controls.onMouseUp, false);
 		document.addEventListener('mousemove', controls.onMouseMove, false);	
 		document.oncontextmenu = function() {return false;};
+
+		lib3d.events.onObjectChange(obj => controls.saveObject(obj));
 	};
 
 	controls.update = function() {
@@ -48,30 +50,27 @@ angular.module('VirtualBookshelf')
 	};
 
 	controls.onMouseDown = function(event) {
-		mouse.down(event); 
-
-		if(isCanvas() && mouse.keys[1] && !mouse.keys[3] && !preview.isActive()) {
-			controls.selectObject();
-
-			if(selector.placing) {
+		if (isCanvas(event)) {
+			if(tools.placing) {
 				tools.place();
-			} else {
-				selector.selectFocused();
 			}
 
+			lib3d.onMouseDown(event);
 			$rootScope.$apply();
 		}
 	};
 
 	controls.onMouseUp = function(event) {
-		mouse.up(event);
-		
-		if(event.which === 1 && !preview.isActive()) {
-			if(selector.isSelectedEditable()) {
-				controls.saveObject(
-					selector.getSelectedObject()
-				);
-			}
+		lib3d.onMouseUp(event);
+	};
+
+	controls.onMouseMove = function(event) {
+		if(isCanvas(event)) {
+			lib3d.onMouseMove(event);
+
+			//TODO: apply on change ONLY
+			$rootScope.$apply();
+			tooltip.set(selector.getFocusedObject());
 		}
 	};
 
@@ -101,75 +100,8 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	controls.onMouseMove = function(event) {
-		mouse.move(event);
-
-		if(isCanvas() && !preview.isActive()) {
-			event.preventDefault();
-
-			if(mouse.keys[1] && !mouse.keys[3]) {		
-				controls.moveObject();
-			} else {
-				controls.selectObject();
-				$rootScope.$apply();
-			}
-		}
-	};
-
-	//****
-
-	controls.selectObject = function() {
-		var
-			intersected,
-			object;
-
-		if(isCanvas() && lib3d.getLibrary()) {
-			//TODO: optimize
-			intersected = mouse.getIntersected(lib3d.getLibrary().children, true, [BookObject]);
-			if(!intersected) {
-				intersected = mouse.getIntersected(lib3d.getLibrary().children, true, [ShelfObject]);
-			}
-			if(!intersected) {
-				intersected = mouse.getIntersected(lib3d.getLibrary().children, true, [SectionObject]);
-			}
-			if(intersected) {
-				object = intersected.object;
-
-				if (selector.getSelectedId() !== object.getId()) {
-					tooltip.set(object);
-				}
-			}
-
-			selector.focus(new SelectorMeta(object));
-		}
-	};
-
-	controls.moveObject = function() {
-		var mouseVector;
-		var newPosition;
-		var parent;
-		var selectedObject;
-
-		if(selector.isSelectedEditable()) {
-			selectedObject = selector.getSelectedObject();
-
-			if(selectedObject) {
-				mouseVector = camera.getVector();	
-				newPosition = selectedObject.position.clone();
-				parent = selectedObject.parent;
-				parent.localToWorld(newPosition);
-
-				newPosition.x -= (mouseVector.z * mouse.dX + mouseVector.x * mouse.dY) * 0.003;
-				newPosition.z -= (-mouseVector.x * mouse.dX + mouseVector.z * mouse.dY) * 0.003;
-
-				parent.worldToLocal(newPosition);
-				selectedObject.move(newPosition);
-			}
-		}
-	};
-
-	var isCanvas = function() {
-		return mouse.getTarget().id === data.LIBRARY_CANVAS_ID;
+	var isCanvas = function(event) {
+		return event.target.id === data.LIBRARY_CANVAS_ID;
 	};
 
 	return controls;	
