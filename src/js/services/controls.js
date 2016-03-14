@@ -1,11 +1,8 @@
-import {ShelfObject} from 'lib3d';
 import {BookObject} from 'lib3d';
 import {SectionObject} from 'lib3d';
-import {SelectorMeta} from 'lib3d';
 import {camera} from 'lib3d';
 import {mouse} from 'lib3d';
 import {preview} from 'lib3d';
-import {selector} from 'lib3d';
 import {navigation} from 'lib3d';
 
 import * as lib3d from 'lib3d';
@@ -26,16 +23,7 @@ angular.module('VirtualBookshelf')
 	var controls = {};
 
 	controls.init = function() {
-		controls.initListeners();
-	};
-
-	controls.initListeners = function() {
-		document.addEventListener('mousedown', controls.onMouseDown, false);
-		document.addEventListener('mouseup', controls.onMouseUp, false);
-		document.addEventListener('mousemove', controls.onMouseMove, false);	
-		document.oncontextmenu = function() {return false;};
-
-		lib3d.events.onObjectChange(obj => controls.saveObject(obj));
+		initListeners();
 	};
 
 	controls.update = function() {
@@ -49,36 +37,43 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	controls.onMouseDown = function(event) {
+	var initListeners = function() {
+		document.addEventListener('mousedown', onMouseDown, false);
+		document.addEventListener('mouseup', onMouseUp, false);
+		document.addEventListener('mousemove', onMouseMove, false);	
+		document.oncontextmenu = function() {return false;};
+
+		lib3d.events.onObjectChange(onObjectChange);
+		lib3d.events.onFocus(onFocus);
+		lib3d.events.onSelect(onSelect);
+	};
+
+	var onMouseDown = function(event) {
 		if (isCanvas(event)) {
+			//TODO: move to onSelect
 			if(tools.placing) {
 				tools.place();
 			}
 
 			lib3d.onMouseDown(event);
-			$rootScope.$apply();
 		}
 	};
 
-	controls.onMouseUp = function(event) {
+	var onMouseUp = function(event) {
 		lib3d.onMouseUp(event);
 	};
 
-	controls.onMouseMove = function(event) {
+	var onMouseMove = function(event) {
 		if(isCanvas(event)) {
 			lib3d.onMouseMove(event);
-
-			//TODO: apply on change ONLY
-			$rootScope.$apply();
-			tooltip.set(selector.getFocusedObject());
 		}
 	};
 
-	controls.saveObject = function(obj) {
+	var onObjectChange = function(obj) {
 		if (obj && obj.changed) {
 			block.global.start();
 
-			controls.postObject(obj)
+			postObject(obj)
 			.then(function (newDto) {
 				obj.dataObject = newDto;
 				obj.changed = false;
@@ -92,7 +87,16 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	controls.postObject = function(obj) {
+	var onFocus = function(obj) {
+		tooltip.set(obj);
+		$rootScope.$apply();
+	};
+
+	var onSelect = function(obj) {
+		$rootScope.$apply();
+	};
+
+	var postObject = function(obj) {
 		if (obj instanceof BookObject) {
 			return data.postBook(obj.getDto());
 		} else if (obj instanceof SectionObject) {
