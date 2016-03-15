@@ -2,6 +2,7 @@ require('dotenv').load();
 
 var webpack = require('webpack');
 var url = require('url');
+var path = require('path');
 
 var NODE_MODULES = __dirname + '/node_modules/';
 var BOWER_COMPONENTS = __dirname + '/bower_components/';
@@ -14,12 +15,12 @@ var HOST_DEV = url.parse(process.env.HOST_DEV || 'http://127.0.0.1:8080');
 var config = {
     watch: false,
     entry: {
-        app: ['./src/js/index.js'],
+        app: [path.resolve(__dirname, './src/js/index.js')],
         vendors: []
     },
     output: {
         pathinfo: true,
-        path: __dirname + '/public',
+        path: path.join(__dirname, 'public'),
         filename: '/js/bundle.js'
     },
     module: {
@@ -35,7 +36,7 @@ var config = {
         new webpack.optimize.CommonsChunkPlugin('vendors', '/js/vendors.js')
     ],
     resolve: {
-        root: __dirname + '/src',
+        root: path.join(__dirname, 'src'),
         alias: {}
     },
 
