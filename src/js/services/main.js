@@ -50,7 +50,6 @@ angular.module('VirtualBookshelf')
 		var canvas = data.getCanvas();
 
 		lib3d.init(canvas, width, height);
-		lib3d.addLoop(controls.update);
 		lib3d.addLoop(tools.update);
 		lib3d.addLoop(lib3d.navigation.update);
 

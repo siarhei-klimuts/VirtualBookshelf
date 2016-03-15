@@ -1,10 +1,3 @@
-import {BookObject} from 'lib3d';
-import {SectionObject} from 'lib3d';
-import {camera} from 'lib3d';
-import {mouse} from 'lib3d';
-import {preview} from 'lib3d';
-import {navigation} from 'lib3d';
-
 import * as lib3d from 'lib3d';
 
 import './ui/block';
@@ -12,32 +5,10 @@ import './ui/tools';
 import './ui/tooltip';
 
 angular.module('VirtualBookshelf')
-/* 
- * controls.js is a service for processing not UI(menus) events 
- * like mouse, keyboard, touch or gestures.
- *
- * TODO: remove all busines logic from there and leave only
- * events functionality to make it more similar to usual controller
- */
 .factory('controls', function ($q, $log, $rootScope, block, tools, data, tooltip) {
 	var controls = {};
 
 	controls.init = function() {
-		initListeners();
-	};
-
-	controls.update = function() {
-		if(!preview.isActive()) {
-			if(mouse.keys[3]) {
-				camera.rotate(mouse.longX, mouse.longY);
-			}
-			if(mouse.keys[1] && mouse.keys[3]) {
-				camera.go(navigation.BUTTONS_GO_SPEED);
-			}
-		}
-	};
-
-	function initListeners() {
 		document.addEventListener('mousedown', onMouseDown, false);
 		document.addEventListener('mouseup', onMouseUp, false);
 		document.addEventListener('mousemove', onMouseMove, false);	
@@ -46,7 +17,7 @@ angular.module('VirtualBookshelf')
 		lib3d.events.onObjectChange(onObjectChange);
 		lib3d.events.onFocus(onFocus);
 		lib3d.events.onSelect(onSelect);
-	}
+	};
 
 	function onMouseDown(event) {
 		if (isCanvas(event)) {
@@ -56,16 +27,20 @@ angular.module('VirtualBookshelf')
 			}
 
 			lib3d.onMouseDown(event);
+
+			navigate();
 		}
 	}
 
 	function onMouseUp(event) {
 		lib3d.onMouseUp(event);
+		lib3d.navigation.goStop();
 	}
 
 	function onMouseMove(event) {
 		if(isCanvas(event)) {
 			lib3d.onMouseMove(event);
+			navigate();
 		}
 	}
 
@@ -97,15 +72,24 @@ angular.module('VirtualBookshelf')
 	}
 
 	function postObject(obj) {
-		if (obj instanceof BookObject) {
+		if (obj instanceof lib3d.BookObject) {
 			return data.postBook(obj.getDto());
-		} else if (obj instanceof SectionObject) {
+		} else if (obj instanceof lib3d.SectionObject) {
 			return data.postSection(obj.getDto());
 		}
 	}
 
 	function isCanvas(event) {
 		return event.target.id === data.LIBRARY_CANVAS_ID;
+	}
+
+	function navigate() {
+		if (!lib3d.preview.isActive() && lib3d.mouse.keys[3]) {
+			lib3d.navigation.rotate(lib3d.mouse.longX, lib3d.mouse.longY);
+			if (lib3d.mouse.keys[1]) {
+				lib3d.navigation.goForward();
+			}
+		}
 	}
 
 	return controls;	
