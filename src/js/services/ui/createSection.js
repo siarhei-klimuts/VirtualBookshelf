@@ -31,7 +31,7 @@ angular.module('VirtualBookshelf')
 		}	
 	};
 
-	var place = function(dto) {
+	function place(dto) {
 		var position = lib3d.locator.placeSection(dto);
 
 		if (!position) {
@@ -50,18 +50,18 @@ angular.module('VirtualBookshelf')
 		});
 
 		createSectionDialog.close();
-	};
+	}
 
-	var saveSection = function(dto, position) {
+	function saveSection(dto, position) {
 		dto.libraryId = lib3d.getLibrary().getId();
 		dto.pos_x = position.x;
 		dto.pos_y = position.y;
 		dto.pos_z = position.z;
 
 		return data.postSection(dto);
-	};
+	}
 
-	var updateSection = function(dto) {
+	function updateSection(dto) {
 		var library = lib3d.getLibrary();
 
         library.removeSection(dto.id);
@@ -69,7 +69,7 @@ angular.module('VirtualBookshelf')
 	    	let section = lib3d.factory.createSection(dto);
 			library.addSection(section);
 	    }
-	};
+	}
 
 	return createSection;
 });

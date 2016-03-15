@@ -37,7 +37,7 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	var initListeners = function() {
+	function initListeners() {
 		document.addEventListener('mousedown', onMouseDown, false);
 		document.addEventListener('mouseup', onMouseUp, false);
 		document.addEventListener('mousemove', onMouseMove, false);	
@@ -46,9 +46,9 @@ angular.module('VirtualBookshelf')
 		lib3d.events.onObjectChange(onObjectChange);
 		lib3d.events.onFocus(onFocus);
 		lib3d.events.onSelect(onSelect);
-	};
+	}
 
-	var onMouseDown = function(event) {
+	function onMouseDown(event) {
 		if (isCanvas(event)) {
 			//TODO: move to onSelect
 			if(tools.placing) {
@@ -57,19 +57,19 @@ angular.module('VirtualBookshelf')
 
 			lib3d.onMouseDown(event);
 		}
-	};
+	}
 
-	var onMouseUp = function(event) {
+	function onMouseUp(event) {
 		lib3d.onMouseUp(event);
-	};
+	}
 
-	var onMouseMove = function(event) {
+	function onMouseMove(event) {
 		if(isCanvas(event)) {
 			lib3d.onMouseMove(event);
 		}
-	};
+	}
 
-	var onObjectChange = function(obj) {
+	function onObjectChange(obj) {
 		if (obj && obj.changed) {
 			block.global.start();
 
@@ -85,28 +85,28 @@ angular.module('VirtualBookshelf')
 				block.global.stop();
 			});
 		}
-	};
+	}
 
-	var onFocus = function(obj) {
+	function onFocus(obj) {
 		tooltip.set(obj);
 		$rootScope.$apply();
-	};
+	}
 
-	var onSelect = function(obj) {
+	function onSelect(obj) {
 		$rootScope.$apply();
-	};
+	}
 
-	var postObject = function(obj) {
+	function postObject(obj) {
 		if (obj instanceof BookObject) {
 			return data.postBook(obj.getDto());
 		} else if (obj instanceof SectionObject) {
 			return data.postSection(obj.getDto());
 		}
-	};
+	}
 
-	var isCanvas = function(event) {
+	function isCanvas(event) {
 		return event.target.id === data.LIBRARY_CANVAS_ID;
-	};
+	}
 
 	return controls;	
 });

@@ -34,7 +34,7 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	var loadLibrary = function(libraryId) {
+	function loadLibrary(libraryId) {
 		return data.getLibrary(libraryId).then(function (dto) {
 			return $q.all([
 				lib3d.loadLibrary(dto), 
@@ -42,9 +42,9 @@ angular.module('VirtualBookshelf')
 			]);
 		})
 		.then(results => lib3d.setLibrary(results[0]));
-	};
+	}
 
-	var init = function() {
+	function init() {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 		var canvas = data.getCanvas();
@@ -57,7 +57,7 @@ angular.module('VirtualBookshelf')
 		window.addEventListener('resize', function () {
 			lib3d.setSize(window.innerWidth, window.innerHeight);
 		}, false);
-	};
+	}
 
 	return main;
 });

@@ -29,7 +29,7 @@ angular.module('VirtualBookshelf')
 		dialog.openError(FORM_VALIDATION_ERROR);
 	};
 
-	var saveUser = function() {
+	function saveUser() {
 		return data.putUser(registration.user).then(function () {
         	return user.load().then(function () {
     			return userData.load();
@@ -38,11 +38,11 @@ angular.module('VirtualBookshelf')
 			dialog.openError(SAVE_USER_ERROR);
 			$log.log('Registration: Error saving user:', registration.user.id);
 		});
-	};
+	}
 
-	var deleteUser = function() {
+	function deleteUser() {
 		return data.deleteUser(registration.user.id);
-	};
+	}
 
 	return registration;
 });

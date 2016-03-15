@@ -71,7 +71,7 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	var saveBook = function(dto, position, shelf) {
+	function saveBook(dto, position, shelf) {
 		dto.shelfId = shelf.getId();
 		dto.sectionId = shelf.parent.getId();
 		dto.pos_x = position.x;
@@ -79,7 +79,7 @@ angular.module('VirtualBookshelf')
 		dto.pos_z = position.z;
 
 		return data.postBook(dto);
-	};
+	}
 
 	tools.unplace = function() {
 		var bookDto = selector.isSelectedBook() ? tools.getSelectedDto() : null;
@@ -98,13 +98,13 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	var unplaceBook = function(bookDto) {
+	function unplaceBook(bookDto) {
 		bookDto.sectionId = null;
 
 		return data.postBook(bookDto).then(function () {
 			return tools.updateBook(bookDto);
 		});
-	};
+	}
 
 	tools.deleteBook = function(id) {
 		return data.deleteBook(id).then(function () {
@@ -157,7 +157,7 @@ angular.module('VirtualBookshelf')
 	    }
 	};
 
-	var rotate = function(scale) {
+	function rotate(scale) {
 		var obj;
 
 		if(preview.isActive()) {
@@ -166,7 +166,7 @@ angular.module('VirtualBookshelf')
 			obj = selector.getSelectedObject();
 			if(obj) obj.rotate(scale);
 		}
-	};
+	}
 
 	return tools;
 });

@@ -30,7 +30,7 @@ angular.module('VirtualBookshelf')
 		return openDialog(msg, INFO);
 	};
 
-	var openDialog = function(msg, type, cancelButton) {
+	function openDialog(msg, type, cancelButton) {
 		return ngDialog.openConfirm({
 			template: TEMPLATE,
 			data: {
@@ -39,11 +39,11 @@ angular.module('VirtualBookshelf')
 				cancelButton: cancelButton
 			}
 		});
-	};
+	}
 
-	var getIconClass = function(type) {
+	function getIconClass(type) {
 		return iconClassMap[type];
-	};
+	}
 
 	return dialog;
 });

@@ -33,9 +33,9 @@ angular.module('VirtualBookshelf')
 		}
 	};
 
-	var isCoverDisabled = function() {
+	function isCoverDisabled() {
 		return scope.coverInputURL && (scope.form.title.$invalid || scope.form.author.$invalid);
-	};
+	}
 
 	data.common.then(function (commonData) {
 		scope.list = commonData.books;

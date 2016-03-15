@@ -23,7 +23,7 @@ angular.module('VirtualBookshelf')
 		bookDialog = ngDialog.open({template: TEMPLATE});
 	};
 
-	var setBook = function(book) {
+	function setBook(book) {
 		if(book) {
 			bookEdit.book.id = book.id;
 			bookEdit.book.userId = book.userId;
@@ -33,7 +33,7 @@ angular.module('VirtualBookshelf')
 			bookEdit.book.title = book.title;
 			bookEdit.book.author = book.author;
 		}
-	};
+	}
 
 	bookEdit.getImg = function() {
 		return this.book.model ? BOOK_IMAGE_URL.replace('{model}', this.book.model) : EMPTY_IMAGE_URL;
