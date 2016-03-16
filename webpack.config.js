@@ -86,9 +86,9 @@ config.addVendor('lodash', BOWER_COMPONENTS + 'lodash/lodash.js');
 
 config.addVendor('facebookSdk', LIBS_PATH + 'facebookSdk.js');
 config.addVendor('googleAnalytics', LIBS_PATH + 'googleAnalytics.js');
-config.addVendor('three');
+config.addVendor('THREE', 'three');
 config.addVendor('Detector', LIBS_PATH + 'three.js/Detector.js');
-config.addVendor('lib3d', __dirname + '/../lib3d/dist/bundle.js');
+config.addVendor('lib3d', __dirname + '/../lib3d/dist/lib3d.js');
 
 config.addVendor('font-awesome', NODE_MODULES + 'font-awesome/css/font-awesome.css');
 
