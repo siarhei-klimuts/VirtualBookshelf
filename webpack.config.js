@@ -88,7 +88,14 @@ config.addVendor('facebookSdk', LIBS_PATH + 'facebookSdk.js');
 config.addVendor('googleAnalytics', LIBS_PATH + 'googleAnalytics.js');
 config.addVendor('THREE', 'three');
 config.addVendor('Detector', LIBS_PATH + 'three.js/Detector.js');
+
 config.addVendor('lib3d', __dirname + '/../lib3d/dist/lib3d.js');
+config.addVendor('library_0001', __dirname + '/../lib3d/dist/objects/libraries/library_0001/library_0001.js');
+config.addVendor('library_0002', __dirname + '/../lib3d/dist/objects/libraries/library_0002/library_0002.js');
+config.addVendor('bookshelf_0001', __dirname + '/../lib3d/dist/objects/sections/bookshelf_0001/bookshelf_0001.js');
+config.addVendor('book_0001', __dirname + '/../lib3d/dist/objects/books/book_0001/book_0001.js');
+config.addVendor('book_0002', __dirname + '/../lib3d/dist/objects/books/book_0002/book_0002.js');
+config.addVendor('book_0003', __dirname + '/../lib3d/dist/objects/books/book_0003/book_0003.js');
 
 config.addVendor('font-awesome', NODE_MODULES + 'font-awesome/css/font-awesome.css');
 
