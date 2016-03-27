@@ -1,6 +1,8 @@
 require('dotenv').load();
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
+ 
 var webpack = require('webpack');
 var url = require('url');
 var path = require('path');
@@ -34,6 +36,7 @@ var config = {
         noParse: [],
     },
     plugins: [
+        new CleanWebpackPlugin(['public/fonts', 'public/js', 'public/objects']),
         new CopyWebpackPlugin([{
             from: path.join(NODE_MODULES, 'lib3d-objects/dist'),
             to: 'objects'
