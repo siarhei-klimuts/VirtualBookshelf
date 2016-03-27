@@ -1,5 +1,6 @@
 import Detector from 'Detector';
 import * as lib3d from 'lib3d';
+import * as lib3dObjects from 'lib3d-objects';
 
 import '../app';
 
@@ -52,10 +53,20 @@ angular.module('VirtualBookshelf')
 		lib3d.init(canvas, width, height);
 		lib3d.addLoop(tools.update);
 		lib3d.addLoop(lib3d.navigation.update);
+		registerObjects();
 
 		window.addEventListener('resize', function () {
 			lib3d.setSize(window.innerWidth, window.innerHeight);
 		}, false);
+	}
+
+	function registerObjects() {
+        lib3d.registerLibrary(lib3dObjects.library_0001);
+        lib3d.registerLibrary(lib3dObjects.library_0002);
+        lib3d.registerSection(lib3dObjects.bookshelf_0001);
+        lib3d.registerBook(lib3dObjects.book_0001);
+        lib3d.registerBook(lib3dObjects.book_0002);
+        lib3d.registerBook(lib3dObjects.book_0003);
 	}
 
 	return main;

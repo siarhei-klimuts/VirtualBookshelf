@@ -1,14 +1,15 @@
 require('dotenv').load();
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var webpack = require('webpack');
 var url = require('url');
 var path = require('path');
 
-var NODE_MODULES = __dirname + '/node_modules/';
+var NODE_MODULES = path.join(__dirname, '/node_modules/');
 var BOWER_COMPONENTS = __dirname + '/bower_components/';
 var LIBS_PATH = __dirname + '/src/libs/';
 
-var isProd = process.env.NODE_ENV !== 'development';
+var isProd = process.env.NODE_ENV === 'production';
 var NODE_HOST = process.env.NODE_HOST || 'http://127.0.0.1:3000';
 var HOST_DEV = url.parse(process.env.HOST_DEV || 'http://127.0.0.1:8080');
 
@@ -33,6 +34,10 @@ var config = {
         noParse: [],
     },
     plugins: [
+        new CopyWebpackPlugin([{
+            from: path.join(NODE_MODULES, 'lib3d-objects/dist'),
+            to: 'objects'
+        }], {ignore: ['*.js', '*.map']}),
         new webpack.optimize.CommonsChunkPlugin('vendors', '/js/vendors.js')
     ],
     resolve: {
@@ -89,13 +94,8 @@ config.addVendor('googleAnalytics', LIBS_PATH + 'googleAnalytics.js');
 config.addVendor('THREE', 'three');
 config.addVendor('Detector', LIBS_PATH + 'three.js/Detector.js');
 
-config.addVendor('lib3d', __dirname + '/../lib3d/dist/lib3d.js');
-config.addVendor('library_0001', __dirname + '/../lib3d/dist/objects/libraries/library_0001/library_0001.js');
-config.addVendor('library_0002', __dirname + '/../lib3d/dist/objects/libraries/library_0002/library_0002.js');
-config.addVendor('bookshelf_0001', __dirname + '/../lib3d/dist/objects/sections/bookshelf_0001/bookshelf_0001.js');
-config.addVendor('book_0001', __dirname + '/../lib3d/dist/objects/books/book_0001/book_0001.js');
-config.addVendor('book_0002', __dirname + '/../lib3d/dist/objects/books/book_0002/book_0002.js');
-config.addVendor('book_0003', __dirname + '/../lib3d/dist/objects/books/book_0003/book_0003.js');
+config.addVendor('lib3d');
+config.addVendor('lib3d-objects');
 
 config.addVendor('font-awesome', NODE_MODULES + 'font-awesome/css/font-awesome.css');
 
