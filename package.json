@@ -51,13 +51,11 @@
     "karma-webpack": "^1.7.0",
     "lib3d": "0.0.2",
     "lib3d-objects": "0.0.0",
-    "lodash": "^3.10.1",
     "ng-annotate-loader": "0.0.10",
     "ng-dialog": "^0.5.6",
     "nodemon": "^1.8.1",
     "parallelshell": "^2.0.0",
     "style-loader": "^0.13.0",
-    "three": "^0.71.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   }

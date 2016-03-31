@@ -90,11 +90,9 @@ config.addVendor('angular-growl-2.css', BOWER_COMPONENTS + 'angular-growl-2/buil
 config.addVendor('angular-utils-pagination', BOWER_COMPONENTS + 'angular-utils-pagination/dirPagination.js');
 config.addVendor('ng-dialog');
 config.addVendor('ng-dialog.css', NODE_MODULES + 'ng-dialog/css/ngDialog.css');
-config.addVendor('lodash', BOWER_COMPONENTS + 'lodash/lodash.js');
 
 config.addVendor('facebookSdk', LIBS_PATH + 'facebookSdk.js');
 config.addVendor('googleAnalytics', LIBS_PATH + 'googleAnalytics.js');
-config.addVendor('THREE', 'three');
 config.addVendor('Detector', LIBS_PATH + 'three.js/Detector.js');
 
 config.addVendor('lib3d');

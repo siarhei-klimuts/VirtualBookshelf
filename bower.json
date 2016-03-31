@@ -19,7 +19,6 @@
   "dependencies": {
     "angular-block-ui": "~0.2.0",
     "angular-growl-2": "~0.7.3",
-    "angular-utils-pagination": "~0.7.0",
-    "lodash": "~3.8.0"
+    "angular-utils-pagination": "~0.7.0"
   }
 }
