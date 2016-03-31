@@ -8,7 +8,6 @@ var url = require('url');
 var path = require('path');
 
 var NODE_MODULES = path.join(__dirname, '/node_modules/');
-var BOWER_COMPONENTS = __dirname + '/bower_components/';
 var LIBS_PATH = __dirname + '/src/libs/';
 
 var isProd = process.env.NODE_ENV === 'production';
@@ -28,7 +27,7 @@ var config = {
     },
     module: {
         loaders: [
-            {test: /\.js/, exclude: /(node_modules|bower_components|libs|lib3d)/, loader: 'ng-annotate!babel!jshint'},
+            {test: /src\/.+\.js/, exclude: /(node_modules|libs)/, loader: 'ng-annotate!babel!jshint'},
             {test: /Detector.js/, loader: 'exports?Detector'},
             {test: /\.css$/, loader: 'style!css'},
             {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'}
@@ -83,21 +82,21 @@ if (isProd) {
 }
 
 config.addVendor('angular');
-config.addVendor('angular-block-ui', BOWER_COMPONENTS + 'angular-block-ui/dist/angular-block-ui.js');
-config.addVendor('angular-block-ui.css', BOWER_COMPONENTS + 'angular-block-ui/dist/angular-block-ui.css');
-config.addVendor('angular-growl-2', BOWER_COMPONENTS + 'angular-growl-2/build/angular-growl.js');
-config.addVendor('angular-growl-2.css', BOWER_COMPONENTS + 'angular-growl-2/build/angular-growl.css');
-config.addVendor('angular-utils-pagination', BOWER_COMPONENTS + 'angular-utils-pagination/dirPagination.js');
+config.addVendor('angular-block-ui');
+config.addVendor('angular-block-ui.css', path.join(NODE_MODULES, 'angular-block-ui/dist/angular-block-ui.css'));
+config.addVendor('angular-growl-v2');
+config.addVendor('angular-growl-v2.css', path.join(NODE_MODULES, 'angular-growl-v2/build/angular-growl.css'));
+config.addVendor('angular-utils-pagination');
 config.addVendor('ng-dialog');
-config.addVendor('ng-dialog.css', NODE_MODULES + 'ng-dialog/css/ngDialog.css');
+config.addVendor('ng-dialog.css', path.join(NODE_MODULES, 'ng-dialog/css/ngDialog.css'));
 
-config.addVendor('facebookSdk', LIBS_PATH + 'facebookSdk.js');
-config.addVendor('googleAnalytics', LIBS_PATH + 'googleAnalytics.js');
-config.addVendor('Detector', LIBS_PATH + 'three.js/Detector.js');
+config.addVendor('facebookSdk', path.join(LIBS_PATH, 'facebookSdk.js'));
+config.addVendor('googleAnalytics', path.join(LIBS_PATH, 'googleAnalytics.js'));
+config.addVendor('Detector', path.join(LIBS_PATH, 'three.js/Detector.js'));
 
 config.addVendor('lib3d');
 config.addVendor('lib3d-objects');
 
-config.addVendor('font-awesome', NODE_MODULES + 'font-awesome/css/font-awesome.css');
+config.addVendor('font-awesome', path.join(NODE_MODULES, 'font-awesome/css/font-awesome.css'));
 
 module.exports = config;
