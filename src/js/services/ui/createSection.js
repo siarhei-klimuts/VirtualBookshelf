@@ -32,7 +32,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	function place(dto) {
-		var position = lib3d.locator.placeSection(dto);
+		var position = lib3d.locator.placeSection(lib3d.getLibrary(), dto);
 
 		if (!position) {
 			dialog.openError('There is no free space.');

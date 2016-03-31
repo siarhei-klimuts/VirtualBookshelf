@@ -36,7 +36,6 @@ var config = {
         noParse: [],
     },
     plugins: [
-        new CleanWebpackPlugin(['public/fonts', 'public/js', 'public/objects']),
         new CopyWebpackPlugin([{
             from: path.join(NODE_MODULES, 'lib3d-objects/dist'),
             to: 'objects'
@@ -59,6 +58,7 @@ var config = {
 };
 
 if (isProd) {
+    config.plugins.push(new CleanWebpackPlugin(['public/fonts', 'public/js', 'public/objects']));
     config.plugins.push(new webpack.optimize.UglifyJsPlugin({minimize: true}));
     config.devtool = 'source-map';
 } else {
