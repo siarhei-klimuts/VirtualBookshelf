@@ -20,7 +20,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	catalog.getBook = function(id) {
-		return _.find(catalog.books, {id: id});
+		return catalog.books.find(dto => dto.id == id);
 	};
 
 	return catalog;
