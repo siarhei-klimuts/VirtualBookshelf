@@ -27,7 +27,7 @@ var config = {
     },
     module: {
         loaders: [
-            {test: /src\/.+\.js/, exclude: /(node_modules|libs)/, loader: 'ng-annotate!babel!jshint'},
+            {test: /\.js/, exclude: /(node_modules|libs|lib3d)/, loader: 'ng-annotate!babel!jshint'},
             {test: /Detector.js/, loader: 'exports?Detector'},
             {test: /\.css$/, loader: 'style!css'},
             {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'}
