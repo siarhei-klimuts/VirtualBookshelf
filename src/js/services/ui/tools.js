@@ -27,10 +27,12 @@ angular.module('VirtualBookshelf')
 	tools.placing = false;
 
 	tools.getSelectedDto = function() {
+		let selectedObject = selector.getSelectedObject();
+		
 		if (selector.isSelectedBook()) {
-			return catalog.getBook(selector.getSelectedId());
+			return selectedObject ? selectedObject.dataObject : catalog.getBook(selector.getSelectedId());
 		} else if (selector.isSelectedSection()) {
-			return lib3d.getLibrary().getSection(selector.getSelectedId());
+			return selectedObject.dataObject;
 		}
 
 		return null;
