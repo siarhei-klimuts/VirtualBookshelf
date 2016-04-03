@@ -1,3 +1,5 @@
+import uiData from 'data.json';
+
 angular.module('VirtualBookshelf')
 .factory('data', function ($http, $log, $window) {
 	var data = {};
@@ -6,6 +8,8 @@ angular.module('VirtualBookshelf')
 	data.COVER_MAX_Y = 394;
 	data.COVER_FACE_X = 296;
 	data.LIBRARY_CANVAS_ID = 'LIBRARY';
+    data.OBJECTS_PATH = 'objects';
+    data.EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
 
     data.postCover = function(externalURL, tags) {
     	var data = {
@@ -58,7 +62,7 @@ angular.module('VirtualBookshelf')
 	};
 
 	data.getUIData = function() {
-		return $http.get('/obj/data.json');
+		return uiData;
 	};
 
 	data.getLibraries = function() {
@@ -101,12 +105,6 @@ angular.module('VirtualBookshelf')
 	data.postFeedback = function(dto) {
         return $http.post('/feedback', dto);
 	};
-
-	data.common = data.getUIData().then(function (res) {
-		return res.data;
-	}).catch(function () {
-		$log.error('data: loading common error');
-	});
 
 	//TODO: replace by SPA implementation
 	data.goToLibrary = function(id) {

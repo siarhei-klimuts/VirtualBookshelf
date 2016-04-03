@@ -10,10 +10,5 @@
 		{"model": "book_0001", "label": "White"},
 		{"model": "book_0002", "label": "New green"},
 		{"model": "book_0003", "label": "Old brown"}
-	],
-	"bookTextures": [
-		{"image": "template", "label": "Template"},
-		{"image": "2", "label": "Green"},
-		{"image": "4", "label": "Brown"}
 	]
 }

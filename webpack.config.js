@@ -27,10 +27,11 @@ var config = {
     },
     module: {
         loaders: [
-            {test: /\.js/, exclude: /(node_modules|libs|lib3d)/, loader: 'ng-annotate!babel!jshint'},
+            {test: /\.js$/, exclude: /(node_modules|libs|lib3d)/, loader: 'ng-annotate!babel!jshint'},
             {test: /Detector.js/, loader: 'exports?Detector'},
             {test: /\.css$/, loader: 'style!css'},
-            {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'}
+            {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'},
+            {test: /\.json/, loader: 'json'}
         ],
         noParse: [],
     },

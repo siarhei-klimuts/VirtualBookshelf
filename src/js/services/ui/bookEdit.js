@@ -1,4 +1,5 @@
 import {selector} from 'lib3d';
+import * as lib3dObjects from 'lib3d-objects';
 
 import '../data';
 import '../ui/block';
@@ -12,8 +13,6 @@ angular.module('VirtualBookshelf')
 	var bookEdit = {};
 	var bookDialog;
 
-	var BOOK_IMAGE_URL = '/obj/books/{model}/img.jpg';
-	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
 	var TEMPLATE = 'editBookDialog';
 	
 	bookEdit.book = {};
@@ -36,11 +35,13 @@ angular.module('VirtualBookshelf')
 	}
 
 	bookEdit.getImg = function() {
-		return this.book.model ? BOOK_IMAGE_URL.replace('{model}', this.book.model) : EMPTY_IMAGE_URL;
+		return this.book.model ? 
+			`${data.OBJECTS_PATH}/${lib3dObjects[this.book.model].img}` : 
+			data.EMPTY_IMAGE_URL;
 	};
 
 	bookEdit.getCoverImg = function() {
-		return this.book.cover ? this.book.cover.url : EMPTY_IMAGE_URL;
+		return this.book.cover ? this.book.cover.url : data.EMPTY_IMAGE_URL;
 	};
 
 	bookEdit.applyCover = function(coverInputURL) {

@@ -1,8 +1,6 @@
 angular.module('VirtualBookshelf')
 .controller('CreateLibraryCtrl', function (createLibrary, data) {
-	var scope = this;
-
-	this.list = null;
+	this.list = data.getUIData().libraries;
 	this.model = null;
 
 	this.getImg = function() {
@@ -12,8 +10,4 @@ angular.module('VirtualBookshelf')
 	this.create = function() {
 		createLibrary.create(this.model);
 	};
-
-	data.common.then(function (commonData) {
-		scope.list = commonData.libraries;
-	});
 });

@@ -1,8 +1,9 @@
+import * as lib3dObjects from 'lib3d-objects';
+
 angular.module('VirtualBookshelf')
 .factory('createLibrary', function (data, dialog, block, ngDialog) {
 	var createLibrary = {};
 	
-	var EMPTY_IMAGE_URL = '/img/empty_cover.jpg';
 	var TEMPLATE_ID = 'createLibraryDialog';
 	
 	var createLibraryDialog;
@@ -14,7 +15,9 @@ angular.module('VirtualBookshelf')
 	};
 
 	createLibrary.getImg = function(model) {
-		return model ? '/obj/libraries/{model}/img.jpg'.replace('{model}', model) : EMPTY_IMAGE_URL;
+		return model ? 
+			`${data.OBJECTS_PATH}/${lib3dObjects[model].img}` : 
+			data.EMPTY_IMAGE_URL;
 	};
 
 	createLibrary.create = function(model) {
