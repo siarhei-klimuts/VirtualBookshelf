@@ -45,13 +45,14 @@ angular.module('VirtualBookshelf')
 	}
 
 	function onObjectChange(obj) {
-		if (obj && obj.changed) {
-			block.global.start();
+		if (!obj)
+			return;
 
-			postObject(obj)
+		block.global.start();
+
+		postObject(obj)
 			.then(function (newDto) {
 				obj.dataObject = newDto;
-				obj.changed = false;
 			})
 			.catch(function () {
 				obj.rollback();
@@ -59,7 +60,6 @@ angular.module('VirtualBookshelf')
 			.finally(function () {
 				block.global.stop();
 			});
-		}
 	}
 
 	function onFocus(obj) {
