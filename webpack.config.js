@@ -1,4 +1,4 @@
-require('dotenv').load();
+require('dotenv').config({silent: true});
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
