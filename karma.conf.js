@@ -10,7 +10,6 @@ module.exports = function(config) {
         'public/js/vendors.js',
         'src/js/index.js',
         'node_modules/angular-mocks/angular-mocks.js',
-        'test/lib/karma-read-json.js',
         'test/client/**/*.js'
     ],
     preprocessors: {
