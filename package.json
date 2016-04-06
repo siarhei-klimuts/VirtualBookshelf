@@ -51,7 +51,7 @@
     "karma-chrome-launcher": "^0.1.8",
     "karma-jasmine": "^0.3.5",
     "karma-webpack": "^1.7.0",
-    "lib3d": "0.0.3",
+    "lib3d": "0.0.4",
     "lib3d-objects": "0.0.0",
     "ng-annotate-loader": "0.0.10",
     "ng-dialog": "^0.5.6",

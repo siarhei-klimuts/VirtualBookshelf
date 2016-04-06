@@ -10,7 +10,7 @@ var path = require('path');
 var NODE_MODULES = path.join(__dirname, '/node_modules/');
 var LIBS_PATH = __dirname + '/src/libs/';
 
-var isProd = process.env.NODE_ENV === 'production';
+var isProd = process.env.NODE_ENV === 'build';
 var NODE_HOST = process.env.NODE_HOST || 'http://127.0.0.1:3000';
 var HOST_DEV = url.parse(process.env.HOST_DEV || 'http://127.0.0.1:8080');
 
