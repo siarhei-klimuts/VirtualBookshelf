@@ -1,4 +1,6 @@
-require('dotenv').config({silent: true});
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config({silent: true});
+}
 
 var express = require('express');
 var routes = require('./routes');
