@@ -7,9 +7,9 @@
     "test": "karma start --single-run",
     "test-watch": "karma start",
     "server": "nodemon app.js",
-    "dev-server": "webpack-dev-server --progress --colors",
+    "dev-server": "webpack-dev-server",
     "dev": "parallelshell \"npm run server\" \"npm run dev-server\"",
-    "build": "webpack --progress --colors -p"
+    "build": "webpack"
   },
   "dependencies": {
     "cloudinary": "^1.1.1",
