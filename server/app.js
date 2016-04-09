@@ -80,7 +80,6 @@ app.get(auth.PROVIDERS.vkontakte.callbackURL, passport.authenticate('vkontakte',
 app.post('/auth/logout', routes.logout);
 
 app.post('/cover', isAuthorized, routes.cover.postCover);
-app.get('/cover/:id', routes.cover.getCover);
 
 app.get('/library/:libraryId', isAuthorized, routes.library.getLibrary);
 app.get('/libraries', auth.isAuthenticated(false), routes.library.getLibraries);
