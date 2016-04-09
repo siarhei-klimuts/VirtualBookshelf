@@ -54,8 +54,8 @@ angular.module('VirtualBookshelf')
 			}
 
 			block.global.start();
-			saveBook(selectedDto, freePlace, focusedObject).then(function (newDto) {
-				return tools.updateBook(newDto);
+			saveBook(selectedDto, freePlace, focusedObject).then(function () {
+				return tools.updateBook(selectedDto);
 			}).then(function () {
 				var bookDto = catalog.getBook(selectedDto.id);
 				selector.select(new SelectorMetaDto(BookObject.TYPE, bookDto.id, bookDto.shelfId));
