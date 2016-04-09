@@ -1,6 +1,5 @@
 var webpackConfig = require('./webpack.config.js');
-webpackConfig.entry = {};
-webpackConfig.plugins = [];
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = function(config) {
   config.set({
@@ -19,7 +18,8 @@ module.exports = function(config) {
     webpack: {
       devtool: 'inline-source-map',
       module: webpackConfig.module,
-      resolve: webpackConfig.resolve
+      resolve: webpackConfig.resolve,
+      plugins: [new ExtractTextPlugin('css/[name].css')]
     },
     reporters: ['progress'],
     port: 9876,
