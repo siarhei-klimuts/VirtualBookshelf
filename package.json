@@ -3,7 +3,7 @@
   "version": "0.4.1",
   "private": true,
   "scripts": {
-    "start": "node app.js",
+    "start": "node server/app.js",
     "test": "karma start --single-run",
     "test-watch": "karma start",
     "server": "nodemon app.js",
@@ -41,6 +41,7 @@
     "css-loader": "^0.23.1",
     "dotenv": "^1.2.0",
     "exports-loader": "^0.6.2",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "font-awesome": "^4.5.0",
     "jasmine-core": "^2.2.0",

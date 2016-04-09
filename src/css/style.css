@@ -1,3 +1,5 @@
+[ng\:cloak], [ng-cloak], .ng-cloak { display: none; }
+
 body {
 	color: #C5DEBF;
 	background-color: #000000;

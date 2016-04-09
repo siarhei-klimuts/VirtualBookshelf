@@ -7,9 +7,10 @@
 		<meta name="keywords" content="<%= __('page.keywords') %>">
 		<meta name="description" content="<%= __('page.description') %>">
 		<meta name="yandex-verification" content="67e0a4e16e84c2d6"/>
+        <meta name="google-site-verification" content="aFNHFvRC7fyGtZnece7xRY29JphEz9klH3WwqWeiu9U"/>
 
-        <script src="/js/vendors.js"></script>
-        <script src="/js/bundle.js"></script>
+        <link rel="stylesheet" href="/css/vendors.css">
+        <link rel="stylesheet" href="/css/app.css">
 	</head>
 
 	<body block-ui="global">
@@ -25,7 +26,7 @@
 
             <p><%= __('ui.welcome.description') %></p>
 
-            <div ng-show="welcome.isLoaded()">
+            <div ng-show="welcome.isLoaded()" ng-cloak>
                 <div ng-show="welcome.isShowAuthorization()" ng-click="welcome.showLoginDialog()" class="welcomeControl">
                     <p><%= __('ui.welcome.login') %></p>
                     <i class="fa fa-sign-in fa-2x"></i>
@@ -45,7 +46,7 @@
                 </div>
             </div>
 
-            <span ng-click="welcome.close()" class="fa fa-times fa-2x submitButton"></span>
+            <span ng-click="welcome.close()" class="fa fa-times fa-2x submitButton" ng-cloak></span>
         </div>
 
 		<!-- UI -->
@@ -65,5 +66,8 @@
     	<ng-include src="'ui/registrationDialog.ejs'"></ng-include>
     	<ng-include src="'ui/linkAccount.ejs'"></ng-include>
     	<ng-include src="'ui/confirmDialog.ejs'"></ng-include>
+
+        <script src="/js/vendors.js"></script>
+        <script src="/js/app.js"></script>
 	</body>
 </html>

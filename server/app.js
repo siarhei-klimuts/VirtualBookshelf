@@ -32,7 +32,7 @@ passport.use(auth.authFacebook(app.get('host')));
 passport.use(auth.authVkontakte(app.get('host')));
 
 app.disable('x-powered-by');
-app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
+app.use(express.favicon(path.join(__dirname, '/favicon.ico')));
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
@@ -45,7 +45,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(i18n.init);
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // development only
 if ('development' == app.get('env')) {
@@ -118,4 +118,16 @@ function isAuthorized(req, res, next) {
         req.user = {};
         next();
     }
+}
+
+// app.get('/js/app.js', delay(5000))
+function delay(ms) {
+    return function (req, res, next) {
+        console.warn('delay start:', req.url, ms);
+
+        setTimeout(function () {
+            console.log('delay end:', req.url, ms);
+            next();
+        }, ms);
+    };
 }

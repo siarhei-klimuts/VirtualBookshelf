@@ -2,7 +2,8 @@ require('dotenv').config({silent: true});
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
- 
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 var webpack = require('webpack');
 var url = require('url');
 var path = require('path');
@@ -23,13 +24,14 @@ var config = {
     output: {
         pathinfo: true,
         path: path.join(__dirname, 'public'),
-        filename: '/js/bundle.js'
+        filename: "/js/[name].js",
+        chunkFilename: "/js/[id].js"
     },
     module: {
         loaders: [
+            {test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')},
             {test: /\.js$/, exclude: /(node_modules|libs|lib3d)/, loader: 'ng-annotate!babel!jshint'},
             {test: /Detector.js/, loader: 'exports?Detector'},
-            {test: /\.css$/, loader: 'style!css'},
             {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'},
             {test: /\.json/, loader: 'json'}
         ],
@@ -40,7 +42,8 @@ var config = {
             from: path.join(NODE_MODULES, 'lib3d-objects/dist'),
             to: 'objects'
         }], {ignore: ['*.js', '*.map']}),
-        new webpack.optimize.CommonsChunkPlugin('vendors', '/js/vendors.js')
+        new webpack.optimize.CommonsChunkPlugin('vendors', '/js/vendors.js'),
+        new ExtractTextPlugin('css/[name].css')
     ],
     resolve: {
         root: path.join(__dirname, 'src'),
@@ -58,7 +61,7 @@ var config = {
 };
 
 if (isProd) {
-    config.plugins.push(new CleanWebpackPlugin(['public/fonts', 'public/js', 'public/objects']));
+    config.plugins.push(new CleanWebpackPlugin(['public/fonts', 'public/js', 'public/css', 'public/objects']));
     config.plugins.push(new webpack.optimize.UglifyJsPlugin({minimize: true}));
     config.devtool = 'source-map';
 } else {

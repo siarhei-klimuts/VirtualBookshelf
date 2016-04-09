@@ -1,8 +1,8 @@
 {
 	"watch": [
-		"app.js",
-		"models/*",
-		"routes/*",
-		"security/*"
+		"server/app.js",
+		"server/models/*",
+		"server/routes/*",
+		"server/security/*"
 	]
 }
