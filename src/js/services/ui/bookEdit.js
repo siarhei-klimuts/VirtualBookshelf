@@ -66,19 +66,18 @@ angular.module('VirtualBookshelf')
 	};
 
 	bookEdit.save = function() {
-		var scope = this;
-		
 		block.global.start();
-		data.postBook(this.book).then(function (dto) {
+		data.postBook(bookEdit.book).then(function (dto) {
 			if(selector.isBookSelected(dto.id)) {
 				selector.unselect();
+				catalog.selectedId = null;
 			}
 
 			//TODO: instead this hack make server always return book dto with cover dto
-			dto.cover = scope.book.cover;
+			dto.cover = bookEdit.book.cover;
 			
 			tools.updateBook(dto);
-			scope.cancel();
+			bookEdit.cancel();
 			return catalog.loadBooks(user.getId());
 		}).catch(function () {
 			$log.error('Book save error');
