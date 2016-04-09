@@ -5,7 +5,7 @@ import './ui/tools';
 import './ui/tooltip';
 
 angular.module('VirtualBookshelf')
-.factory('controls', function ($q, $log, $rootScope, block, tools, data, tooltip) {
+.factory('controls', function ($rootScope, block, tools, data, tooltip, catalog) {
 	var controls = {};
 
 	controls.init = function() {
@@ -68,6 +68,7 @@ angular.module('VirtualBookshelf')
 	}
 
 	function onSelect(obj) {
+		catalog.selectedId = obj ? obj.getId() : null;
 		$rootScope.$apply();
 	}
 

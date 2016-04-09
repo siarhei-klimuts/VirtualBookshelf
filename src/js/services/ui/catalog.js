@@ -1,8 +1,11 @@
+import * as lib3d from 'lib3d';
+
 angular.module('VirtualBookshelf')
 .factory('catalog', function ($q, data, block) {
 	var catalog = {};
 
 	catalog.books = null;
+	catalog.selectedId = null;
 
 	catalog.loadBooks = function(userId) {
 		var promise;
@@ -23,6 +26,12 @@ angular.module('VirtualBookshelf')
 		return catalog.books ? 
 			catalog.books.find(dto => dto.id == id) : 
 			null;
+	};
+
+	catalog.select = function(dto) {
+		var meta = new lib3d.SelectorMetaDto(lib3d.BookObject.TYPE, dto.id);
+		lib3d.selector.select(meta);
+		catalog.selectedId = dto.id;
 	};
 
 	return catalog;
