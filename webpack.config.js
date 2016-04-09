@@ -32,7 +32,7 @@ var config = {
             {test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')},
             {test: /\.js$/, exclude: /(node_modules|libs|lib3d)/, loader: 'ng-annotate!babel!jshint'},
             {test: /Detector.js/, loader: 'exports?Detector'},
-            {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=fonts/[name].[ext]'},
+            {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url?name=fonts/[name].[ext]'},
             {test: /\.json/, loader: 'json'}
         ],
         noParse: [],
