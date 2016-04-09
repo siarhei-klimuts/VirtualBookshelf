@@ -1,7 +1,7 @@
 angular.module('VirtualBookshelf')
 .controller('InventoryCtrl', function (user, bookEdit, catalog) {
 	this.isShow = function() {
-		return user.isAuthorized();
+		return user.isAuthorized() && user.getLibraryLoaded();
 	};
 
 	this.addBook = function() {

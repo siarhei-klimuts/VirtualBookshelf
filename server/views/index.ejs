@@ -45,6 +45,11 @@
                 </div>
             </div>
 
+            <center ng-hide="welcome.isLoaded()">
+                <div class="spinner"></div>
+                <div class="mText"><%=__('ui.loading')%></div>
+            </center>
+
             <span ng-click="welcome.close()" class="fa fa-times fa-2x submitButton" ng-cloak></span>
         </div>
 

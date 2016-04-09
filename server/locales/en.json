@@ -64,5 +64,6 @@
 	"ui.linkAccount.text": "Select a provider which you want to add to your current account.",
 	"ui.linkAccount.unavailable": "There is no available provider.",
 	"ui.createSection.header": "Create section",
-	"ui.createSection.text": "Select section model."
+	"ui.createSection.text": "Select section model.",
+	"ui.loading": "Loading..."
 }

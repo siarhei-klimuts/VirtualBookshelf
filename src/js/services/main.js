@@ -20,7 +20,6 @@ angular.module('VirtualBookshelf')
 			init();
 			controls.init();
 
-			block.global.start();
 			user.load().then(function () {
 				return loadLibrary(user.getLibrary() || 1);
 			}).catch(function (error) {
@@ -28,7 +27,6 @@ angular.module('VirtualBookshelf')
 				//TODO: show error message  
 			}).finally(function () {
 				user.setLibraryLoaded(true);
-				block.global.stop();
 			});		
 		} else {
 			// Detector.addGetWebGLMessage();

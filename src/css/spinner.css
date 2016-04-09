@@ -1,0 +1,57 @@
+.spinner{  
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  border: solid 2px transparent;
+  border-top-color: #60b044;
+  border-left-color: #60b044;
+  border-bottom-color: #60b044;
+  
+  animation: spinIt 750ms linear infinite;
+  -webkit-animation: spinIt 750ms linear infinite;
+}
+
+.mText{
+  margin-top: 10px;
+  animation: blink 1000ms linear infinite;
+  -webkit-animation: blink 1000ms linear infinite;
+}
+
+@keyframes spinIt {
+  0% {
+    transform: rotate(0deg);    
+  }
+  100% {
+    transform: rotate(360deg);    
+  }
+}
+@-webkit-keyframes spinIt {
+  0% {    
+    -webkit-transform:rotate(0deg);
+  }
+  100% {    
+    -webkit-transform:rotate(360deg);
+  }
+}
+@keyframes blink {
+  0% {    
+    opacity:1;
+  }
+  50% {    
+    opacity:0;
+  }
+  100% {    
+    opacity:1;
+  }
+}
+@-webkit-keyframes blink {
+  0% {    
+    opacity:1;
+  }
+  50% {    
+    opacity:0;
+  }
+  100% {    
+    opacity:1;
+  }
+}

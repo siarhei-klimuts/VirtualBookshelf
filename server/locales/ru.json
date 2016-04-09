@@ -64,5 +64,6 @@
 	"ui.linkAccount.text": "Выберите логин который вы хотите добавить к текущему аккаунту.",
 	"ui.linkAccount.unavailable": "Нет доступных провайдеров.",
 	"ui.createSection.header": "Создать шкаф",
-	"ui.createSection.text": "Выберите модель шкафа."
+	"ui.createSection.text": "Выберите модель шкафа.",
+	"ui.loading": "Загрузка..."
 }

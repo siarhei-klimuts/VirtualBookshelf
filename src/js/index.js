@@ -1,5 +1,6 @@
 import '../css/ngDialog-theme-default.min.css';
 import '../css/style.css';
+import '../css/spinner.css';
 
 import './services/main';
 
