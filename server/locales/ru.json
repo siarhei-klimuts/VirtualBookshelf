@@ -4,6 +4,7 @@
 	"page.description": "The Library - это персональная 3D библиотека для ваших книжных коллекций. Здесь вы можете создать комнату, разместить в ней книжные шкафы и заполнить их своими книгами.",
 	"ui.dialog.close": "Закрыть",
 	"ui.dialog.save": "Сохранить",
+	"ui.dialog.ok": "Ok",
 	"ui.dialog.cancel": "Отмена",
 	"ui.dialog.create": "Создать",
 	"ui.login.header": "Авторизация",

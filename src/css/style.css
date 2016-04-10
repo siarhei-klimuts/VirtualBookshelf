@@ -42,15 +42,13 @@ table {
     user-select: none;  
 }
 .uiPanel, .block-ui-overlay, .ngdialog-content {
-    border-radius: 20px;
-    background: linear-gradient(to bottom, rgba(50,50,50,0.7) 0%,rgba(0,0,0,0.7) 100%);
-}
-.ngdialog-content {
-    background: linear-gradient(to bottom, rgba(50,50,50,0.9) 0%,rgba(0,0,0,0.9) 100%);
+    color: #C5DEBF!important;
+    border-radius: 20px!important;
+    background: linear-gradient(to bottom, rgba(50,50,50,0.7) 0%,rgba(0,0,0,0.7) 100%)!important;
 }
 .block-ui-message {
-	background-color: transparent;
-	font-size: 14px;
+	background-color: transparent!important;
+	font-size: 14px!important;
 }
 .tooltip {
 	position: absolute;
@@ -239,7 +237,6 @@ ul.select li.selectedItem {
 .previewImg {
 	width: 128px;
 	height: 128px;
-	border: solid darkslategrey;
 	border-radius: 30px;
 	float: right;
 }
@@ -252,8 +249,9 @@ input.ng-invalid, textarea.ng-invalid, vb-select.ng-invalid ul {
 }
 
 .ngdialog h2 {
-	margin-top: 0px;
+	margin-top: 0px!important;
 }
+
 .buttons {
 	float: right;
 	margin-top: 15px;

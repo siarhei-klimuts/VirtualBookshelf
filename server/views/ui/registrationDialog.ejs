@@ -22,12 +22,12 @@
 			</tr>
 		</table>
 
-		<div class="submitButton">
+		<div class="ngdialog-buttons">
 			<a ng-click="closeThisDialog()" class="button">
 				<i class="fa fa-times fa-lg"></i>
 				<%= __('ui.registration.cancel') %>
 			</a>
-			<a ng-click="registration.form.$valid ? confirm() : registration.showValidationError()" class="button">
+			<a ng-click="registration.form.$valid ? confirm() : registration.showValidationError()" class="button submitButton">
 				<i class="fa fa-check fa-lg"></i>
 				<%= __('ui.registration.save') %>
 			</a>

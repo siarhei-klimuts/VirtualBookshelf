@@ -91,8 +91,10 @@ config.addVendor('angular-block-ui.css', path.join(NODE_MODULES, 'angular-block-
 config.addVendor('angular-growl-v2');
 config.addVendor('angular-growl-v2.css', path.join(NODE_MODULES, 'angular-growl-v2/build/angular-growl.css'));
 config.addVendor('angular-utils-pagination');
+
 config.addVendor('ng-dialog');
 config.addVendor('ng-dialog.css', path.join(NODE_MODULES, 'ng-dialog/css/ngDialog.css'));
+config.addVendor('ngDialog-theme-default.css', path.join(NODE_MODULES, 'ng-dialog/css/ngDialog-theme-default.css'));
 
 config.addVendor('facebookSdk', path.join(LIBS_PATH, 'facebookSdk.js'));
 config.addVendor('VK', path.join(LIBS_PATH, 'openapi.js'));

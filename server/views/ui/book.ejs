@@ -41,9 +41,15 @@
 			</tr>
 		</table>
 		
-		<div class="buttons">
-			<a ng-click="bookEdit.cancel()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.cancel') %></a>
-			<a ng-click="bookEdit.submit()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.dialog.save') %></a>
+		<div class="ngdialog-buttons">
+			<a ng-click="bookEdit.cancel()" class="button">
+				<i class="fa fa-times fa-lg"></i>
+				<%= __('ui.dialog.cancel') %>
+			</a>
+			<a ng-click="bookEdit.submit()" class="button submitButton">
+				<i class="fa fa-check fa-lg"></i>
+				<%= __('ui.dialog.save') %>
+			</a>
 		</div>
 	</form>
 </script>
