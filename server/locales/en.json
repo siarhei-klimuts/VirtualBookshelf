@@ -4,6 +4,7 @@
 	"page.description": "The Library is a personal 3D library for your book collections. Here you can create a room, place bookshelves and fill them with your books.",
 	"ui.dialog.close": "Close",
 	"ui.dialog.save": "Save",
+	"ui.dialog.ok": "Ok",
 	"ui.dialog.cancel": "Cancel",
 	"ui.dialog.create": "Create",
 	"ui.login.header": "Login",

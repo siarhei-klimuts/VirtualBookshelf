@@ -2,6 +2,7 @@
 	<form ng-controller="CreateLibraryCtrl as createLibrary" name="createLibrary.form">
 		<h2><%= __('ui.library.create.header') %></h2>
 		<p><%= __('ui.library.create.select.label') %></p>
+		
 		<table>
 			<tr>
 				<td>
@@ -15,9 +16,15 @@
 			</tr>
 		</table>
 
-		<div class="buttons">
-			<a ng-click="closeThisDialog()" class="button"><i class="fa fa-times fa-lg"></i><%= __('ui.dialog.close') %></a>
-			<a ng-click="createLibrary.create()" class="button"><i class="fa fa-check fa-lg"></i><%= __('ui.dialog.create') %></a>
+		<div class="ngdialog-buttons">
+			<a ng-click="closeThisDialog()" class="button">
+				<i class="fa fa-times fa-lg"></i>
+				<%= __('ui.dialog.close') %>
+			</a>
+			<a ng-click="createLibrary.create()" class="button submitButton">
+				<i class="fa fa-check fa-lg"></i>
+				<%= __('ui.dialog.create') %>
+			</a>
 		</div>
 	</form>	
 </script>

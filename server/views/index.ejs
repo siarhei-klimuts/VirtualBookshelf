@@ -9,15 +9,14 @@
 		<meta name="yandex-verification" content="67e0a4e16e84c2d6"/>
         <meta property="vk:app_id" content="4863279" />
 
-        <link rel="stylesheet" href="/css/vendors.css">
         <link rel="stylesheet" href="/css/app.css">
     </head>
 
     <body block-ui="global">
-		<div id="fb-root"></div>
-		
-		<canvas id="LIBRARY"></canvas>
-		<div growl></div>
+        <div id="fb-root"></div>
+        
+        <canvas id="LIBRARY"></canvas>
+        <div growl></div>
 
         <div ng-controller="WelcomeCtrl as welcome" ng-show="welcome.isShow()" class="welcomePage uiPanel">
             <center>
@@ -64,23 +63,24 @@
             <span ng-click="welcome.close()" class="fa fa-times fa-2x submitButton" ng-cloak></span>
         </div>
 
-		<!-- UI -->
-		<ng-include src="'ui/mainMenu.ejs'"></ng-include>
-    	<ng-include src="'ui/inventory.ejs'"></ng-include>
-		<ng-include src="'ui/tooltip.ejs'"></ng-include>
-		<ng-include src="'ui/tools.ejs'"></ng-include>
+        <!-- UI -->
+        <ng-include src="'ui/mainMenu.ejs'"></ng-include>
+        <ng-include src="'ui/inventory.ejs'"></ng-include>
+        <ng-include src="'ui/tooltip.ejs'"></ng-include>
+        <ng-include src="'ui/tools.ejs'"></ng-include>
 
-		<!-- dialogs -->
-    	<ng-include src="'ui/createLibrary.ejs'"></ng-include>
-    	<ng-include src="'ui/createSection.ejs'"></ng-include>
-    	<ng-include src="'ui/selectLibrary.ejs'"></ng-include>
-    	<ng-include src="'ui/book.ejs'"></ng-include>
-    	<ng-include src="'ui/loginDialog.ejs'"></ng-include>
-    	<ng-include src="'ui/registrationDialog.ejs'"></ng-include>
-    	<ng-include src="'ui/linkAccount.ejs'"></ng-include>
-    	<ng-include src="'ui/confirmDialog.ejs'"></ng-include>
+        <!-- dialogs -->
+        <ng-include src="'ui/createLibrary.ejs'"></ng-include>
+        <ng-include src="'ui/createSection.ejs'"></ng-include>
+        <ng-include src="'ui/selectLibrary.ejs'"></ng-include>
+        <ng-include src="'ui/book.ejs'"></ng-include>
+        <ng-include src="'ui/loginDialog.ejs'"></ng-include>
+        <ng-include src="'ui/registrationDialog.ejs'"></ng-include>
+        <ng-include src="'ui/linkAccount.ejs'"></ng-include>
+        <ng-include src="'ui/confirmDialog.ejs'"></ng-include>
 
         <script src="/js/vendors.js"></script>
         <script src="/js/app.js"></script>
-	</body>
+        <link rel="stylesheet" href="/css/vendors.css">
+    </body>
 </html>

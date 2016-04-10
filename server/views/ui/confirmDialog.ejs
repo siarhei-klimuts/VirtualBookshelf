@@ -3,8 +3,15 @@
 		<i class="fa fa-3x {{ngDialogData.iconClass}}"></i>
 		{{ngDialogData.msg}}
 	</div>
-	<div class="ngdialog-buttons submitButton"> 
-		<span ng-click="closeThisDialog()" ng-show="ngDialogData.cancelButton" class="fa fa-times fa-2x"></span>
-		<span ng-click="confirm()" class="fa fa-check fa-2x"></span>
+    
+	<div class="ngdialog-buttons"> 
+		<a ng-click="closeThisDialog()" ng-show="ngDialogData.cancelButton" class="button">
+            <i class="fa fa-times fa-lg"></i>
+            <%= __('ui.dialog.cancel') %>
+        </a>
+		<a ng-click="confirm()" class="button submitButton">
+            <i class="fa fa-check fa-lg"></i>
+            <%= __('ui.dialog.ok') %>
+        </a>
 	</div>
 </script>
