@@ -10,13 +10,22 @@ angular.module('VirtualBookshelf')
 	};
 
 	feedback.send = function(dto) {
-		dialog.openConfirm('Send feedback?').then(function () {
-			return data.postFeedback(dto).then(function () {
-				feedbackDialog.close();
-			}, function () {
-				dialog.openError('Can not send feedback because of an error.');
-			});
-		});
+        VK.init({apiId: 4863279});
+        VK.Api.call('board.addComment', {
+            group_id: 95876726,
+            topic_id: 33507668,
+            text: 'test'
+        }, function(res) {
+            console.log('***', res);
+        });
+        
+		// dialog.openConfirm('Send feedback?').then(function () {
+		// 	return data.postFeedback(dto).then(function () {
+		// 		feedbackDialog.close();
+		// 	}, function () {
+		// 		dialog.openError('Can not send feedback because of an error.');
+		// 	});
+		// });
 	};
 
 	return feedback;

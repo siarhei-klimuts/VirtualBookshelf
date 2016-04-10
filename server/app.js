@@ -94,8 +94,6 @@ app.post('/book', isAuthorized, routes.book.postBook);
 app.get('/freeBooks/:userId', isAuthorized, routes.book.getFreeBooks);
 app.delete('/book/:id', isAuthorized, routes.book.deleteBook);
 
-app.post('/feedback', routes.feedback.postFeedback);
-
 app.get('/user', auth.isAuthenticated(true), routes.user.getUser);
 app.put('/user', auth.isAuthenticated(true), routes.user.putUser);
 app.delete('/user/:id', auth.isAuthenticated(true), routes.user.deleteUser);

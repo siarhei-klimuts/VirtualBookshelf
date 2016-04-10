@@ -14,12 +14,10 @@ exports.User = sequelize.import(__dirname + '/User');
 exports.Library = sequelize.import(__dirname + '/Library');
 exports.Section = sequelize.import(__dirname + '/Section');
 exports.Book = sequelize.import(__dirname + '/Book');
-exports.Feedback = sequelize.import(__dirname + '/Feedback');
 exports.Cover = sequelize.import(__dirname + '/Cover');
 
 // describe relationships
 exports.User.hasMany(exports.Library);
-exports.User.hasMany(exports.Feedback);
 exports.Library.hasMany(exports.Section);
 exports.Section.hasMany(exports.Book);
 exports.Cover.hasMany(exports.Book);

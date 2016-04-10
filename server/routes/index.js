@@ -18,6 +18,5 @@ exports.logout = function(req, res) {
 exports.library = require('./library');
 exports.section = require('./section');
 exports.book = require('./book');
-exports.feedback = require('./feedback');
 exports.user = require('./user');
 exports.cover = require('./cover');
