@@ -10,7 +10,6 @@ import './controllers/AuthCtrl';
 import './controllers/BookEditCtrl';
 import './controllers/CreateLibraryCtrl';
 import './controllers/CreateSectionCtrl';
-import './controllers/FeedbackCtrl';
 import './controllers/InventoryCtrl';
 import './controllers/LinkAccountCtrl';
 import './controllers/MainMenuCtrl';

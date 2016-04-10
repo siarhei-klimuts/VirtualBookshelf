@@ -102,10 +102,6 @@ angular.module('VirtualBookshelf')
 		});
 	};
 
-	data.postFeedback = function(dto) {
-        return $http.post('/feedback', dto);
-	};
-
 	//TODO: replace by SPA implementation
 	data.goToLibrary = function(id) {
 		if(id) $window.location = '/' + id;
