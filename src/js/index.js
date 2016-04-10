@@ -1,6 +1,7 @@
 import '../css/ngDialog-theme-default.min.css';
 import '../css/style.css';
 import '../css/spinner.css';
+import '../css/social.css';
 
 import './services/main';
 
@@ -24,4 +25,6 @@ import appModule from './app';
 
 angular.element(document).ready(function () {
 	angular.bootstrap(document, [appModule.name]);
+
+    VK.Widgets.Like('vk_like', {type: 'mini', height: 18}, 0);
 });

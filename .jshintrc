@@ -58,8 +58,7 @@
     "globals": {
         "THREE": true,
         "angular": true,
-        "_": true,
         "inject": true,
-        "readJSON": true
+        "VK": true
     }
 }

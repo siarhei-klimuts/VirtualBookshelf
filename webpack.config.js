@@ -95,6 +95,8 @@ config.addVendor('ng-dialog');
 config.addVendor('ng-dialog.css', path.join(NODE_MODULES, 'ng-dialog/css/ngDialog.css'));
 
 config.addVendor('facebookSdk', path.join(LIBS_PATH, 'facebookSdk.js'));
+config.addVendor('VK', path.join(LIBS_PATH, 'openapi.js'));
+config.addVendor('twitter', path.join(LIBS_PATH, 'widgets.js'));
 config.addVendor('googleAnalytics', path.join(LIBS_PATH, 'googleAnalytics.js'));
 config.addVendor('Detector', path.join(LIBS_PATH, 'three.js/Detector.js'));
 
