@@ -59,12 +59,13 @@ angular.module('VirtualBookshelf')
 	}
 
 	function registerObjects() {
-        lib3d.registerLibrary(lib3dObjects.library_0001);
-        lib3d.registerLibrary(lib3dObjects.library_0002);
-        lib3d.registerSection(lib3dObjects.bookshelf_0001);
-        lib3d.registerBook(lib3dObjects.book_0001);
-        lib3d.registerBook(lib3dObjects.book_0002);
-        lib3d.registerBook(lib3dObjects.book_0003);
+        lib3dObjects.library_0001.register();
+        lib3dObjects.library_0002.register();
+        lib3dObjects.library_0003.register();
+        lib3dObjects.bookshelf_0001.register();
+        lib3dObjects.book_0001.register();
+        lib3dObjects.book_0002.register();
+        lib3dObjects.book_0003.register();
 	}
 
 	return main;
