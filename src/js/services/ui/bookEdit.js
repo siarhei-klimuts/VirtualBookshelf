@@ -1,5 +1,4 @@
 import {selector} from 'lib3d';
-import * as lib3dObjects from 'lib3d-objects';
 
 import '../data';
 import '../ui/block';
@@ -36,7 +35,7 @@ angular.module('VirtualBookshelf')
 
 	bookEdit.getImg = function() {
 		return this.book.model ? 
-			`${data.OBJECTS_PATH}/${lib3dObjects[this.book.model].img}` : 
+			`${data.OBJECTS_PATH}/books/${this.book.model}/img.jpg` : 
 			data.EMPTY_IMAGE_URL;
 	};
 
