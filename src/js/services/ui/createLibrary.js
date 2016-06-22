@@ -1,5 +1,3 @@
-import * as lib3dObjects from 'lib3d-objects';
-
 angular.module('VirtualBookshelf')
 .factory('createLibrary', function (data, dialog, block, ngDialog) {
 	var createLibrary = {};
@@ -16,7 +14,7 @@ angular.module('VirtualBookshelf')
 
 	createLibrary.getImg = function(model) {
 		return model ? 
-			`${data.OBJECTS_PATH}/${lib3dObjects[model].img}` : 
+			`${data.OBJECTS_PATH}/libraries/${model}/img/img.jpg` : 
 			data.EMPTY_IMAGE_URL;
 	};
 

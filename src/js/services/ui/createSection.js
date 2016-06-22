@@ -1,5 +1,4 @@
 import * as lib3d from 'lib3d';
-import * as lib3dObjects from 'lib3d-objects';
 
 angular.module('VirtualBookshelf')
 .factory('createSection', function ($q, $log, user, dialog, block, ngDialog, data) {
@@ -15,7 +14,7 @@ angular.module('VirtualBookshelf')
 
 	createSection.getImg = function(model) {
 		return model ? 
-			`${data.OBJECTS_PATH}/${lib3dObjects[model].img}` : 
+			`${data.OBJECTS_PATH}/sections/${model}/img.jpg` : 
 			data.EMPTY_IMAGE_URL;
 	};
 

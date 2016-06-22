@@ -1,5 +1,5 @@
 var webpackConfig = require('./webpack.config.js');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function(config) {
   config.set({
@@ -26,7 +26,13 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Chrome_travis_ci'],
+    customLaunchers: {
+      Chrome_travis_ci: {
+           base: 'Chrome',
+           flags: ['--no-sandbox']
+       }
+    },
     singleRun: false
   });
 };
