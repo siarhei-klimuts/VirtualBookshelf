@@ -9,6 +9,7 @@ var path = require('path');
 var i18n = require('i18n');
 var models = require('./models');
 
+var firebaseRoute = require('./security/firebase');
 var auth = require('./security/auth');
 var passport = require('passport');
 
@@ -54,6 +55,8 @@ if ('development' == app.get('env')) {
 
 app.get('/:libraryId([0-9]+)?', routes.index);
 app.get('/ui/:page', routes.ui);
+
+app.get('/auth/firebase/customToken/vk/:uid', firebaseRoute.getCustomTokenVK);
 app.get('/auth/close', routes.page);
 app.get('/auth/google', passport.authenticate('google', { 
     scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] 
