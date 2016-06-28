@@ -24,8 +24,8 @@ var config = {
     output: {
         pathinfo: true,
         path: path.join(__dirname, 'public'),
-        filename: "/js/[name].js",
-        chunkFilename: "/js/[id].js"
+        filename: '/js/[name].js',
+        chunkFilename: '/js/[id].js'
     },
     module: {
         loaders: [
@@ -35,7 +35,7 @@ var config = {
             {test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'file?name=/fonts/[name].[ext]'},
             {test: /\.json/, loader: 'json'}
         ],
-        noParse: [],
+        noParse: []
     },
     plugins: [
         new CopyWebpackPlugin([{

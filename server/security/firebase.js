@@ -13,6 +13,7 @@ exports.getCustomTokenVK = function (req, res) {
     var uid;
     var token;
 
+    res.header('Access-Control-Allow-Origin', '*');
     if (isVkAuthKeyValid(req.query.viewer_id, req.query.auth_key)) {
         uid = req.params.uid;
         token = firebase.auth().createCustomToken(uid);
